@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Django secret key and production mode
+export PROD_MODE="True"
+
+# PostgreSQL connection
+export PG_NAME="[VARIABLE]"
+export PG_USER="[VARIABLE]"
+export PG_PWD="[VARIABLE]"
+
+# Hackathon information
+export APP_DOMAIN="kthais.com"
+
+echo "[KTHAIS] REDEPLOYING"
+echo "Installing new requirements..."
+./env/bin/pip install -r requirements.txt
+echo "Migrating database..."
+./env/bin/python manage.py migrate
+echo "Setting initial data again..."
+./env/bin/python manage.py loaddata initial
+echo "Collecting static data..."
+./env/bin/python manage.py collectstatic --no-input
+echo "Removing .pyc files..."
+find . -name \*.pyc -delete
+echo "[KTHAIS] REDEPLOY COMPLETED"

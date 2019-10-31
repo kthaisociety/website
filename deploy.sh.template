@@ -1,0 +1,5 @@
+#!/bin/bash
+
+git pull
+./restart.sh
+sudo systemctl restart kthais

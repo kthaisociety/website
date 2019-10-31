@@ -5,6 +5,9 @@ from app.variables import APP_TIMEZONE, APP_DOMAIN
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
 from app.variables import *
 
 
@@ -148,6 +151,18 @@ MAX_UPLOAD_SIZE = 5242880
 # Phone number format
 
 PHONENUMBER_DB_FORMAT = "INTERNATIONAL"
+
+# Sentry logging
+
+SE_URL = os.environ.get("SE_URL", None)
+if SE_URL:
+    sentry_sdk.init(
+        dsn=SE_URL,
+        integrations=[DjangoIntegration()],
+        debug=DEBUG,
+        environment=os.environ.get("SE_ENV"),
+        send_default_pii=True,
+    )
 
 # Signup status
 

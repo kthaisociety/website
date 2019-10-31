@@ -3,3 +3,4 @@ django-cookie-law~=1.0.1
 django-versatileimagefield~=1.10
 gunicorn~=19.9.0
 requests~=2.22.0
+sentry-sdk==0.13.1

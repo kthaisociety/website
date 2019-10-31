@@ -1,1 +1,2 @@
 Django==2.2.4
+django-versatileimagefield~=1.10

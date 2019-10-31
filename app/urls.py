@@ -1,21 +1,20 @@
-"""app URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/2.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
+from django.conf.urls import url
 from django.contrib import admin
-from django.urls import path
+from django.urls import include
+
+from app import views
+from app.settings import GH_KEY
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    url("admin/", admin.site.urls),
+    url(r"^user/", include("user.urls")),
+    url(r"^$", views.home, name="app_home"),
 ]
+
+if GH_KEY:
+    urlpatterns += [url(r"^deploy/", views.deploy, name="app_deploy")]
+
+handler400 = "app.views.response_400"
+handler403 = "app.views.response_403"
+handler404 = "app.views.response_404"
+handler500 = "app.views.response_500"

@@ -1,6 +1,6 @@
 import os
 
-APP_NAME = "KTHAIS"
+APP_NAME = "KTH AI Society"
 APP_DESCRIPTION = "KTH AI Society website"
 APP_TIMEZONE = "Europe/Stockholm"
 APP_DOMAIN = os.environ.get("APP_DOMAIN", "localhost:8000")

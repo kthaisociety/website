@@ -1,5 +1,7 @@
 # KTHAIS website
 
+![Website preview](app/static/img/preview.png)
+
 :computer: Website and management system for KTHAIS
 
 :raising_hand: Current maintainer: [@oriolclosa](https://github.com/oriolclosa)
@@ -26,10 +28,20 @@ Continue with only one of the following sections depending on the purpose of the
 
 - **SECRET_KEY**: Application secret (to generate one, run `os.urandom(24)`).
 - **PROD_MODE**: Disable Django debug mode, should be `True` on production site.
+- **PG_NAME**: PostgreSQL database name.
+- **PG_USER**: PostgreSQL username.
+- **PG_PWD**: PostgreSQL password.
+- **PG_HOST**: PostgreSQL host (`'localhost'` by default).
+- **APP_DOMAIN**: Application domain.
+- **APP_IP**: Application server IP.
+- **GO_ID**: Google Analytics ID.
+- **GH_KEY**: GitHub webhook key.
+- **GH_BRANCH**: GitHub current branch, defaults to `master`.
+- **SL_INURL**: Internal organisation Slack webhook URL for deployments.
 
 ## Contribution
 
-Please, report any incidents or questions to webdev@kthack.com.
+Please, report any incidents or questions to webdev@kthais.com.
 
 ### Style guidelines
 

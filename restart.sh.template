@@ -16,8 +16,6 @@ echo "Installing new requirements..."
 ./env/bin/pip install -r requirements.txt
 echo "Migrating database..."
 ./env/bin/python manage.py migrate
-echo "Setting initial data again..."
-./env/bin/python manage.py loaddata initial
 echo "Collecting static data..."
 ./env/bin/python manage.py collectstatic --no-input
 echo "Removing .pyc files..."

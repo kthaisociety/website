@@ -11,38 +11,72 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='User',
+            name="User",
             fields=[
-                ('password', models.CharField(max_length=128, verbose_name='password')),
-                ('last_login', models.DateTimeField(blank=True, null=True, verbose_name='last login')),
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('email', models.EmailField(max_length=255, unique=True)),
-                ('name', models.CharField(max_length=255, verbose_name='First name')),
-                ('surname', models.CharField(max_length=255, verbose_name='Last name')),
-                ('email_verified', models.BooleanField(default=False)),
-                ('verify_key', models.CharField(blank=True, max_length=127, null=True)),
-                ('verify_expiration', models.DateTimeField(default=django.utils.timezone.now)),
-                ('created_at', models.DateTimeField(default=django.utils.timezone.now)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('type', models.PositiveSmallIntegerField(choices=[(0, 'ORGANISER'), (1, 'PARTICIPANT')], default=1)),
-                ('is_admin', models.BooleanField(default=False)),
-                ('is_active', models.BooleanField(default=True)),
-                ('picture', versatileimagefield.fields.VersatileImageField(default='user/picture/profile.png', upload_to='', verbose_name='Image')),
-                ('picture_public_participants', models.BooleanField(default=True)),
-                ('picture_public_sponsors_and_recruiters', models.BooleanField(default=True)),
-                ('sex', models.PositiveSmallIntegerField(choices=[(0, 'NONE'), (1, 'FEMALE'), (2, 'MALE')], default=user.enums.SexType(0))),
-                ('birthday', models.DateField(blank=True, null=True)),
-                ('phone', models.CharField(blank=True, max_length=255, null=True)),
-                ('city', models.CharField(blank=True, max_length=255, null=True)),
-                ('country', models.CharField(blank=True, max_length=255, null=True)),
+                ("password", models.CharField(max_length=128, verbose_name="password")),
+                (
+                    "last_login",
+                    models.DateTimeField(
+                        blank=True, null=True, verbose_name="last login"
+                    ),
+                ),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("email", models.EmailField(max_length=255, unique=True)),
+                ("name", models.CharField(max_length=255, verbose_name="First name")),
+                ("surname", models.CharField(max_length=255, verbose_name="Last name")),
+                ("email_verified", models.BooleanField(default=False)),
+                ("verify_key", models.CharField(blank=True, max_length=127, null=True)),
+                (
+                    "verify_expiration",
+                    models.DateTimeField(default=django.utils.timezone.now),
+                ),
+                ("created_at", models.DateTimeField(default=django.utils.timezone.now)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "type",
+                    models.PositiveSmallIntegerField(
+                        choices=[(0, "ORGANISER"), (1, "PARTICIPANT")], default=1
+                    ),
+                ),
+                ("is_admin", models.BooleanField(default=False)),
+                ("is_active", models.BooleanField(default=True)),
+                (
+                    "picture",
+                    versatileimagefield.fields.VersatileImageField(
+                        default="user/picture/profile.png",
+                        upload_to="",
+                        verbose_name="Image",
+                    ),
+                ),
+                ("picture_public_participants", models.BooleanField(default=True)),
+                (
+                    "picture_public_sponsors_and_recruiters",
+                    models.BooleanField(default=True),
+                ),
+                (
+                    "sex",
+                    models.PositiveSmallIntegerField(
+                        choices=[(0, "NONE"), (1, "FEMALE"), (2, "MALE")],
+                        default=user.enums.SexType(0),
+                    ),
+                ),
+                ("birthday", models.DateField(blank=True, null=True)),
+                ("phone", models.CharField(blank=True, max_length=255, null=True)),
+                ("city", models.CharField(blank=True, max_length=255, null=True)),
+                ("country", models.CharField(blank=True, max_length=255, null=True)),
             ],
-            options={
-                'abstract': False,
-            },
-        ),
+            options={"abstract": False},
+        )
     ]

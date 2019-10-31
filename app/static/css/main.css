@@ -1,0 +1,45 @@
+@font-face {
+    font-family: "Futura";
+    src: url("/static/fonts/FuturaBook.woff") format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    background-color: #3d5875;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: 'Futura', sans-serif;
+}
+
+.home {
+    color: #fff;
+}
+
+.home h1 {
+    font-size: 48px;
+    letter-spacing: 1rem;
+    margin-bottom: 5rem;
+    font-weight: 800;
+}
+
+.home p {
+    font-size: 20px;
+}
+
+.home .logo {
+    max-width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1rem;
+}
+
+.centered {
+    padding-top: 4em;
+    padding-bottom: 4em;
+    top: 50%;
+    transform: translateY(-50%);
+    position: absolute;
+    width: 100%;
+}

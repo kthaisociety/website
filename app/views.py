@@ -20,6 +20,7 @@ def home(request):
     current_data = dict()
     return render(request, "home.html", current_data)
 
+
 @require_POST
 @csrf_exempt
 def deploy(request):

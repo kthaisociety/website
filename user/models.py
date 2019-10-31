@@ -82,9 +82,7 @@ class User(AbstractBaseUser):
     is_active = models.BooleanField(default=True)
 
     # Personal information
-    picture = VersatileImageField(
-        "Image", default="user/picture/profile.png"
-    )
+    picture = VersatileImageField("Image", default="user/picture/profile.png")
     picture_public_participants = models.BooleanField(default=True)
     picture_public_sponsors_and_recruiters = models.BooleanField(default=True)
     sex = models.PositiveSmallIntegerField(

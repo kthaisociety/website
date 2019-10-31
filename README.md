@@ -165,9 +165,13 @@ location /deploy/ {
 - **PG_HOST**: PostgreSQL host (`'localhost'` by default).
 - **APP_DOMAIN**: Application domain.
 - **APP_IP**: Application server IP.
+- **SE_URL**: Sentry post URL.
+- **SE_ENV**: Sentry environment.
 - **GO_ID**: Google Analytics ID.
 - **GH_KEY**: GitHub webhook key.
 - **GH_BRANCH**: GitHub current branch, defaults to `master`.
+- **SL_ID**: Slack app client ID.
+- **SL_SECRET**: Slack app client secret.
 - **SL_INURL**: Internal organisation Slack webhook URL for deployments.
 
 ## Contribution

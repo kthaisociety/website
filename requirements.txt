@@ -1,4 +1,4 @@
-Django==2.2.4
+Django==2.2.8
 django-cookie-law~=1.0.1
 django-versatileimagefield~=1.10
 gunicorn~=19.9.0

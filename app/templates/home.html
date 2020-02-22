@@ -1,28 +1,46 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block head_title %}Coming soon{% endblock %}
+{% block title_plain %}{{ app_name }}{% endblock %}
 
 {% block pre_body %}
-    <header class="centered home">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-3">
+    {% if articles %}
+        <div class="container-fluid px-0">
+            <div id="news-carousel" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    {% for article in articles %}
+                        <li data-target="#news-carousel" data-slide-to="{{ forloop.counter0 }}" {% if forloop.counter0 == 0 %}class="active"{% endif %}></li>
+                    {% endfor %}
+                </ol>
+                <div class="carousel-inner text-center bg-info" role="listbox">
+                    {% for article in articles %}
+                        <div class="carousel-item carousel-darken {% if forloop.counter0 == 0 %}active{% endif %}" style="background-image: url('{{ article.picture.url }}'); background-size: cover;">
+                            <!-- Desktop version -->
+                            <div class="carousel-caption d-none d-lg-flex d-xl-flex">
+                                <div class="text-left">
+                                    <h1 class="carousel-title-lg">{{ article.title }}</h1>
+                                    <p class="carousel-body-lg">{{ article.body_plaintext|truncatewords:50 }}</p>
+                                </div>
+                            </div>
+                            <!-- Mobile version -->
+                            <div class="carousel-caption d-flex d-lg-none h-100 align-items-center justify-content-center">
+                                <div>
+                                    <h1 class="carousel-title">{{ article.title }}</h1>
+                                    <p class="carousel-body">{{ article.body_plaintext|truncatewords:50 }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
                 </div>
-                <div class="col-sm-6" style="text-align: center;">
-                    <a href=""><img src="{% static "img/logo.png" %}" class="logo" alt="KTH AI Society logo"></a>
-                </div>
-                <div class="col-sm-3">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-3">
-                </div>
-                <div class="col-sm-6">
-                    <h1 class="white bold text-center">KTHAIS</h1>
-                    <p class="white paragraph text-center">COMING SOON</p>
-                </div>
+                <a class="carousel-control-prev" href="#news-carousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#news-carousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
             </div>
         </div>
-    </header>
+    {% endif %}
 {% endblock %}

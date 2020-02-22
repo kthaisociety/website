@@ -9,6 +9,7 @@ urlpatterns = [
     url("admin/", admin.site.urls),
     url(r"^user/", include("user.urls")),
     url(r"^$", views.home, name="app_home"),
+    url(r"^files/(?P<file_>.*)$", views.files, name="app_files"),
 ]
 
 if GH_KEY:

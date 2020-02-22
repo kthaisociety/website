@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "bootstrap4",
     "app",
     "user",
+    "news",
     "cookielaw",
 ]
 

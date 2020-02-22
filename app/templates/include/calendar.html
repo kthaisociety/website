@@ -1,4 +1,13 @@
-<a href="{{ url }}" class="meta-act-link meta-tweet link-unstyled" target="_blank">
+<!-- Desktop -->
+<a href="{{ pre_calendar_url }}{{ url }}" class="meta-act-link meta-tweet link-unstyled d-none d-lg-inline-block" target="_blank">
+    <button type="button" class="btn btn-main2 btn-lg">
+        <p class="mb-1">
+            <i class="fas fa-calendar-alt"></i>
+        </p>
+    </button>
+</a>
+<!-- Mobile -->
+<a href="{{ url }}" class="meta-act-link meta-tweet link-unstyled d-lg-none" target="_blank">
     <button type="button" class="btn btn-main2 btn-lg">
         <p class="mb-1">
             <i class="fas fa-calendar-alt"></i>

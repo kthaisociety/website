@@ -17,7 +17,7 @@ from event.managers import EventManager
 class Event(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
-    code = models.CharField(max_length=31, blank=True, unique=True)
+    code = models.CharField(max_length=255, blank=True, unique=True)
     description = models.TextField(blank=True, null=True)
     type = models.PositiveSmallIntegerField(
         choices=((t.value, t.name) for t in EventType),
@@ -96,7 +96,7 @@ class Event(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.code:
-            self.code = slugify(self.name)[:31]
+            self.code = slugify(self.name)
         super().save()
 
     def __str__(self):

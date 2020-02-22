@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load app_tags %}
+{% load social_share %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block head_title %}{{ event.name }}{% endblock %}
+
+{% block in_pre_body %}
+    <div class="row">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent p-0 pb-2">
+                    <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'app_home' %}">Home</a></li>
+                    <li class="breadcrumb-item">Events</li>
+                    <li class="breadcrumb-item active" aria-current="page"><a class="link-unstyled" href="{{ event.url }}">{{ event.name }}</a></li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+{% endblock %}
+
+{% block in_in_body %}
+    <div class="row">
+        <div class="col-md-12 mb-3">
+            <h1>{{ event.name }}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="jumbotron p-0 p-lg-5 text-white rounded bg-dark event-header" style="background-image: url('{{ event.picture.url }}'); background-size: cover;">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 mb-3 text-center text-lg-left">
+            {% include "include/social.html" with title=event.name url=event.url %}
+            {% include "include/calendar.html" with url=event.ics_url %}
+        </div>
+    </div>
+    {% if event.description %}
+        <div class="row">
+            <div class="col-md-12 mb-3">
+                {{ event.description|markdown_to_html|safe }}
+            </div>
+        </div>
+        {% endif %}
+    <div class="row">
+        <div class="col-md-12 mb-3">
+            <h5>Time</h5>
+            {% if event.starts_at.date == event.ends_at.date %}
+                {% if event.starts_at.time == event.ends_at.time %}
+                    <h3>{{ event.starts_at|date:"F j, Y H:i" }}</h3>
+                {% else %}
+                    <h3>{{ event.starts_at|date:"F j, Y H:i" }} / {{ event.ends_at|date:"H:i" }}</h3>
+                {% endif %}
+            {% else %}
+                <h3>{{ event.starts_at|date:"F j, Y H:i" }} / {{ event.ends_at|date:"F j, Y H:i" }}</h3>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h5>Location</h5>
+            <h3 class="mb-4">{{ event.location }}</h3>
+            <iframe width="100%" height="400" src="https://maps.google.com/maps?hl=en&amp;q={{ event.location }}&amp;ie=UTF8&amp;t=&amp;z=14&amp;iwloc=B&amp;output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+        </div>
+    </div>
+{% endblock %}

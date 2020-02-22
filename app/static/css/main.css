@@ -23,6 +23,12 @@ body {
     border-color: #3d5875;
 }
 
+.btn-main2 {
+    color: #FFFFFF;
+    background-color: #73A2C6;
+    border-color: #73A2C6;
+}
+
 .btn-twitter {
     color: #FFFFFF;
     background-color: #1da1f2;
@@ -145,6 +151,14 @@ body {
     outline: inherit;
     box-shadow: inherit;
     vertical-align: inherit;
+}
+
+.media-body-event {
+    margin-top: -4px;
+}
+
+.event-header {
+    height: 450px;
 }
 
 /*

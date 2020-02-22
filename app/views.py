@@ -58,6 +58,8 @@ def files(request, file_):
     if path in [
         "news/article",
         "__sized__/news/article",
+        "event/picture",
+        "__sized__/event/picture",
     ]:
         if file_[:7] != "/files/":
             file_ = "/files/" + file_

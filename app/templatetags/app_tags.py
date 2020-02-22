@@ -17,6 +17,11 @@ def markdown_to_html(text):
 
 
 @register.filter
+def extract_app(url):
+    return url.split("/")[0]
+
+
+@register.filter
 def extract_slug(url):
     return url.split("/")[-1]
 

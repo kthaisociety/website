@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load app_tags %}
-{% load social_share %}
 {% load static %}
 {% load bootstrap4 %}
 
@@ -13,7 +12,7 @@
                 <ol class="breadcrumb bg-transparent p-0 pb-2">
                     <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'app_home' %}">Home</a></li>
                     <li class="breadcrumb-item">News</li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ article.title }}</li>
+                    <li class="breadcrumb-item active" aria-current="page"><a class="link-unstyled" href="{{ article.url }}">{{ article.title }}</a></li>
                 </ol>
             </nav>
         </div>
@@ -45,13 +44,10 @@
 {% block in_in_body %}
     <div class="row">
         <div class="col-md-12 mb-3 text-center text-lg-left">
-            {% post_to_facebook article.url %}
-            {% post_to_twitter article.title article.url %}
-            {% post_to_linkedin article.title article.url %}
-            {% post_to_reddit article.title article.url %}
-            {% post_to_telegram article.title article.url %}
-            {% post_to_whatsapp article.url %}
+            {% include "include/social.html" with title=article.title url=article.url %}
         </div>
+    </div>
+    <div class="row">
         <div class="col-md-12">
             {{ article.body|markdown_to_html|safe }}
         </div>

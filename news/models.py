@@ -48,3 +48,6 @@ class Article(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         super().save()
+
+    def __str__(self):
+        return self.title

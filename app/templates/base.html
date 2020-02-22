@@ -53,8 +53,8 @@
         {% block body %}
             {% block pre_body %}
             {% endblock %}
-            <div class="container container-body py-5">
-                {% block in_body %}
+            {% block in_body %}
+                <div class="container container-body py-5">
                     {% block in_pre_body %}
                     {% endblock %}
                     <div class="row">
@@ -62,35 +62,65 @@
                             {% block in_in_body %}
                             {% endblock %}
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-4 d-none d-md-block pl-4">
                             {% block sidebar %}
-                                {% if articles %}
-                                    {% with request.path|extract_slug as current_slug %}
-                                        {% if articles|length > 1 or articles.0.slug != current_slug %}
-                                            <h4 class="font-italic mb-4">Latest news</h4>
-                                            {% for article in articles %}
-                                                {% if article.slug != current_slug %}
-                                                    <a class="link-unstyled" href="{{ article.url }}">
-                                                        <div class="card mt-4">
-                                                            <img class="card-img-top" src="{{ article.picture.url }}">
-                                                            <div class="card-body">
-                                                                <h5>{{ article.title }}</h5>
-                                                                <p class="card-text">{{ article.body_plaintext|truncatewords:10 }}</p>
-                                                            </div>
-                                                        </div>
-                                                    </a>
-                                                {% endif %}
-                                            {% endfor %}
-                                        {% endif %}
-                                    {% endwith %}
-                                {% endif %}
+                                {% with request.path|extract_app as current_app %}
+                                    {% if events %}
+                                        {% with request.path|extract_slug as current_slug %}
+                                            {% if events|length > 1 or current_app == "event" and events.0.code != current_slug %}
+                                                <div class="row mb-3">
+                                                    <div class="col-md-12">
+                                                        <h4 class="font-italic mb-4">Future events</h4>
+                                                        {% for event in events %}
+                                                            {% if event.code != current_slug %}
+                                                                <a class="link-unstyled" href="{{ event.url }}">
+                                                                    <div class="media">
+                                                                        <img class="mr-2 rounded" style="width: 32px; height: 32px;" src="{{ event.picture.url }}" data-holder-rendered="true">
+                                                                        <p class="media-body media-body-event pb-3 mb-0 pt-0 small lh-125">
+                                                                            <strong class="d-block">{{ event.name }}</strong>
+                                                                            {{ event.starts_at|date:"F j, Y" }} / {{ event.location }}
+                                                                        </p>
+                                                                    </div>
+                                                                </a>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        {% endwith %}
+                                    {% endif %}
+                                    {% if articles %}
+                                        {% with request.path|extract_slug as current_slug %}
+                                            {% if articles|length > 1 or current_app == "news" and articles.0.slug != current_slug %}
+                                                <div class="row mb-3">
+                                                    <div class="col-md-12">
+                                                        <h4 class="font-italic mb-4">Latest news</h4>
+                                                        {% for article in articles %}
+                                                            {% if article.slug != current_slug %}
+                                                                <a class="link-unstyled" href="{{ article.url }}">
+                                                                    <div class="card mt-4">
+                                                                        <img class="card-img-top" src="{{ article.picture.url }}">
+                                                                        <div class="card-body">
+                                                                            <h5>{{ article.title }}</h5>
+                                                                            <p class="card-text">{{ article.body_plaintext|truncatewords:10 }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </a>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        {% endwith %}
+                                    {% endif %}
+                                {% endwith %}
                             {% endblock %}
                         </div>
                     </div>
                     {% block in_post_body %}
                     {% endblock %}
-                {% endblock %}
-            </div>
+                </div>
+            {% endblock %}
             {% block post_body %}
             {% endblock %}
         {% endblock %}

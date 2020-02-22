@@ -10,7 +10,6 @@ from django.utils.text import slugify
 from markdownx.utils import markdownify
 from versatileimagefield.fields import VersatileImageField
 
-from app.variables import APP_DOMAIN
 from event.enums import EventType, EventStatus
 from event.managers import EventManager
 
@@ -44,11 +43,7 @@ class Event(models.Model):
 
     @property
     def ics_url(self):
-        return (
-            "webcal:/"
-            + APP_DOMAIN.replace("https://", "").replace("http://", "")
-            + reverse("events_event_ics", kwargs=dict(code=self.code))
-        )
+        return reverse("events_event_ics", kwargs=dict(code=self.code))
 
     @property
     def ics(self):

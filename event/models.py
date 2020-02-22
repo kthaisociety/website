@@ -10,6 +10,7 @@ from django.utils.text import slugify
 from markdownx.utils import markdownify
 from versatileimagefield.fields import VersatileImageField
 
+from app.variables import APP_DOMAIN
 from event.enums import EventType, EventStatus
 from event.managers import EventManager
 
@@ -20,13 +21,11 @@ class Event(models.Model):
     code = models.CharField(max_length=255, blank=True, unique=True)
     description = models.TextField(blank=True, null=True)
     type = models.PositiveSmallIntegerField(
-        choices=((t.value, t.name) for t in EventType),
-        default=EventType.GENERAL
+        choices=((t.value, t.name) for t in EventType), default=EventType.GENERAL
     )
     picture = VersatileImageField("Image", upload_to="event/picture/")
     status = models.PositiveSmallIntegerField(
-        choices=((s.value, s.name) for s in EventStatus),
-        default=EventStatus.DRAFT
+        choices=((s.value, s.name) for s in EventStatus), default=EventStatus.DRAFT
     )
     location = models.CharField(max_length=255)
     starts_at = models.DateTimeField()
@@ -41,26 +40,22 @@ class Event(models.Model):
 
     @property
     def url(self):
-        return reverse(
-            "events_event",
-            kwargs=dict(
-                code=self.code
-            ),
-        )
+        return reverse("events_event", kwargs=dict(code=self.code))
 
     @property
     def ics_url(self):
-        return "webcal:" + reverse(
-            "events_event_ics",
-            kwargs=dict(
-                code=self.code
-            ),
+        return (
+            "webcal:/"
+            + APP_DOMAIN.replace("https://", "").replace("http://", "")
+            + reverse("events_event_ics", kwargs=dict(code=self.code))
         )
 
     @property
     def ics(self):
         description = markdownify(self.description)
-        description_text = re.sub('[ \t]+', ' ', strip_tags(description)).replace('\n ', '\n').strip()
+        description_text = (
+            re.sub("[ \t]+", " ", strip_tags(description)).replace("\n ", "\n").strip()
+        )
         with StringIO() as icsfile:
             icsfile.write("BEGIN:VCALENDAR\n")
             icsfile.write("VERSION:2.0\n")
@@ -70,7 +65,9 @@ class Event(models.Model):
             icsfile.write(f"SUMMARY:{self.name}\n")
             icsfile.write(f"DTSTART:{self.starts_at.strftime('%Y%m%dT%H%M%SZ')}\n")
             icsfile.write(f"DTEND:{self.ends_at.strftime('%Y%m%dT%H%M%SZ')}\n")
-            icsfile.write(f"UID:kthais-{self.starts_at.strftime('%Y%m%d')}-{self.code}\n")
+            icsfile.write(
+                f"UID:kthais-{self.starts_at.strftime('%Y%m%d')}-{self.code}\n"
+            )
             icsfile.write(f"DTSTAMP:{timezone.now().strftime('%Y%m%dT%H%M%SZ')}\n")
             icsfile.write(f"LOCATION:{self.location}\n")
             icsfile.write(f"DESCRIPTION:{description_text}\n")

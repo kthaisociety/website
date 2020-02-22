@@ -9,6 +9,17 @@
 {% block in_pre_body %}
     <div class="row">
         <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent p-0 pb-2">
+                    <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'app_home' %}">Home</a></li>
+                    <li class="breadcrumb-item">News</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ article.title }}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
             <div class="jumbotron p-0 p-lg-5 text-white rounded bg-dark article-header carousel-darken" style="background-image: url('{{ article.picture.url }}'); background-size: cover;">
                 <!-- Desktop version -->
                 <div class="col-md-8 px-0 article-title-lg d-none d-lg-block d-xl-block">

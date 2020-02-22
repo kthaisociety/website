@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "app",
     "user",
     "news",
+    "event",
     "cookielaw",
     "django_social_share",
 ]

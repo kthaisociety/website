@@ -69,7 +69,7 @@
                                     {% for article in articles %}
                                         {% with request.path|extract_slug as current_slug %}
                                             {% if article.slug != current_slug %}
-                                                <a class="link-unstyled" href="{% url "news_article" article.created_at.year article.created_at.month article.created_at.day article.slug %}">
+                                                <a class="link-unstyled" href="{{ article.url }}">
                                                     <div class="card mt-4">
                                                         <img class="card-img-top" src="{{ article.picture.url }}">
                                                         <div class="card-body">

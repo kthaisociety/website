@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "user",
     "news",
     "cookielaw",
+    "django_social_share",
 ]
 
 MIDDLEWARE = [

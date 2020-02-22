@@ -23,6 +23,42 @@ body {
     border-color: #3d5875;
 }
 
+.btn-twitter {
+    color: #FFFFFF;
+    background-color: #1da1f2;
+    border-color: #1da1f2;
+}
+
+.btn-facebook {
+    color: #FFFFFF;
+    background-color: #3b5998;
+    border-color: #3b5998;
+}
+
+.btn-linkedin {
+    color: #FFFFFF;
+    background-color: #007bb5;
+    border-color: #007bb5;
+}
+
+.btn-reddit {
+    color: #FFFFFF;
+    background-color: #ff4500;
+    border-color: #ff4500;
+}
+
+.btn-telegram {
+    color: #FFFFFF;
+    background-color: #0088cc;
+    border-color: #0088cc;
+}
+
+.btn-whatsapp {
+    color: #FFFFFF;
+    background-color: #25d366;
+    border-color: #25d366;
+}
+
 .nav-link {
     padding: .5rem 1rem 1rem 1rem;
 }

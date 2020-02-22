@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load app_tags %}
+{% load social_share %}
 {% load static %}
+{% load bootstrap4 %}
 
 {% block head_title %}{{ article.title }}{% endblock %}
 
@@ -31,6 +33,14 @@
 
 {% block in_in_body %}
     <div class="row">
+        <div class="col-md-12 mb-3 text-center text-lg-left">
+            {% post_to_facebook article.url %}
+            {% post_to_twitter article.title article.url %}
+            {% post_to_linkedin article.title article.url %}
+            {% post_to_reddit article.title article.url %}
+            {% post_to_telegram article.title article.url %}
+            {% post_to_whatsapp article.url %}
+        </div>
         <div class="col-md-12">
             {{ article.body|markdown_to_html|safe }}
         </div>

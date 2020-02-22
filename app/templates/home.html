@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load social_share %}
 {% load static %}
 
 {% block title_plain %}{{ app_name }}{% endblock %}
@@ -20,7 +21,7 @@
                                 <div class="text-left">
                                     <h1 class="carousel-title-lg">{{ article.title }}</h1>
                                     <p class="carousel-body-lg">{{ article.body_plaintext|truncatewords:50 }}</p>
-                                    <a class="link-unstyled" href="{% url "news_article" article.created_at.year article.created_at.month article.created_at.day article.slug %}">
+                                    <a class="link-unstyled" href="{{ article.url }}">
                                         <button type="button" class="btn btn-main btn-lg carousel-button-lg"><p class="mb-1">Read more</p></button>
                                     </a>
                                 </div>

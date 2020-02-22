@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load app_tags %}
+{% load static %}
+
+{% block head_title %}{{ article.title }}{% endblock %}
+
+{% block in_pre_body %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="jumbotron p-0 p-lg-5 text-white rounded bg-dark article-header carousel-darken" style="background-image: url('{{ article.picture.url }}'); background-size: cover;">
+                <!-- Desktop version -->
+                <div class="col-md-8 px-0 article-title-lg d-none d-lg-block d-xl-block">
+                    <h1 class="display-4">{{ article.title }}</h1>
+                    {% if article.subtitle %}
+                        <h3>{{ article.subtitle }}</h3>
+                    {% endif %}
+                    <p class="lead my-2">{{ article.created_at|date:"F j, Y" }}</p>
+                </div>
+                <!-- Mobile version -->
+                <div class="article-title px-0 text-center d-block d-lg-none d-xl-none">
+                    <h1 class="display-4">{{ article.title }}</h1>
+                    {% if article.subtitle %}
+                        <h3 class="display-4">{{ article.subtitle }}</h3>
+                    {% endif %}
+                    <p class="lead my-2">{{ article.created_at|date:"F j, Y" }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block in_in_body %}
+    <div class="row">
+        <div class="col-md-12">
+            {{ article.body|markdown_to_html|safe }}
+        </div>
+    </div>
+{% endblock %}

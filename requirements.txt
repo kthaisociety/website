@@ -1,6 +1,7 @@
 Django==2.2.4
 django-bootstrap4~=0.0.8
 django-cookie-law~=1.0.1
+django-markdownx~=3.0.1
 django-versatileimagefield~=1.10
 gunicorn~=19.9.0
 requests~=2.22.0

@@ -17,6 +17,12 @@ body {
     background-color: #3d5875;
 }
 
+.btn-main {
+    color: #FFFFFF;
+    background-color: #3d5875;
+    border-color: #3d5875;
+}
+
 .nav-link {
     padding: .5rem 1rem 1rem 1rem;
 }
@@ -53,12 +59,56 @@ body {
 }
 
 .carousel-body {
-    margin-bottom: 0;
+    margin-bottom: 2rem;
 }
 
 .carousel-body-lg {
     font-size: 18px;
+    margin-bottom: 2rem;
+}
+
+.carousel-button {
+    margin-bottom: 0;
+}
+
+.carousel-button-lg {
+    font-size: 18px;
     margin-bottom: 6rem;
+}
+
+.container-body {
+    margin-top: 76px;
+}
+
+.article-header {
+    height: 650px;
+}
+
+.article-title {
+    position: absolute;
+    bottom: 70px;
+}
+
+.article-title-lg {
+    position: absolute;
+    bottom: 70px;
+}
+
+.link-unstyled, .link-unstyled:visited, .link-unstyled:hover, .link-unstyled:active, .link-unstyled:focus, .link-unstyled:active:hover {
+    font-style: inherit;
+    color: inherit;
+    background-color: transparent;
+    font-size: inherit;
+    text-decoration: none;
+    font-variant: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    font-family: inherit;
+    border-radius: inherit;
+    border: inherit;
+    outline: inherit;
+    box-shadow: inherit;
+    vertical-align: inherit;
 }
 
 /*

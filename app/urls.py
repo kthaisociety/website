@@ -8,6 +8,7 @@ from app.settings import GH_KEY
 urlpatterns = [
     url("admin/", admin.site.urls),
     url(r"^user/", include("user.urls")),
+    url(r"^news/", include("news.urls")),
     url(r"^$", views.home, name="app_home"),
     url(r"^files/(?P<file_>.*)$", views.files, name="app_files"),
 ]

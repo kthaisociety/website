@@ -8,6 +8,7 @@ from django.utils.text import slugify
 from versatileimagefield.fields import VersatileImageField
 
 from news.enums import ArticleStatus
+from news.managers import ArticleManager
 
 
 class Article(models.Model):
@@ -23,6 +24,8 @@ class Article(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    objects = ArticleManager()
 
     @property
     def url(self):

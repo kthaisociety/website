@@ -5,7 +5,7 @@ from news.models import Article
 
 
 def article(request, year, month, day, slug):
-    article = Article.objects.filter(
+    article = Article.objects.published().filter(
         slug=slug,
         created_at__year=int(year),
         created_at__month=int(month),

@@ -45,7 +45,7 @@ class Event(models.Model):
     @property
     def ics_url(self):
         return (
-            "webcal:/"
+            "webcal://"
             + APP_DOMAIN.replace("https://", "").replace("http://", "")
             + reverse("events_event_ics", kwargs=dict(code=self.code))
         )

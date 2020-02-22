@@ -12,4 +12,4 @@ script:
   - black --check app --check user
   - pytest --cov=app --cov=user --cov-report xml
 after_script:
-  - ./cc-test-reporter after-build --exit-code $TRAVISpyte_TEST_RESULT
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

@@ -13,8 +13,11 @@ def get_substitutions_templates():
         "app_email_contact": getattr(settings, "APP_EMAIL_CONTACT", None),
         "app_email_webdev": getattr(settings, "APP_EMAIL_WEBDEV", None),
         "app_sn_facebook": getattr(settings, "APP_SN_FACEBOOK", None),
+        "app_sn_twitter": getattr(settings, "APP_SN_TWITTER", None),
         "app_sn_instagram": getattr(settings, "APP_SN_INSTAGRAM", None),
+        "app_sn_youtube": getattr(settings, "APP_SN_YOUTUBE", None),
         "app_sn_linkedin": getattr(settings, "APP_SN_LINKEDIN", None),
+        "app_sn_medium": getattr(settings, "APP_SN_MEDIUM", None),
         "app_sn_github": getattr(settings, "APP_SN_GITHUB", None),
         "app_legal_name": getattr(settings, "APP_LEGAL_NAME", None),
         "app_legal_organisation_name": getattr(

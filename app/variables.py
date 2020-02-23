@@ -11,8 +11,11 @@ APP_EMAIL_WEBDEV = "webdev@kthais.com"
 APP_EMAIL_NOREPLY = "noreply@kthais.com"
 
 APP_SN_FACEBOOK = "KTHAISociety"
+APP_SN_TWITTER = None
 APP_SN_INSTAGRAM = "kthaisociety"
+APP_SN_YOUTUBE = None
 APP_SN_LINKEDIN = "kth-ai-society"
+APP_SN_MEDIUM = None
 APP_SN_GITHUB = "kthaisociety"
 
 APP_EMAIL_PREFIX = "[" + APP_NAME + "] "

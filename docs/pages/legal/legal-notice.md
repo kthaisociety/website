@@ -1,6 +1,6 @@
 # Legal notice
 
-This Legal Notice is intended to regulate access and use and, in general, the relationship between this Website, accessible from the Internet address [kthack.com](https://kthack.com) (the "website") and its users.
+This Legal Notice is intended to regulate access and use and, in general, the relationship between this Website, accessible from the Internet address [kthais.com](https://kthais.com) (the "website") and its users.
 
 *Note: This Legal notice is based on [HackUPC's Legal notice](https://my.hackupc.com/legal_notice/) retrieved July 30, 2019.*
 
@@ -22,7 +22,7 @@ The duration of the service provided by the website is indefinite. Without preju
 
 ## 3.Links to third party services
 
-This Legal Notice refers only to this website and its content. Therefore, it does not apply to third party web pages accessible through links inserted in the KTHack website.
+This Legal Notice refers only to this website and its content. Therefore, it does not apply to third party web pages accessible through links inserted in the KTHAIS website.
 
 Under no circumstances shall KTHAIS be liable for the contents or services of other links made available on the website, nor can it guarantee the technical availability, quality, reliability, accuracy, breadth, accuracy, validity and legality of any material or information contained in any of said links.
 
@@ -75,4 +75,4 @@ If you do not agree with any updates, please contact KTHAIS.
 
 ---
 
-Last Reviewed: July 30, 2019.
+Last Reviewed: February 23, 2020.

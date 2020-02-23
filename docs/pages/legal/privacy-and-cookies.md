@@ -23,56 +23,29 @@ Here are the details of which personal data is collected when you register on th
 * Identifying data: Name, surname/s, city, country and a picture of yourself.
 * Contact data: Email and phone number.
 * Data on personal characteristics: Sex and birthday.
+* Academic and professional data: Current studies, university and year of graduation.
 * Other information: Account password and last connection.
 
 Here are the details of which personal data is collected when you register to an event as a Participant.
 
-* Data on personal characteristics: T-shirt size.
-* Academic and professional data: Resume, year of graduation, university, current studies and a link to professional profiles online (GitHub, LinkedIn, DevPost and website).
-* Economic and financial data: Email related to your PayPal account or Swish phone number.
-* Health data: Food allergies and intolerances.
-* Other information: Dietary preferences.
-
-Here are the details of which personal data is collected when you register to an event as a Volunteer.
-
-* Data on personal characteristics: T-shirt size.
-* Academic and professional data: Year of graduation, university, current studies, English level and a link to professional profiles online (GitHub, LinkedIn, DevPost and website).
-* Health data: Food allergies and intolerances.
-* Other information: Dietary preferences.
-
-Here are the details of which personal data is collected when you register to an event as an Organiser.
-
-* Data on personal characteristics: T-shirt size.
-* Business contact data: Corporate email.
-* Academic and professional data: Year of graduation, university, current studies and a link to professional profiles online (GitHub, LinkedIn, DevPost and website).
-* Economic and financial data: Bank account.
 * Health data: Food allergies and intolerances.
 * Other information: Dietary preferences.
 
 Here are the details of which personal data is collected when you register to an event as a Sponsor, Judge or Mentor.
 
-* Data on personal characteristics: T-shirt size.
 * Business contact data: Corporate email.
-* Academic and professional data: Current position and place of work and a link to professional profiles online (GitHub, LinkedIn, DevPost and website).
+* Academic and professional data: Current position and place of work.
 * Health data: Food allergies and intolerances.
 * Other information: Dietary preferences.
 
 Here are the details of which personal data is collected when you register to an event as "other atendees".
 
-* Data on personal characteristics: T-shirt size.
 * Health data: Food allergies and intolerances.
 * Other information: Dietary preferences.
 
-Here are the details of which personal data is collected during a KTHack cheating response procedure (clause 4 in the [Terms and Conditions](../terms-and-conditions)).
-
-* Identifying and contact data of the reporter: Name, email, phone and any other contact detail.
-* Identifying and contact data of the participant/team accused of cheating: Name, email, phone and any other contact detail.
-* Identifying data of other people suspected to be involved in the cheating.
-* Identifying data of other witnesses or people who suspect about the cheating.
-
 ## 3.What we process your personal data for
 
-When you subscribe to be the first to know when applications open, register as a Participant, register as a Volunteer, register as an Organiser, register as a Judge or Mentor or register as "other attendees".
+When you subscribe to be the first to know when applications open, register as a Participant, register as a Judge or Mentor or register as "other attendees".
 
 * KTHAIS shall process your personal data to handle and process requests received from you, whether for information, registration, participation in promotions or the rendering of services.
 * In addition, your personal data shall be processed to send, including via electronic media, commercial communications about activities, services or products offered by KTHAIS that are of a similar nature to those previously requested by you.
@@ -81,10 +54,6 @@ When you register as a Sponsor.
 
 * Your business contact data will be processed with the exclusive purpose of maintaining the commercial, contractual or collaborative relationships that KTHAIS has with the company, entity or organization you work for or collaborate with.
 * In addition, your business contact data shall be processed to send, including via electronic media, commercial communications about activities, services or products offered by KTHAIS that are of a similar nature to those that motivate the existing relationship between our entity and the company, entity or organization that you work for or collaborate with.
-
-When personal data is collected during a KTHAck cheating response procedure.
-
-* KTHAIS shall process your personal data to handle and process the request received from the reporter and carry out the investigation related to cheating.
 
 Regarding the images and videos of yourself.
 
@@ -96,7 +65,7 @@ Regarding food allergies and intolerances.
 
 ## 4.Why we may process your personal data
 
-When you subscribe to be the first to know when applications open, register as a Participant, register as a Volunteer, register as an Organizer, register as a Judge or a Mentor or register as "other attendees".
+When you subscribe to be the first to know when applications open, register as a Participant, register as a Judge or a Mentor or register as "other attendees".
 
 * KTHAIS is legally entitled to process personal data for handing and processing requests from you, as this is required for KTHAIS to meet its contractual obligations in respect of such requests.
 * With regard to commercial communications sent about activities, services or products offered by KTHAIS of a similar nature to those previously requested or acquired by you, the processing of your personal data responds to a legitimate interest of HACKERS AT UPC, expressly recognised by the data protection regulation, as well as by the regulations on services in the information society.
@@ -107,10 +76,6 @@ When you register as a Sponsor.
 * The processing of your business contact data relative to maintaining the relationship between KTHAIS and the company, entity or organization you work for or collaborate with responds to a legitimate interest of our organization, specifically recognized in the privacy regulation.
 * With regard to commercial communications sent about activities, services or products offered by KTHAIS of a similar nature to those that motivate the existing relationship between our entity and the company, entity or organization that you work for or collaborate with, the processing of your personal data responds to a legitimate interest of HACKERS AT UPC, expressly recognised by the data protection regulation, as well as by the regulations on services in the information society.
 * You may now or at any time in the future object to receive commercial communications about activities, services or products offered by KTHAIS by sending an email to [contact@kthais.com](mailto:contact@kthais.com).
-
-When personal data is collected during a KTHack cheating response procedure.
-
-* KTHAIS is legally entitled to process personal data to handle and process the request received from the reporter and carry out the investigation related to cheating, as this is required for KTHAIS to meet its contractual obligations in respect of such requests.
 
 Regarding the images and videos of yourself.
 
@@ -187,4 +152,4 @@ If you choose to disable cookies, we may not be able to offer you some of our se
 
 ---
 
-Last Reviewed: August 4, 2019.
+Last Reviewed: February 23, 2020.

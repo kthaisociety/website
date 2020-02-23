@@ -4,3 +4,24 @@
 {% load bootstrap4 %}
 
 {% block head_title %}{{ page.title }}{% endblock %}
+
+{% block in_body %}
+    <div class="container container-body py-5">
+        {% if page.content.2.value != 1 %}
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="">{{ page.title }}</h1>
+                </div>
+            </div>
+        {% endif %}
+        <div class="row">
+            <div class="col-md-12">
+                {% if page.content.1.value == 2 %}
+                    {{ page.content.0|markdown_to_html|safe }}
+                {% else %}
+                    {{ page.content.0|safe }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

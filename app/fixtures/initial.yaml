@@ -8,7 +8,7 @@
     title: Terms and Conditions
     category: 00ebd99c-26e9-42a0-a1f4-f1f9a0a9cb47
     code: terms-and-conditions
-    content_markdown_url: 'https://raw.githubusercontent.com/kthackse/website/master/docs/pages/legal/terms-and-conditions.md'
+    content_markdown_url: 'https://raw.githubusercontent.com/kthaisociety/website/master/docs/pages/legal/terms-and-conditions.md'
     status: 1
     created_at: 2020-01-01T00:00:00
     updated_at: 2020-01-01T00:00:00
@@ -17,7 +17,7 @@
     title: Privacy and Cookies Policy
     category: 00ebd99c-26e9-42a0-a1f4-f1f9a0a9cb47
     code: privacy-and-cookies
-    content_markdown_url: 'https://raw.githubusercontent.com/kthackse/website/master/docs/pages/legal/privacy-and-cookies.md'
+    content_markdown_url: 'https://raw.githubusercontent.com/kthaisociety/website/master/docs/pages/legal/privacy-and-cookies.md'
     status: 1
     created_at: 2020-01-01T00:00:00
     updated_at: 2020-01-01T00:00:00
@@ -26,7 +26,7 @@
     title: Legal Notice
     category: 00ebd99c-26e9-42a0-a1f4-f1f9a0a9cb47
     code: legal-notice
-    content_markdown_url: 'https://raw.githubusercontent.com/kthackse/website/master/docs/pages/legal/legal-notice.md'
+    content_markdown_url: 'https://raw.githubusercontent.com/kthaisociety/website/master/docs/pages/legal/legal-notice.md'
     status: 1
     created_at: 2020-01-01T00:00:00
     updated_at: 2020-01-01T00:00:00
@@ -40,7 +40,7 @@
     title: Style Guide
     category: ddce1be8-1dda-41aa-a964-93562a7cb299
     code: style-guide
-    content_markdown_url: 'https://raw.githubusercontent.com/kthackse/website/master/docs/pages/design/style-guide.md'
+    content_markdown_url: 'https://raw.githubusercontent.com/kthaisociety/website/master/docs/pages/design/style-guide.md'
     status: 1
     created_at: 2020-01-01T00:00:00
     updated_at: 2020-01-01T00:00:00

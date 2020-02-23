@@ -175,7 +175,7 @@ Should any of the provisions of this Agreement be adjudged invalid or unenforcea
 
 #### Survival
 
-Clauses 5, 6 and 9 shall survive termination or expiration of this Agreement for any reason. All other rights and obligations of the parties under this Agreement shall expire upon termination of this Agreement, except that all payment obligations accrued hereunder prior to termination or expiration shall survive such termination.
+Clauses 4, 5 and 8 shall survive termination or expiration of this Agreement for any reason. All other rights and obligations of the parties under this Agreement shall expire upon termination of this Agreement, except that all payment obligations accrued hereunder prior to termination or expiration shall survive such termination.
 
 #### Assignment
 

@@ -1,5 +1,7 @@
 from django import template
-from markdownx.utils import markdownify
+from django.utils.safestring import mark_safe
+
+from django_markup.markup import formatter
 
 from app import settings
 
@@ -12,8 +14,8 @@ def settings_value(name):
 
 
 @register.filter
-def markdown_to_html(text):
-    return markdownify(text)
+def apply_markup(text, filter_name):
+    return mark_safe(formatter(text, filter_name))
 
 
 @register.filter

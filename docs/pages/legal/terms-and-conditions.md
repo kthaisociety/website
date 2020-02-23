@@ -24,7 +24,7 @@ KTHAIS is an association that promotes technology, creativity and innovation and
 
 ### 2.Code of Conduct
 
-This is the Code of Conduct that we expect all KTHack participants to abide. This is a customised version of the Code of Conduct used at MLH member hackathons. If you have a suggestion for this code of conduct or a question about them, please let us know.
+This is the Code of Conduct that we expect all event participants to abide. This is a customised version of the Code of Conduct used at MLH member hackathons. If you have a suggestion for this code of conduct or a question about them, please let us know.
 
 #### TL;DR
 
@@ -52,11 +52,11 @@ We expect participants to follow these rules at all event venues, online interac
 
 If you feel uncomfortable or think there may be a potential violation of the Code of Conduct, please report it immediately using one of the following methods. All reporters have the right to remain anonymous.
 
-By sending us an email to [contact@kthack.com](mailto:contact@kthack.com), your report will be received by our organisers. If you want to remain anonymous please send us an email through an anonymous email service or create a temporary email account.
+By sending us an email to [contact@kthais.com](mailto:contact@kthais.com), your report will be received by our organisers. If you want to remain anonymous please send us an email through an anonymous email service or create a temporary email account.
 
 If you need to contact a team member directly, please contact one of our organisers below.
 
-* Filip Matz, @Filip in Slack, [filip@kthack.com](mailto:filip@kthack.com).
+* Filip Matz, @Filip in Slack, [filip@kthais.com](mailto:filip@kthais.com).
 
 KTHAIS reserves the right to revise, make exceptions to, or otherwise amend these policies in whole or in part.
 
@@ -75,7 +75,7 @@ Accusations of cheating may include but are not limited to the following.
 
 #### Accusation
 
-If you suspect cheating, please get in touch with the organisers of the event. If you are still at the event, please talk to an event organiser. If it is after the event, please email [contact@kthack.com](mailto:contact@kthack.com).
+If you suspect cheating, please get in touch with the organisers of the event. If you are still at the event, please talk to an event organiser. If it is after the event, please email [contact@kthais.com](mailto:contact@kthais.com).
 
 #### Document the report
 
@@ -143,7 +143,7 @@ As it is explained in the [Privacy policy](../privacy-and-cookies), one of the p
 
 #### Indemnification
 
-You agree to indemnify, defend and hold KTHAIS, its members (hosts and volunteers) and other personalities that have a role in this event (sponsors, judges, mentors) harmless from and against any and all costs, claims, demands, liabilities, expenses, losses, damages and attorney fees arising from any claims and lawsuits or proceeding for libel, slander, copyright, and trademark violation as well as all other claims resulting from (i) the participation in the event KTHack or (ii) otherwise arising from a relationship with KTHAIS. You also agree to indemnify KTHAIS for any legal fees incurred by KTHAIS, acting reasonably, in investigating or enforcing its rights under this Agreement.
+You agree to indemnify, defend and hold KTHAIS, its members (hosts and volunteers) and other personalities that have a role in this event (sponsors, judges, mentors) harmless from and against any and all costs, claims, demands, liabilities, expenses, losses, damages and attorney fees arising from any claims and lawsuits or proceeding for libel, slander, copyright, and trademark violation as well as all other claims resulting from (i) the participation in the event or (ii) otherwise arising from a relationship with KTHAIS. You also agree to indemnify KTHAIS for any legal fees incurred by KTHAIS, acting reasonably, in investigating or enforcing its rights under this Agreement.
 
 #### Limitation of liability
 

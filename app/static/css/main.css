@@ -153,6 +153,31 @@ body {
     vertical-align: inherit;
 }
 
+.link-main, .link-main:visited, .link-main:hover, .link-main:active, .link-main:focus, .link-main:active:hover {
+    font-style: inherit;
+    color: inherit;
+    background-color: transparent;
+    font-size: inherit;
+    text-decoration: none;
+    font-variant: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    font-family: inherit;
+    border-radius: inherit;
+    border: inherit;
+    outline: inherit;
+    box-shadow: inherit;
+    vertical-align: inherit;
+}
+
+.link-main {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.link-main:visited, .link-main:hover, .link-main:active, .link-main:focus, .link-main:active:hover {
+    color: rgba(255, 255, 255, 0.75);
+}
+
 .media-body-event {
     margin-top: -4px;
 }

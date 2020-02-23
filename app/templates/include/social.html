@@ -1,8 +1,49 @@
-{% load social_share %}
-
-{% post_to_facebook url %}
-{% post_to_twitter title url %}
-{% post_to_linkedin title url %}
-{% post_to_reddit title url %}
-{% post_to_telegram title url %}
-{% post_to_whatsapp url %}
+{% if app_sn_facebook %}
+    <li class="nav-item d-inline-flex">
+        <a class="nav-link d-inline-flex" href="https://www.facebook.com/{{ app_sn_facebook }}" target="_blank">
+            <i class="fab fa-facebook"></i>
+        </a>
+    </li>
+{% endif %}
+{% if app_sn_twitter %}
+    <li class="nav-item d-inline-flex">
+        <a class="nav-link d-inline-flex" href="https://twitter.com/{{ app_sn_twitter }}" target="_blank">
+            <i class="fab fa-twitter"></i>
+        </a>
+    </li>
+{% endif %}
+{% if app_sn_instagram %}
+    <li class="nav-item d-inline-flex">
+        <a class="nav-link d-inline-flex" href="https://www.instagram.com/{{ app_sn_instagram }}" target="_blank">
+            <i class="fab fa-instagram"></i>
+        </a>
+    </li>
+{% endif %}
+{% if app_sn_youtube %}
+    <li class="nav-item d-inline-flex">
+        <a class="nav-link d-inline-flex" href="https://www.youtube.com/user/{{ app_sn_youtube }}" target="_blank">
+            <i class="fab fa-youtube"></i>
+        </a>
+    </li>
+{% endif %}
+{% if app_sn_linkedin %}
+    <li class="nav-item d-inline-flex">
+        <a class="nav-link d-inline-flex" href="https://www.linkedin.com/company/{{ app_sn_linkedin }}" target="_blank">
+            <i class="fab fa-linkedin"></i>
+        </a>
+    </li>
+{% endif %}
+{% if app_sn_medium %}
+    <li class="nav-item d-inline-flex">
+        <a class="nav-link d-inline-flex" href="https://medium.com/@{{ app_sn_medium }}" target="_blank">
+            <i class="fab fa-medium"></i>
+        </a>
+    </li>
+{% endif %}
+{% if app_sn_github %}
+    <li class="nav-item d-inline-flex">
+        <a class="nav-link d-inline-flex" href="https://github.com/{{ app_sn_github }}" target="_blank">
+            <i class="fab fa-github"></i>
+        </a>
+    </li>
+{% endif %}

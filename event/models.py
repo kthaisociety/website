@@ -2,6 +2,8 @@ import re
 import uuid
 from io import StringIO
 
+from app.variables import APP_NAME
+
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
@@ -54,7 +56,7 @@ class Event(models.Model):
         with StringIO() as icsfile:
             icsfile.write("BEGIN:VCALENDAR\n")
             icsfile.write("VERSION:2.0\n")
-            icsfile.write(f"PRODID:-//{reverse('app_home')}//KTH AI Society\n")
+            icsfile.write(f"PRODID:-//{reverse('app_home')}//{APP_NAME}\n")
             icsfile.write("CALSCALE:GREGORIAN\n")
             icsfile.write("BEGIN:VEVENT\n")
             icsfile.write(f"SUMMARY:{self.name}\n")

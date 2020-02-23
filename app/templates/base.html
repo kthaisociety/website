@@ -24,7 +24,7 @@
         <title>{% block title_plain %}{% block title %}{% block head_title %}{% endblock %} | {% endblock %}{{ app_name }}{% endblock %}</title>
     </head>
     <body>
-        {% block navbar %}
+        {% block header %}
             <nav class="navbar navbar-expand-lg navbar-dark bg-main fixed-top pt-3 pb-3">
                 <div class="container">
                     <a class="navbar-brand" href="{% url 'app_home' %}">
@@ -121,6 +121,40 @@
             {% endblock %}
             {% block post_body %}
             {% endblock %}
+        {% endblock %}
+        {% block footer %}
+            <nav class="navbar navbar-expand-lg navbar-dark bg-main pt-3 pb-3">
+                <!-- Desktop -->
+                <div class="container text-white d-none d-lg-flex">
+                    <ul class="navbar-nav mr-auto mb-2">
+                        <li class="nav-item">
+                            <small class="mb-0">Need help? Ping us at <a href="mailto:{{ app_email_contact }}" class="link-main">{{ app_email_contact }}</a>.</small>
+                            <br>
+                            <small><a href="{% url 'page_page' 'legal' 'legal-notice' %}" class="link-main">Legal notice</a></small>
+                            <small class="ml-2"><a href="{% url 'page_page' 'legal' 'terms-and-conditions' %}" class="link-main">Terms and Conditions</a></small>
+                            <small class="ml-2"><a href="{% url 'page_page' 'legal' 'privacy-and-cookies' %}" class="link-main">Privacy and Cookies</a></small>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ml-auto">
+                        {% include "include/social.html" %}
+                    </ul>
+                </div>
+                <!-- Mobile -->
+                <div class="container text-white d-block d-lg-none">
+                    <ul class="navbar-nav text-center mb-2">
+                        <li class="nav-item">
+                            <small class="mb-0">Need help? Ping us at <a href="mailto:{{ app_email_contact }}" class="link-main">{{ app_email_contact }}</a>.</small>
+                            <br>
+                            <small><a href="{% url 'page_page' 'legal' 'legal-notice' %}" class="link-main">Legal notice</a></small>
+                            <small class="ml-2"><a href="{% url 'page_page' 'legal' 'terms-and-conditions' %}" class="link-main">Terms and Conditions</a></small>
+                            <small class="ml-2"><a href="{% url 'page_page' 'legal' 'privacy-and-cookies' %}" class="link-main">Privacy and Cookies</a></small>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ml-auto d-block text-center">
+                        {% include "include/social.html" %}
+                    </ul>
+                </div>
+            </nav>
         {% endblock %}
 
         <script src="{% static 'js/jquery.js' %}"></script>

@@ -41,7 +41,7 @@
     {% if event.description %}
         <div class="row">
             <div class="col-md-12 mb-3">
-                {{ event.description|markdown_to_html|safe }}
+                {{ event.description|apply_markup:"markdown" }}
             </div>
         </div>
         {% endif %}

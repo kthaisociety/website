@@ -14,3 +14,7 @@ def article(request, year, month, day, slug):
     if article:
         return render(request, "article.html", {"article": article})
     return HttpResponseNotFound()
+
+
+def articles(request):
+    return HttpResponseNotFound()

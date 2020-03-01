@@ -11,6 +11,10 @@ def event(request, code):
     return HttpResponseNotFound()
 
 
+def events(request):
+    return HttpResponseNotFound()
+
+
 def event_ics(request, code):
     event = Event.objects.published().filter(code=code).first()
     if event:

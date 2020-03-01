@@ -67,10 +67,60 @@
 
 {% block in_body %}
     <div class="container container-body">
-        <div class="row">
-            <div class="col-md-12">
-                HELLO
+        {% if articles|length > 2 or articles|length > 1 and events %}
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <div class="card flex-md-row mb-4 shadow-sm h-md-250">
+                        <div class="card-body d-flex flex-column align-items-start">
+                            <strong class="d-inline-block mb-2 text-orange"><a class="link-unstyled" href="{% url "news_articles" %}">Article</a></strong>
+                            <h3 class="pb-1 line-max-2">
+                                <a class="text-dark link-unstyled" href="{% url "news_article" articles.1.created_at.year articles.1.created_at.month articles.1.created_at.day articles.1.slug %}">{{ articles.1.title }}</a>
+                            </h3>
+                        <div class="mb-1 text-muted">{{ articles.1.created_at|date:"M j" }}</div>
+                            <p class="card-text mb-auto">{{ articles.1.description_short }}</p>
+                            <a class="link-colour" href="{% url "news_article" articles.1.created_at.year articles.1.created_at.month articles.1.created_at.day articles.1.slug %}">Read more</a>
+                        </div>
+                        <a href="{% url "news_article" articles.1.created_at.year articles.1.created_at.month articles.1.created_at.day articles.1.slug %}">
+                            <img class="card-img-right flex-auto d-none d-lg-block" style="width: 200px; height: 250px;" src="{{ articles.1.picture.crop.200x250 }}">
+                        </a>
+                    </div>
+                </div>
+                {% if events %}
+                    <div class="col-md-6">
+                        <div class="card flex-md-row mb-4 shadow-sm h-md-250">
+                            <div class="card-body d-flex flex-column align-items-start">
+                                <strong class="d-inline-block mb-2 text-orange"><a class="link-unstyled" href="{% url "events_events" %}">Event</a></strong>
+                                <h3 class="pb-1 line-max-2">
+                                    <a class="text-dark link-unstyled" href="{{ events.0.url }}">{{ events.0.name }}</a>
+                                </h3>
+                            <div class="mb-1 text-muted">{{ events.0.starts_at|date:"M j" }}</div>
+                                <p class="card-text mb-auto">{{ events.0.description_short }}</p>
+                                <a class="link-colour" href="{{ events.0.url }}">Check it out</a>
+                            </div>
+                            <a href="{{ events.0.url }}">
+                                <img class="card-img-right flex-auto d-none d-lg-block" style="width: 200px; height: 250px;" src="{{ events.0.picture.crop.200x250 }}">
+                            </a>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-md-6">
+                        <div class="card flex-md-row mb-4 shadow-sm h-md-250">
+                            <div class="card-body d-flex flex-column align-items-start">
+                                <strong class="d-inline-block mb-2 text-orange"><a class="link-unstyled" href="{% url "news_articles" %}">Article</a></strong>
+                                <h3 class="pb-1 line-max-2">
+                                    <a class="text-dark link-unstyled" href="{% url "news_article" articles.2.created_at.year articles.2.created_at.month articles.2.created_at.day articles.2.slug %}">{{ articles.2.title }}</a>
+                                </h3>
+                            <div class="mb-1 text-muted">{{ articles.2.created_at|date:"M j" }}</div>
+                                <p class="card-text mb-auto">{{ articles.2.description_short }}</p>
+                                <a class="link-colour" href="{% url "news_article" articles.2.created_at.year articles.2.created_at.month articles.2.created_at.day articles.2.slug %}">Read more</a>
+                            </div>
+                            <a href="{% url "news_article" articles.2.created_at.year articles.2.created_at.month articles.2.created_at.day articles.2.slug %}">
+                                <img class="card-img-right flex-auto d-none d-lg-block" style="width: 200px; height: 250px;" src="{{ articles.2.picture.crop.200x250 }}">
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
-        </div>
+        {% endif %}
     </div>
 {% endblock %}

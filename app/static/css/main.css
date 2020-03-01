@@ -58,6 +58,10 @@ h1, h2, h3, h4, h5, h6 {
     background-color: #263642;
 }
 
+.text-orange {
+    color: #EC8C24;
+}
+
 .btn-main {
     color: #FFFFFF;
     background-color: #3d5875;
@@ -205,6 +209,18 @@ h1, h2, h3, h4, h5, h6 {
     bottom: 70px;
 }
 
+.line-max-2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.card-text {
+    line-height: 1.2;
+}
+
 .link-unstyled, .link-unstyled:visited, .link-unstyled:hover, .link-unstyled:active, .link-unstyled:focus, .link-unstyled:active:hover {
     font-style: inherit;
     color: inherit;
@@ -245,6 +261,16 @@ h1, h2, h3, h4, h5, h6 {
 
 .link-main:visited, .link-main:hover, .link-main:active, .link-main:focus, .link-main:active:hover {
     color: rgba(255, 255, 255, 0.75);
+}
+
+.link-colour {
+    color: #73A2C6;
+    text-decoration: none;
+}
+
+.link-colour:hover, .link-colour:active, .link-colour:focus, .link-colour:active:hover {
+    color: #3d5875;
+    text-decoration: none;
 }
 
 .media-body-event {

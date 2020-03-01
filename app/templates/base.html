@@ -39,9 +39,9 @@
                             <li class="nav-item">
                                 {% if request.user.is_authenticated %}
                                     {% if request.user.email_verified %}
-                                        <small class="ml-2"><a class="link-main" href="">Admin</a></small>
+                                        <small class="ml-2"><a class="link-main" href="{% url 'admin:index' %}">Admin</a></small>
                                     {% endif %}
-                                    <small class="ml-2"><a class="link-main" href="{% url 'admin:index' %}">Settings</a></small>
+                                    <small class="ml-2"><a class="link-main" href="">Settings</a></small>
                                     <small class="ml-2"><a class="link-main" href="">Log out</a></small>
                                 {% else %}
                                     <small class="ml-2"><a class="link-main" href="">Log in</a></small>
@@ -95,10 +95,10 @@
                                                 <div class="col-md-12">
                                                     <h4 class="font-italic mb-4">Future events</h4>
                                                     {% for event in events %}
-                                                        {% if event.code != current_slug %}
+                                                        {% if event.code != current_slug and forloop.counter0 < 3 %}
                                                             <a class="link-unstyled" href="{{ event.url }}">
                                                                 <div class="media">
-                                                                    <img class="mr-2 rounded" style="width: 32px; height: 32px;" src="{{ event.picture.url }}" data-holder-rendered="true">
+                                                                    <img class="mr-2 rounded" style="width: 32px; height: 32px;" src="{{ event.picture.crop.100x100 }}" data-holder-rendered="true">
                                                                     <p class="media-body media-body-event pb-3 mb-0 pt-0 small lh-125">
                                                                         <strong class="d-block">{{ event.name }}</strong>
                                                                         {{ event.starts_at|date:"F j, Y" }} / {{ event.location }}
@@ -118,10 +118,10 @@
                                                 <div class="col-md-12">
                                                     <h4 class="font-italic mb-4">Latest news</h4>
                                                     {% for article in articles %}
-                                                        {% if article.slug != current_slug %}
+                                                        {% if article.slug != current_slug and forloop.counter0 < 3 %}
                                                             <a class="link-unstyled" href="{{ article.url }}">
                                                                 <div class="card mt-4">
-                                                                    <img class="card-img-top" src="{{ article.picture.url }}">
+                                                                    <img class="card-img-top" src="{{ article.picture.crop.250x150 }}">
                                                                     <div class="card-body">
                                                                         <h5>{{ article.title }}</h5>
                                                                         <p class="card-text">{{ article.body_plaintext|truncatewords:10 }}</p>

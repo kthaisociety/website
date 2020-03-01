@@ -25,27 +25,50 @@
     </head>
     <body>
         {% block header %}
-            <nav class="navbar navbar-expand-lg navbar-dark bg-main fixed-top pt-3 pb-3">
+            {% block in_pre_header %}
+                <nav class="navbar-top navbar navbar-expand-lg navbar-dark bg-black pt-2 pb-2">
+                    <div class="container">
+                        <p class="navbar-nav mr-auto">
+                            {% if request.user.is_authenticated %}
+                                Welcome, {{ request.user.name }}!
+                            {% else %}
+                                Welcome to KTH AI Society website!
+                            {% endif %}
+                        </p>
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                {% if request.user.is_authenticated %}
+                                    {% if request.user.email_verified %}
+                                        <small class="ml-2"><a class="link-main" href="">Admin</a></small>
+                                    {% endif %}
+                                    <small class="ml-2"><a class="link-main" href="{% url 'admin:index' %}">Settings</a></small>
+                                    <small class="ml-2"><a class="link-main" href="">Log out</a></small>
+                                {% else %}
+                                    <small class="ml-2"><a class="link-main" href="">Log in</a></small>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            {% endblock %}
+            <nav class="navbar navbar-expand-lg navbar-dark bg-main pt-3 pb-3">
                 <div class="container">
                     <a class="navbar-brand" href="{% url 'app_home' %}">
-                        <img src="{% static 'img/logo_white.png' %}" width="128" height="40" alt="">
+                        <img src="{% static 'img/logo_text_white.png' %}" width="128" height="24" alt="">
                     </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ml-auto">
+                        <ul class="navbar-nav ml-2 mr-auto">
                             <li class="nav-item {% if request.resolver_match.url_name == "app_home" %}active{% endif %}">
                                 <a class="nav-link" href="{% url 'app_home' %}">Home</a>
                             </li>
-                            {% if request.user.is_authenticated %}
-                                {% if request.user.email_verified %}
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
-                                    </li>
-                                {% endif %}
-                            {% endif %}
                         </ul>
+                        <form class="form-inline">
+                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
+                        </form>
                     </div>
                 </div>
             </nav>
@@ -123,7 +146,7 @@
             {% endblock %}
         {% endblock %}
         {% block footer %}
-            <nav class="navbar navbar-expand-lg navbar-dark bg-main pt-3 pb-3">
+            <nav class="footer navbar navbar-expand-lg navbar-dark bg-main pt-3 pb-3">
                 <!-- Desktop -->
                 <div class="container text-white d-none d-lg-flex">
                     <ul class="navbar-nav mr-auto mb-2">

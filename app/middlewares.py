@@ -7,11 +7,16 @@ class MaintenanceModeMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        if MAINTENANCE_MODE and not request.user.is_authenticated and not request.user.is_staff and not any(
-            [
-                request.path.startswith(p)
-                for p in ["/files/", "/admin/", "/page/legal/"]
-            ]
+        if (
+            MAINTENANCE_MODE
+            and not request.user.is_authenticated
+            and not request.user.is_staff
+            and not any(
+                [
+                    request.path.startswith(p)
+                    for p in ["/files/", "/admin/", "/page/legal/"]
+                ]
+            )
         ):
             return maintenance(request)
         return self.get_response(request)

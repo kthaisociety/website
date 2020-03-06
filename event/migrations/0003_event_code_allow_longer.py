@@ -5,14 +5,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('event', '0002_event_description_remove_limit'),
-    ]
+    dependencies = [("event", "0002_event_description_remove_limit")]
 
     operations = [
         migrations.AlterField(
-            model_name='event',
-            name='code',
+            model_name="event",
+            name="code",
             field=models.CharField(blank=True, max_length=255, unique=True),
-        ),
+        )
     ]

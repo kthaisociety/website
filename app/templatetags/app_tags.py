@@ -26,4 +26,3 @@ def extract_app(url):
 @register.filter
 def extract_slug(url):
     return url.split("/")[-1]
-

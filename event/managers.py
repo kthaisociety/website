@@ -12,4 +12,10 @@ class EventManager(models.Manager):
         return super().get_queryset().filter(starts_at__date__gte=timezone.now().date())
 
     def published_future(self):
-        return super().get_queryset().filter(status=EventStatus.PUBLISHED, starts_at__date__gte=timezone.now().date())
+        return (
+            super()
+            .get_queryset()
+            .filter(
+                status=EventStatus.PUBLISHED, starts_at__date__gte=timezone.now().date()
+            )
+        )

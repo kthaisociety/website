@@ -9,7 +9,7 @@ before_script:
   - ./cc-test-reporter before-build
   - python manage.py collectstatic
 script:
-  - black --check app --check user
+  - black --check app --check event --check news --check page --check user
   - pytest --cov=app --cov=user --cov-report xml
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT

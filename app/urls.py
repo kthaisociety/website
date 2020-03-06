@@ -1,12 +1,16 @@
 from django.conf.urls import url
 from django.contrib import admin
+from django.contrib.auth import logout
 from django.urls import include
 
 from app import views
-from app.settings import GH_KEY
+from app.settings import GH_KEY, LOGOUT_REDIRECT_URL
 
 urlpatterns = [
     url("admin/", admin.site.urls),
+    url('', include('social_django.urls', namespace='social')),
+    url('logout/', logout, {'next_page': LOGOUT_REDIRECT_URL},
+    name='logout'),
     url(r"^user/", include("user.urls")),
     url(r"^news/", include("news.urls")),
     url(r"^events/", include("event.urls")),

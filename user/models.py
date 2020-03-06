@@ -36,14 +36,26 @@ class UserManager(BaseUserManager):
     def create_user(
         self,
         email,
-        name,
-        surname,
+        name=None,
+        surname=None,
         type=UserType.PARTICIPANT.value,
         password=None,
         is_admin=False,
     ):
         if not email:
             raise ValueError("A user must have an email")
+
+        if not name and not surname:
+            name = email.split("@")[0].upper()
+            if "." in name:
+                name = name.split(".")[0]
+                surname = "".join(name.split(".")[1:])
+            elif "_" in name:
+                name = name.split("_")[0]
+                surname = "".join(name.split("_")[1:])
+            elif "-" in name:
+                name = name.split(".")[0]
+                surname = "".join(name.split(".")[1:])
 
         user = self.model(
             email=email, name=name, surname=surname, type=type, is_admin=is_admin
@@ -65,7 +77,7 @@ class User(AbstractBaseUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(verbose_name="First name", max_length=255)
-    surname = models.CharField(verbose_name="Last name", max_length=255)
+    surname = models.CharField(verbose_name="Last name", max_length=255, blank=True, null=True)
 
     email_verified = models.BooleanField(default=False)
     verify_key = models.CharField(max_length=127, blank=True, null=True)
@@ -119,7 +131,9 @@ class User(AbstractBaseUser):
 
     @property
     def full_name(self):
-        return self.name + " " + self.surname
+        if self.surname:
+            return self.name + " " + self.surname
+        return self.name
 
     def __str__(self):
         return self.full_name

@@ -191,3 +191,22 @@ CORS_ORIGIN_WHITELIST = []
 for host in ALLOWED_HOSTS:
     list.append(CORS_ORIGIN_WHITELIST, "http://" + host)
     list.append(CORS_ORIGIN_WHITELIST, "https://" + host)
+
+# Google authentication
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get("GO_KEY", None)
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get("GO_SECRET", None)
+LOGIN_URL = "/auth/login/google-oauth2/"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+SOCIAL_AUTH_URL_NAMESPACE = "social"
+
+if SOCIAL_AUTH_GOOGLE_OAUTH2_KEY and SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET:
+    INSTALLED_APPS += ["social_django"]
+    TEMPLATES[0]["OPTIONS"]["context_processors"] + [
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect']
+    AUTHENTICATION_BACKENDS = (
+        'social_core.backends.google.GoogleOAuth2',
+        'django.contrib.auth.backends.ModelBackend',
+    )

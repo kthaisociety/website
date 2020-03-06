@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load social_share %}
+{% load static %}
+
+{% block head_title %}Coming soon{% endblock %}
+
+{% block page %}
+    <style>
+        body {
+            background-color: #3d5875;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            font-family: 'Futura', sans-serif;
+        }
+        .home {
+            color: #fff;
+        }
+        .home h1 {
+            font-size: 48px;
+            letter-spacing: 1rem;
+            margin-bottom: 5rem;
+            font-weight: 800;
+        }
+        .home p {
+            font-size: 20px;
+        }
+        .home .logo {
+            max-width: 200px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 1rem;
+        }
+        .centered {
+            padding-top: 4em;
+            padding-bottom: 4em;
+            top: 50%;
+            transform: translateY(-50%);
+            position: absolute;
+            width: 100%;
+        }
+    </style>
+    <header class="centered home">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3">
+                </div>
+                <div class="col-sm-6" style="text-align: center;">
+                    <a href=""><img src="{% static 'img/logo_text_white.png' %}" class="logo" alt="KTH AI Society logo"></a>
+                </div>
+                <div class="col-sm-3">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                </div>
+                <div class="col-sm-6">
+                    <p class="white paragraph text-center">COMING SOON</p>
+                </div>
+            </div>
+        </div>
+    </header>
+    {% block footer %}
+        <nav class="footer navbar navbar-expand-lg navbar-dark bg-main pt-3 pb-3">
+            <!-- Desktop -->
+            <div class="container-fluid text-white d-none d-lg-flex">
+                <ul class="navbar-nav mr-auto mb-2">
+                    <li class="nav-item">
+                        <small class="mb-0">Need help? Ping us at <a href="mailto:{{ app_email_contact }}" class="link-main">{{ app_email_contact }}</a>.</small>
+                        <br>
+                        <small><a href="{% url 'page_page' 'legal' 'legal-notice' %}" class="link-main">Legal notice</a></small>
+                        <small class="ml-2"><a href="{% url 'page_page' 'legal' 'terms-and-conditions' %}" class="link-main">Terms and Conditions</a></small>
+                        <small class="ml-2"><a href="{% url 'page_page' 'legal' 'privacy-and-cookies' %}" class="link-main">Privacy and Cookies</a></small>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    {% include "include/social.html" %}
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="container text-white d-block d-lg-none">
+                <ul class="navbar-nav text-center mb-2">
+                    <li class="nav-item">
+                        <small class="mb-0">Need help? Ping us at <a href="mailto:{{ app_email_contact }}" class="link-main">{{ app_email_contact }}</a>.</small>
+                        <br>
+                        <small><a href="{% url 'page_page' 'legal' 'legal-notice' %}" class="link-main">Legal notice</a></small>
+                        <small class="ml-2"><a href="{% url 'page_page' 'legal' 'terms-and-conditions' %}" class="link-main">Terms and Conditions</a></small>
+                        <small class="ml-2"><a href="{% url 'page_page' 'legal' 'privacy-and-cookies' %}" class="link-main">Privacy and Cookies</a></small>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ml-auto d-block text-center">
+                    {% include "include/social.html" %}
+                </ul>
+            </div>
+        </nav>
+    {% endblock %}
+{% endblock %}

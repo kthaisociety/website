@@ -123,4 +123,13 @@
             </div>
         {% endif %}
     </div>
+    <div class="jumbotron jumbotron-fluid white">
+        <div class="container">
+            <h1 class="display-4">{{ articles.0.title }}</h1>
+            <p class="lead">{{ articles.0.lead }}</p>
+            <a class="link-unstyled" href="{% url "news_article" articles.0.created_at.year articles.0.created_at.month articles.0.created_at.day articles.0.slug %}">
+                <button type="button" class="btn btn-main mb-2">Read more</button>
+            </a>
+        </div>
+    </div>
 {% endblock %}

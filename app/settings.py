@@ -24,6 +24,9 @@ DEBUG = os.environ.get("PROD_MODE", "false").lower() == "false"
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0"]
 
+# MAINTENANCE MODE
+MAINTENANCE_MODE = os.environ.get("MAINTENANCE_MODE", "false").lower() == "true"
+
 
 # Application definition
 
@@ -53,6 +56,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "app.middlewares.MaintenanceModeMiddleware",
 ]
 
 ROOT_URLCONF = "app.urls"

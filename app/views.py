@@ -26,6 +26,10 @@ def home(request):
     return render(request, "home.html", current_data)
 
 
+def maintenance(request):
+    return render(request, "maintenance.html", {})
+
+
 def files(request, file_):
     path, file_name = os.path.split(file_)
     if request.user.is_authenticated:

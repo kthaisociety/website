@@ -1,4 +1,5 @@
 {% load static %}
+{% load app_tags %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,14 +11,10 @@
         <link rel="icon" href="{% static 'favicon.png' %}" type="image/png">
         <meta property="og:image" content="https://{{ app_domain }}{% static "img/preview.png" %}" />
         <!-- TODO: Add social network URLs and information -->
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
         <link rel="stylesheet" href="{% static 'css/fontawesome.css' %}">
         <link rel="stylesheet" href="{% static 'css/main.css' %}">
-
-        <script src="{% static 'js/jquery.js' %}"></script>
-        <script src="{% static 'js/apexcharts.js' %}"></script>
-        <script src="{% static "cookielaw/js/cookielaw.js"%}" type="text/javascript"></script>
 
         {% include "include/google.html" %}
 
@@ -27,6 +24,172 @@
         <title>{% block title_plain %}{% block title %}{% block head_title %}{% endblock %} | {% endblock %}{{ app_name }}{% endblock %}</title>
     </head>
     <body>
-        {% block pre_body %}{% endblock %}
+        {% block page %}
+            {% block header %}
+                {% block in_pre_header %}
+                    {% if not maintenance_mode %}
+                        <nav class="navbar-top navbar navbar-expand-lg navbar-dark bg-black pt-2 pb-2">
+                            <div class="container">
+                                <p class="navbar-nav mr-auto">
+                                    {% if request.user.is_authenticated %}
+                                        Welcome, {{ request.user.name }}!
+                                    {% else %}
+                                        Welcome to KTH AI Society website!
+                                    {% endif %}
+                                </p>
+                                <ul class="navbar-nav">
+                                    <li class="nav-item">
+                                        {% if request.user.is_authenticated %}
+                                            {% if request.user.email_verified %}
+                                                <small class="ml-2"><a class="link-main" href="{% url 'admin:index' %}">Admin</a></small>
+                                            {% endif %}
+                                            <small class="ml-2"><a class="link-main" href="">Settings</a></small>
+                                            <small class="ml-2"><a class="link-main" href="">Log out</a></small>
+                                        {% else %}
+                                            <small class="ml-2"><a class="link-main" href="">Log in</a></small>
+                                        {% endif %}
+                                    </li>
+                                </ul>
+                            </div>
+                        </nav>
+                    {% endif %}
+                {% endblock %}
+                <nav class="navbar navbar-expand-lg navbar-dark bg-main pt-3 pb-3">
+                    <div class="container">
+                        <a class="navbar-brand" href="{% url 'app_home' %}">
+                            <img src="{% static 'img/logo_text_white.png' %}" width="128" height="24" alt="">
+                        </a>
+                        {% if not maintenance_mode %}
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <ul class="navbar-nav ml-2 mr-auto">
+                                    <li class="nav-item {% if request.resolver_match.url_name == "app_home" %}active{% endif %}">
+                                        <a class="nav-link" href="{% url 'app_home' %}">Home</a>
+                                    </li>
+                                </ul>
+                                <form class="form-inline">
+                                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
+                                </form>
+                            </div>
+                        {% endif %}
+                    </div>
+                </nav>
+            {% endblock %}
+            {% block body %}
+                {% block pre_body %}
+                {% endblock %}
+                {% block in_body %}
+                    <div class="container container-body py-5">
+                        {% block in_pre_body %}
+                        {% endblock %}
+                        <div class="row">
+                            <div class="col-md-8">
+                                {% block in_in_body %}
+                                {% endblock %}
+                            </div>
+                            <div class="col-md-4 d-none d-md-block pl-4">
+                                {% block sidebar %}
+                                    {% with current_app=request.path|extract_app current_slug=request.path|extract_slug %}
+                                        {% if events %}
+                                            {% if events|length == 1 and current_app == "events" and events.0.code == current_slug %}
+                                            {% else %}
+                                                <div class="row mb-3">
+                                                    <div class="col-md-12">
+                                                        <h4 class="font-italic mb-4">Future events</h4>
+                                                        {% for event in events %}
+                                                            {% if event.code != current_slug and forloop.counter0 < 3 %}
+                                                                <a class="link-unstyled" href="{{ event.url }}">
+                                                                    <div class="media">
+                                                                        <img class="mr-2 rounded" style="width: 32px; height: 32px;" src="{{ event.picture.crop.100x100 }}" data-holder-rendered="true">
+                                                                        <p class="media-body media-body-event pb-3 mb-0 pt-0 small lh-125">
+                                                                            <strong class="d-block">{{ event.name }}</strong>
+                                                                            {{ event.starts_at|date:"F j, Y" }} / {{ event.location }}
+                                                                        </p>
+                                                                    </div>
+                                                                </a>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        {% endif %}
+                                        {% if articles %}
+                                            {% if articles|length == 1 and current_app == "news" and articles.0.code == current_slug %}
+                                            {% else %}
+                                                <div class="row mb-3">
+                                                    <div class="col-md-12">
+                                                        <h4 class="font-italic mb-4">Latest news</h4>
+                                                        {% for article in articles %}
+                                                            {% if article.slug != current_slug and forloop.counter0 < 3 %}
+                                                                <a class="link-unstyled" href="{{ article.url }}">
+                                                                    <div class="card mt-4">
+                                                                        <img class="card-img-top" src="{{ article.picture.crop.250x150 }}">
+                                                                        <div class="card-body">
+                                                                            <h5>{{ article.title }}</h5>
+                                                                            <p class="card-text">{{ article.body_plaintext|truncatewords:10 }}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </a>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endwith %}
+                                {% endblock %}
+                            </div>
+                        </div>
+                        {% block in_post_body %}
+                        {% endblock %}
+                    </div>
+                {% endblock %}
+                {% block post_body %}
+                {% endblock %}
+            {% endblock %}
+            {% block footer %}
+                <nav class="footer navbar navbar-expand-lg navbar-dark bg-main pt-3 pb-3">
+                    <!-- Desktop -->
+                    <div class="container text-white d-none d-lg-flex">
+                        <ul class="navbar-nav mr-auto mb-2">
+                            <li class="nav-item">
+                                <small class="mb-0">Need help? Ping us at <a href="mailto:{{ app_email_contact }}" class="link-main">{{ app_email_contact }}</a>.</small>
+                                <br>
+                                <small><a href="{% url 'page_page' 'legal' 'legal-notice' %}" class="link-main">Legal notice</a></small>
+                                <small class="ml-2"><a href="{% url 'page_page' 'legal' 'terms-and-conditions' %}" class="link-main">Terms and Conditions</a></small>
+                                <small class="ml-2"><a href="{% url 'page_page' 'legal' 'privacy-and-cookies' %}" class="link-main">Privacy and Cookies</a></small>
+                            </li>
+                        </ul>
+                        <ul class="navbar-nav ml-auto">
+                            {% include "include/social.html" %}
+                        </ul>
+                    </div>
+                    <!-- Mobile -->
+                    <div class="container text-white d-block d-lg-none">
+                        <ul class="navbar-nav text-center mb-2">
+                            <li class="nav-item">
+                                <small class="mb-0">Need help? Ping us at <a href="mailto:{{ app_email_contact }}" class="link-main">{{ app_email_contact }}</a>.</small>
+                                <br>
+                                <small><a href="{% url 'page_page' 'legal' 'legal-notice' %}" class="link-main">Legal notice</a></small>
+                                <small class="ml-2"><a href="{% url 'page_page' 'legal' 'terms-and-conditions' %}" class="link-main">Terms and Conditions</a></small>
+                                <small class="ml-2"><a href="{% url 'page_page' 'legal' 'privacy-and-cookies' %}" class="link-main">Privacy and Cookies</a></small>
+                            </li>
+                        </ul>
+                        <ul class="navbar-nav ml-auto d-block text-center">
+                            {% include "include/social.html" %}
+                        </ul>
+                    </div>
+                </nav>
+            {% endblock %}
+        {% endblock %}
+
+        <script src="{% static 'js/jquery.js' %}"></script>
+        <script src="{% static 'js/popper.js' %}"></script>
+        <script src="{% static 'js/bootstrap.js' %}"></script>
+        <script src="{% static 'js/apexcharts.js' %}"></script>
+        <script src="{% static "cookielaw/js/cookielaw.js"%}" type="text/javascript"></script>
     </body>
 </html>

@@ -1,6 +1,14 @@
+bleach~=3.1.0
+bleach-whitelist~=0.0.10
+Django==2.2.10
+django-bootstrap4~=0.0.8
 Django==2.2.10
 django-cookie-law~=1.0.1
+django-markup~=1.4.1
+django-social-share~=1.4.0
 django-versatileimagefield~=1.10
 gunicorn~=19.9.0
+markdown~=3.1.1
+pyyaml~=5.1.1
 requests~=2.22.0
 sentry-sdk==0.13.1

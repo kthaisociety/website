@@ -3,6 +3,8 @@ import textwrap
 import uuid
 from io import StringIO
 
+from django_markup.markup import formatter
+
 from app.variables import APP_NAME
 
 from django.db import models
@@ -10,7 +12,6 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.html import strip_tags
 from django.utils.text import slugify
-from markdownx.utils import markdownify
 from versatileimagefield.fields import VersatileImageField
 
 from event.enums import EventType, EventStatus
@@ -54,7 +55,7 @@ class Event(models.Model):
 
     @property
     def ics(self):
-        description = markdownify(self.description)
+        description = formatter(self.description, "markup")
         description_text = (
             re.sub("[ \t]+", " ", strip_tags(description)).replace("\n ", "\n").strip()
         )

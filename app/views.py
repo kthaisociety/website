@@ -5,7 +5,11 @@ import subprocess
 from _sha1 import sha1
 from ipaddress import ip_address, ip_network
 
-from django.http import StreamingHttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.http import (
+    StreamingHttpResponse,
+    HttpResponseNotFound,
+    HttpResponseRedirect,
+)
 from django.shortcuts import render
 from django.urls import reverse
 from django.utils.encoding import force_bytes
@@ -24,6 +28,10 @@ from user.utils import get_user_by_picture
 def home(request):
     current_data = dict()
     return render(request, "home.html", current_data)
+
+
+def maintenance(request):
+    return render(request, "maintenance.html", {})
 
 
 def files(request, file_):

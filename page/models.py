@@ -18,8 +18,7 @@ class Page(models.Model):
     content_markdown = models.TextField(blank=True, null=True)
     content_markdown_url = models.CharField(max_length=255, blank=True, null=True)
     status = models.PositiveSmallIntegerField(
-        choices=((s.value, s.name) for s in PageStatus),
-        default=PageStatus.DRAFT.value,
+        choices=((s.value, s.name) for s in PageStatus), default=PageStatus.DRAFT.value
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

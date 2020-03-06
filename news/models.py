@@ -1,4 +1,5 @@
 import re
+import textwrap
 import uuid
 
 from django.db import models
@@ -26,6 +27,16 @@ class Article(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     objects = ArticleManager()
+
+    @property
+    def description_short(self):
+        return textwrap.shorten(self.body_plaintext, width=50, placeholder="...")
+
+    @property
+    def lead(self):
+        if self.subtitle:
+            return self.subtitle
+        return self.description_short
 
     @property
     def url(self):

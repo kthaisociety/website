@@ -1,4 +1,5 @@
 import re
+import textwrap
 import uuid
 from io import StringIO
 
@@ -38,6 +39,10 @@ class Event(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     objects = EventManager()
+
+    @property
+    def description_short(self):
+        return textwrap.shorten(self.description, width=50, placeholder="...")
 
     @property
     def url(self):

@@ -9,38 +9,63 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Category',
+            name="Category",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('title', models.CharField(max_length=255)),
-                ('code', models.CharField(max_length=31, unique=True)),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("title", models.CharField(max_length=255)),
+                ("code", models.CharField(max_length=31, unique=True)),
             ],
-            options={
-                'verbose_name_plural': 'Categories',
-            },
+            options={"verbose_name_plural": "Categories"},
         ),
         migrations.CreateModel(
-            name='Page',
+            name="Page",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('title', models.CharField(max_length=255)),
-                ('code', models.CharField(max_length=31)),
-                ('content_plain', models.TextField(blank=True, null=True)),
-                ('content_html', models.TextField(blank=True, null=True)),
-                ('content_markdown', models.TextField(blank=True, null=True)),
-                ('content_markdown_url', models.CharField(blank=True, max_length=255, null=True)),
-                ('status', models.PositiveSmallIntegerField(choices=[(0, 'DRAFT'), (1, 'PUBLISHED'), (2, 'DELETED')], default=0)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='page.Category')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("title", models.CharField(max_length=255)),
+                ("code", models.CharField(max_length=31)),
+                ("content_plain", models.TextField(blank=True, null=True)),
+                ("content_html", models.TextField(blank=True, null=True)),
+                ("content_markdown", models.TextField(blank=True, null=True)),
+                (
+                    "content_markdown_url",
+                    models.CharField(blank=True, max_length=255, null=True),
+                ),
+                (
+                    "status",
+                    models.PositiveSmallIntegerField(
+                        choices=[(0, "DRAFT"), (1, "PUBLISHED"), (2, "DELETED")],
+                        default=0,
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "category",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT, to="page.Category"
+                    ),
+                ),
             ],
-            options={
-                'unique_together': {('category', 'code')},
-            },
+            options={"unique_together": {("category", "code")}},
         ),
     ]

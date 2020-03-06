@@ -1,10 +1,18 @@
 import re
 
 from django.conf import settings
+
 from app.variables import APP_ORGANISER_EMAIL_REGEX, APP_DOMAIN
 
 
-def get_substitutions_templates():
+def get_substitutions_templates(request):
+    maintenance_mode = False
+    if (
+        getattr(settings, "MAINTENANCE_MODE", False)
+        and not request.user.is_authenticated
+        and not request.user.is_staff
+    ):
+        maintenance_mode = True
     return {
         "app_name": getattr(settings, "APP_NAME", None),
         "app_description": getattr(settings, "APP_DESCRIPTION", None),
@@ -34,7 +42,9 @@ def get_substitutions_templates():
         "app_legal_postcode": getattr(settings, "APP_LEGAL_POSTCODE", None),
         "app_legal_city": getattr(settings, "APP_LEGAL_CITY", None),
         "app_legal_country": getattr(settings, "APP_LEGAL_COUNTRY", None),
-        "pre_calendar_url": "webcal://" + APP_DOMAIN.replace("https://", "").replace("http://", "")
+        "pre_calendar_url": "webcal://"
+        + APP_DOMAIN.replace("https://", "").replace("http://", ""),
+        "maintenance_mode": maintenance_mode,
     }
 
 

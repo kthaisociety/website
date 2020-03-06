@@ -204,9 +204,10 @@ SOCIAL_AUTH_URL_NAMESPACE = "social"
 if SOCIAL_AUTH_GOOGLE_OAUTH2_KEY and SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET:
     INSTALLED_APPS += ["social_django"]
     TEMPLATES[0]["OPTIONS"]["context_processors"] + [
-                'social_django.context_processors.backends',
-                'social_django.context_processors.login_redirect']
+        "social_django.context_processors.backends",
+        "social_django.context_processors.login_redirect",
+    ]
     AUTHENTICATION_BACKENDS = (
-        'social_core.backends.google.GoogleOAuth2',
-        'django.contrib.auth.backends.ModelBackend',
+        "social_core.backends.google.GoogleOAuth2",
+        "django.contrib.auth.backends.ModelBackend",
     )

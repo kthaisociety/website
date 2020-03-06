@@ -77,7 +77,9 @@ class User(AbstractBaseUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(verbose_name="First name", max_length=255)
-    surname = models.CharField(verbose_name="Last name", max_length=255, blank=True, null=True)
+    surname = models.CharField(
+        verbose_name="Last name", max_length=255, blank=True, null=True
+    )
 
     email_verified = models.BooleanField(default=False)
     verify_key = models.CharField(max_length=127, blank=True, null=True)

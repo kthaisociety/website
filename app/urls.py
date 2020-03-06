@@ -8,9 +8,8 @@ from app.settings import GH_KEY, LOGOUT_REDIRECT_URL
 
 urlpatterns = [
     url("admin/", admin.site.urls),
-    url('', include('social_django.urls', namespace='social')),
-    url('logout/', logout, {'next_page': LOGOUT_REDIRECT_URL},
-    name='logout'),
+    url("", include("social_django.urls", namespace="social")),
+    url("logout/", logout, {"next_page": LOGOUT_REDIRECT_URL}, name="logout"),
     url(r"^user/", include("user.urls")),
     url(r"^news/", include("news.urls")),
     url(r"^events/", include("event.urls")),

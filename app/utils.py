@@ -7,10 +7,8 @@ from app.variables import APP_ORGANISER_EMAIL_REGEX, APP_DOMAIN
 
 def get_substitutions_templates(request):
     maintenance_mode = False
-    if (
-        getattr(settings, "MAINTENANCE_MODE", False)
-        and not request.user.is_authenticated
-        and not request.user.is_organiser
+    if getattr(settings, "MAINTENANCE_MODE", False) and not (
+        request.user.is_authenticated and request.user.is_organiser
     ):
         maintenance_mode = True
     return {

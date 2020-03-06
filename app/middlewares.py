@@ -9,8 +9,7 @@ class MaintenanceModeMiddleware:
     def __call__(self, request):
         if (
             MAINTENANCE_MODE
-            and not request.user.is_authenticated
-            and not request.user.is_organiser
+            and not (request.user.is_authenticated and request.user.is_organiser)
             and not any(
                 [
                     request.path.startswith(p)

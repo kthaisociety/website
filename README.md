@@ -4,7 +4,7 @@
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/3aa72b7e0ee6977abfd2/maintainability)](https://codeclimate.com/github/kthaisociety/website/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/3aa72b7e0ee6977abfd2/test_coverage)](https://codeclimate.com/github/kthaisociety/website/test_coverage)
-[![Build Status](https://travis-ci.com/kthais/website.svg?branch=master)](https://travis-ci.com/kthais/website)
+[![Build Status](https://travis-ci.com/kthaisociety/website.svg?branch=master)](https://travis-ci.com/kthais/website)
 
 :computer: Website and management system for KTHAIS
 
@@ -173,6 +173,9 @@ location /deploy/ {
 - **SL_ID**: Slack app client ID.
 - **SL_SECRET**: Slack app client secret.
 - **SL_INURL**: Internal organisation Slack webhook URL for deployments.
+- **MAINTENANCE_MODE**: Determines is site is under maintenance mode.
+- **GO_KEY**: Google OAuth2 key.
+- **GO_SECRET**: Google OAuth2 secret.
 
 ## Contribution
 

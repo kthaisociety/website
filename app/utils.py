@@ -10,7 +10,7 @@ def get_substitutions_templates(request):
     if (
         getattr(settings, "MAINTENANCE_MODE", False)
         and not request.user.is_authenticated
-        and not request.user.is_staff
+        and not request.user.is_organiser
     ):
         maintenance_mode = True
     return {

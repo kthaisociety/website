@@ -13,7 +13,7 @@ class MaintenanceModeMiddleware:
             and not any(
                 [
                     request.path.startswith(p)
-                    for p in ["/files", "/admin", "/page/legal", "/deploy", "/login", "/complete"]
+                    for p in ["/files", "/admin", "/page/legal", "/deploy", "/user/complete", "/user/login", "/user/logout"]
                 ]
             )
         ):

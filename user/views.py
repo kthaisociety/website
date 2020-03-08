@@ -1,11 +1,12 @@
 from django.contrib import auth, messages
+from django.contrib.auth import logout
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from user import forms
 
 
-def login(request):
+def user_login(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse("app_home"))
 
@@ -29,3 +30,12 @@ def login(request):
         form = forms.LoginForm()
 
     return render(request, "login.html", {"form": form})
+
+
+def user_logout(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("app_home"))
+
+    logout(request)
+
+    return HttpResponseRedirect(reverse("app_home"))

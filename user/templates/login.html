@@ -4,35 +4,37 @@
 
 {% block head_title %}{% trans "Login" %}{% endblock %}
 
-{% block content %}
-    <div class="container">
-      <div class="section-intro text-center">
-        <h2>Login</h2>
-      </div>
-      <div class="row">
-        <form action="" method="post" class="form ">
-            {% csrf_token %}
-            <div class="col-md-6 col-lg-6 mb-6 mb-lg-0 col-centered">
-              <div class="service-card">
-
-            <!-- Afegir forgot password -->
-                <div class="form-group">
-                    <label for="id_email">Email</label>
-                    <input type="email" name="email" maxlength="225" class="form-control" placeholder="jonny5@khais.com" id="id_email">
-                </div>
-                <div class="form-group">
-                    <label for="id_password">Password</label>
-                    <input type="password" name="password" maxlength="225" class="form-control" placeholder="****************" id="id_password">
-                </div>
-                <div class="form-group-button-2">
-                    <button class="btn btn-primary btn-block" type="submit">{% trans "Login" %}</button>
-                </div>
-                <!-- <div class="form-group">
-                    <p>Don't have an account? Signup <a href="{% url 'user_signup' %}">here</a>!</p>
-                </div> -->
-              </div>
+{% block body %}
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1>Login</h1>
             </div>
-        </form>
-      </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <form action="" method="post" class="form">
+                    {% csrf_token %}
+                    <!-- Afegir forgot password -->
+                    <div class="form-group">
+                        <label for="id_email">Email</label>
+                        <input type="email" name="email" maxlength="225" class="form-control" placeholder="jonny5@kthais.com" id="id_email">
+                    </div>
+                    <div class="form-group">
+                        <label for="id_password">Password</label>
+                        <input type="password" name="password" maxlength="225" class="form-control" placeholder="****************" id="id_password">
+                    </div>
+                    <div class="form-group text-center mt-4">
+                        <button class="btn btn-main" type="submit">Login</button>
+                        <a class="link-unstyled" href="{% url "social:begin" "google-oauth2" %}">
+                            <button type="button" class="btn btn-main2 ml-2">Login with Google <i class="fab fa-google ml-1"></i></button>
+                        </a>
+                    </div>
+                    <!-- <div class="form-group">
+                        <p>Don't have an account? Signup <a href="{% url 'user_signup' %}">here</a>!</p>
+                    </div> -->
+                </form>
+            </div>
+        </div>
     </div>
 {% endblock %}

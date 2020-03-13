@@ -23,6 +23,8 @@ class User(AbstractBaseUser):
     verify_key = models.CharField(max_length=127, blank=True, null=True)
     verify_expiration = models.DateTimeField(default=timezone.now)
 
+    registration_finished = models.BooleanField(default=False)
+
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -44,6 +46,11 @@ class User(AbstractBaseUser):
     phone = models.CharField(max_length=255, blank=True, null=True)
     city = models.CharField(max_length=255, blank=True, null=True)
     country = models.CharField(max_length=255, blank=True, null=True)
+
+    # University
+    university = models.CharField(max_length=255, blank=True, null=True)
+    degree = models.CharField(max_length=255, blank=True, null=True)
+    graduation_year = models.PositiveIntegerField(default=timezone.now().year, blank=True, null=True)
 
     objects = UserManager()
 
@@ -128,4 +135,14 @@ class User(AbstractBaseUser):
         self.clean()
         if is_email_organiser(self.email):
             self.type = UserType.ORGANISER.value
+        return super().save(*args, **kwargs)
+
+
+class GoogleUser(User):
+    class Meta:
+        proxy = True
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        self.email_verified = True
         return super().save(*args, **kwargs)

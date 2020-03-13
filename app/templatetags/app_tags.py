@@ -1,4 +1,5 @@
 from django import template
+from django.utils import timezone
 from django.utils.safestring import mark_safe
 
 from django_markup.markup import formatter
@@ -26,3 +27,8 @@ def extract_app(url):
 @register.filter
 def extract_slug(url):
     return url.split("/")[-1]
+
+
+@register.filter
+def year_from_now(years):
+    return timezone.now().year + years

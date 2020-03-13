@@ -6,7 +6,8 @@ class UserType(enum.IntEnum):
     PARTICIPANT = 1
 
 
-class SexType(enum.IntEnum):
+class GenderType(enum.IntEnum):
     NONE = 0
     FEMALE = 1
     MALE = 2
+    NON_BINARY = 3

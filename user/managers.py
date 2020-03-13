@@ -5,7 +5,7 @@ from user.enums import UserType
 
 class UserManager(BaseUserManager):
     def create_participant(
-        self, email, name, surname, password, phone, birthday, sex, city, country
+        self, email, name, surname, password, phone, birthday, gender, city, country, university, degree, graduation_year
     ):
         if not email:
             raise ValueError("A user must have an email")
@@ -17,9 +17,12 @@ class UserManager(BaseUserManager):
             type=UserType.PARTICIPANT.value,
             phone=phone,
             birthday=birthday,
-            sex=sex,
+            gender=gender,
             city=city,
             country=country,
+            university=university,
+            degree=degree,
+            graduation_year=graduation_year
         )
 
         user.set_password(password)

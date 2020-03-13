@@ -44,9 +44,10 @@
                                                 <small class="ml-2"><a class="link-main" href="{% url 'admin:index' %}">Admin</a></small>
                                             {% endif %}
                                             <small class="ml-2"><a class="link-main" href="">Settings</a></small>
-                                            <small class="ml-2"><a class="link-main" href="{% url 'user_logout' %}">Log out</a></small>
+                                            <small class="ml-2"><a class="link-main" href="{% url 'user_logout' %}">Logout</a></small>
                                         {% else %}
-                                            <small class="ml-2"><a class="link-main" href="{% url 'user_login' %}">Log in</a></small>
+                                            <small class="ml-2"><a class="link-main" href="{% url 'user_login' %}">Login</a></small>
+                                            <small class="ml-2"><a class="link-main" href="{% url 'user_register' %}">Register</a></small>
                                         {% endif %}
                                     </li>
                                 </ul>
@@ -78,24 +79,28 @@
                     </div>
                 </nav>
                 {% if messages %}
-                    <nav class="navbar-top navbar navbar-expand-lg navbar-light bg-main2 text-white pt-3 pb-3">
+                    <nav class="navbar-top navbar navbar-expand-lg navbar-light bg-main2 text-white">
                         <div class="container">
-                            {% for message in messages %}
-                                <p class="navbar-nav mr-auto">
-                                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-                                        <i class="fas fa-exclamation-circle mr-2" style="font-size: 16px;"></i>
-                                    {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
-                                        <i class="fas fa-exclamation-circle mr-2" style="font-size: 16px;"></i>
-                                    {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                                        <i class="fas fa-check-circle mr-2" style="font-size: 16px;"></i>
-                                    {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
-                                        <i class="fas fa-info-circle mr-2" style="font-size: 16px;"></i>
-                                    {% elif message.level == DEFAULT_MESSAGE_LEVELS.DEBUG %}
-                                        <i class="fas fa-question-circle mr-2" style="font-size: 16px;"></i>
-                                    {% endif %}
-                                    {{ message }}
-                                </p>
-                            {% endfor %}
+                            <div class="row">
+                                {% for message in messages %}
+                                    <div class="col-md-12">
+                                        <p class="navbar-nav mr-auto pt-2 pb-2">
+                                            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                                                <i class="fas fa-exclamation-circle mr-2" style="font-size: 16px;"></i>
+                                            {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                                                <i class="fas fa-exclamation-circle mr-2" style="font-size: 16px;"></i>
+                                            {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                                                <i class="fas fa-check-circle mr-2" style="font-size: 16px;"></i>
+                                            {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                                                <i class="fas fa-info-circle mr-2" style="font-size: 16px;"></i>
+                                            {% elif message.level == DEFAULT_MESSAGE_LEVELS.DEBUG %}
+                                                <i class="fas fa-question-circle mr-2" style="font-size: 16px;"></i>
+                                            {% endif %}
+                                            {{ message }}
+                                        </p>
+                                    </div>
+                                {% endfor %}
+                            </div>
                         </div>
                     </nav>
                 {% endif %}
@@ -213,5 +218,7 @@
         <script src="{% static 'js/bootstrap.js' %}"></script>
         <script src="{% static 'js/apexcharts.js' %}"></script>
         <script src="{% static "cookielaw/js/cookielaw.js"%}" type="text/javascript"></script>
+        {% block scripts %}
+        {% endblock %}
     </body>
 </html>

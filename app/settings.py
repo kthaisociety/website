@@ -56,6 +56,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "app.middlewares.RegisterMiddleware",
     "app.middlewares.MaintenanceModeMiddleware",
 ]
 
@@ -196,10 +197,11 @@ for host in ALLOWED_HOSTS:
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get("GO_KEY", None)
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get("GO_SECRET", None)
-LOGIN_URL = "/auth/login/google-oauth2/"
+LOGIN_URL = "/user/login/google-oauth2/"
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 SOCIAL_AUTH_URL_NAMESPACE = "social"
+SOCIAL_AUTH_USER_MODEL = "user.GoogleUser"
 
 if SOCIAL_AUTH_GOOGLE_OAUTH2_KEY and SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET:
     INSTALLED_APPS += ["social_django"]
@@ -211,3 +213,16 @@ if SOCIAL_AUTH_GOOGLE_OAUTH2_KEY and SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET:
         "social_core.backends.google.GoogleOAuth2",
         "django.contrib.auth.backends.ModelBackend",
     )
+
+# Notify templates
+
+NOTIFY_TEMPLATES = dict(
+    email=dict(
+        user=dict(
+            register=dict(
+                subject="Confirm your email to register",
+                html="email/register.html",
+            )
+        ),
+    )
+)

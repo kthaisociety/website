@@ -1,16 +1,19 @@
 import re
+from typing import Optional
 
+import html2text
 from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
 
-from app.variables import APP_ORGANISER_EMAIL_REGEX, APP_DOMAIN
+from app.variables import APP_ORGANISER_EMAIL_REGEX, APP_DOMAIN, APP_NAME, APP_EMAIL_NOREPLY, APP_EMAIL_CONTACT
 
 
-def get_substitutions_templates(request):
-    maintenance_mode = False
-    if getattr(settings, "MAINTENANCE_MODE", False) and not (
+def get_substitutions_templates(request: Optional = None):
+    maintenance_mode = getattr(settings, "MAINTENANCE_MODE", False)
+    if request and not (
         request.user.is_authenticated and request.user.is_organiser
     ):
-        maintenance_mode = True
+        maintenance_mode = False
     return {
         "app_name": getattr(settings, "APP_NAME", None),
         "app_description": getattr(settings, "APP_DESCRIPTION", None),
@@ -48,3 +51,50 @@ def get_substitutions_templates(request):
 
 def is_email_organiser(email):
     return re.match(APP_ORGANISER_EMAIL_REGEX, email)
+
+
+def get_notification_template(method: str, app: str, task: str, format: str):
+    return settings.NOTIFY_TEMPLATES[method][app][task][format]
+
+
+def send_email(
+    subject,
+    body,
+    to,
+    from_email=None,
+    reply_to=None,
+    tags=None,
+    track_clicks=False,
+    fail_silently=False,
+    attachments=None,
+):
+    if tags is None:
+        tags = []
+
+    tags += APP_NAME.lower()
+
+    if to and not isinstance(to, (list, tuple)):
+        to = [to]
+
+    if reply_to and not isinstance(reply_to, (list, tuple)):
+        reply_to = [reply_to]
+
+    body_plain = html2text.html2text(body)
+
+    msg = EmailMultiAlternatives(
+        subject=subject,
+        body=body_plain,
+        from_email=from_email or APP_NAME + "<" + APP_EMAIL_NOREPLY + ">",
+        to=to,
+        reply_to=reply_to or [APP_NAME + "<" + APP_EMAIL_CONTACT + ">"],
+        attachments=attachments,
+    )
+
+    msg.attach_alternative(body, "text/html")
+
+    if tags:
+        msg.tags = tags
+
+    msg.track_clicks = track_clicks
+
+    return msg.send(fail_silently=fail_silently)

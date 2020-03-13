@@ -213,3 +213,16 @@ if SOCIAL_AUTH_GOOGLE_OAUTH2_KEY and SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET:
         "social_core.backends.google.GoogleOAuth2",
         "django.contrib.auth.backends.ModelBackend",
     )
+
+# Notify templates
+
+NOTIFY_TEMPLATES = dict(
+    email=dict(
+        user=dict(
+            register=dict(
+                subject="Confirm your email to register",
+                html="email/register.html",
+            )
+        ),
+    )
+)

@@ -7,7 +7,7 @@ from django.utils import timezone
 from versatileimagefield.fields import VersatileImageField
 
 from app.utils import is_email_organiser
-from user.enums import UserType, SexType
+from user.enums import UserType, GenderType
 from user.managers import UserManager
 
 
@@ -39,8 +39,8 @@ class User(AbstractBaseUser):
     picture = VersatileImageField("Image", default="user/picture/profile.png")
     picture_public_participants = models.BooleanField(default=True)
     picture_public_sponsors_and_recruiters = models.BooleanField(default=True)
-    sex = models.PositiveSmallIntegerField(
-        choices=((t.value, t.name) for t in SexType), default=SexType.NONE
+    gender = models.PositiveSmallIntegerField(
+        choices=((t.value, t.name) for t in GenderType), default=GenderType.NONE
     )
     birthday = models.DateField(blank=True, null=True)
     phone = models.CharField(max_length=255, blank=True, null=True)
@@ -50,7 +50,9 @@ class User(AbstractBaseUser):
     # University
     university = models.CharField(max_length=255, blank=True, null=True)
     degree = models.CharField(max_length=255, blank=True, null=True)
-    graduation_year = models.PositiveIntegerField(default=timezone.now().year, blank=True, null=True)
+    graduation_year = models.PositiveIntegerField(
+        default=timezone.now().year, blank=True, null=True
+    )
 
     objects = UserManager()
 
@@ -93,7 +95,7 @@ class User(AbstractBaseUser):
             "picture": self.picture,
             "picture_public_participants": self.picture_public_participants,
             "picture_public_sponsors_and_recruiters": self.picture_public_sponsors_and_recruiters,
-            "sex": self.sex,
+            "gender": self.gender,
             "birthday": self.birthday,
             "phone": self.phone,
             "city": self.city,
@@ -119,6 +121,32 @@ class User(AbstractBaseUser):
 
     def mark_as_inactive(self):
         self.is_active = False
+        self.save()
+
+    def finish_registration(
+        self,
+        name,
+        surname,
+        phone,
+        university,
+        degree,
+        graduation_year,
+        birthday,
+        gender,
+        city,
+        country,
+    ):
+        self.name = name
+        self.surname = surname
+        self.phone = phone
+        self.university = university
+        self.degree = degree
+        self.graduation_year = graduation_year
+        self.birthday = birthday
+        self.gender = gender
+        self.city = city
+        self.country = country
+        self.registration_finished = True
         self.save()
 
     def clean(self):

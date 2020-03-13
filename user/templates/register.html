@@ -28,16 +28,16 @@
                         {% endif %}
                         <div class="form-group">
                             <label for="id_name">First name <small>(required)</small></label>
-                            <input type="text" name="name" maxlength="225" class="form-control" placeholder="Daniel" id="id_name" {% if request.user.name %}value="{{ request.user.name }}"{% endif %}>
+                            <input type="text" name="name" maxlength="225" class="form-control" placeholder="Daniel" id="id_name" {% if form.first_name %}value="{{ form.first_name }}"{% elif request.user.name %}value="{{ request.user.name }}"{% endif %}>
                         </div>
                         <div class="form-group">
                             <label for="id_surname">Last name <small>(required)</small></label>
-                            <input type="text" name="surname" maxlength="225" class="form-control" placeholder="Stenberg" id="id_surname" {% if request.user.surname %}value="{{ request.user.surname }}"{% endif %}>
+                            <input type="text" name="surname" maxlength="225" class="form-control" placeholder="Stenberg" id="id_surname" {% if form.last_name %}value="{{ form.last_name }}"{% elif request.user.surname %}value="{{ request.user.surname }}"{% endif %}>
                         </div>
                         {% if not request.user.email_verified %}
                             <div class="form-group">
                                 <label for="id_email">Email <small>(required)</small></label>
-                                <input type="email" name="email" maxlength="225" class="form-control" placeholder="curl@kthais.com" id="id_email">
+                                <input type="email" name="email" maxlength="225" class="form-control" placeholder="curl@kthais.com" id="id_email" {% if form.email %}value="{{ form.email }}"{% endif %}>
                             </div>
                             <div class="form-group">
                                 <label for="id_password">Password <small>(required)</small></label>
@@ -48,21 +48,25 @@
                                 <input type="password" name="password2" maxlength="225" class="form-control" placeholder="****************" id="id_password2">
                             </div>
                         {% endif %}
+                        <div class="form-group">
+                            <label for="id_phone">Phone</label>
+                            <input type="text" name="phone" maxlength="225" class="form-control" placeholder="070-000 00 00" id="id_phone" {% if form.phone %}value="{{ form.phone }}"{% endif %}>
+                        </div>
                         <div class="form-row mt-3">
                             <div class="col-md-4">
                                 <label for="id_university">University <small>(required)</small></label>
-                                <input type="text" name="university" maxlength="225" class="form-control" placeholder="Kungliga Tekniska Högskolan" id="id_university">
+                                <input type="text" name="university" maxlength="225" class="form-control" placeholder="Kungliga Tekniska Högskolan" id="id_university" {% if form.university %}value="{{ form.university }}"{% endif %}>
                             </div>
                             <div class="col-md-4">
                                 <label for="id_degree">Programme <small>(required)</small></label>
-                                <input type="text" name="degree" maxlength="225" class="form-control" placeholder="Computer Science" id="id_degree">
+                                <input type="text" name="degree" maxlength="225" class="form-control" placeholder="Computer Science" id="id_degree" {% if form.programme %}value="{{ form.programme }}"{% endif %}>
                             </div>
                             <div class="col-md-4">
                                 <label for="id_graduation">Graduation year <small>(required)</small></label>
                                 <select name="graduation" class="form-control" id="id_Graduation">
                                     {% for i in "01234567"|make_list %}
                                         {% with forloop.counter0|add:"-2"|year_from_now as year %}
-                                            <option value="{{ year }}" {% if forloop.counter0 == 2 %}selected=""{% endif %}>{{ year }}</option>
+                                            <option value="{{ year }}" {% if forloop.counter0 == 2 and not form.graduation_year %}selected=""{% elif form.graduation_year == year %}selected=""{% endif %}>{{ year }}</option>
                                         {% endwith %}
                                     {% endfor %}
                                     <option value="0">Other</option>
@@ -76,12 +80,13 @@
                                 <input type="date" name="birthday" class="form-control" placeholder="1986-09-17" id="id_birthday">
                             </div>
                             <div class="col-md-6">
-                                <label for="id_sex">Sex</label>
-                                <select name="sex" class="form-control" id="id_sex">
+                                <label for="id_gender">Gender</label>
+                                <select name="gender" class="form-control" id="id_gender">
                                     <option selected="" disabled>―</option>
                                     <option value="0">Prefer not to say</option>
                                     <option value="1">Female</option>
                                     <option value="2">Male</option>
+                                    <option value="3">Non-binary</option>
                                 </select>
                             </div>
                         </div>

@@ -9,3 +9,7 @@ def get_user_by_picture(picture):
         return User.objects.filter(id=user_id, is_active=True).first()
     except ValueError:
         return None
+
+
+def get_organisers():
+    return User.objects.organisers()

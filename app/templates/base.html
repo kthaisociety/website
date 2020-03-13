@@ -57,7 +57,7 @@
                 <nav class="navbar navbar-expand-lg navbar-dark bg-main pt-3 pb-3">
                     <div class="container">
                         <a class="navbar-brand" href="{% url 'app_home' %}">
-                            <img src="{% static 'img/logo_text_white.png' %}" width="128" height="24" alt="">
+                            <img src="{% static 'img/logo_text_white.png' %}" width="128" height="24" alt="KTHAIS">
                         </a>
                         {% if not maintenance_mode %}
                             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,6 +77,28 @@
                         {% endif %}
                     </div>
                 </nav>
+                {% if messages %}
+                    <nav class="navbar-top navbar navbar-expand-lg navbar-light bg-main2 text-white pt-3 pb-3">
+                        <div class="container">
+                            {% for message in messages %}
+                                <p class="navbar-nav mr-auto">
+                                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                                        <i class="fas fa-exclamation-circle mr-2" style="font-size: 16px;"></i>
+                                    {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                                        <i class="fas fa-exclamation-circle mr-2" style="font-size: 16px;"></i>
+                                    {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                                        <i class="fas fa-check-circle mr-2" style="font-size: 16px;"></i>
+                                    {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                                        <i class="fas fa-info-circle mr-2" style="font-size: 16px;"></i>
+                                    {% elif message.level == DEFAULT_MESSAGE_LEVELS.DEBUG %}
+                                        <i class="fas fa-question-circle mr-2" style="font-size: 16px;"></i>
+                                    {% endif %}
+                                    {{ message }}
+                                </p>
+                            {% endfor %}
+                        </div>
+                    </nav>
+                {% endif %}
             {% endblock %}
             {% block body %}
                 {% block pre_body %}

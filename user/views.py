@@ -24,8 +24,12 @@ def user_login(request):
                 return HttpResponseRedirect(next_page)
             else:
                 messages.error(
-                    request, "Login failed, the email or password are invalid!"
+                    request, "Login failed, the email or password are invalid."
                 )
+        else:
+            messages.error(
+                request, "You need to provide both email and password to login."
+            )
     else:
         form = forms.LoginForm()
 

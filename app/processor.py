@@ -5,7 +5,9 @@ def variables_processor(request=None):
     c = get_substitutions_templates(request=request)
     from news.utils import get_latest_articles
     from event.utils import get_future_events
+    from user.utils import get_organisers
 
     c["articles"] = get_latest_articles()
     c["events"] = get_future_events()
+    c["organisers"] = get_organisers()
     return c

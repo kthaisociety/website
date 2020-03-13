@@ -6,5 +6,6 @@ from user import views
 urlpatterns = [
     url(r"^login/$", views.user_login, name="user_login"),
     url(r"^logout/$", views.user_logout, name="user_logout"),
+    url(r"^logout/$", views.user_logout, name="user_signup"),
     url("", include("social_django.urls", namespace="social")),
 ]

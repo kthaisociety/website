@@ -1,5 +1,9 @@
+import datetime
+
 from django.contrib import auth, messages
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -103,19 +107,25 @@ def user_register(request):
             if password != password2:
                 messages.error(request, "Passwords do not match.")
             if request.user.is_authenticated:
-                request.user.finish_registration(
-                    name=name,
-                    surname=surname,
-                    phone=phone,
-                    university=university,
-                    degree=degree,
-                    graduation_year=graduation_year,
-                    birthday=(birthday if birthday else None),
-                    gender=(gender if gender else GenderType.NONE),
-                    city=city,
-                    country=country,
-                )
-                messages.success(request, "Thank-you for completing the registration.")
+                try:
+                    request.user.finish_registration(
+                        name=name,
+                        surname=surname,
+                        phone=phone,
+                        university=university,
+                        degree=degree,
+                        graduation_year=graduation_year,
+                        birthday=(datetime.datetime.strptime(birthday, "%Y-%m-%d").date() if birthday else None),
+                        gender=(gender if gender else GenderType.NONE),
+                        city=city,
+                        country=country,
+                    )
+                    messages.success(request, "Thank-you for completing the registration.")
+                except ValidationError as e:
+                    for errors in e.error_dict.values():
+                        for msgs in errors:
+                            for msg in msgs:
+                                messages.error(request, msg + ".")
             else:
                 User.objects.create_participant(
                     email=email,
@@ -123,7 +133,7 @@ def user_register(request):
                     name=name,
                     surname=surname,
                     phone=phone,
-                    birthday=(birthday if birthday else None),
+                    birthday=(datetime.datetime.strptime(birthday, "%Y-%m-%d").date() if birthday else None),
                     gender=(gender if gender else GenderType.NONE),
                     city=city,
                     country=country,
@@ -157,3 +167,24 @@ def user_register(request):
             )
 
     return render(request, "register.html", {"form": form})
+
+
+@login_required
+def verify(request, verification_key):
+    if request.user.email_verified:
+        return HttpResponseRedirect(reverse("app_home"))
+    request.user.verify(verify_key=verification_key)
+    if request.user.email_verified:
+        messages.success(request, "Thank-you, your email has been verified.")
+    else:
+        messages.error(
+            request, "We couldn't verify your email as the verification key expired."
+        )
+    return HttpResponseRedirect(reverse("app_home"))
+
+
+@login_required
+def send_verification(request):
+    send_verify(request.user)
+    messages.success(request, "The verification email has been sent again.")
+    return HttpResponseRedirect(reverse("app_home"))

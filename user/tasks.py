@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from celery import shared_task
 from django.template.loader import render_to_string
 
@@ -7,8 +9,9 @@ from user.models import User
 
 
 @shared_task
-def send_verify_email(user: User):
+def send_verify_email(user_id: UUID):
     context = get_substitutions_templates()
+    user = User.objects.get(id=user_id)
     context["user"] = user
     template = get_notification_template(
         method="email", app="user", task="register", format="html"

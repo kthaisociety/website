@@ -11,7 +11,7 @@ from django_markup.markup import formatter
 
 from app import settings
 from app.settings import STATICFILES_DIRS
-from app.variables import APP_DOMAIN
+from app.variables import APP_DOMAIN,
 
 register = template.Library()
 
@@ -55,3 +55,8 @@ def image_as_base64(image_path):
 @register.simple_tag
 def full_url(name, *args):
     return f"//{urljoin(APP_DOMAIN, reverse(name, args=args))}"
+
+
+@register.simple_tag
+def full_static(path):
+    return f"//{urljoin(APP_DOMAIN, STATICFILES_DIRS[0], path)}"

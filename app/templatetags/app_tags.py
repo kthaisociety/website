@@ -9,8 +9,8 @@ from django.utils.safestring import mark_safe
 from django_markup.markup import formatter
 
 from app import settings
-from app.settings import STATICFILES_DIRS, STATIC_URL
-from app.variables import APP_DOMAIN
+from app.settings import STATICFILES_DIRS, STATIC_URL, DEBUG
+from app.variables import APP_DOMAIN, APP_LOCALHOST
 
 register = template.Library()
 
@@ -58,4 +58,8 @@ def full_url(name, *args):
 
 @register.simple_tag
 def full_static(path):
-    return f"//{APP_DOMAIN}{STATIC_URL}{path}"
+    # Retrieve assets from production on beta domain
+    app_domain_prod = APP_DOMAIN
+    if DEBUG and APP_DOMAIN != APP_LOCALHOST and app_domain_prod.count(".") > 1:
+        app_domain_prod = ".".join(app_domain_prod.split(".")[1:])
+    return f"//{app_domain_prod}{STATIC_URL}{path}"

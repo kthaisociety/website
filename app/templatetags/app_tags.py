@@ -11,7 +11,7 @@ from django_markup.markup import formatter
 
 from app import settings
 from app.settings import STATICFILES_DIRS
-from app.variables import APP_DOMAIN,
+from app.variables import APP_DOMAIN
 
 register = template.Library()
 

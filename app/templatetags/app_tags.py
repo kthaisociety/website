@@ -28,7 +28,7 @@ def apply_markup(text, filter_name):
 
 @register.filter
 def extract_app(url):
-    return url.split("/")[0]
+    return [u for u in url.split("/") if u][0]
 
 
 @register.filter
@@ -55,3 +55,8 @@ def image_as_base64(image_path):
 @register.simple_tag
 def full_url(name, *args):
     return f"//{urljoin(APP_DOMAIN, reverse(name, args=args))}"
+
+
+@register.simple_tag
+def full_static(path):
+    return f"//{urljoin(APP_DOMAIN, STATICFILES_DIRS[0], path)}"

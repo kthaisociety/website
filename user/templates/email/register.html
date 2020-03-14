@@ -7,6 +7,6 @@
     <p>Thank-you for registering! In order to complete your registration we need you to confirm this email as soon as possible by clicking the following button. Otherwise, you won't receive any updates!</p>
 {% endblock %}
 
-{% block email_button_url %}{% url "user_verify" user.verify_key %}{% endblock %}
+{% block email_button_url %}{% full_url "user_verify" user.verify_key %}{% endblock %}
 
 {% block email_button_text %}Confirm email{% endblock %}

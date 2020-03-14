@@ -19,7 +19,7 @@
         <div class="row">
             <div class="col-md-12">
                 {% if request.user.is_authenticated and not request.user.email_verified %}
-                    <p class="mt-3">Please confirm your email to finish the registration, if you haven't received it you can click <a class="link-colour" href="{% url "user_sendverification" %}">here</a> to sent it again.</p>
+                    <p class="mt-3">Please confirm your email to finish the registration, if you haven't received it you can click <a class="link-colour" href="{% url "user_sendverification" %}">here</a> to send it again.</p>
                 {% else %}
                     <form action="" method="post" class="form">
                         {% csrf_token %}

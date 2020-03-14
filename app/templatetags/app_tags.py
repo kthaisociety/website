@@ -54,4 +54,4 @@ def image_as_base64(image_path):
 
 @register.simple_tag
 def full_url(name, *args):
-    return urljoin(APP_DOMAIN, reverse(name, args=args))
+    return f"//{urljoin(APP_DOMAIN, reverse(name, args=args))}"

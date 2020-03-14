@@ -53,7 +53,7 @@ def image_as_base64(image_path):
 
 @register.simple_tag
 def full_url(name, *args):
-    return f"//{APP_DOMAIN}{reverse(name, args=args)}"
+    return f"https://{APP_DOMAIN}{reverse(name, args=args)}"
 
 
 @register.simple_tag
@@ -61,5 +61,7 @@ def full_static(path):
     # Retrieve assets from production on beta domain
     app_domain_prod = APP_DOMAIN
     if DEBUG and APP_DOMAIN != APP_LOCALHOST and app_domain_prod.count(".") > 1:
-        app_domain_prod = ".".join(app_domain_prod.split(".")[1:])
-    return f"//{app_domain_prod}{STATIC_URL}{path}"
+        app_domain_prod = "https://" + ".".join(app_domain_prod.split(".")[1:])
+    else:
+        app_domain_prod = "https://" + app_domain_prod
+    return f"{app_domain_prod}{STATIC_URL}{path}"

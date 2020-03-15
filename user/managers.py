@@ -69,4 +69,4 @@ class UserManager(BaseUserManager):
         return user
 
     def organisers(self):
-        return super().get_queryset().filter(type=UserType.ORGANISER)
+        return super().get_queryset().filter(type=UserType.ORGANISER).order_by("name", "surname")

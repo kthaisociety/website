@@ -66,7 +66,7 @@
 {% endblock %}
 
 {% block in_body %}
-    <div class="jumbotron jumbotron-fluid mb-5">
+    <div class="jumbotron jumbotron-fluid mb-5" style="background-color: #f6f6f6;">
         <div class="container mt-3 mb-3 pl-5 pr-5 pl-md-0 pr-md-0">
             <div class="row">
                 <div class="col-md-2 w-25 ml-auto mr-auto mb-4 mb-md-0 pr-md-4">
@@ -142,13 +142,46 @@
     <div class="container">
         <div class="row mt-4 mb-0">
             <div class="col-md-12">
-                <p class="mb-0">Hello</p>
+                <h1>Our mission</h1>
+                <p>At KTHAIS, we believe in the creative force of ambitious students to, from the very onset of their careers, explore and shape the future of technology. To this effect, we are inclusive of all backgrounds and seek out collaborations with other parties to achieve maximum impact in all endeavours that spike our curiosity. We organise networking events, educational lectures, workshops, hackathons and research projects for students by students.</p>
+            </div>
+        </div>
+        <div class="row mt-4 mb-0">
+            <div class="col-md-12">
+                <h2 class="text-center mb-4">Our goals</h2>
+                <div class="row text-center pt-2 pb-2">
+                    <div class="col-md-4">
+                        <h1 class="text-main"><i class="fas fa-globe-europe"></i></h1>
+                        <p class="mt-2 mb-0">Provide all students at KTH with working knowledge of AI and its impacts on society in general and their specific field in particular.</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h1 class="text-main"><i class="fas fa-cogs"></i></h1>
+                        <p class="mt-2 mb-0">Cultivate collaboration between academia and industry to promote job placement and business creation.</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h1 class="text-main"><i class="fas fa-project-diagram"></i></h1>
+                        <p class="mt-2 mb-0">Broadcast new insights and results stemming from our activities to further the development and adoption of universally beneficial AI.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4 mb-0 pt-4 pb-4">
+            <div class="col-md-12">
+                <img class="w-100" src="{% static "img/home_1.png" %}" />
             </div>
         </div>
     </div>
     <div class="jumbotron jumbotron-fluid mt-5 mb-0 bg-main-s2 text-white">
         <div class="container container-fluid">
-            Hello
+            <div class="row justify-content-md-center home-organisers">
+                {% for organiser in organisers %}
+                    <div class="col-4 col-md-2 text-center">
+                        <img src="{{ organiser.picture.url }}">
+                        <h6 class="mt-1 mb-2">{{ organiser.full_name }}</h6>
+                        <p class="mb-0" style="line-height: 1;"><small>{{ organiser.description|upper }}</small></p>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}

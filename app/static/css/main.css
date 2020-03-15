@@ -49,6 +49,7 @@ body {
 h1, h2, h3, h4, h5, h6 {
     font-family: "Futura", sans-serif;
     line-height: 0.9 !important;
+    margin-bottom: 1.5rem;
 }
 
 .bg-main {
@@ -308,6 +309,12 @@ h1, h2, h3, h4, h5, h6 {
 
 .event-header {
     height: 450px;
+}
+
+.home-organisers img {
+    width: 75%;
+    border-radius: 50%;
+    margin-bottom: 1rem;
 }
 
 .footer {

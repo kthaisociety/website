@@ -36,9 +36,7 @@ class User(AbstractBaseUser):
     is_active = models.BooleanField(default=True)
 
     # Personal information
-    picture = VersatileImageField("Image", default="user/picture/profile.png")
-    picture_public_participants = models.BooleanField(default=True)
-    picture_public_sponsors_and_recruiters = models.BooleanField(default=True)
+    picture = VersatileImageField("Image", upload_to="user/picture/", default="user/picture/profile.png")
     gender = models.PositiveSmallIntegerField(
         choices=((t.value, t.name) for t in GenderType), default=GenderType.NONE
     )
@@ -53,6 +51,9 @@ class User(AbstractBaseUser):
     graduation_year = models.PositiveIntegerField(
         default=timezone.now().year, blank=True, null=True
     )
+
+    # Details
+    description = models.CharField(max_length=255, blank=True, null=True)
 
     objects = UserManager()
 
@@ -91,16 +92,16 @@ class User(AbstractBaseUser):
         return {
             "name": self.name,
             "surname": self.surname,
+            "full_name": self.full_name,
             "email": self.email,
             "picture": self.picture,
-            "picture_public_participants": self.picture_public_participants,
-            "picture_public_sponsors_and_recruiters": self.picture_public_sponsors_and_recruiters,
             "gender": self.gender,
             "birthday": self.birthday,
             "phone": self.phone,
             "city": self.city,
             "country": self.country,
             "type": self.type,
+            "description": self.description
         }
 
     def disable_verify(self):

@@ -101,7 +101,7 @@ class User(AbstractBaseUser):
             "city": self.city,
             "country": self.country,
             "type": self.type,
-            "description": self.description
+            "description": (self.description if self.description else "")
         }
 
     def disable_verify(self):

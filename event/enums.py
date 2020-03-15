@@ -13,3 +13,11 @@ class EventStatus(enum.IntEnum):
     DRAFT = 0
     PUBLISHED = 1
     DELETED = 2
+
+
+class RegistrationStatus(enum.IntEnum):
+    INTERESTED = 0
+    REQUESTED = 1
+    REGISTERED = 2
+    WAIT_LISTED = 3
+    CANCELLED = 4

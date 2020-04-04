@@ -9,6 +9,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from geopy import Nominatim
 
+from app.consts import UNIVERSITIES, PROGRAMMES
 from user import forms
 from user.enums import GenderType
 from user.models import User
@@ -78,6 +79,25 @@ def user_register(request):
         gender = request.POST.get("gender", None)
         city = request.POST.get("city", None)
         country = request.POST.get("country", None)
+        error_location = False
+        if city and country:
+            try:
+                geolocator = Nominatim()
+                location = geolocator.geocode(f"{city}, {country}", language="en", addressdetails=True)
+                try:
+                    city = location.raw["address"]["city"]
+                except KeyError:
+                    try:
+                        city = location.raw["address"]["village"]
+                    except KeyError:
+                        city = location.raw["address"]["town"]
+                country = location.raw["address"]["country"]
+            except (AttributeError, KeyError):
+                error_location = True
+                messages.error(
+                    request,
+                    f"We haven't been able to locate {city} ({country}), please, check this place exists!",
+                )
         form = {
             "first_name": name,
             "last_name": surname,
@@ -87,24 +107,9 @@ def user_register(request):
             "university": university,
             "programme": degree,
             "graduation_year": graduation_year,
+            "city": city,
+            "country": country
         }
-        geolocator = Nominatim()
-        try:
-            location = geolocator.geocode(f"{city}, {country}", language="en", addressdetails=True)
-            try:
-                city = location.raw["address"]["city"]
-            except KeyError:
-                try:
-                    city = location.raw["address"]["village"]
-                except KeyError:
-                    city = location.raw["address"]["town"]
-            country = location.raw["address"]["country"]
-        except (AttributeError, KeyError):
-            messages.error(
-                request,
-                f"We haven't been able to locate {city} ({country}), please, check this place exists!",
-            )
-        print(city, country)
         missing_required = [
             field_name for field_name, field in form.items() if not field
         ]
@@ -122,18 +127,45 @@ def user_register(request):
             "city": city,
             "country": country,
         }
-        if not missing_required:
+        if not missing_required and not error_location:
             if password != password2:
                 messages.error(request, "Passwords do not match.")
-            if request.user.is_authenticated:
-                try:
-                    request.user.finish_registration(
+            else:
+                university = UNIVERSITIES[int(university)]
+                degree = PROGRAMMES[int(degree)]
+                if request.user.is_authenticated:
+                    try:
+                        request.user.finish_registration(
+                            name=name,
+                            surname=surname,
+                            phone=phone,
+                            university=university,
+                            degree=degree,
+                            graduation_year=graduation_year,
+                            birthday=(
+                                datetime.datetime.strptime(birthday, "%Y-%m-%d").date()
+                                if birthday
+                                else None
+                            ),
+                            gender=(gender if gender else GenderType.NONE),
+                            city=city,
+                            country=country,
+                        )
+                        messages.success(
+                            request, "Thank-you for completing the registration."
+                        )
+                    except ValidationError as e:
+                        for errors in e.error_dict.values():
+                            for msgs in errors:
+                                for msg in msgs:
+                                    messages.error(request, msg + ".")
+                else:
+                    User.objects.create_participant(
+                        email=email,
+                        password=password,
                         name=name,
                         surname=surname,
                         phone=phone,
-                        university=university,
-                        degree=degree,
-                        graduation_year=graduation_year,
                         birthday=(
                             datetime.datetime.strptime(birthday, "%Y-%m-%d").date()
                             if birthday
@@ -142,43 +174,19 @@ def user_register(request):
                         gender=(gender if gender else GenderType.NONE),
                         city=city,
                         country=country,
+                        university=university,
+                        degree=degree,
+                        graduation_year=graduation_year,
                     )
+                    user = auth.authenticate(email=email, password=password)
+                    send_verify(user)
+                    auth.login(request, user)
                     messages.success(
-                        request, "Thank-you for completing the registration."
+                        request,
+                        "Thank-you for registering, remember to confirm your email.",
                     )
-                except ValidationError as e:
-                    for errors in e.error_dict.values():
-                        for msgs in errors:
-                            for msg in msgs:
-                                messages.error(request, msg + ".")
-            else:
-                User.objects.create_participant(
-                    email=email,
-                    password=password,
-                    name=name,
-                    surname=surname,
-                    phone=phone,
-                    birthday=(
-                        datetime.datetime.strptime(birthday, "%Y-%m-%d").date()
-                        if birthday
-                        else None
-                    ),
-                    gender=(gender if gender else GenderType.NONE),
-                    city=city,
-                    country=country,
-                    university=university,
-                    degree=degree,
-                    graduation_year=graduation_year,
-                )
-                user = auth.authenticate(email=email, password=password)
-                send_verify(user)
-                auth.login(request, user)
-                messages.success(
-                    request,
-                    "Thank-you for registering, remember to confirm your email.",
-                )
-            return HttpResponseRedirect(reverse("app_home"))
-        else:
+                return HttpResponseRedirect(reverse("app_home"))
+        elif missing_required:
             messages.error(
                 request,
                 ", ".join(missing_required[:-1]).replace("_", " ").capitalize()

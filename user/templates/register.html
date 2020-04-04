@@ -100,12 +100,12 @@
                         </div>
                         <div class="form-row mt-3">
                             <div class="col-md-6">
-                                <label for="id_city">City</label>
-                                <input type="text" name="city" maxlength="225" class="form-control" placeholder="Stockholm" id="id_city" {% if form.city %}value="{{ form.city }}"{% endif %}>
+                                <label for="id_city">City <small>(required)</small></label>
+                                <input type="text" name="city" maxlength="225" class="form-control" placeholder="Stockholm" id="id_city" {% if form.city %}value="{{ form.city }}"{% elif request.user.city %}value="{{ request.user.city }}"{% endif %}>
                             </div>
                             <div class="col-md-6">
-                                <label for="id_country">Country</label>
-                                <input type="text" name="country" maxlength="225" class="form-control" placeholder="Sweden" id="id_country" {% if form.country %}value="{{ form.country }}"{% endif %}>
+                                <label for="id_country">Country <small>(required)</small></label>
+                                <input type="text" name="country" maxlength="225" class="form-control" placeholder="Sweden" id="id_country" {% if form.country %}value="{{ form.country }}"{% elif request.user.country %}value="{{ request.user.country }}"{% endif %}>
                             </div>
                         </div>
                         <div class="form-group mt-3">

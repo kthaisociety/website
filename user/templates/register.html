@@ -74,7 +74,7 @@
                                 <select name="graduation" class="form-control" id="id_Graduation">
                                     {% for i in "01234567"|make_list %}
                                         {% with forloop.counter0|add:"-2"|year_from_now as year %}
-                                            <option value="{{ year }}" {% if form.graduation_year == year %}selected=""{% elif form.graduation_year == year %}selected=""{% elif if forloop.counter0 == 2 and not form.graduation_year %}selected=""{% endif %}>{{ year }}</option>
+                                            <option value="{{ year }}" {% if form.graduation_year == year %}selected=""{% elif form.graduation_year == year %}selected=""{% elif forloop.counter0 == 2 and not form.graduation_year %}selected=""{% endif %}>{{ year }}</option>
                                         {% endwith %}
                                     {% endfor %}
                                     <option value="0">Other</option>

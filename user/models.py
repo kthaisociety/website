@@ -54,6 +54,7 @@ class User(AbstractBaseUser):
 
     # Details
     description = models.CharField(max_length=255, blank=True, null=True)
+    website = models.CharField(max_length=255, blank=True, null=True)
 
     objects = UserManager()
 
@@ -101,7 +102,8 @@ class User(AbstractBaseUser):
             "city": self.city,
             "country": self.country,
             "type": self.type,
-            "description": (self.description if self.description else "")
+            "description": (self.description if self.description else ""),
+            "website": (self.website if self.website else "")
         }
 
     def disable_verify(self):

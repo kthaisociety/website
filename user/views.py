@@ -135,6 +135,10 @@ def user_register(request):
             else:
                 university = UNIVERSITIES[int(university)]
                 degree = PROGRAMMES[int(degree)]
+                if gender:
+                    gender = GenderType(int(gender))
+                else:
+                    gender = GenderType.NONE
                 if request.user.is_authenticated:
                     try:
                         request.user.finish_registration(
@@ -149,7 +153,7 @@ def user_register(request):
                                 if birthday
                                 else None
                             ),
-                            gender=(gender if gender else GenderType.NONE),
+                            gender=gender,
                             city=city,
                             country=country,
                         )
@@ -173,7 +177,7 @@ def user_register(request):
                             if birthday
                             else None
                         ),
-                        gender=(gender if gender else GenderType.NONE),
+                        gender=gender,
                         city=city,
                         country=country,
                         university=university,

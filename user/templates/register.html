@@ -65,7 +65,7 @@
                                 <label for="id_degree">Programme <small>(required)</small></label>
                                 <select name="degree" class="form-control" id="id_degree">
                                     {% for programme in const_programmes %}
-                                        <option value="{{ forloop.counter0 }}" {% if programme == "Machine Learning" %}selected=""{% endif %}>{{ programme }}</option>
+                                        <option value="{{ forloop.counter0 }}" {% if form.degree == "Machine Learning" %}selected=""{% elif request.user.degree == programme %}selected=""{% elif programme == "Machine Learning" and not form.degree %}selected=""{% endif %}>{{ programme }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -74,7 +74,7 @@
                                 <select name="graduation" class="form-control" id="id_Graduation">
                                     {% for i in "01234567"|make_list %}
                                         {% with forloop.counter0|add:"-2"|year_from_now as year %}
-                                            <option value="{{ year }}" {% if forloop.counter0 == 2 and not form.graduation_year %}selected=""{% elif form.graduation_year == year %}selected=""{% endif %}>{{ year }}</option>
+                                            <option value="{{ year }}" {% if form.graduation_year == year %}selected=""{% elif form.graduation_year == year %}selected=""{% elif if forloop.counter0 == 2 and not form.graduation_year %}selected=""{% endif %}>{{ year }}</option>
                                         {% endwith %}
                                     {% endfor %}
                                     <option value="0">Other</option>
@@ -91,10 +91,10 @@
                                 <label for="id_gender">Gender</label>
                                 <select name="gender" class="form-control" id="id_gender">
                                     <option  {% if not form.gender %}selected=""{% endif %} disabled>―</option>
-                                    <option  {% if form.gender == 0 %}selected=""{% endif %} value="0">Prefer not to say</option>
-                                    <option {% if form.gender == 1 %}selected=""{% endif %} value="1">Female</option>
-                                    <option {% if form.gender == 2 %}selected=""{% endif %} value="2">Male</option>
-                                    <option {% if form.gender == 3 %}selected=""{% endif %} value="3">Non-binary</option>
+                                    <option  {% if form.gender == "0" %}selected=""{% elif request.user.gender == "0" %}selected=""{% endif %} value="0">Prefer not to say</option>
+                                    <option {% if form.gender == "1" %}selected=""{% elif request.user.gender == "1" %}selected=""{% endif %} value="1">Female</option>
+                                    <option {% if form.gender == "2" %}selected=""{% elif request.user.gender == "2" %}selected=""{% endif %} value="2">Male</option>
+                                    <option {% if form.gender == "3" %}selected=""{% elif request.user.gender == "3" %}selected=""{% endif %} value="3">Non-binary</option>
                                 </select>
                             </div>
                         </div>

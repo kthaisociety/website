@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% load app_tags %}
+{% load bootstrap4 %}
+{% load i18n %}
+
+{% block head_title %}{% if request.user.is_authenticated %}Finish registering{% else %}Register{% endif %}{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                {% if request.user.is_authenticated %}
+                    <h1>Finish registering</h1>
+                {% else %}
+                    <h1>Register</h1>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                {% if request.user.is_authenticated and not request.user.email_verified %}
+                    <p class="mt-3">Please confirm your email to finish the registration, if you haven't received it you can click <a class="link-colour" href="{% url "user_sendverification" %}">here</a> to send it again.</p>
+                {% else %}
+                    <form action="" method="post" class="form">
+                        {% csrf_token %}
+                        {% if request.user.is_authenticated %}
+                            <p class="mt-3">Please finish entering the following details to finish the registration.</p>
+                        {% endif %}
+                        <div class="form-group">
+                            <label for="id_name">First name <small>(required)</small></label>
+                            <input type="text" name="name" maxlength="225" class="form-control" placeholder="Daniel" id="id_name" {% if form.first_name %}value="{{ form.first_name }}"{% elif request.user.name %}value="{{ request.user.name }}"{% endif %}>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_surname">Last name <small>(required)</small></label>
+                            <input type="text" name="surname" maxlength="225" class="form-control" placeholder="Stenberg" id="id_surname" {% if form.last_name %}value="{{ form.last_name }}"{% elif request.user.surname %}value="{{ request.user.surname }}"{% endif %}>
+                        </div>
+                        {% if not request.user.email_verified %}
+                            <div class="form-group">
+                                <label for="id_email">Email <small>(required)</small></label>
+                                <input type="email" name="email" maxlength="225" class="form-control" placeholder="curl@kthais.com" id="id_email" {% if form.email %}value="{{ form.email }}"{% endif %}>
+                            </div>
+                            <div class="form-group">
+                                <label for="id_password">Password <small>(required)</small></label>
+                                <input type="password" name="password" maxlength="225" class="form-control" placeholder="****************" id="id_password">
+                            </div>
+                            <div class="form-group">
+                                <label for="id_password2">Repeat password <small>(required)</small></label>
+                                <input type="password" name="password2" maxlength="225" class="form-control" placeholder="****************" id="id_password2">
+                            </div>
+                        {% endif %}
+                        <div class="form-group">
+                            <label for="id_phone">Phone</label>
+                            <input type="text" name="phone" maxlength="225" class="form-control" placeholder="070-000 00 00" id="id_phone" {% if form.phone %}value="{{ form.phone }}"{% endif %}>
+                        </div>
+                        <div class="form-row mt-3">
+                            <div class="col-md-4">
+                                <label for="id_university">University <small>(required)</small></label>
+                                <select name="university" class="form-control" id="id_university">
+                                    {% for university in const_universities %}
+                                        <option value="{{ forloop.counter0 }}" {% if university == "KTH Royal Institute of Technology" %}selected=""{% endif %}>{{ university }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="id_degree">Programme <small>(required)</small></label>
+                                <select name="degree" class="form-control" id="id_degree">
+                                    {% for programme in const_programmes %}
+                                        <option value="{{ forloop.counter0 }}" {% if programme == "Machine Learning" %}selected=""{% endif %}>{{ programme }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="id_graduation">Graduation year <small>(required)</small></label>
+                                <select name="graduation" class="form-control" id="id_Graduation">
+                                    {% for i in "01234567"|make_list %}
+                                        {% with forloop.counter0|add:"-2"|year_from_now as year %}
+                                            <option value="{{ year }}" {% if forloop.counter0 == 2 and not form.graduation_year %}selected=""{% elif form.graduation_year == year %}selected=""{% endif %}>{{ year }}</option>
+                                        {% endwith %}
+                                    {% endfor %}
+                                    <option value="0">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <p class="mt-3">Please note the following information is only for demographic and statistic purposes.</p>
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <label for="id_birthday">Birthday</label>
+                                <input type="date" name="birthday" class="form-control" placeholder="1986-09-17" id="id_birthday" {% if form.birthday %}value="{{ form.birthday }}"{% endif %}>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_gender">Gender</label>
+                                <select name="gender" class="form-control" id="id_gender">
+                                    <option  {% if not form.gender %}selected=""{% endif %} disabled>―</option>
+                                    <option  {% if form.gender == 0 %}selected=""{% endif %} value="0">Prefer not to say</option>
+                                    <option {% if form.gender == 1 %}selected=""{% endif %} value="1">Female</option>
+                                    <option {% if form.gender == 2 %}selected=""{% endif %} value="2">Male</option>
+                                    <option {% if form.gender == 3 %}selected=""{% endif %} value="3">Non-binary</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row mt-3">
+                            <div class="col-md-6">
+                                <label for="id_city">City <small>(required)</small></label>
+                                <input type="text" name="city" maxlength="225" class="form-control" placeholder="Stockholm" id="id_city" {% if form.city %}value="{{ form.city }}"{% elif request.user.city %}value="{{ request.user.city }}"{% endif %}>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_country">Country <small>(required)</small></label>
+                                <input type="text" name="country" maxlength="225" class="form-control" placeholder="Sweden" id="id_country" {% if form.country %}value="{{ form.country }}"{% elif request.user.country %}value="{{ request.user.country }}"{% endif %}>
+                            </div>
+                        </div>
+                        <div class="form-group mt-3">
+                            <input type="checkbox" name="terms" class="mr-1 form-check-inline" id="id_terms" required="">
+                            <label for="id_terms">I've read, understand and accept the <a href="{% url 'page_page' 'legal' 'terms-and-conditions' %}" class="link-colour" target="_blank">Terms & Conditions</a> and the <a href="{% url 'page_page' 'legal' 'privacy-and-cookies' %}" class="link-colour" target="_blank">Privacy and Cookies Policy</a>.</label>
+                        </div>
+                        <div class="form-group text-center mt-4">
+                            {% if request.user.is_authenticated %}
+                                <button class="btn btn-main" type="submit">Save</button>
+                            {% else %}
+                                <button class="btn btn-main" type="submit">Register</button>
+                                <a class="link-unstyled" href="{% url "social:begin" "google-oauth2" %}">
+                                    <button type="button" class="btn btn-main2 ml-2">Register with Google <i class="fab fa-google ml-1"></i></button>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        window.onload = function() {
+            const password = document.getElementById("id_password");
+            password.onpaste = function(e) {
+                e.preventDefault();
+            };
+            const password2 = document.getElementById("id_password2");
+            password2.onpaste = function(e) {
+                e.preventDefault();
+            };
+        }
+    </script>
+{% endblock %}

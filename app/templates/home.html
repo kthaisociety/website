@@ -6,10 +6,10 @@
 
 {% block pre_body %}
     {% if articles %}
-        <div class="jumbotron jumbotron-fluid">
-            <div class="container">
-                <h1 class="display-4">{{ articles.0.title }}</h1>
-                <p class="lead">{{ articles.0.lead }}</p>
+        <div class="jumbotron jumbotron-fluid d-flex mb-0" style="background-image: linear-gradient(to bottom, rgba(38,54,66,0.6) 0%,rgba(38,54,66,0.6) 100%), url('{{ articles.0.picture.url }}'); background-size: cover; background-position: center center; min-height: 500px;">
+            <div class="container my-auto text-center text-lg-left">
+                <h1 class="display-4 mb-5 mb-lg-4 text-white">{{ articles.0.title }}</h1>
+                <p class="lead text-white">{{ articles.0.lead }}</p>
                 <a class="link-unstyled" href="{% url "news_article" articles.0.created_at.year articles.0.created_at.month articles.0.created_at.day articles.0.slug %}">
                     <button type="button" class="btn btn-main mb-2">Read more</button>
                 </a>
@@ -66,14 +66,30 @@
 {% endblock %}
 
 {% block in_body %}
-    <div class="container container-body">
+    <div class="jumbotron jumbotron-fluid mb-5" style="background-color: #f6f6f6;">
+        <div class="container mt-3 mb-3 pl-5 pr-5 pl-md-0 pr-md-0">
+            <div class="row">
+                <div class="col-md-2 w-25 ml-auto mr-auto mb-4 mb-md-0 pr-md-4">
+                    <img src="{% static 'img/logo_square_plain.png' %}" alt="KTHAIS" class="w-100">
+                </div>
+                <div class="col-md-10">
+                    <h2 class="text-center text-md-left text-main mb-4">{{ hello }}</h2>
+                    <p class="text-center text-md-left mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi lobortis consequat nisi, in accumsan est dapibus at. Proin dignissim imperdiet ante ut venenatis. Phasellus a leo non libero scelerisque laoreet quis eu lorem. Donec sollicitudin turpis ultrices, aliquam nisi non, cursus nibh. Fusce faucibus est vulputate, aliquet mauris in, scelerisque eros. Curabitur sodales justo ac sem vehicula aliquam. Nulla a metus ipsum.</p>
+                    {% if not request.user.is_authenticated %}
+                        <a class="link-unstyled mt-3 mb-0 d-block" href="{% url "user_register" %}"><p class="text-main mb-0">Register now <i class="fas fa-arrow-right ml-1"></i></p></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
         {% if articles|length > 2 or articles|length > 1 and events %}
-            <div class="row mb-2">
+            <div class="row mt-0 mb-0">
                 <div class="col-md-6">
-                    <div class="card flex-md-row mb-4 shadow-sm h-md-250">
+                    <div class="card flex-md-row mt-0 mb-0 shadow-sm h-md-250">
                         <div class="card-body d-flex flex-column align-items-start">
                             <strong class="d-inline-block mb-2 text-orange"><a class="link-unstyled" href="{% url "news_articles" %}">Article</a></strong>
-                            <h3 class="pb-1 line-max-2">
+                            <h3 class="pb-2 line-max-2">
                                 <a class="text-dark link-unstyled" href="{% url "news_article" articles.1.created_at.year articles.1.created_at.month articles.1.created_at.day articles.1.slug %}">{{ articles.1.title }}</a>
                             </h3>
                         <div class="mb-1 text-muted">{{ articles.1.created_at|date:"M j" }}</div>
@@ -87,10 +103,10 @@
                 </div>
                 {% if events %}
                     <div class="col-md-6">
-                        <div class="card flex-md-row mb-4 shadow-sm h-md-250">
+                        <div class="card flex-md-row mt-0 mb-0 shadow-sm h-md-250">
                             <div class="card-body d-flex flex-column align-items-start">
                                 <strong class="d-inline-block mb-2 text-orange"><a class="link-unstyled" href="{% url "events_events" %}">Event</a></strong>
-                                <h3 class="pb-1 line-max-2">
+                                <h3 class="pb-2 line-max-2">
                                     <a class="text-dark link-unstyled" href="{{ events.0.url }}">{{ events.0.name }}</a>
                                 </h3>
                             <div class="mb-1 text-muted">{{ events.0.starts_at|date:"M j" }}</div>
@@ -104,10 +120,10 @@
                     </div>
                 {% else %}
                     <div class="col-md-6">
-                        <div class="card flex-md-row mb-4 shadow-sm h-md-250">
+                        <div class="card flex-md-row mt-0 mb-0 shadow-sm h-md-250">
                             <div class="card-body d-flex flex-column align-items-start">
                                 <strong class="d-inline-block mb-2 text-orange"><a class="link-unstyled" href="{% url "news_articles" %}">Article</a></strong>
-                                <h3 class="pb-1 line-max-2">
+                                <h3 class="pb-2 line-max-2">
                                     <a class="text-dark link-unstyled" href="{% url "news_article" articles.2.created_at.year articles.2.created_at.month articles.2.created_at.day articles.2.slug %}">{{ articles.2.title }}</a>
                                 </h3>
                             <div class="mb-1 text-muted">{{ articles.2.created_at|date:"M j" }}</div>
@@ -123,13 +139,54 @@
             </div>
         {% endif %}
     </div>
-    <div class="jumbotron jumbotron-fluid white">
-        <div class="container">
-            <h1 class="display-4">{{ articles.0.title }}</h1>
-            <p class="lead">{{ articles.0.lead }}</p>
-            <a class="link-unstyled" href="{% url "news_article" articles.0.created_at.year articles.0.created_at.month articles.0.created_at.day articles.0.slug %}">
-                <button type="button" class="btn btn-main mb-2">Read more</button>
-            </a>
+    <div class="container">
+        <div class="row mt-4 mb-0">
+            <div class="col-md-12">
+                <h1>Our mission</h1>
+                <p>At KTHAIS, we believe in the creative force of ambitious students to, from the very onset of their careers, explore and shape the future of technology. To this effect, we are inclusive of all backgrounds and seek out collaborations with other parties to achieve maximum impact in all endeavours that spike our curiosity. We organise networking events, educational lectures, workshops, hackathons and research projects for students by students.</p>
+            </div>
+        </div>
+        <div class="row mt-4 mb-0">
+            <div class="col-md-12">
+                <h2 class="text-center mb-4">Our goals</h2>
+                <div class="row text-center pt-2 pb-2">
+                    <div class="col-md-4">
+                        <h1 class="text-main"><i class="fas fa-globe-europe"></i></h1>
+                        <p class="mt-2 mb-0">Provide all students at KTH with working knowledge of AI and its impacts on society in general and their specific field in particular.</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h1 class="text-main"><i class="fas fa-cogs"></i></h1>
+                        <p class="mt-2 mb-0">Cultivate collaboration between academia and industry to promote job placement and business creation.</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h1 class="text-main"><i class="fas fa-project-diagram"></i></h1>
+                        <p class="mt-2 mb-0">Broadcast new insights and results stemming from our activities to further the development and adoption of universally beneficial AI.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4 mb-0 pt-4 pb-4">
+            <div class="col-md-12">
+                <img class="w-100" src="{% static "img/home_1.png" %}" />
+            </div>
+        </div>
+    </div>
+    <div class="jumbotron jumbotron-fluid mt-5 mb-0 bg-main-s2 text-white">
+        <div class="container container-fluid">
+            <h2 class="text-center mt-0 mb-5">Project group</h2>
+            <div class="row justify-content-md-center home-organisers">
+                {% for organiser in organisers %}
+                    <div class="col-4 col-md-2 text-center">
+                        {% if organiser.website %}<a href="{{ organiser.website }}" target="_blank" class="link-unstyled">{% endif %}
+                        <img src="{{ organiser.picture.url }}">
+                        <h6 class="mt-1 mb-2">{{ organiser.full_name }}</h6>
+                        {% if organiser.description %}
+                            <p class="mb-0" style="line-height: 1;"><small>{{ organiser.description|upper }}</small></p>
+                        {% endif %}
+                        {% if organiser.website %}</a>{% endif %}
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}

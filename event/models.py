@@ -5,7 +5,7 @@ from io import StringIO
 
 from django_markup.markup import formatter
 
-from app.variables import APP_NAME
+from app.variables import APP_NAME, APP_ATTENDANCE_RATIO
 
 from django.db import models
 from django.urls import reverse
@@ -14,7 +14,7 @@ from django.utils.html import strip_tags
 from django.utils.text import slugify
 from versatileimagefield.fields import VersatileImageField
 
-from event.enums import EventType, EventStatus
+from event.enums import EventType, EventStatus, RegistrationStatus
 from event.managers import EventManager
 
 
@@ -35,6 +35,8 @@ class Event(models.Model):
     ends_at = models.DateTimeField()
     signup_starts_at = models.DateTimeField(blank=True, null=True)
     signup_ends_at = models.DateTimeField(blank=True, null=True)
+    attendance_target = models.IntegerField(blank=True, null=True)
+    attendance_limit = models.IntegerField(blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -97,7 +99,26 @@ class Event(models.Model):
     def save(self, *args, **kwargs):
         if not self.code:
             self.code = slugify(self.name)
+        if self.attendance_target and not self.attendance_limit:
+            self.attendance_limit = APP_ATTENDANCE_RATIO * self.attendance_target
         super().save()
 
     def __str__(self):
         return self.name
+
+
+class Registration(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    event = models.ForeignKey(
+        "event.Event", on_delete=models.PROTECT, related_name="registrations"
+    )
+    user = models.ForeignKey(
+        "user.User", on_delete=models.PROTECT, related_name="registrations"
+    )
+    status = models.PositiveSmallIntegerField(
+        choices=((s.value, s.name) for s in RegistrationStatus),
+        default=RegistrationStatus.REQUESTED,
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

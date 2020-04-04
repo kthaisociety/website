@@ -26,8 +26,7 @@ from user.utils import get_user_by_picture
 
 
 def home(request):
-    current_data = dict()
-    return render(request, "home.html", current_data)
+    return render(request, "home.html", {})
 
 
 def maintenance(request):
@@ -38,29 +37,11 @@ def files(request, file_):
     path, file_name = os.path.split(file_)
     if request.user.is_authenticated:
         if path in ["user/picture", "__sized__/user/picture"]:
-            user = get_user_by_picture(picture=file_name)
-            if file_name in ["profile.png", "profile-crop-c0-5__0-5-500x500.png"] or (
-                user
-                and (
-                    request.user.type
-                    in [
-                        UserType.ORGANISER.value,
-                        UserType.VOLUNTEER.value,
-                        UserType.MENTOR.value,
-                    ]
-                    or user.picture_public_participants
-                    and request.user.type == UserType.PARTICIPANT.value
-                    or user.picture_public_sponsors_and_recruiters
-                    and request.user.type
-                    in [UserType.SPONSOR.value, UserType.RECRUITER.value]
-                    or user == request.user
-                )
-            ):
-                if file_[:7] != "/files/":
-                    file_ = "/files/" + file_
-                response = StreamingHttpResponse(open(settings.BASE_DIR + file_, "rb"))
-                response["Content-Type"] = ""
-                return response
+            if file_[:7] != "/files/":
+                file_ = "/files/" + file_
+            response = StreamingHttpResponse(open(settings.BASE_DIR + file_, "rb"))
+            response["Content-Type"] = ""
+            return response
         else:
             HttpResponseNotFound()
     if path in [
@@ -76,7 +57,6 @@ def files(request, file_):
         return response
     else:
         HttpResponseNotFound()
-    # TODO: After login is implemented uncomment
     # return HttpResponseRedirect("%s?next=%s" % (reverse("user_login"), request.path))
 
 

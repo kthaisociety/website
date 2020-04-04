@@ -1,5 +1,6 @@
 bleach~=3.1.0
 bleach-whitelist~=0.0.10
+celery~=4.3.0
 Django==2.2.10
 django-bootstrap4~=0.0.8
 Django==2.2.10
@@ -8,7 +9,10 @@ django-markup~=1.4.1
 django-social-share~=1.4.0
 django-versatileimagefield~=1.10
 gunicorn~=19.9.0
+html2text~=2018.1.9
 markdown~=3.1.1
 pyyaml~=5.1.1
 requests~=2.22.0
 sentry-sdk==0.13.1
+social-auth-app-django~=3.1.0
+geopy~=1.21.0

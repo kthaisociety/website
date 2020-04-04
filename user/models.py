@@ -1,75 +1,29 @@
 import uuid
 
-from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.base_user import AbstractBaseUser
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 from versatileimagefield.fields import VersatileImageField
 
 from app.utils import is_email_organiser
-from user.enums import UserType, SexType
-
-
-class UserManager(BaseUserManager):
-    def create_participant(
-        self, email, name, surname, password, phone, birthday, sex, city, country
-    ):
-        if not email:
-            raise ValueError("A user must have an email")
-
-        user = self.model(
-            email=email,
-            name=name,
-            surname=surname,
-            type=UserType.PARTICIPANT.value,
-            phone=phone,
-            birthday=birthday,
-            sex=sex,
-            city=city,
-            country=country,
-        )
-
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-    def create_user(
-        self,
-        email,
-        name,
-        surname,
-        type=UserType.PARTICIPANT.value,
-        password=None,
-        is_admin=False,
-    ):
-        if not email:
-            raise ValueError("A user must have an email")
-
-        user = self.model(
-            email=email, name=name, surname=surname, type=type, is_admin=is_admin
-        )
-
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-    def create_superuser(self, email, name, surname, password):
-        user = self.create_user(
-            email, name, surname, UserType.ORGANISER.value, password, is_admin=True
-        )
-        user.save(using=self._db)
-        return user
+from user.enums import UserType, GenderType
+from user.managers import UserManager
 
 
 class User(AbstractBaseUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(verbose_name="First name", max_length=255)
-    surname = models.CharField(verbose_name="Last name", max_length=255)
+    surname = models.CharField(
+        verbose_name="Last name", max_length=255, blank=True, null=True
+    )
 
     email_verified = models.BooleanField(default=False)
     verify_key = models.CharField(max_length=127, blank=True, null=True)
     verify_expiration = models.DateTimeField(default=timezone.now)
+
+    registration_finished = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
@@ -82,16 +36,27 @@ class User(AbstractBaseUser):
     is_active = models.BooleanField(default=True)
 
     # Personal information
-    picture = VersatileImageField("Image", default="user/picture/profile.png")
-    picture_public_participants = models.BooleanField(default=True)
-    picture_public_sponsors_and_recruiters = models.BooleanField(default=True)
-    sex = models.PositiveSmallIntegerField(
-        choices=((t.value, t.name) for t in SexType), default=SexType.NONE
+    picture = VersatileImageField(
+        "Image", upload_to="user/picture/", default="user/picture/profile.png"
+    )
+    gender = models.PositiveSmallIntegerField(
+        choices=((t.value, t.name) for t in GenderType), default=GenderType.NONE
     )
     birthday = models.DateField(blank=True, null=True)
     phone = models.CharField(max_length=255, blank=True, null=True)
     city = models.CharField(max_length=255, blank=True, null=True)
     country = models.CharField(max_length=255, blank=True, null=True)
+
+    # University
+    university = models.CharField(max_length=255, blank=True, null=True)
+    degree = models.CharField(max_length=255, blank=True, null=True)
+    graduation_year = models.PositiveIntegerField(
+        default=timezone.now().year, blank=True, null=True
+    )
+
+    # Details
+    description = models.CharField(max_length=255, blank=True, null=True)
+    website = models.CharField(max_length=255, blank=True, null=True)
 
     objects = UserManager()
 
@@ -119,7 +84,9 @@ class User(AbstractBaseUser):
 
     @property
     def full_name(self):
-        return self.name + " " + self.surname
+        if self.surname:
+            return self.name + " " + self.surname
+        return self.name
 
     def __str__(self):
         return self.full_name
@@ -128,16 +95,17 @@ class User(AbstractBaseUser):
         return {
             "name": self.name,
             "surname": self.surname,
+            "full_name": self.full_name,
             "email": self.email,
             "picture": self.picture,
-            "picture_public_participants": self.picture_public_participants,
-            "picture_public_sponsors_and_recruiters": self.picture_public_sponsors_and_recruiters,
-            "sex": self.sex,
+            "gender": self.gender,
             "birthday": self.birthday,
             "phone": self.phone,
             "city": self.city,
             "country": self.country,
             "type": self.type,
+            "description": (self.description if self.description else ""),
+            "website": (self.website if self.website else ""),
         }
 
     def disable_verify(self):
@@ -160,6 +128,32 @@ class User(AbstractBaseUser):
         self.is_active = False
         self.save()
 
+    def finish_registration(
+        self,
+        name,
+        surname,
+        phone,
+        university,
+        degree,
+        graduation_year,
+        birthday,
+        gender,
+        city,
+        country,
+    ):
+        self.name = name
+        self.surname = surname
+        self.phone = phone
+        self.university = university
+        self.degree = degree
+        self.graduation_year = graduation_year
+        self.birthday = birthday
+        self.gender = gender
+        self.city = city
+        self.country = country
+        self.registration_finished = True
+        self.save()
+
     def clean(self):
         messages = dict()
         # TODO: Check properly if 14 already or not
@@ -174,4 +168,14 @@ class User(AbstractBaseUser):
         self.clean()
         if is_email_organiser(self.email):
             self.type = UserType.ORGANISER.value
+        return super().save(*args, **kwargs)
+
+
+class GoogleUser(User):
+    class Meta:
+        proxy = True
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        self.email_verified = True
         return super().save(*args, **kwargs)

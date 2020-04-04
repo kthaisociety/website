@@ -40,13 +40,14 @@
                                 <ul class="navbar-nav">
                                     <li class="nav-item">
                                         {% if request.user.is_authenticated %}
-                                            {% if request.user.email_verified %}
+                                            {% if request.user.email_verified and request.user.is_admin %}
                                                 <small class="ml-2"><a class="link-main" href="{% url 'admin:index' %}">Admin</a></small>
                                             {% endif %}
                                             <small class="ml-2"><a class="link-main" href="">Settings</a></small>
-                                            <small class="ml-2"><a class="link-main" href="">Log out</a></small>
+                                            <small class="ml-2"><a class="link-main" href="{% url 'user_logout' %}">Logout</a></small>
                                         {% else %}
-                                            <small class="ml-2"><a class="link-main" href="">Log in</a></small>
+                                            <small class="ml-2"><a class="link-main" href="{% url 'user_login' %}">Login</a></small>
+                                            <small class="ml-2"><a class="link-main" href="{% url 'user_register' %}">Register</a></small>
                                         {% endif %}
                                     </li>
                                 </ul>
@@ -57,7 +58,7 @@
                 <nav class="navbar navbar-expand-lg navbar-dark bg-main pt-3 pb-3">
                     <div class="container">
                         <a class="navbar-brand" href="{% url 'app_home' %}">
-                            <img src="{% static 'img/logo_text_white.png' %}" width="128" height="24" alt="">
+                            <img src="{% static 'img/logo_text_white.png' %}" width="128" height="24" alt="KTHAIS">
                         </a>
                         {% if not maintenance_mode %}
                             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,6 +78,32 @@
                         {% endif %}
                     </div>
                 </nav>
+                {% if messages %}
+                    <nav class="navbar-top navbar navbar-expand-lg navbar-light bg-main2 text-white">
+                        <div class="container">
+                            <div class="row">
+                                {% for message in messages %}
+                                    <div class="col-md-12">
+                                        <p class="navbar-nav mr-auto pt-2 pb-2">
+                                            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                                                <i class="fas fa-exclamation-circle mr-2" style="font-size: 16px;"></i>
+                                            {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                                                <i class="fas fa-exclamation-circle mr-2" style="font-size: 16px;"></i>
+                                            {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                                                <i class="fas fa-check-circle mr-2" style="font-size: 16px;"></i>
+                                            {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                                                <i class="fas fa-info-circle mr-2" style="font-size: 16px;"></i>
+                                            {% elif message.level == DEFAULT_MESSAGE_LEVELS.DEBUG %}
+                                                <i class="fas fa-question-circle mr-2" style="font-size: 16px;"></i>
+                                            {% endif %}
+                                            {{ message }}
+                                        </p>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </nav>
+                {% endif %}
             {% endblock %}
             {% block body %}
                 {% block pre_body %}
@@ -103,7 +130,7 @@
                                                             {% if event.code != current_slug and forloop.counter0 < 3 %}
                                                                 <a class="link-unstyled" href="{{ event.url }}">
                                                                     <div class="media">
-                                                                        <img class="mr-2 rounded" style="width: 32px; height: 32px;" src="{{ event.picture.crop.100x100 }}" data-holder-rendered="true">
+                                                                        <img class="mr-2 rounded" style="width: 32px; height: 32px;" src="{{ event.picture.crop.150x150 }}" data-holder-rendered="true">
                                                                         <p class="media-body media-body-event pb-3 mb-0 pt-0 small lh-125">
                                                                             <strong class="d-block">{{ event.name }}</strong>
                                                                             {{ event.starts_at|date:"F j, Y" }} / {{ event.location }}
@@ -126,7 +153,7 @@
                                                             {% if article.slug != current_slug and forloop.counter0 < 3 %}
                                                                 <a class="link-unstyled" href="{{ article.url }}">
                                                                     <div class="card mt-4">
-                                                                        <img class="card-img-top" src="{{ article.picture.crop.250x150 }}">
+                                                                        <img class="card-img-top" src="{{ article.picture.crop.500x300 }}">
                                                                         <div class="card-body">
                                                                             <h5>{{ article.title }}</h5>
                                                                             <p class="card-text">{{ article.body_plaintext|truncatewords:10 }}</p>
@@ -191,5 +218,7 @@
         <script src="{% static 'js/bootstrap.js' %}"></script>
         <script src="{% static 'js/apexcharts.js' %}"></script>
         <script src="{% static "cookielaw/js/cookielaw.js"%}" type="text/javascript"></script>
+        {% block scripts %}
+        {% endblock %}
     </body>
 </html>

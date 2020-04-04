@@ -69,7 +69,7 @@ class Migration(migrations.Migration):
                     "sex",
                     models.PositiveSmallIntegerField(
                         choices=[(0, "NONE"), (1, "FEMALE"), (2, "MALE")],
-                        default=user.enums.SexType(0),
+                        default=user.enums.GenderType(0),
                     ),
                 ),
                 ("birthday", models.DateField(blank=True, null=True)),

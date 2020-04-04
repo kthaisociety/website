@@ -83,7 +83,9 @@ def user_register(request):
         if city and country:
             try:
                 geolocator = Nominatim()
-                location = geolocator.geocode(f"{city}, {country}", language="en", addressdetails=True)
+                location = geolocator.geocode(
+                    f"{city}, {country}", language="en", addressdetails=True
+                )
                 try:
                     city = location.raw["address"]["city"]
                 except KeyError:
@@ -108,7 +110,7 @@ def user_register(request):
             "programme": degree,
             "graduation_year": graduation_year,
             "city": city,
-            "country": country
+            "country": country,
         }
         missing_required = [
             field_name for field_name, field in form.items() if not field

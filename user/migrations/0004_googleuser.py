@@ -5,20 +5,13 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('user', '0003_user_registration_finished'),
-    ]
+    dependencies = [("user", "0003_user_registration_finished")]
 
     operations = [
         migrations.CreateModel(
-            name='GoogleUser',
-            fields=[
-            ],
-            options={
-                'proxy': True,
-                'indexes': [],
-                'constraints': [],
-            },
-            bases=('user.user',),
-        ),
+            name="GoogleUser",
+            fields=[],
+            options={"proxy": True, "indexes": [], "constraints": []},
+            bases=("user.user",),
+        )
     ]

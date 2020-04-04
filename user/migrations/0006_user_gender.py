@@ -6,18 +6,16 @@ import user.enums
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('user', '0005_user_university_details'),
-    ]
+    dependencies = [("user", "0005_user_university_details")]
 
     operations = [
-        migrations.RemoveField(
-            model_name='user',
-            name='sex',
-        ),
+        migrations.RemoveField(model_name="user", name="sex"),
         migrations.AddField(
-            model_name='user',
-            name='gender',
-            field=models.PositiveSmallIntegerField(choices=[(0, 'NONE'), (1, 'FEMALE'), (2, 'MALE'), (3, 'NON_BINARY')], default=user.enums.GenderType(0)),
+            model_name="user",
+            name="gender",
+            field=models.PositiveSmallIntegerField(
+                choices=[(0, "NONE"), (1, "FEMALE"), (2, "MALE"), (3, "NON_BINARY")],
+                default=user.enums.GenderType(0),
+            ),
         ),
     ]

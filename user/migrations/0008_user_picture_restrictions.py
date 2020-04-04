@@ -6,22 +6,20 @@ import versatileimagefield.fields
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('user', '0007_user_description'),
-    ]
+    dependencies = [("user", "0007_user_description")]
 
     operations = [
+        migrations.RemoveField(model_name="user", name="picture_public_participants"),
         migrations.RemoveField(
-            model_name='user',
-            name='picture_public_participants',
-        ),
-        migrations.RemoveField(
-            model_name='user',
-            name='picture_public_sponsors_and_recruiters',
+            model_name="user", name="picture_public_sponsors_and_recruiters"
         ),
         migrations.AlterField(
-            model_name='user',
-            name='picture',
-            field=versatileimagefield.fields.VersatileImageField(default='user/picture/profile.png', upload_to='user/picture/', verbose_name='Image'),
+            model_name="user",
+            name="picture",
+            field=versatileimagefield.fields.VersatileImageField(
+                default="user/picture/profile.png",
+                upload_to="user/picture/",
+                verbose_name="Image",
+            ),
         ),
     ]

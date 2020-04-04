@@ -5,7 +5,19 @@ from user.enums import UserType
 
 class UserManager(BaseUserManager):
     def create_participant(
-        self, email, name, surname, password, phone, birthday, gender, city, country, university, degree, graduation_year
+        self,
+        email,
+        name,
+        surname,
+        password,
+        phone,
+        birthday,
+        gender,
+        city,
+        country,
+        university,
+        degree,
+        graduation_year,
     ):
         if not email:
             raise ValueError("A user must have an email")
@@ -22,7 +34,7 @@ class UserManager(BaseUserManager):
             country=country,
             university=university,
             degree=degree,
-            graduation_year=graduation_year
+            graduation_year=graduation_year,
         )
 
         user.set_password(password)
@@ -69,4 +81,9 @@ class UserManager(BaseUserManager):
         return user
 
     def organisers(self):
-        return super().get_queryset().filter(type=UserType.ORGANISER).order_by("name", "surname")
+        return (
+            super()
+            .get_queryset()
+            .filter(type=UserType.ORGANISER)
+            .order_by("name", "surname")
+        )

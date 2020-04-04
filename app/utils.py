@@ -6,14 +6,18 @@ from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 
 from app.consts import UNIVERSITIES, PROGRAMMES
-from app.variables import APP_ORGANISER_EMAIL_REGEX, APP_DOMAIN, APP_NAME, APP_EMAIL_NOREPLY, APP_EMAIL_CONTACT
+from app.variables import (
+    APP_ORGANISER_EMAIL_REGEX,
+    APP_DOMAIN,
+    APP_NAME,
+    APP_EMAIL_NOREPLY,
+    APP_EMAIL_CONTACT,
+)
 
 
 def get_substitutions_templates(request: Optional = None):
     maintenance_mode = getattr(settings, "MAINTENANCE_MODE", False)
-    if request and not (
-        request.user.is_authenticated and request.user.is_organiser
-    ):
+    if request and not (request.user.is_authenticated and request.user.is_organiser):
         maintenance_mode = False
     return {
         "app_name": getattr(settings, "APP_NAME", None),

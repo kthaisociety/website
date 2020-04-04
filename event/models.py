@@ -109,10 +109,15 @@ class Event(models.Model):
 
 class Registration(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    event = models.ForeignKey("event.Event", on_delete=models.PROTECT, related_name="registrations")
-    user = models.ForeignKey("user.User", on_delete=models.PROTECT, related_name="registrations")
+    event = models.ForeignKey(
+        "event.Event", on_delete=models.PROTECT, related_name="registrations"
+    )
+    user = models.ForeignKey(
+        "user.User", on_delete=models.PROTECT, related_name="registrations"
+    )
     status = models.PositiveSmallIntegerField(
-        choices=((s.value, s.name) for s in RegistrationStatus), default=RegistrationStatus.REQUESTED
+        choices=((s.value, s.name) for s in RegistrationStatus),
+        default=RegistrationStatus.REQUESTED,
     )
 
     created_at = models.DateTimeField(auto_now_add=True)

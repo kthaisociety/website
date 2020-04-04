@@ -48,7 +48,10 @@ def image_as_base64(image_path):
         return None
     with open(image_full_path, "rb") as img_f:
         encoded_string = base64.b64encode(img_f.read())
-    return 'data:image/%s;base64,%s' % (image_path.split(".")[-1], encoded_string.decode("utf-8"))
+    return "data:image/%s;base64,%s" % (
+        image_path.split(".")[-1],
+        encoded_string.decode("utf-8"),
+    )
 
 
 @register.simple_tag

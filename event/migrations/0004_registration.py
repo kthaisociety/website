@@ -11,19 +11,53 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('event', '0003_event_code_allow_longer'),
+        ("event", "0003_event_code_allow_longer"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Registration',
+            name="Registration",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('status', models.PositiveSmallIntegerField(choices=[(0, 'INTERESTED'), (1, 'REQUESTED'), (2, 'REGISTERED'), (3, 'WAIT_LISTED'), (4, 'CANCELLED')], default=event.enums.RegistrationStatus(1))),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('event', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='registrations', to='event.Event')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='registrations', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                (
+                    "status",
+                    models.PositiveSmallIntegerField(
+                        choices=[
+                            (0, "INTERESTED"),
+                            (1, "REQUESTED"),
+                            (2, "REGISTERED"),
+                            (3, "WAIT_LISTED"),
+                            (4, "CANCELLED"),
+                        ],
+                        default=event.enums.RegistrationStatus(1),
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "event",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="registrations",
+                        to="event.Event",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="registrations",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
-        ),
+        )
     ]

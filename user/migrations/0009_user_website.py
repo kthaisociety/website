@@ -5,14 +5,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('user', '0008_user_picture_restrictions'),
-    ]
+    dependencies = [("user", "0008_user_picture_restrictions")]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='website',
+            model_name="user",
+            name="website",
             field=models.CharField(blank=True, max_length=255, null=True),
-        ),
+        )
     ]

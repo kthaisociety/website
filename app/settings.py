@@ -220,9 +220,8 @@ NOTIFY_TEMPLATES = dict(
     email=dict(
         user=dict(
             register=dict(
-                subject="Confirm your email to register",
-                html="email/register.html",
+                subject="Confirm your email to register", html="email/register.html"
             )
-        ),
+        )
     )
 )

@@ -177,7 +177,7 @@
             <div class="row justify-content-md-center home-organisers">
                 {% for organiser in organisers %}
                     <div class="col-4 col-md-2 text-center">
-                        {% if organiser.website %}<a href="{{ organiser.website }}" target="_blank">{% endif %}
+                        {% if organiser.website %}<a href="{{ organiser.website }}" target="_blank" class="link-unstyled">{% endif %}
                         <img src="{{ organiser.picture.url }}">
                         <h6 class="mt-1 mb-2">{{ organiser.full_name }}</h6>
                         {% if organiser.description %}

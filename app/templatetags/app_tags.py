@@ -9,8 +9,8 @@ from django.utils.safestring import mark_safe
 from django_markup.markup import formatter
 
 from app import settings
-from app.settings import STATICFILES_DIRS, STATIC_URL, DEBUG
-from app.variables import APP_DOMAIN, APP_LOCALHOST
+from app.settings import STATICFILES_DIRS, STATIC_URL, DEBUG, APP_DOMAIN
+from app.variables import APP_LOCALHOST
 
 register = template.Library()
 

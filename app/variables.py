@@ -1,11 +1,7 @@
-import os
-
 APP_NAME = "KTH AI Society"
 APP_DESCRIPTION = "KTH AI Society website"
 APP_TIMEZONE = "Europe/Stockholm"
 APP_LOCALHOST = "localhost:8000"
-APP_DOMAIN = os.environ.get("APP_DOMAIN", APP_LOCALHOST)
-APP_IP = os.environ.get("APP_IP", APP_LOCALHOST)
 APP_EMAIL_CONTACT = "contact@kthais.com"
 APP_ORGANISER_EMAIL_REGEX = "^.*@kthais\.com$"
 APP_EMAIL_WEBDEV = "webdev@kthais.com"

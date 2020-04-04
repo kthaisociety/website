@@ -8,7 +8,6 @@ from django.core.mail import EmailMultiAlternatives
 from app.consts import UNIVERSITIES, PROGRAMMES
 from app.variables import (
     APP_ORGANISER_EMAIL_REGEX,
-    APP_DOMAIN,
     APP_NAME,
     APP_EMAIL_NOREPLY,
     APP_EMAIL_CONTACT,
@@ -49,7 +48,7 @@ def get_substitutions_templates(request: Optional = None):
         "app_legal_city": getattr(settings, "APP_LEGAL_CITY", None),
         "app_legal_country": getattr(settings, "APP_LEGAL_COUNTRY", None),
         "pre_calendar_url": "webcal://"
-        + APP_DOMAIN.replace("https://", "").replace("http://", ""),
+        + getattr(settings, "APP_DOMAIN", "").replace("https://", "").replace("http://", ""),
         "maintenance_mode": maintenance_mode,
         "const_universities": UNIVERSITIES,
         "const_programmes": PROGRAMMES,

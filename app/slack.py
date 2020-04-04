@@ -1,7 +1,6 @@
 import requests
 
-from app.settings import SL_INURL
-from app.variables import APP_DOMAIN
+from app.settings import SL_INURL, APP_DOMAIN
 
 
 def send_deploy_message(deploy_data, succedded=True):

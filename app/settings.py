@@ -1,7 +1,7 @@
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-from app.variables import APP_TIMEZONE, APP_DOMAIN
+from app.variables import APP_TIMEZONE
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -140,6 +140,8 @@ PASSWORD_RESET_TIMEOUT_DAYS = 1
 
 # Add domain to allowed hosts
 
+APP_DOMAIN = os.environ.get("APP_DOMAIN", APP_LOCALHOST)
+APP_IP = os.environ.get("APP_IP", APP_LOCALHOST)
 ALLOWED_HOSTS.append(APP_DOMAIN)
 ALLOWED_HOSTS.append("www." + APP_DOMAIN)
 

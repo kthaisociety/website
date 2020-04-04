@@ -92,7 +92,7 @@ def user_register(request):
                     try:
                         city = location.raw["address"]["village"]
                     except KeyError:
-                        city = location.raw["address"]["town"]
+                        city = location.raw["address"]["suburb"]
                 country = location.raw["address"]["country"]
             except (AttributeError, KeyError):
                 error_location = True

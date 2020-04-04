@@ -12,7 +12,7 @@ ALLOWED_PATHS = [
     "/user/login",
     "/user/logout",
     "/user/verify",
-    "/user/send-verification"
+    "/user/send-verification",
 ]
 
 

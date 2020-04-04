@@ -7,6 +7,8 @@ from django.core.exceptions import ValidationError
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from geopy import Nominatim
+
 from user import forms
 from user.enums import GenderType
 from user.models import User
@@ -86,6 +88,23 @@ def user_register(request):
             "programme": degree,
             "graduation_year": graduation_year,
         }
+        geolocator = Nominatim()
+        try:
+            location = geolocator.geocode(f"{city}, {country}", language="en", addressdetails=True)
+            try:
+                city = location.raw["address"]["city"]
+            except KeyError:
+                try:
+                    city = location.raw["address"]["village"]
+                except KeyError:
+                    city = location.raw["address"]["town"]
+            country = location.raw["address"]["country"]
+        except (AttributeError, KeyError):
+            messages.error(
+                request,
+                f"We haven't been able to locate {city} ({country}), please, check this place exists!",
+            )
+        print(city, country)
         missing_required = [
             field_name for field_name, field in form.items() if not field
         ]
@@ -115,12 +134,18 @@ def user_register(request):
                         university=university,
                         degree=degree,
                         graduation_year=graduation_year,
-                        birthday=(datetime.datetime.strptime(birthday, "%Y-%m-%d").date() if birthday else None),
+                        birthday=(
+                            datetime.datetime.strptime(birthday, "%Y-%m-%d").date()
+                            if birthday
+                            else None
+                        ),
                         gender=(gender if gender else GenderType.NONE),
                         city=city,
                         country=country,
                     )
-                    messages.success(request, "Thank-you for completing the registration.")
+                    messages.success(
+                        request, "Thank-you for completing the registration."
+                    )
                 except ValidationError as e:
                     for errors in e.error_dict.values():
                         for msgs in errors:
@@ -133,7 +158,11 @@ def user_register(request):
                     name=name,
                     surname=surname,
                     phone=phone,
-                    birthday=(datetime.datetime.strptime(birthday, "%Y-%m-%d").date() if birthday else None),
+                    birthday=(
+                        datetime.datetime.strptime(birthday, "%Y-%m-%d").date()
+                        if birthday
+                        else None
+                    ),
                     gender=(gender if gender else GenderType.NONE),
                     city=city,
                     country=country,
@@ -165,7 +194,6 @@ def user_register(request):
                     + " is a required field."
                 ),
             )
-
     return render(request, "register.html", {"form": form})
 
 

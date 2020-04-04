@@ -26,8 +26,7 @@ from user.utils import get_user_by_picture
 
 
 def home(request):
-    current_data = dict()
-    return render(request, "home.html", current_data)
+    return render(request, "home.html", {})
 
 
 def maintenance(request):

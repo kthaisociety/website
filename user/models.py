@@ -113,7 +113,7 @@ class User(AbstractBaseUser):
         self.save()
 
     def update_verify(
-        self, verify_key, verify_expiration=timezone.now() + timezone.timedelta(hours=1)
+        self, verify_key, verify_expiration=timezone.now() + timezone.timedelta(days=1)
     ):
         self.verify_key = verify_key
         self.verify_expiration = verify_expiration

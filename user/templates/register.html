@@ -55,11 +55,19 @@
                         <div class="form-row mt-3">
                             <div class="col-md-4">
                                 <label for="id_university">University <small>(required)</small></label>
-                                <input type="text" name="university" maxlength="225" class="form-control" placeholder="Kungliga Tekniska Högskolan" id="id_university" {% if form.university %}value="{{ form.university }}"{% endif %}>
+                                <select name="university" class="form-control" id="id_university">
+                                    {% for university in const_universities %}
+                                        <option value="{{ forloop.counter0 }}" {% if university == "KTH Royal Institute of Technology" %}selected=""{% endif %}>{{ university }}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                             <div class="col-md-4">
                                 <label for="id_degree">Programme <small>(required)</small></label>
-                                <input type="text" name="degree" maxlength="225" class="form-control" placeholder="Computer Science" id="id_degree" {% if form.programme %}value="{{ form.programme }}"{% endif %}>
+                                <select name="degree" class="form-control" id="id_degree">
+                                    {% for programme in const_programmes %}
+                                        <option value="{{ forloop.counter0 }}" {% if programme == "Machine Learning" %}selected=""{% endif %}>{{ programme }}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                             <div class="col-md-4">
                                 <label for="id_graduation">Graduation year <small>(required)</small></label>
@@ -92,12 +100,12 @@
                         </div>
                         <div class="form-row mt-3">
                             <div class="col-md-6">
-                                <label for="id_city">City</label>
-                                <input type="text" name="city" maxlength="225" class="form-control" placeholder="Stockholm" id="id_city" {% if form.city %}value="{{ form.city }}"{% endif %}>
+                                <label for="id_city">City <small>(required)</small></label>
+                                <input type="text" name="city" maxlength="225" class="form-control" placeholder="Stockholm" id="id_city" {% if form.city %}value="{{ form.city }}"{% elif request.user.city %}value="{{ request.user.city }}"{% endif %}>
                             </div>
                             <div class="col-md-6">
-                                <label for="id_country">Country</label>
-                                <input type="text" name="country" maxlength="225" class="form-control" placeholder="Sweden" id="id_country" {% if form.country %}value="{{ form.country }}"{% endif %}>
+                                <label for="id_country">Country <small>(required)</small></label>
+                                <input type="text" name="country" maxlength="225" class="form-control" placeholder="Sweden" id="id_country" {% if form.country %}value="{{ form.country }}"{% elif request.user.country %}value="{{ request.user.country }}"{% endif %}>
                             </div>
                         </div>
                         <div class="form-group mt-3">

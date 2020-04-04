@@ -68,7 +68,7 @@ class Page(models.Model):
             messages["content_plain"] = message
             messages["content_html"] = message
             messages["content_markdown"] = message
-            messages["content_url"] = message
+            messages["content_markdown_url"] = message
         if messages:
             raise ValidationError(messages)
 

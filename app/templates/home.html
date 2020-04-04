@@ -73,7 +73,7 @@
                     <img src="{% static 'img/logo_square_plain.png' %}" alt="KTHAIS" class="w-100">
                 </div>
                 <div class="col-md-10">
-                    <h2 class="text-center text-md-left text-main mb-4">Welcome to KTH AI Society</h2>
+                    <h2 class="text-center text-md-left text-main mb-4">{{ hello }}</h2>
                     <p class="text-center text-md-left mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi lobortis consequat nisi, in accumsan est dapibus at. Proin dignissim imperdiet ante ut venenatis. Phasellus a leo non libero scelerisque laoreet quis eu lorem. Donec sollicitudin turpis ultrices, aliquam nisi non, cursus nibh. Fusce faucibus est vulputate, aliquet mauris in, scelerisque eros. Curabitur sodales justo ac sem vehicula aliquam. Nulla a metus ipsum.</p>
                     {% if not request.user.is_authenticated %}
                         <a class="link-unstyled mt-3 mb-0 d-block" href="{% url "user_register" %}"><p class="text-main mb-0">Register now <i class="fas fa-arrow-right ml-1"></i></p></a>
@@ -173,12 +173,15 @@
     </div>
     <div class="jumbotron jumbotron-fluid mt-5 mb-0 bg-main-s2 text-white">
         <div class="container container-fluid">
+            <h2 class="text-center mt-0 mb-5">Project group</h2>
             <div class="row justify-content-md-center home-organisers">
                 {% for organiser in organisers %}
                     <div class="col-4 col-md-2 text-center">
                         <img src="{{ organiser.picture.url }}">
                         <h6 class="mt-1 mb-2">{{ organiser.full_name }}</h6>
-                        <p class="mb-0" style="line-height: 1;"><small>{{ organiser.description|upper }}</small></p>
+                        {% if organiser.description %}
+                            <p class="mb-0" style="line-height: 1;"><small>{{ organiser.description|upper }}</small></p>
+                        {% endif %}
                     </div>
                 {% endfor %}
             </div>

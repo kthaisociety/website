@@ -84,8 +84,8 @@
                             {% else %}
                                 <p class="text-center text-md-left mb-0">You need to be logged-in to register to this event!</p>
                                 <p class="text-center text-md-left"><small>You can login or register in a moment with your Google account or just using any other email.</small></p>
-                                <a class="btn btn-main text-white" href="{% url "user_login" %}">Login</a>
-                                <a class="btn btn-main2 text-white ml-2" href="{% url "user_register" %}">Register</a>
+                                <a class="btn btn-main text-white" href="{% url "user_login" %}?next={{ event.url }}">Login</a>
+                                <a class="btn btn-main2 text-white ml-2" href="{% url "user_register" %}?next={{ event.url }}">Register</a>
                             {% endif %}
                         {% else %}
                             <p class="text-center text-md-left mb-0">Sorry, registration closed! Ping us at <a href="mailto:{{ app_email_contact }}" class="link-colour">{{ app_email_contact }}</a> if you need help.</p>

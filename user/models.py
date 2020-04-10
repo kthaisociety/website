@@ -121,9 +121,14 @@ class User(AbstractBaseUser):
         self.verify_expiration = verify_expiration
         self.save()
 
+    def delete_verify_key(self):
+        self.verify_key = None
+        self.save()
+
     def verify(self, verify_key):
         if timezone.now() <= self.verify_expiration and self.verify_key == verify_key:
             self.email_verified = True
+            self.delete_verify_key()
             self.save()
 
     def mark_as_inactive(self):

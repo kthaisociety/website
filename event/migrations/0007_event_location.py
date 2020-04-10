@@ -5,14 +5,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('event', '0006_event_webinar'),
-    ]
+    dependencies = [("event", "0006_event_webinar")]
 
     operations = [
         migrations.AlterField(
-            model_name='event',
-            name='location',
+            model_name="event",
+            name="location",
             field=models.CharField(blank=True, max_length=255, null=True),
-        ),
+        )
     ]

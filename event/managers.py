@@ -24,8 +24,6 @@ class EventManager(models.Manager):
         return (
             super()
             .get_queryset()
-            .filter(
-                status=EventStatus.PUBLISHED
-            )
+            .filter(status=EventStatus.PUBLISHED)
             .exclude(starts_at__date__gte=timezone.now().date())
         )

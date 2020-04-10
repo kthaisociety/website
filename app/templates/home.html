@@ -222,22 +222,47 @@
                                 <div class="timeline-badge badge-main"><i class="fas fa-plus"></i></div>
                                 <div class="timeline-panel">
                                     <div class="timeline-heading">
-                                        <h4 class="timeline-title">KTHAIS is born</h4>
-                                        <p><small class="text-muted">January 2018 <i class="far fa-calendar ml-1"></i></small></p>
+                                        <h4 class="timeline-title">An idea is born</h4>
+                                        <p><small class="text-muted">August 2018 <i class="far fa-calendar ml-1"></i></small></p>
                                     </div>
                                     <div class="timeline-body">
-                                        <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá, depois divoltis porris, paradis. Paisis, filhis, espiritis santis.</p>
+                                        <p>Alexander Jacobsen came to Filip Matz with an idea: To create a driven community of people interested in AI at KTH that could enable students to change the future of the field.</p>
                                     </div>
                                 </div>
                             </li>
                             <li class="timeline-inverted">
-                                <div class="timeline-badge badge-main2"><i class="fas fa-question"></i></div>
+                                <div class="timeline-badge badge-main2"><i class="fas fa-running"></i></div>
                                 <div class="timeline-panel">
                                     <div class="timeline-heading">
-                                        <h4 class="timeline-title">Something else happened</h4>
+                                        <h4 class="timeline-title">Out the gates running</h4>
+                                        <p><small class="text-muted">January 2019 <i class="far fa-calendar ml-1"></i></small></p>
                                     </div>
                                     <div class="timeline-body">
-                                        <p>Mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>
+                                        <p>A core team is recruited and several soon to be successful projects are planned. Massive positive feedback is received from the KTH student community and KTHAIS becomes the fastest growing organisation at KTH.</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="timeline-badge badge-main2"><i class="fas fa-calendar-day"></i></div>
+                                <div class="timeline-panel">
+                                    <div class="timeline-heading">
+                                        <h4 class="timeline-title">The first KTH AI day</h4>
+                                        <p><small class="text-muted">September 2019 <i class="far fa-calendar ml-1"></i></small></p>
+                                    </div>
+                                    <div class="timeline-body">
+                                        <p>Over 150 students attend KTHAIS flagship event at Nymble. Members join Ericsson and Accenture during workshops, listen to a panel discussion with AI Startups and chat with the wonderful Furhat of Furhat Robotics.</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="timeline-inverted">
+                                <div class="timeline-badge badge-main2"><i class="fas fa-users"></i></div>
+                                <div class="timeline-panel">
+                                    <div class="timeline-heading">
+                                        <h4 class="timeline-title">Brand new start</h4>
+                                        <p><small class="text-muted">Jnuary 2020 <i class="far fa-calendar ml-1"></i></small></p>
+                                    </div>
+                                    <div class="timeline-body">
+                                        <p>A new board was elected for the year of 2020 and a long-term partnership with McKinsey & Company was signed. 2020 is looking to be the greatest year yet for KTHAIS.</p>
                                     </div>
                                 </div>
                             </li>
@@ -254,7 +279,9 @@
                 {% for organiser in organisers %}
                     <div class="col-4 col-md-2 text-center ml-auto mr-auto ml-md-0 mr-md-0">
                         {% if organiser.website %}<a href="{{ organiser.website }}" target="_blank" class="link-unstyled">{% endif %}
-                        <img src="{{ organiser.picture.url }}" class="ml-auto mr-auto">
+                        {% comment %}
+                            <img src="{{ organiser.picture.url }}" class="ml-auto mr-auto">
+                        {% endcomment %}
                         <h6 class="mt-1 mb-2">{{ organiser.full_name }}</h6>
                         {% if organiser.description %}
                             <p class="mb-0" style="line-height: 1;"><small>{{ organiser.description|upper }}</small></p>

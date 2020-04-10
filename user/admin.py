@@ -1,4 +1,4 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 
 from user.models import User
 from user.utils import send_imported
@@ -7,6 +7,9 @@ from user.utils import send_imported
 def send_welcome(modeladmin, request, users):
     for user in users:
         send_imported(user=user)
+    messages.success(
+        request, f"Welcome emails have been sent to {users.count()} user/s."
+    )
 
 
 send_welcome.short_description = "Send welcome email"

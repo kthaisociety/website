@@ -72,14 +72,19 @@ def user_password(request):
             user = User.objects.filter(email=email).first()
             if user:
                 send_password(user)
-            messages.success(request, "If an account exists with the email a link will be sent, please check your inbox and spam folders.")
+            messages.success(
+                request,
+                "If an account exists with the email a link will be sent, please check your inbox and spam folders.",
+            )
             return HttpResponseRedirect(reverse("user_login"))
 
     return render(request, "password.html", {"form": form})
 
 
 def verify_password(request, email, verification_key):
-    user = User.objects.filter(email=email, verify_key=verification_key, verify_expiration__gte=timezone.now()).first()
+    user = User.objects.filter(
+        email=email, verify_key=verification_key, verify_expiration__gte=timezone.now()
+    ).first()
 
     if user:
         if request.method == "POST":
@@ -94,7 +99,9 @@ def verify_password(request, email, verification_key):
                     user.set_password(password)
                     user.delete_verify_key()
                     user.save()
-                    messages.success(request, "Your password has been successfully updated.")
+                    messages.success(
+                        request, "Your password has been successfully updated."
+                    )
                     auth.login(request, user)
                     return HttpResponseRedirect(reverse("app_home"))
             else:

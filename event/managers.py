@@ -19,3 +19,13 @@ class EventManager(models.Manager):
                 status=EventStatus.PUBLISHED, starts_at__date__gte=timezone.now().date()
             )
         )
+
+    def published_past(self):
+        return (
+            super()
+            .get_queryset()
+            .filter(
+                status=EventStatus.PUBLISHED
+            )
+            .exclude(starts_at__date__gte=timezone.now().date())
+        )

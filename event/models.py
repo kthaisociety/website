@@ -45,7 +45,7 @@ class Event(models.Model):
 
     @property
     def description_short(self):
-        return textwrap.shorten(self.description, width=50, placeholder="...")
+        return textwrap.shorten(self.description, width=250, placeholder="...")
 
     @property
     def url(self):
@@ -88,7 +88,9 @@ class Event(models.Model):
 
     @property
     def is_signup_open(self):
-        if not self.signup_ends_at:
+        if timezone.now() > self.ends_at:
+            return False
+        elif not self.signup_ends_at:
             return True
         elif timezone.now() > self.signup_ends_at:
             return False

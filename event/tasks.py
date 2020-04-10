@@ -35,6 +35,8 @@ def send_registration_email(registration_id: UUID):
         )
         body = render_to_string(template, context)
 
+        subject = subject.format(event=registration.event.name)
+
         send_email(
             subject=subject, body=body, to=registration.user.email, tags=[MailTag.EVENT]
         )

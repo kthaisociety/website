@@ -9,7 +9,11 @@ urlpatterns = [
     url(r"^password/$", views.user_password, name="user_password"),
     url(r"^register/$", views.user_register, name="user_register"),
     url(r"^verify/(?P<verification_key>.+)$", views.verify, name="user_verify"),
-    url(r"^verify-password/(?P<email>.+)/(?P<verification_key>.+)$", views.verify_password, name="user_verifypassword"),
+    url(
+        r"^verify-password/(?P<email>.+)/(?P<verification_key>.+)$",
+        views.verify_password,
+        name="user_verifypassword",
+    ),
     url(r"^send-verification/$", views.send_verification, name="user_sendverification"),
     url("", include("social_django.urls", namespace="social")),
 ]

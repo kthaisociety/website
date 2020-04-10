@@ -3,6 +3,7 @@ import textwrap
 import uuid
 from io import StringIO
 
+from django.core.exceptions import ValidationError
 from django_markup.markup import formatter
 
 from app.variables import APP_NAME, APP_ATTENDANCE_RATIO
@@ -26,11 +27,12 @@ class Event(models.Model):
     type = models.PositiveSmallIntegerField(
         choices=((t.value, t.name) for t in EventType), default=EventType.GENERAL
     )
+    external_url = models.CharField(max_length=255, blank=True, null=True)
     picture = VersatileImageField("Image", upload_to="event/picture/")
     status = models.PositiveSmallIntegerField(
         choices=((s.value, s.name) for s in EventStatus), default=EventStatus.DRAFT
     )
-    location = models.CharField(max_length=255)
+    location = models.CharField(max_length=255, blank=True, null=True)
     starts_at = models.DateTimeField()
     ends_at = models.DateTimeField()
     signup_starts_at = models.DateTimeField(blank=True, null=True)
@@ -87,8 +89,14 @@ class Event(models.Model):
         return self.starts_at <= timezone.now() < self.ends_at
 
     @property
+    def is_event_future(self):
+        return timezone.now() < self.starts_at
+
+    @property
     def is_signup_open(self):
         if timezone.now() > self.ends_at:
+            return False
+        elif self.is_signup_full:
             return False
         elif not self.signup_ends_at:
             return True
@@ -97,6 +105,34 @@ class Event(models.Model):
         elif self.signup_starts_at:
             return timezone.now() >= self.signup_starts_at
         return False
+
+    @property
+    def is_signup_full(self):
+        if self.attendance_limit:
+            return (
+                Registration.objects.filter(
+                    event_id=self.id,
+                    status__in=[
+                        RegistrationStatus.REQUESTED,
+                        RegistrationStatus.REGISTERED,
+                    ],
+                ).count()
+                >= self.attendance_limit
+            )
+        return False
+
+    def clean(self):
+        messages = {}
+        if self.type == EventType.WEBINAR:
+            if not self.external_url:
+                messages["external_url"] = "The URL is mandatory for WEBINAR events."
+        else:
+            if not self.location:
+                messages[
+                    "location"
+                ] = "The location is mandatory for non-WEBINAR events."
+        if messages:
+            raise ValidationError(messages)
 
     def save(self, *args, **kwargs):
         if not self.code:
@@ -124,3 +160,6 @@ class Registration(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.event.name} - {self.user}"

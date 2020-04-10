@@ -1,5 +1,6 @@
-from django.http import HttpResponseNotFound
+from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
 
 from news.models import Article
 
@@ -21,4 +22,4 @@ def article(request, year, month, day, slug):
 
 
 def articles(request):
-    return HttpResponseNotFound()
+    return HttpResponseRedirect(reverse("app_home"))

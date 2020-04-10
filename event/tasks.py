@@ -14,6 +14,7 @@ def send_registration_email(registration_id: UUID):
     context = get_substitutions_templates()
     registration = Registration.objects.get(id=registration_id)
     context["registration"] = registration
+    context["user"] = registration.user
 
     if registration.status in [RegistrationStatus.REQUESTED, RegistrationStatus.REGISTERED]:
         task = "register"

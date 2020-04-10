@@ -7,13 +7,14 @@ from django.core.exceptions import ValidationError
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.utils import timezone
 from geopy import Nominatim
 
 from app.consts import UNIVERSITIES, PROGRAMMES
 from user import forms
 from user.enums import GenderType
 from user.models import User
-from user.utils import send_verify
+from user.utils import send_verify, send_password
 
 
 def user_login(request):
@@ -51,6 +52,62 @@ def user_logout(request):
         return HttpResponseRedirect(reverse("app_home"))
 
     logout(request)
+
+    return HttpResponseRedirect(reverse("app_home"))
+
+
+def user_password(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse("app_home"))
+
+    form = {}
+
+    if request.method == "POST":
+        email = request.POST.get("email", None)
+        form["email"] = email
+
+        if not email:
+            messages.error(request, "Email is a required field.")
+        else:
+            user = User.objects.filter(email=email).first()
+            if user:
+                send_password(user)
+            messages.success(
+                request,
+                "If an account exists with the email a link will be sent, please check your inbox and spam folders.",
+            )
+            return HttpResponseRedirect(reverse("user_login"))
+
+    return render(request, "password.html", {"form": form})
+
+
+def verify_password(request, email, verification_key):
+    user = User.objects.filter(
+        email=email, verify_key=verification_key, verify_expiration__gte=timezone.now()
+    ).first()
+
+    if user:
+        if request.method == "POST":
+            password = request.POST.get("password", None)
+            password2 = request.POST.get("password2", None)
+
+            if password and password2:
+                if password != password2:
+                    messages.error(request, "Passwords do not match.")
+                else:
+                    user.backend = "django.contrib.auth.backends.ModelBackend"
+                    user.set_password(password)
+                    user.delete_verify_key()
+                    user.save()
+                    messages.success(
+                        request, "Your password has been successfully updated."
+                    )
+                    auth.login(request, user)
+                    return HttpResponseRedirect(reverse("app_home"))
+            else:
+                messages.error(request, "Passwords are required fields.")
+
+        return render(request, "verify_password.html", {"user": user})
 
     return HttpResponseRedirect(reverse("app_home"))
 

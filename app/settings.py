@@ -224,7 +224,13 @@ NOTIFY_TEMPLATES = dict(
             register=dict(
                 subject="Confirm your email to register",
                 html="email/user/register.html",
-            )
+            ),
+            password=dict(
+                subject="Reset your password to login", html="email/user/password.html"
+            ),
+            imported=dict(
+                subject="Welcome to KTHAIS new website", html="email/user/imported.html"
+            ),
         ),
         event=dict(
             register=dict(

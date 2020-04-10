@@ -4,7 +4,7 @@ from uuid import UUID
 from django.utils.crypto import get_random_string
 
 from user.models import User
-from user.tasks import send_verify_email
+from user.tasks import send_verify_email, send_password_email, send_imported_email
 
 
 def get_user_by_picture(picture):
@@ -30,3 +30,15 @@ def send_verify(user: User):
     verify_key = generate_verify_key(user)
     user.update_verify(verify_key=verify_key)
     send_verify_email(user_id=user.id)
+
+
+def send_password(user: User):
+    verify_key = generate_verify_key(user)
+    user.update_verify(verify_key=verify_key)
+    send_password_email(user_id=user.id)
+
+
+def send_imported(user: User):
+    verify_key = generate_verify_key(user)
+    user.update_verify(verify_key=verify_key)
+    send_imported_email(user_id=user.id)

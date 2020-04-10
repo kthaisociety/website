@@ -15,7 +15,6 @@
             <div class="col-md-12">
                 <form action="" method="post" class="form">
                     {% csrf_token %}
-                    <!-- Afegir forgot password -->
                     <div class="form-group">
                         <label for="id_email">Email</label>
                         <input type="email" name="email" maxlength="225" class="form-control" placeholder="jonny5@kthais.com" id="id_email">
@@ -24,6 +23,7 @@
                         <label for="id_password">Password</label>
                         <input type="password" name="password" maxlength="225" class="form-control" placeholder="****************" id="id_password">
                     </div>
+                    <p class="mb-0"><small>Forgot password? Reset it <a href="{% url "user_password" %}" class="link-colour">here</a>.</small></p>
                     <div class="form-group text-center mt-4">
                         <button class="btn btn-main" type="submit">Login</button>
                         <a class="link-unstyled" href="{% url "social:begin" "google-oauth2" %}">

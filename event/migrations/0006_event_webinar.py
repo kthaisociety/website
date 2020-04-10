@@ -6,19 +6,27 @@ import event.enums
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('event', '0005_event_attendance'),
-    ]
+    dependencies = [("event", "0005_event_attendance")]
 
     operations = [
         migrations.AddField(
-            model_name='event',
-            name='external_url',
+            model_name="event",
+            name="external_url",
             field=models.CharField(blank=True, max_length=255, null=True),
         ),
         migrations.AlterField(
-            model_name='event',
-            name='type',
-            field=models.PositiveSmallIntegerField(choices=[(1, 'GENERAL'), (2, 'LECTURE'), (3, 'LUNCH'), (4, 'EXTERNAL'), (5, 'WEBINAR'), (6, 'OTHER')], default=event.enums.EventType(1)),
+            model_name="event",
+            name="type",
+            field=models.PositiveSmallIntegerField(
+                choices=[
+                    (1, "GENERAL"),
+                    (2, "LECTURE"),
+                    (3, "LUNCH"),
+                    (4, "EXTERNAL"),
+                    (5, "WEBINAR"),
+                    (6, "OTHER"),
+                ],
+                default=event.enums.EventType(1),
+            ),
         ),
     ]

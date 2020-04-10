@@ -10,7 +10,9 @@ from event.models import Event, Registration
 def event(request, code):
     event = Event.objects.published().filter(code=code).first()
     if request.user.is_authenticated:
-        registration = Registration.objects.filter(event=event, user=request.user).first()
+        registration = Registration.objects.filter(
+            event=event, user=request.user
+        ).first()
     else:
         registration = None
 
@@ -21,13 +23,22 @@ def event(request, code):
 
             type = request.POST.get("submit", None)
             if type == "register":
-                messages.success(request, f"You've been registered! Remember the event will take place on {event.starts_at.strftime('%B %-d, %Y')}.")
+                messages.success(
+                    request,
+                    f"You've been registered! Remember the event will take place on {event.starts_at.strftime('%B %-d, %Y')}.",
+                )
                 status = RegistrationStatus.REQUESTED
             elif type == "interest":
-                messages.success(request, f"Thank-you for letting us know, we hope to wee you in a future event!")
+                messages.success(
+                    request,
+                    f"Thank-you for letting us know, we hope to wee you in a future event!",
+                )
                 status = RegistrationStatus.INTERESTED
             elif type == "cancel":
-                messages.success(request, f"Thank-you for letting us know, we hope to wee you in a future event!")
+                messages.success(
+                    request,
+                    f"Thank-you for letting us know, we hope to wee you in a future event!",
+                )
                 status = RegistrationStatus.CANCELLED
             else:
                 status = None
@@ -37,9 +48,13 @@ def event(request, code):
                     registration.status = status
                     registration.save()
                 else:
-                    registration = Registration.objects.create(event=event, user=request.user, status=status)
+                    registration = Registration.objects.create(
+                        event=event, user=request.user, status=status
+                    )
 
-        return render(request, "event.html", {"event": event, "registration": registration})
+        return render(
+            request, "event.html", {"event": event, "registration": registration}
+        )
     return HttpResponseNotFound()
 
 

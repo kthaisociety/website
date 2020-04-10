@@ -9,7 +9,10 @@ from event.models import Event, Registration
 
 def event(request, code):
     event = Event.objects.published().filter(code=code).first()
-    registration = Registration.objects.filter(event=event, user=request.user).first()
+    if request.user.is_authenticated:
+        registration = Registration.objects.filter(event=event, user=request.user).first()
+    else:
+        registration = None
 
     if event:
         if request.method == "POST":

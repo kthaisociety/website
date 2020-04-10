@@ -39,31 +39,69 @@
         </div>
     </div>
     {% if event.description %}
-        <div class="row">
+        <div class="row mt-2">
             <div class="col-md-12 mb-3">
                 {{ event.description|apply_markup:"markdown" }}
             </div>
         </div>
         {% endif %}
-    <div class="row">
-        <div class="col-md-12 mb-3">
-            <h5>Time</h5>
-            {% if event.starts_at.date == event.ends_at.date %}
-                {% if event.starts_at.time == event.ends_at.time %}
-                    <h3>{{ event.starts_at|date:"F j, Y H:i" }}</h3>
-                {% else %}
-                    <h3>{{ event.starts_at|date:"F j, Y H:i" }} / {{ event.ends_at|date:"H:i" }}</h3>
-                {% endif %}
-            {% else %}
-                <h3>{{ event.starts_at|date:"F j, Y H:i" }} / {{ event.ends_at|date:"F j, Y H:i" }}</h3>
-            {% endif %}
+    {% if event.is_event_future %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mb-5">
+                    <div class="card-body">
+                        <h3 class="text-center text-md-left">Registration</h3>
+                        {% if event.is_signup_open or registration %}
+                            {% if request.user.is_authenticated %}
+                                {% if registration %}
+                                    <p class="text-center text-md-left mb-0">Status:
+                                        {% if registration.status == 1 or registration.status == 2 %}
+                                            <span class="badge badge-main p-2 ml-1">Registered</span>
+                                        {% else %}
+                                            <span class="badge badge-main2 p-2 ml-1">Cancelled</span>
+                                        {% endif %}
+                                    </p>
+                                    {% if event.type == 5 and registration.status == 2 %}
+                                        <p class="text-center text-md-left mb-0 mt-1">Webinar link: <a href="{{ event.external_url }}" class="link-colour">{{ event.external_url }}</a></p>
+                                    {% endif %}
+                                    {% if not registration.status == 1 and not registration.status == 2 %}
+                                        <p class="text-center text-md-left mb-0 mt-3">Ping us at <a href="mailto:{{ app_email_contact }}" class="link-colour">{{ app_email_contact }}</a> if you need help.</p>
+                                    {% else %}
+                                        <p class="text-center text-md-left mt-3 mb-2">Can't attend this event? Please, cancel your registration so someone else can fill your spot!</p>
+                                        <form action="" method="post" class="form">
+                                            {% csrf_token %}
+                                            <button class="btn btn-main2" type="submit" name="submit" value="cancel">Cancel</button>
+                                        </form>
+                                    {% endif %}
+                                {% else %}
+                                    <p class="text-center text-md-left mb-2">Do you want to register for this event?</p>
+                                    <form action="" method="post" class="form">
+                                        {% csrf_token %}
+                                        <button class="btn btn-main" type="submit" name="submit" value="register">Register</button>
+                                        <button class="btn btn-main2 ml-2" type="submit" name="submit" value="interest">I can't attend</button>
+                                    </form>
+                                {% endif %}
+                            {% else %}
+                                <p class="text-center text-md-left mb-0">You need to be logged-in to register to this event!</p>
+                                <p class="text-center text-md-left"><small>You can login or register in a moment with your Google account or just using any other email.</small></p>
+                                <a class="btn btn-main text-white" href="{% url "user_login" %}?next={{ event.url }}">Login</a>
+                                <a class="btn btn-main2 text-white ml-2" href="{% url "user_register" %}?next={{ event.url }}">Register</a>
+                            {% endif %}
+                        {% else %}
+                            <p class="text-center text-md-left mb-0">Sorry, registration closed! Ping us at <a href="mailto:{{ app_email_contact }}" class="link-colour">{{ app_email_contact }}</a> if you need help.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+    {% endif %}
     <div class="row">
         <div class="col-md-12">
-            <h5>Location</h5>
-            <h3 class="mb-4">{{ event.location }}</h3>
-            <iframe width="100%" height="400" src="https://maps.google.com/maps?hl=en&amp;q={{ event.location }}&amp;ie=UTF8&amp;t=&amp;z=14&amp;iwloc=B&amp;output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+            <h5 class="mb-3">Time: {{ event.starts_at|date:"F j, Y H:i" }}{% if event.starts_at != event.ends_at %} - {% if event.starts_at.date != event.ends_at.date %}{{ event.ends_at|date:"F j, Y H:i" }}{% else %}{{ event.ends_at|date:"H:i" }}{% endif %}{% endif %}</h5>
+            {% if event.location %}
+                <h5>Location: <a class="link-unstyled" href="https://maps.google.com/maps?hl=en&amp;q={{ event.location }}">{{ event.location }}</a></h5>
+                <iframe width="100%" height="400" src="https://maps.google.com/maps?hl=en&amp;q={{ event.location }}&amp;ie=UTF8&amp;t=&amp;z=14&amp;iwloc=B&amp;output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

@@ -6,9 +6,10 @@
 
 {% block pre_body %}
     {% if articles %}
-        <div class="jumbotron jumbotron-fluid d-flex mb-0" style="background-image: linear-gradient(to bottom, rgba(38,54,66,0.6) 0%,rgba(38,54,66,0.6) 100%), url('{{ articles.0.picture.url }}'); background-size: cover; background-position: center center; min-height: 500px;">
+        <div class="jumbotron jumbotron-fluid d-flex mb-0" style="background-image: linear-gradient(to bottom, rgba(38,54,66,0.6) 0%,rgba(38,54,66,0.6) 100%), url('{{ articles.0.picture.url }}'); background-size: cover; background-position: center center; min-height: 550px;">
             <div class="container my-auto text-center text-lg-left">
-                <h1 class="display-4 mb-5 mb-lg-4 text-white">{{ articles.0.title }}</h1>
+                <h1 class="d-none d-md-block display-4 mb-5 mb-lg-4 text-white">{{ articles.0.title }}</h1>
+                <h1 class="d-block d-md-none mb-5 mb-lg-4 text-white">{{ articles.0.title }}</h1>
                 <p class="lead text-white">{{ articles.0.lead }}</p>
                 <a class="link-unstyled" href="{% url "news_article" articles.0.created_at.year articles.0.created_at.month articles.0.created_at.day articles.0.slug %}">
                     <button type="button" class="btn btn-main mb-2">Read more</button>
@@ -66,22 +67,67 @@
 {% endblock %}
 
 {% block in_body %}
-    <div class="jumbotron jumbotron-fluid mb-5" style="background-color: #f6f6f6;">
-        <div class="container mt-3 mb-3 pl-5 pr-5 pl-md-0 pr-md-0">
-            <div class="row">
-                <div class="col-md-2 w-25 ml-auto mr-auto mb-4 mb-md-0 pr-md-4">
-                    <img src="{% static 'img/logo_square_plain.png' %}" alt="KTHAIS" class="w-100">
-                </div>
-                <div class="col-md-10">
-                    <h2 class="text-center text-md-left text-main mb-4">{{ hello }}</h2>
-                    <p class="text-center text-md-left mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi lobortis consequat nisi, in accumsan est dapibus at. Proin dignissim imperdiet ante ut venenatis. Phasellus a leo non libero scelerisque laoreet quis eu lorem. Donec sollicitudin turpis ultrices, aliquam nisi non, cursus nibh. Fusce faucibus est vulputate, aliquet mauris in, scelerisque eros. Curabitur sodales justo ac sem vehicula aliquam. Nulla a metus ipsum.</p>
-                    {% if not request.user.is_authenticated %}
-                        <a class="link-unstyled mt-3 mb-0 d-block" href="{% url "user_register" %}"><p class="text-main mb-0">Register now <i class="fas fa-arrow-right ml-1"></i></p></a>
+    {% if events.future or events.past or articles|length >= 2 %}
+        <div class="jumbotron jumbotron-fluid mb-5 pb-3" style="background-color: #f6f6f6;">
+            <div class="container">
+                {% if events.future %}
+                    <div class="row pb-5">
+                        <div class="col-md-4">
+                            <a class="link-unstyled" href="{{ events.future.0.url }}">
+                                <div class="w-100 image-radius" style="height: 250px; filter: grayscale(50%); -webkit-filter: grayscale(50%); background-image: linear-gradient(to bottom, rgba(61,88,117,0.5) 0%, rgba(61,88,117,0.5) 100%), url('{{ events.future.0.picture.url }}'); background-position: center center; background-size: cover;"></div>
+                            </a>
+                        </div>
+                        <div class="col-md-8 pl-4">
+                            <span class="badge badge-main p-2 mb-3 ml-auto mr-auto d-table mt-4 d-md-inline-block mt-md-0">Upcoming event</span>
+                            <a class="link-unstyled" href="{{ events.future.0.url }}">
+                                <h2 class="text-center text-md-left text-main mb-4">{{ events.future.0.name }}</h2>
+                            </a>
+                            <p class="text-center text-md-left">{{ events.future.0.starts_at|date:"F j, Y H:i" }}</p>
+                            <p class="text-center text-md-left mb-0">{{ events.future.0.description_short }}</p>
+                            {% if events.future.0.is_signup_open %}
+                                <a class="link-unstyled mt-3 mb-0 d-block text-center text-md-left" href="{{ events.future.0.url }}"><p class="text-main mb-0">Register now <i class="fas fa-arrow-right ml-1"></i></p></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% elif events.past %}
+                    <div class="row pb-5">
+                        <div class="col-md-4">
+                            <a class="link-unstyled" href="{{ events.past.0.url }}">
+                                <div class="w-100 image-radius" style="height: 250px; filter: grayscale(50%); -webkit-filter: grayscale(50%); background-image: linear-gradient(to bottom, rgba(61,88,117,0.5) 0%, rgba(61,88,117,0.5) 100%), url('{{ events.past.0.picture.url }}'); background-position: center center; background-size: cover;"></div>
+                            </a>
+                        </div>
+                        <div class="col-md-8 pl-4">
+                            <span class="badge badge-main-s2 p-2 mb-3 ml-auto mr-auto d-table mt-4 d-md-inline-block mt-md-0">Past event</span>
+                            <a class="link-unstyled" href="{{ events.past.0.url }}">
+                                <h2 class="text-center text-md-left text-main mb-4">{{ events.past.0.name }}</h2>
+                            </a>
+                            <p class="text-center text-md-left mb-0">{{ events.past.0.description_short }}</p>
+                        </div>
+                    </div>
+                {% endif %}
+                {% for article in articles %}
+                    {% if forloop.counter0 > 0 %}
+                        <div class="row pb-5">
+                            <div class="col-md-4">
+                                <a class="link-unstyled" href="{{ article.url }}">
+                                    <div class="w-100 image-radius" style="height: 250px; filter: grayscale(50%); -webkit-filter: grayscale(50%); background-image: linear-gradient(to bottom, rgba(61,88,117,0.5) 0%, rgba(61,88,117,0.5) 100%), url('{{ article.picture.url }}'); background-position: center center; background-size: cover;"></div>
+                                </a>
+                            </div>
+                            <div class="col-md-8 pl-4">
+                                <span class="badge badge-main2 p-2 mb-3 ml-auto mr-auto d-table mt-4 d-md-inline-block mt-md-0">Article</span>
+                                <a class="link-unstyled" href="{{ article.url }}">
+                                    <h2 class="text-center text-md-left text-main mb-4">{{ article.title }}</h2>
+                                </a>
+                                <p class="text-center text-md-left mb-0">{{ article.description_short }}</p>
+                                <a class="link-unstyled mt-3 mb-0 d-block text-center text-md-left" href="{{ article.url }}"><p class="text-main mb-0">Read more <i class="fas fa-arrow-right ml-1"></i></p></a>
+                            </div>
+                        </div>
                     {% endif %}
-                </div>
+                {% endfor %}
             </div>
         </div>
-    </div>
+    {% endif %}
+    {% comment %}
     <div class="container">
         {% if articles|length > 2 or articles|length > 1 and events %}
             <div class="row mt-0 mb-0">
@@ -139,46 +185,101 @@
             </div>
         {% endif %}
     </div>
+    {% endcomment %}
     <div class="container">
         <div class="row mt-4 mb-0">
             <div class="col-md-12">
-                <h1>Our mission</h1>
-                <p>At KTHAIS, we believe in the creative force of ambitious students to, from the very onset of their careers, explore and shape the future of technology. To this effect, we are inclusive of all backgrounds and seek out collaborations with other parties to achieve maximum impact in all endeavours that spike our curiosity. We organise networking events, educational lectures, workshops, hackathons and research projects for students by students.</p>
+                <h1 class="text-main text-center text-md-left">Our mission</h1>
+                <p class="text-center text-md-left">At <strong>KTHAIS</strong>, we believe in the creative force of ambitious students to, from the very onset of their careers, explore and shape the future of technology. To this effect, we are inclusive of all backgrounds and seek out collaborations with other parties to achieve maximum impact in all endeavours that spike our curiosity. We organise networking events, educational lectures, workshops, hackathons and research projects for students by students.</p>
             </div>
         </div>
-        <div class="row mt-4 mb-0">
+        <div class="row mt-4 mb-3 mb-md-5">
             <div class="col-md-12">
-                <h2 class="text-center mb-4">Our goals</h2>
+                <h2 class="text-center mb-4 text-main">Our goals</h2>
                 <div class="row text-center pt-2 pb-2">
-                    <div class="col-md-4">
-                        <h1 class="text-main"><i class="fas fa-globe-europe"></i></h1>
+                    <div class="col-md-4 mb-4 mb-md-0">
+                        <img class="w-100 mb-2 mb-md-3" src="{% static "img/home_2_b.png" %}" />
                         <p class="mt-2 mb-0">Provide all students at KTH with working knowledge of AI and its impacts on society in general and their specific field in particular.</p>
                     </div>
-                    <div class="col-md-4">
-                        <h1 class="text-main"><i class="fas fa-cogs"></i></h1>
+                    <div class="col-md-4 mb-4 mb-md-0">
+                        <img class="w-100 mb-2 mb-md-3" src="{% static "img/home_1_b.png" %}" />
                         <p class="mt-2 mb-0">Cultivate collaboration between academia and industry to promote job placement and business creation.</p>
                     </div>
-                    <div class="col-md-4">
-                        <h1 class="text-main"><i class="fas fa-project-diagram"></i></h1>
+                    <div class="col-md-4 mb-4 mb-md-0">
+                        <img class="w-100 mb-2 mb-md-3" src="{% static "img/home_3_b.png" %}" />
                         <p class="mt-2 mb-0">Broadcast new insights and results stemming from our activities to further the development and adoption of universally beneficial AI.</p>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row mt-4 mb-0 pt-4 pb-4">
+        <div class="row mt-4 mb-0">
             <div class="col-md-12">
-                <img class="w-100" src="{% static "img/home_1.png" %}" />
+                <h2 class="text-center mb-4 text-main">Our history</h2>
+                <div class="row text-center pt-2 pb-2">
+                    <div class="col-md-12">
+                        <ul class="timeline">
+                            <li>
+                                <div class="timeline-badge badge-main"><i class="fas fa-plus"></i></div>
+                                <div class="timeline-panel">
+                                    <div class="timeline-heading">
+                                        <h4 class="timeline-title">An idea is born</h4>
+                                        <p><small class="text-muted">August 2018 <i class="far fa-calendar ml-1"></i></small></p>
+                                    </div>
+                                    <div class="timeline-body">
+                                        <p>Alexander Jacobsen came to Filip Matz with an idea: To create a driven community of people interested in AI at KTH that could enable students to change the future of the field.</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="timeline-inverted">
+                                <div class="timeline-badge badge-main2"><i class="fas fa-running"></i></div>
+                                <div class="timeline-panel">
+                                    <div class="timeline-heading">
+                                        <h4 class="timeline-title">Out the gates running</h4>
+                                        <p><small class="text-muted">January 2019 <i class="far fa-calendar ml-1"></i></small></p>
+                                    </div>
+                                    <div class="timeline-body">
+                                        <p>A core team is recruited and several soon to be successful projects are planned. Massive positive feedback is received from the KTH student community and KTHAIS becomes the fastest growing organisation at KTH.</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="timeline-badge badge-main2"><i class="fas fa-calendar-day"></i></div>
+                                <div class="timeline-panel">
+                                    <div class="timeline-heading">
+                                        <h4 class="timeline-title">The first KTH AI day</h4>
+                                        <p><small class="text-muted">September 2019 <i class="far fa-calendar ml-1"></i></small></p>
+                                    </div>
+                                    <div class="timeline-body">
+                                        <p>Over 150 students attend KTHAIS flagship event at Nymble. Members join Ericsson and Accenture during workshops, listen to a panel discussion with AI Startups and chat with the wonderful Furhat of Furhat Robotics.</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="timeline-inverted">
+                                <div class="timeline-badge badge-main2"><i class="fas fa-users"></i></div>
+                                <div class="timeline-panel">
+                                    <div class="timeline-heading">
+                                        <h4 class="timeline-title">Brand new start</h4>
+                                        <p><small class="text-muted">Jnuary 2020 <i class="far fa-calendar ml-1"></i></small></p>
+                                    </div>
+                                    <div class="timeline-body">
+                                        <p>A new board was elected for the year of 2020 and a long-term partnership with McKinsey & Company was signed. 2020 is looking to be the greatest year yet for KTHAIS.</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     <div class="jumbotron jumbotron-fluid mt-5 mb-0 bg-main-s2 text-white">
-        <div class="container container-fluid">
+        <div class="container container-fluid pb-5 pb-md-0">
             <h2 class="text-center mt-0 mb-5">Project group</h2>
             <div class="row justify-content-md-center home-organisers">
                 {% for organiser in organisers %}
-                    <div class="col-4 col-md-2 text-center">
+                    <div class="col-4 col-md-2 text-center ml-auto mr-auto ml-md-0 mr-md-0">
                         {% if organiser.website %}<a href="{{ organiser.website }}" target="_blank" class="link-unstyled">{% endif %}
-                        <img src="{{ organiser.picture.url }}">
+                        <img src="{{ organiser.picture.url }}" class="ml-auto mr-auto">
                         <h6 class="mt-1 mb-2">{{ organiser.full_name }}</h6>
                         {% if organiser.description %}
                             <p class="mb-0" style="line-height: 1;"><small>{{ organiser.description|upper }}</small></p>

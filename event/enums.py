@@ -6,7 +6,8 @@ class EventType(enum.IntEnum):
     LECTURE = 2
     LUNCH = 3
     EXTERNAL = 4
-    OTHER = 5
+    WEBINAR = 5
+    OTHER = 6
 
 
 class EventStatus(enum.IntEnum):

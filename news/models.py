@@ -29,14 +29,18 @@ class Article(models.Model):
     objects = ArticleManager()
 
     @property
-    def description_short(self):
+    def description_extra_short(self):
         return textwrap.shorten(self.body_plaintext, width=50, placeholder="...")
+
+    @property
+    def description_short(self):
+        return textwrap.shorten(self.body_plaintext, width=250, placeholder="...")
 
     @property
     def lead(self):
         if self.subtitle:
             return self.subtitle
-        return self.description_short
+        return self.description_extra_short
 
     @property
     def url(self):

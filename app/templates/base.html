@@ -70,10 +70,12 @@
                                         <a class="nav-link" href="{% url 'app_home' %}">Home</a>
                                     </li>
                                 </ul>
-                                <form class="form-inline">
-                                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
-                                </form>
+                                {% comment %}
+                                    <form class="form-inline">
+                                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit"><i class="fas fa-search"></i></button>
+                                    </form>
+                                 {% endcomment %}
                             </div>
                         {% endif %}
                     </div>
@@ -120,13 +122,13 @@
                             <div class="col-md-4 d-none d-md-block pl-4">
                                 {% block sidebar %}
                                     {% with current_app=request.path|extract_app current_slug=request.path|extract_slug %}
-                                        {% if events %}
-                                            {% if events|length == 1 and current_app == "events" and events.0.code == current_slug %}
+                                        {% if events.future %}
+                                            {% if events.future|length == 1 and current_app == "events" and events.future.0.code == current_slug %}
                                             {% else %}
                                                 <div class="row mb-3">
                                                     <div class="col-md-12">
                                                         <h4 class="font-italic mb-4">Future events</h4>
-                                                        {% for event in events %}
+                                                        {% for event in events.future %}
                                                             {% if event.code != current_slug and forloop.counter0 < 3 %}
                                                                 <a class="link-unstyled" href="{{ event.url }}">
                                                                     <div class="media">

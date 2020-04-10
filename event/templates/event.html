@@ -40,15 +40,21 @@
     </div>
     {% if event.description %}
         <div class="row mt-2">
-            <div class="col-md-12 mb-3">
+            <div class="col-md-12 mb-2">
                 {{ event.description|apply_markup:"markdown" }}
             </div>
         </div>
         {% endif %}
     {% if event.is_event_future %}
         <div class="row">
+            <div class="col-md-12 mb-3">
+                <h5 class="mb-3">Time: {{ event.starts_at|date:"F j, Y H:i" }}{% if event.starts_at != event.ends_at %} - {% if event.starts_at.date != event.ends_at.date %}{{ event.ends_at|date:"F j, Y H:i" }}{% else %}{{ event.ends_at|date:"H:i" }}{% endif %}{% endif %}</h5>
+                {% if event.location %}
+                    <h5>Location: <a class="link-unstyled" href="https://maps.google.com/maps?hl=en&amp;q={{ event.location }}">{{ event.location }}</a></h5>
+                {% endif %}
+            </div>
             <div class="col-md-12">
-                <div class="card mb-5">
+                <div class="card mb-4">
                     <div class="card-body">
                         <h3 class="text-center text-md-left">Registration</h3>
                         {% if event.is_signup_open or registration %}
@@ -93,15 +99,11 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-12">
+                {% if event.location %}
+                    <iframe width="100%" height="400" src="https://maps.google.com/maps?hl=en&amp;q={{ event.location }}&amp;ie=UTF8&amp;t=&amp;z=14&amp;iwloc=B&amp;output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                {% endif %}
+            </div>
         </div>
     {% endif %}
-    <div class="row">
-        <div class="col-md-12">
-            <h5 class="mb-3">Time: {{ event.starts_at|date:"F j, Y H:i" }}{% if event.starts_at != event.ends_at %} - {% if event.starts_at.date != event.ends_at.date %}{{ event.ends_at|date:"F j, Y H:i" }}{% else %}{{ event.ends_at|date:"H:i" }}{% endif %}{% endif %}</h5>
-            {% if event.location %}
-                <h5>Location: <a class="link-unstyled" href="https://maps.google.com/maps?hl=en&amp;q={{ event.location }}">{{ event.location }}</a></h5>
-                <iframe width="100%" height="400" src="https://maps.google.com/maps?hl=en&amp;q={{ event.location }}&amp;ie=UTF8&amp;t=&amp;z=14&amp;iwloc=B&amp;output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
-            {% endif %}
-        </div>
-    </div>
 {% endblock %}

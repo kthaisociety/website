@@ -5,4 +5,11 @@
 
 {% block email_body %}
     <p>Thank-you for registering to <strong>{{ registration.event.name }}</strong>!</p>
+    <h5>Time: {{ registration.event.starts_at|date:"F j, Y H:i" }}{% if registration.event.starts_at != registration.event.ends_at %} - {% if registration.event.starts_at.date != registration.event.ends_at.date %}{{ registration.event.ends_at|date:"F j, Y H:i" }}{% else %}{{ registration.event.ends_at|date:"H:i" }}{% endif %}{% endif %}</h5>
+    {% if registration.event.location %}
+        <h5>Location: {{ registration.event.location }}</h5>
+    {% endif %}
+    {% if registration.event.external_url %}
+        <h5>Webinar link: <a href="{{ registration.event.external_url }}" class="link-colour">{{ registration.event.external_url }}</a></h5>
+    {% endif %}
 {% endblock %}

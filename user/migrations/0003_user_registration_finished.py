@@ -5,14 +5,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('user', '0002_user_allow_empty_surname'),
-    ]
+    dependencies = [("user", "0002_user_allow_empty_surname")]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='registration_finished',
+            model_name="user",
+            name="registration_finished",
             field=models.BooleanField(default=False),
-        ),
+        )
     ]

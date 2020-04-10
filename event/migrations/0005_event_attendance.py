@@ -5,19 +5,17 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('event', '0004_registration'),
-    ]
+    dependencies = [("event", "0004_registration")]
 
     operations = [
         migrations.AddField(
-            model_name='event',
-            name='attendance_limit',
+            model_name="event",
+            name="attendance_limit",
             field=models.IntegerField(blank=True, null=True),
         ),
         migrations.AddField(
-            model_name='event',
-            name='attendance_target',
+            model_name="event",
+            name="attendance_target",
             field=models.IntegerField(blank=True, null=True),
         ),
     ]

@@ -30,4 +30,3 @@ def send_verify(user: User):
     verify_key = generate_verify_key(user)
     user.update_verify(verify_key=verify_key)
     send_verify_email(user_id=user.id)
-

@@ -83,14 +83,16 @@ def user_register(request):
         if city and country:
             try:
                 geolocator = Nominatim()
-                location = geolocator.geocode(f"{city}, {country}", language="en", addressdetails=True)
+                location = geolocator.geocode(
+                    f"{city}, {country}", language="en", addressdetails=True
+                )
                 try:
                     city = location.raw["address"]["city"]
                 except KeyError:
                     try:
                         city = location.raw["address"]["village"]
                     except KeyError:
-                        city = location.raw["address"]["town"]
+                        city = location.raw["address"]["suburb"]
                 country = location.raw["address"]["country"]
             except (AttributeError, KeyError):
                 error_location = True
@@ -108,7 +110,7 @@ def user_register(request):
             "programme": degree,
             "graduation_year": graduation_year,
             "city": city,
-            "country": country
+            "country": country,
         }
         missing_required = [
             field_name for field_name, field in form.items() if not field
@@ -133,6 +135,10 @@ def user_register(request):
             else:
                 university = UNIVERSITIES[int(university)]
                 degree = PROGRAMMES[int(degree)]
+                if gender:
+                    gender = GenderType(int(gender))
+                else:
+                    gender = GenderType.NONE
                 if request.user.is_authenticated:
                     try:
                         request.user.finish_registration(
@@ -147,7 +153,7 @@ def user_register(request):
                                 if birthday
                                 else None
                             ),
-                            gender=(gender if gender else GenderType.NONE),
+                            gender=gender,
                             city=city,
                             country=country,
                         )
@@ -171,7 +177,7 @@ def user_register(request):
                             if birthday
                             else None
                         ),
-                        gender=(gender if gender else GenderType.NONE),
+                        gender=gender,
                         city=city,
                         country=country,
                         university=university,

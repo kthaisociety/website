@@ -19,6 +19,8 @@ Requirements: Python 3.6 or greater, virtualenv and pip.
 - `source ./env/bin/activate`.
 - `pip install -r requirements.txt`.
 
+If you run into issues with the `magic` package, try [this](https://github.com/Yelp/elastalert/issues/1927#issuecomment-425040424).
+
 Continue with only one of the following sections depending on the purpose of the deploy.
 
 ### Local server

@@ -36,7 +36,9 @@ class User(AbstractBaseUser):
     is_active = models.BooleanField(default=True)
 
     # Personal information
-    picture = VersatileImageField("Image", upload_to="user/picture/", default="user/picture/profile.png")
+    picture = VersatileImageField(
+        "Image", upload_to="user/picture/", default="user/picture/profile.png"
+    )
     gender = models.PositiveSmallIntegerField(
         choices=((t.value, t.name) for t in GenderType), default=GenderType.NONE
     )
@@ -103,7 +105,7 @@ class User(AbstractBaseUser):
             "country": self.country,
             "type": self.type,
             "description": (self.description if self.description else ""),
-            "website": (self.website if self.website else "")
+            "website": (self.website if self.website else ""),
         }
 
     def disable_verify(self):
@@ -111,7 +113,7 @@ class User(AbstractBaseUser):
         self.save()
 
     def update_verify(
-        self, verify_key, verify_expiration=timezone.now() + timezone.timedelta(hours=1)
+        self, verify_key, verify_expiration=timezone.now() + timezone.timedelta(days=1)
     ):
         self.verify_key = verify_key
         self.verify_expiration = verify_expiration

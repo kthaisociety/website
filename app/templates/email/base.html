@@ -27,7 +27,7 @@
                 <tr>
                     <td class="content" style="margin: 30px 35px !important; background-color:#f8f8f8;">
                         {% block email_opening %}
-                            {% if user %}
+                            {% if user and user.name %}
                                 <h4>Hej, {{ user.name }}!</h4>
                             {% else %}
                                 <h4>Hej!</h4>
@@ -63,9 +63,9 @@
                                 <td class="content footer" align="center">
                                     <p style="margin: 5px auto; display: inline-block;" class="email-footer">Sent with 💛 by students in KTH 🇸🇪</p>
                                     <br>
-                                    <a href="{% url 'page_page' 'legal' 'legal-notice' %}" class="email-legal">Legal notice</a>
-                                    <a href="{% url 'page_page' 'legal' 'terms-and-conditions' %}" class="email-legal">Terms and Conditions</a>
-                                    <a href="{% url 'page_page' 'legal' 'privacy-and-cookies' %}" class="email-legal">Privacy and Cookies</a>
+                                    <a href="{% full_url 'page_page' 'legal' 'legal-notice' %}" class="email-legal">Legal notice</a>
+                                    <a href="{% full_url 'page_page' 'legal' 'terms-and-conditions' %}" class="email-legal">Terms and Conditions</a>
+                                    <a href="{% full_url 'page_page' 'legal' 'privacy-and-cookies' %}" class="email-legal">Privacy and Cookies</a>
                                 </td>
                             </tr>
                         </table>

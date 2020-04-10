@@ -89,7 +89,9 @@ class User(AbstractBaseUser):
         return self.name
 
     def __str__(self):
-        return self.full_name
+        if self.full_name:
+            return f"{self.full_name} <{self.email}>"
+        return f"<{self.email}>"
 
     def get_dict(self):
         return {

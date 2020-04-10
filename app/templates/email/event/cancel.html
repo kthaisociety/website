@@ -1,0 +1,8 @@
+{% extends "email/base.html" %}
+{% load app_tags %}
+{% load bootstrap4 %}
+{% load i18n %}
+
+{% block email_body %}
+    <p>Your registration to <strong>{{ registration.event.name }}</strong> has been cancelled. We are sorry to hear that and hope to see you in the future!</p>
+{% endblock %}

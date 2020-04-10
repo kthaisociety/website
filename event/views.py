@@ -5,6 +5,7 @@ from django.urls import reverse
 
 from event.enums import RegistrationStatus
 from event.models import Event, Registration
+from event.tasks import send_registration_email
 
 
 def event(request, code):
@@ -27,7 +28,8 @@ def event(request, code):
                     request,
                     f"You've been registered! Remember the event will take place on {event.starts_at.strftime('%B %-d, %Y')}.",
                 )
-                status = RegistrationStatus.REQUESTED
+                # TODO: Temporal set to REGISTERED instead before organiser check is implemented
+                status = RegistrationStatus.REGISTERED
             elif type == "interest":
                 messages.success(
                     request,
@@ -51,6 +53,7 @@ def event(request, code):
                     registration = Registration.objects.create(
                         event=event, user=request.user, status=status
                     )
+                send_registration_email(registration_id=registration.id)
 
         return render(
             request, "event.html", {"event": event, "registration": registration}

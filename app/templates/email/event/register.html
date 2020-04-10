@@ -1,0 +1,20 @@
+{% extends "email/base.html" %}
+{% load app_tags %}
+{% load bootstrap4 %}
+{% load i18n %}
+
+{% block email_message_pre %}
+    <p>Thank-you for registering to <strong>{{ registration.event.name }}</strong>!</p>
+    <h5 style="margin-bottom: 8px;">Time: {{ registration.event.starts_at|date:"F j, Y H:i" }}{% if registration.event.starts_at != registration.event.ends_at %} - {% if registration.event.starts_at.date != registration.event.ends_at.date %}{{ registration.event.ends_at|date:"F j, Y H:i" }}{% else %}{{ registration.event.ends_at|date:"H:i" }}{% endif %}{% endif %}</h5>
+    {% if registration.event.location %}
+        <h5 style="margin-bottom: 8px;">Location: {{ registration.event.location }}</h5>
+    {% endif %}
+    {% if registration.event.external_url %}
+        <h5 style="margin-bottom: 8px;">Webinar link: <a href="{{ registration.event.external_url }}" class="link-colour">{{ registration.event.external_url }}</a></h5>
+    {% endif %}
+    <br>
+{% endblock %}
+
+{% block email_button_url %}{% full_url "events_event" registration.event.code %}{% endblock %}
+
+{% block email_button_text %}View event{% endblock %}

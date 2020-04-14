@@ -6,19 +6,13 @@ from event.enums import EventStatus
 
 class EventManager(models.Manager):
     def published(self):
-        return (
-            super()
-            .get_queryset()
-            .filter(status=EventStatus.PUBLISHED)
-        )
+        return super().get_queryset().filter(status=EventStatus.PUBLISHED)
 
     def future(self):
         return (
             super()
             .get_queryset()
-            .filter(
-                sessions__starts_at__date__gte=timezone.now().date()
-            )
+            .filter(sessions__starts_at__date__gte=timezone.now().date())
         )
 
     def published_future(self):
@@ -36,7 +30,5 @@ class EventManager(models.Manager):
             super()
             .get_queryset()
             .filter(status=EventStatus.PUBLISHED)
-            .exclude(
-                sessions__starts_at__date__gte=timezone.now().date(),
-            )
+            .exclude(sessions__starts_at__date__gte=timezone.now().date())
         )

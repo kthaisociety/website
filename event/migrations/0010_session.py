@@ -7,29 +7,36 @@ import uuid
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('event', '0009_registration_unique'),
-    ]
+    dependencies = [("event", "0009_registration_unique")]
 
     operations = [
-        migrations.RemoveField(
-            model_name='event',
-            name='ends_at',
-        ),
-        migrations.RemoveField(
-            model_name='event',
-            name='starts_at',
-        ),
+        migrations.RemoveField(model_name="event", name="ends_at"),
+        migrations.RemoveField(model_name="event", name="starts_at"),
         migrations.CreateModel(
-            name='Session',
+            name="Session",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=255)),
-                ('starts_at', models.DateTimeField()),
-                ('ends_at', models.DateTimeField()),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('event', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='sessions', to='event.Event')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                ("starts_at", models.DateTimeField()),
+                ("ends_at", models.DateTimeField()),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "event",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="sessions",
+                        to="event.Event",
+                    ),
+                ),
             ],
         ),
     ]

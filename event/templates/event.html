@@ -102,6 +102,10 @@
                                             <label for="id_email">Email <small>(required)</small></label>
                                             <input type="email" name="email" maxlength="225" class="form-control" placeholder="curl@kthais.com" id="id_email" {% if form.email %}value="{{ form.email }}"{% endif %}>
                                         </div>
+                                        <div class="form-group mt-3">
+                                            <input type="checkbox" name="terms" class="mr-1 form-check-inline" id="id_terms" required="">
+                                            <label for="id_terms">I've read, understand and accept the <a href="{% url 'page_page' 'legal' 'terms-and-conditions' %}" class="link-colour" target="_blank">Terms & Conditions</a> and the <a href="{% url 'page_page' 'legal' 'privacy-and-cookies' %}" class="link-colour" target="_blank">Privacy and Cookies Policy</a>.</label>
+                                        </div>
                                         <button class="btn btn-main" type="submit" name="submit" value="register">Register</button>
                                     </form>
                                 {% endif %}

@@ -57,13 +57,13 @@ def event(request, code):
             elif type == "interest":
                 messages.success(
                     request,
-                    f"Thank-you for letting us know, we hope to wee you in a future event!",
+                    f"Thank-you for letting us know, we hope to see you in a future event!",
                 )
                 status = RegistrationStatus.INTERESTED
             elif type == "cancel":
                 messages.success(
                     request,
-                    f"Thank-you for letting us know, we hope to wee you in a future event!",
+                    f"Thank-you for letting us know, we hope to see you in a future event!",
                 )
                 status = RegistrationStatus.CANCELLED
             else:

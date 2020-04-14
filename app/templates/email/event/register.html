@@ -14,10 +14,7 @@
         {% endfor %}
     {% endif %}
     {% if registration.event.location %}
-        <h5 style="margin-bottom: 8px;">Location: {{ registration.event.location }}</h5>
-    {% endif %}
-    {% if registration.event.external_url %}
-        <h5 style="margin-bottom: 8px;">Webinar link: <a href="{{ registration.event.external_url }}" class="link-colour">{{ registration.event.external_url }}</a></h5>
+        <h5 style="margin-top: 20px; margin-bottom: 8px;">Location: {{ registration.event.location }}</h5>
     {% endif %}
     <br>
 {% endblock %}

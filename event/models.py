@@ -33,8 +33,6 @@ class Event(models.Model):
         choices=((s.value, s.name) for s in EventStatus), default=EventStatus.DRAFT
     )
     location = models.CharField(max_length=255, blank=True, null=True)
-    starts_at = models.DateTimeField()
-    ends_at = models.DateTimeField()
     signup_starts_at = models.DateTimeField(blank=True, null=True)
     signup_ends_at = models.DateTimeField(blank=True, null=True)
     account_required = models.BooleanField(default=False)
@@ -45,6 +43,20 @@ class Event(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     objects = EventManager()
+
+    @property
+    def starts_at(self):
+        session = self.sessions.all().order_by("-starts_at").first()
+        if session:
+            return session.starts_at
+        return None
+
+    @property
+    def ends_at(self):
+        session = self.sessions.all().order_by("ends_at").first()
+        if session:
+            return session.ends_at
+        return None
 
     @property
     def description_short(self):
@@ -141,6 +153,17 @@ class Event(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Session(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255)
+    event = models.ForeignKey("Event", on_delete=models.PROTECT, related_name="sessions")
+    starts_at = models.DateTimeField()
+    ends_at = models.DateTimeField()
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class Registration(models.Model):

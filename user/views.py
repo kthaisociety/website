@@ -97,7 +97,8 @@ def verify_password(request, email, verification_key):
                 else:
                     user.backend = "django.contrib.auth.backends.ModelBackend"
                     user.set_password(password)
-                    user.verify()
+                    user.email_verified = True
+                    user.delete_verify_key()
                     user.save()
                     messages.success(
                         request, "Your password has been successfully updated."

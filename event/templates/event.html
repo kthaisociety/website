@@ -4,6 +4,12 @@
 {% load static %}
 {% load bootstrap4 %}
 
+{% block og %}
+    <meta property="og:title" content="{{ event.name }} | {{ app_name }}" />
+    <meta property="og:url" content="https://{{ app_domain }}{{ event.url }}" />
+    <meta property="og:image" content="https://{{ app_domain }}{{ event.picture.url }}" />
+{% endblock %}
+
 {% block head_title %}{{ event.name }}{% endblock %}
 
 {% block in_pre_body %}

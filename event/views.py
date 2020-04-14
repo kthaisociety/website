@@ -38,14 +38,15 @@ def event(request, code):
                     form = {"name": name, "surname": surname, "email": email}
 
                     if not name or not surname or not email:
-                        messages.error(request, "All fields are required, if you are already have an account you can login first.")
+                        messages.error(
+                            request,
+                            "All fields are required, if you are already have an account you can login first.",
+                        )
 
                     user_obj = user.utils.get_user_by_email(email=email)
                     if not user_obj:
                         user_obj = user.utils.create_user(
-                            name=name,
-                            surname=surname,
-                            email=email,
+                            name=name, surname=surname, email=email
                         )
                         user.utils.send_imported(user=user_obj)
                 messages.success(
@@ -80,7 +81,9 @@ def event(request, code):
                 send_registration_email(registration_id=registration.id)
 
         return render(
-            request, "event.html", {"event": event, "registration": registration, "form": form}
+            request,
+            "event.html",
+            {"event": event, "registration": registration, "form": form},
         )
     return HttpResponseNotFound()
 

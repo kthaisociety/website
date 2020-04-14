@@ -13,7 +13,7 @@ def get_user_by_email(email: str) -> User:
 
 
 def create_user(name: str, surname: str, email: str) -> User():
-    return User.objects.create_participant(
+    user = User.objects.create_participant(
         name=name,
         surname=surname,
         email=email,
@@ -27,6 +27,9 @@ def create_user(name: str, surname: str, email: str) -> User():
         degree=None,
         graduation_year=None,
     )
+    user.registration_finished = False
+    user.save()
+    return user
 
 
 def get_user_by_picture(picture):

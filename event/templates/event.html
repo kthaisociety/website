@@ -67,7 +67,7 @@
                                             <span class="badge badge-main2 p-2 ml-1">Cancelled</span>
                                         {% endif %}
                                     </p>
-                                    {% if event.type == 5 and registration.status == 2 %}
+                                    {% if event.type == 5 and registration.status == 2 and event.external_url %}
                                         <p class="text-center text-md-left mb-0 mt-1">Webinar link: <a href="{{ event.external_url }}" class="link-colour">{{ event.external_url }}</a></p>
                                     {% endif %}
                                     {% if not registration.status == 1 and not registration.status == 2 %}

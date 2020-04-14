@@ -58,7 +58,7 @@
                     <div class="card-body">
                         <h3 class="text-center text-md-left">Registration</h3>
                         {% if event.is_signup_open or registration %}
-                            {% if request.user.is_authenticated %}
+                            {% if request.user.is_authenticated or not event.account_required %}
                                 {% if registration %}
                                     <p class="text-center text-md-left mb-0">Status:
                                         {% if registration.status == 1 or registration.status == 2 %}
@@ -79,12 +79,30 @@
                                             <button class="btn btn-main2" type="submit" name="submit" value="cancel">Cancel</button>
                                         </form>
                                     {% endif %}
-                                {% else %}
+                                {% elif request.user.is_authenticated %}
                                     <p class="text-center text-md-left mb-2">Do you want to register for this event?</p>
                                     <form action="" method="post" class="form">
                                         {% csrf_token %}
                                         <button class="btn btn-main" type="submit" name="submit" value="register">Register</button>
                                         <button class="btn btn-main2 ml-2" type="submit" name="submit" value="interest">I can't attend</button>
+                                    </form>
+                                {% else %}
+                                    <p class="text-center text-md-left mb-2">Do you want to register for this event?</p>
+                                    <form action="" method="post" class="form">
+                                        {% csrf_token %}
+                                         <div class="form-group">
+                                            <label for="id_name">First name <small>(required)</small></label>
+                                            <input type="text" name="name" maxlength="225" class="form-control" placeholder="Daniel" id="id_name" {% if form.first_name %}value="{{ form.first_name }}"{% elif request.user.name %}value="{{ request.user.name }}"{% endif %}>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="id_surname">Last name <small>(required)</small></label>
+                                            <input type="text" name="surname" maxlength="225" class="form-control" placeholder="Stenberg" id="id_surname" {% if form.last_name %}value="{{ form.last_name }}"{% elif request.user.surname %}value="{{ request.user.surname }}"{% endif %}>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="id_email">Email <small>(required)</small></label>
+                                            <input type="email" name="email" maxlength="225" class="form-control" placeholder="curl@kthais.com" id="id_email" {% if form.email %}value="{{ form.email }}"{% endif %}>
+                                        </div>
+                                        <button class="btn btn-main" type="submit" name="submit" value="register">Register</button>
                                     </form>
                                 {% endif %}
                             {% else %}

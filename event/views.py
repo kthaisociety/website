@@ -3,6 +3,8 @@ from django.http import HttpResponseNotFound, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
+import user.utils
+
 from event.enums import RegistrationStatus
 from event.models import Event, Registration
 from event.tasks import send_registration_email
@@ -17,13 +19,35 @@ def event(request, code):
     else:
         registration = None
 
+    form = {}
+
     if event:
         if request.method == "POST":
-            if not request.user.is_authenticated:
+            type = request.POST.get("submit", None)
+
+            if type != "register" and not request.user.is_authenticated:
                 return HttpResponseRedirect(reverse("user_login"))
 
-            type = request.POST.get("submit", None)
+            user_obj = request.user
+
             if type == "register":
+                if not user_obj.is_authenticated:
+                    name = request.POST.get("name", None)
+                    surname = request.POST.get("surname", None)
+                    email = request.POST.get("email", None)
+                    form = {"name": name, "surname": surname, "email": email}
+
+                    if not name or not surname or not email:
+                        messages.error(request, "All fields are required, if you are already have an account you can login first.")
+
+                    user_obj = user.utils.get_user_by_email(email=email)
+                    if not user_obj:
+                        user_obj = user.utils.create_user(
+                            name=name,
+                            surname=surname,
+                            email=email,
+                        )
+                        user.utils.send_imported(user=user_obj)
                 messages.success(
                     request,
                     f"You've been registered! Remember the event will take place on {event.starts_at.strftime('%B %-d, %Y')}.",
@@ -51,12 +75,12 @@ def event(request, code):
                     registration.save()
                 else:
                     registration = Registration.objects.create(
-                        event=event, user=request.user, status=status
+                        event=event, user=user_obj, status=status
                     )
                 send_registration_email(registration_id=registration.id)
 
         return render(
-            request, "event.html", {"event": event, "registration": registration}
+            request, "event.html", {"event": event, "registration": registration, "form": form}
         )
     return HttpResponseNotFound()
 

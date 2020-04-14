@@ -3,8 +3,30 @@ from uuid import UUID
 
 from django.utils.crypto import get_random_string
 
+from user.enums import GenderType
 from user.models import User
 from user.tasks import send_verify_email, send_password_email, send_imported_email
+
+
+def get_user_by_email(email: str) -> User:
+    return User.objects.filter(email=email).first()
+
+
+def create_user(name: str, surname: str, email: str) -> User():
+    return User.objects.create_participant(
+        name=name,
+        surname=surname,
+        email=email,
+        password=None,
+        phone=None,
+        birthday=None,
+        gender=GenderType.NONE,
+        city=None,
+        country=None,
+        university=None,
+        degree=None,
+        graduation_year=None,
+    )
 
 
 def get_user_by_picture(picture):

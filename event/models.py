@@ -37,6 +37,7 @@ class Event(models.Model):
     ends_at = models.DateTimeField()
     signup_starts_at = models.DateTimeField(blank=True, null=True)
     signup_ends_at = models.DateTimeField(blank=True, null=True)
+    account_required = models.BooleanField(default=False)
     attendance_target = models.IntegerField(blank=True, null=True)
     attendance_limit = models.IntegerField(blank=True, null=True)
 
@@ -123,10 +124,7 @@ class Event(models.Model):
 
     def clean(self):
         messages = {}
-        if self.type == EventType.WEBINAR:
-            if not self.external_url:
-                messages["external_url"] = "The URL is mandatory for WEBINAR events."
-        else:
+        if self.type != EventType.WEBINAR:
             if not self.location:
                 messages[
                     "location"
@@ -163,3 +161,6 @@ class Registration(models.Model):
 
     def __str__(self):
         return f"{self.event.name} - {self.user}"
+
+    class Meta:
+        unique_together = ("event", "user")

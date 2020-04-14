@@ -58,7 +58,7 @@
                     <h5 class="mb-3">Time: {{ event.starts_at|date:"F j, Y H:i" }}{% if event.starts_at != event.ends_at %} - {% if event.starts_at.date != event.ends_at.date %}{{ event.ends_at|date:"F j, Y H:i" }}{% else %}{{ event.ends_at|date:"H:i" }}{% endif %}{% endif %}</h5>
                 {% elif event.sessions.all|length > 1 %}
                     {% for session in event.sessions.all %}
-                        <p>{{ session.name }}</p>
+                        <p class="mb-1"><i>{{ session.name }}</i></p>
                         <h5 class="mb-3">{{ session.starts_at|date:"F j, Y H:i" }}{% if session.starts_at != session.ends_at %} - {% if session.starts_at.date != session.ends_at.date %}{{ session.ends_at|date:"F j, Y H:i" }}{% else %}{{ session.ends_at|date:"H:i" }}{% endif %}{% endif %}</h5>
                     {% endfor %}
                 {% endif %}

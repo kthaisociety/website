@@ -6,11 +6,11 @@
 {% block email_message_pre %}
     <p>Thank-you for registering to <strong>{{ registration.event.name }}</strong>!</p>
     {% if event.sessions.all|length == 1 %}
-        <h5 class="mb-1">Time: {{ event.starts_at|date:"F j, Y H:i" }}{% if event.starts_at != event.ends_at %} - {% if event.starts_at.date != event.ends_at.date %}{{ event.ends_at|date:"F j, Y H:i" }}{% else %}{{ event.ends_at|date:"H:i" }}{% endif %}{% endif %}</h5>
+        <h5 style="margin-bottom: 8px;">Time: {{ event.starts_at|date:"F j, Y H:i" }}{% if event.starts_at != event.ends_at %} - {% if event.starts_at.date != event.ends_at.date %}{{ event.ends_at|date:"F j, Y H:i" }}{% else %}{{ event.ends_at|date:"H:i" }}{% endif %}{% endif %}</h5>
     {% elif event.sessions.all|length > 1 %}
         {% for session in event.sessions.all %}
-            <p>{{ session.name }}</p>
-            <h5 class="mb-1">{{ session.starts_at|date:"F j, Y H:i" }}{% if session.starts_at != session.ends_at %} - {% if session.starts_at.date != session.ends_at.date %}{{ session.ends_at|date:"F j, Y H:i" }}{% else %}{{ session.ends_at|date:"H:i" }}{% endif %}{% endif %}</h5>
+            <p style="margin-bottom: 2px;"><i>{{ session.name }}</i></p>
+            <h5 style="margin-bottom: 8px;">{{ session.starts_at|date:"F j, Y H:i" }}{% if session.starts_at != session.ends_at %} - {% if session.starts_at.date != session.ends_at.date %}{{ session.ends_at|date:"F j, Y H:i" }}{% else %}{{ session.ends_at|date:"H:i" }}{% endif %}{% endif %}</h5>
         {% endfor %}
     {% endif %}
     {% if registration.event.location %}

@@ -30,7 +30,7 @@ class Article(models.Model):
 
     @property
     def description_extra_short(self):
-        return textwrap.shorten(self.body_plaintext, width=50, placeholder="...")
+        return textwrap.shorten(self.body_plaintext, width=75, placeholder="...")
 
     @property
     def description_short(self):

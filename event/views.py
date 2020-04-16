@@ -11,9 +11,7 @@ from event.tasks import send_registration_email
 
 
 def event(request, code):
-    event = (
-        Event.objects.published().filter(code=code).first()
-    )
+    event = Event.objects.published().filter(code=code).first()
     if request.user.is_authenticated:
         registration = Registration.objects.filter(
             event=event, user=request.user

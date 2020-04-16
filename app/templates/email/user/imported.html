@@ -4,7 +4,7 @@
 {% load i18n %}
 
 {% block email_message_pre %}
-    <p>Access your account using the link below and finish completing the registration, it won't take more than a minute.</p>
+    <p>Thank you for following our newsletter. We just launched our new website and are so excited! Please click the button below to complete your registration.</p>
 {% endblock %}
 
 {% block email_button_url %}{% full_url "user_verifypassword" user.email user.verify_key %}{% endblock %}

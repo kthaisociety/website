@@ -36,6 +36,7 @@ class Event(models.Model):
     signup_starts_at = models.DateTimeField(blank=True, null=True)
     signup_ends_at = models.DateTimeField(blank=True, null=True)
     account_required = models.BooleanField(default=False)
+    registration_available = models.BooleanField(default=True)
     attendance_target = models.IntegerField(blank=True, null=True)
     attendance_limit = models.IntegerField(blank=True, null=True)
 

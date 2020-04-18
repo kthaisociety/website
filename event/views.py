@@ -49,6 +49,10 @@ def event(request, code):
                             name=name, surname=surname, email=email
                         )
                         user.utils.send_imported(user=user_obj)
+                    if not user_obj.name or not user_obj.surname:
+                        user_obj.name = name
+                        user_obj.surname = surname
+                        user_obj.save()
                 messages.success(
                     request,
                     f"You've been registered! Remember the event will take place on {event.starts_at.strftime('%B %-d, %Y')}.",

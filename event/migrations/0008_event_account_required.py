@@ -5,14 +5,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('event', '0007_event_location'),
-    ]
+    dependencies = [("event", "0007_event_location")]
 
     operations = [
         migrations.AddField(
-            model_name='event',
-            name='account_required',
+            model_name="event",
+            name="account_required",
             field=models.BooleanField(default=False),
-        ),
+        )
     ]

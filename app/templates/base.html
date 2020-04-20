@@ -9,7 +9,11 @@
         <meta name="author" content="{{ app_name }}">
         <meta name="description" content="{{ app_description }}">
         <link rel="icon" href="{% static 'favicon.png' %}" type="image/png">
-        <meta property="og:image" content="https://{{ app_domain }}{% static "img/preview.png" %}" />
+        {% block og %}
+            <meta property="og:title" content="{{ app_name }}" />
+            <meta property="og:url" content="https://{{ app_domain }}" />
+            <meta property="og:image" content="https://{{ app_domain }}{% static "img/preview.png" %}" />
+        {% endblock %}
         <!-- TODO: Add social network URLs and information -->
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">

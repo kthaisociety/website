@@ -216,6 +216,14 @@ if SOCIAL_AUTH_GOOGLE_OAUTH2_KEY and SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET:
         "django.contrib.auth.backends.ModelBackend",
     )
 
+# SMTP settings
+# TODO: Document this
+# https://support.google.com/a/answer/2956491?hl=en
+
+EMAIL_HOST = "smtp-relay.gmail.com"
+EMAIL_PORT = "587"
+EMAIL_USE_TLS = True
+
 # Notify templates
 
 NOTIFY_TEMPLATES = dict(

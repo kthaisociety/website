@@ -1,6 +1,7 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 
 from event.models import Event, Registration, Session
+from event.tasks import send_url_email
 
 
 @admin.register(Event)
@@ -19,9 +20,21 @@ class SessionAdmin(admin.ModelAdmin):
     ordering = ("-created_at", "-updated_at", "name")
 
 
+def send_url(modeladmin, request, registrations):
+    for registration in registrations:
+        send_url_email(registration_id=registration.id)
+    messages.success(
+        request, f"Link emails have been sent to {registrations.count()} registration/s."
+    )
+
+
+send_url.short_description = "Send link email"
+
+
 @admin.register(Registration)
 class RegistrationAdmin(admin.ModelAdmin):
     search_fields = ("id", "event", "user")
     list_display = ("id", "event", "user", "status")
     list_filter = ("event", "status")
     ordering = ("-created_at", "-updated_at")
+    actions = [send_url]

@@ -75,16 +75,16 @@
                                 {% if request.user.is_authenticated or not event.account_required %}
                                     {% if registration %}
                                         <p class="text-center text-md-left mb-0">Status:
-                                            {% if registration.status == 1 or registration.status == 2 %}
+                                            {% if registration.status == 1 or registration.status == 2 or registration.status == 5 or registration.status == 6 %}
                                                 <span class="badge badge-main p-2 ml-1">Registered</span>
                                             {% else %}
                                                 <span class="badge badge-main2 p-2 ml-1">Cancelled</span>
                                             {% endif %}
                                         </p>
-                                        {% if event.type == 5 and registration.status == 2 and event.external_url %}
-                                            <p class="text-center text-md-left mb-0 mt-1">Webinar link: <a href="{{ event.external_url }}" class="link-colour">{{ event.external_url }}</a></p>
+                                        {% if event.type == 5 and registration.status == 2 or registration.status == 5 or registration.status == 6 and event.external_url %}
+                                            <p class="text-center text-md-left mb-0 mt-1">Webinar link: <a href="{% full_url "registration_url" registration.id %}" class="link-colour">{% full_url "registration_url" registration.id %}</a></p>
                                         {% endif %}
-                                        {% if not registration.status == 1 and not registration.status == 2 %}
+                                        {% if not registration.status == 1 and not registration.status == 2 and not registration.status == 5 and not registration.status == 6 %}
                                             <p class="text-center text-md-left mb-0 mt-3">Ping us at <a href="mailto:{{ app_email_contact }}" class="link-colour">{{ app_email_contact }}</a> if you need help.</p>
                                         {% else %}
                                             <p class="text-center text-md-left mt-3 mb-2">Can't attend this event? Please, cancel your registration so someone else can fill your spot!</p>

@@ -24,7 +24,8 @@ def send_url(modeladmin, request, registrations):
     for registration in registrations:
         send_url_email(registration_id=registration.id)
     messages.success(
-        request, f"Link emails have been sent to {registrations.count()} registration/s."
+        request,
+        f"Link emails have been sent to {registrations.count()} registration/s.",
     )
 
 

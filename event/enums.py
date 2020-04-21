@@ -22,3 +22,5 @@ class RegistrationStatus(enum.IntEnum):
     REGISTERED = 2
     WAIT_LISTED = 3
     CANCELLED = 4
+    JOINED = 5
+    ATTENDED = 6

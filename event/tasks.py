@@ -49,7 +49,15 @@ def send_url_email(registration_id: UUID):
     context["registration"] = registration
     context["user"] = registration.user
 
-    if registration.status == RegistrationStatus.REGISTERED and registration.event.external_url:
+    if (
+        registration.status
+        in [
+            RegistrationStatus.REGISTERED,
+            RegistrationStatus.JOINED,
+            RegistrationStatus.ATTENDED,
+        ]
+        and registration.event.external_url
+    ):
         template = get_notification_template(
             method="email", app="event", task="url", format="html"
         )

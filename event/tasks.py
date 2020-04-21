@@ -40,3 +40,34 @@ def send_registration_email(registration_id: UUID):
         send_email(
             subject=subject, body=body, to=registration.user.email, tags=[MailTag.EVENT]
         )
+
+
+@shared_task
+def send_url_email(registration_id: UUID):
+    context = get_substitutions_templates()
+    registration = Registration.objects.get(id=registration_id)
+    context["registration"] = registration
+    context["user"] = registration.user
+
+    if (
+        registration.status
+        in [
+            RegistrationStatus.REGISTERED,
+            RegistrationStatus.JOINED,
+            RegistrationStatus.ATTENDED,
+        ]
+        and registration.event.external_url
+    ):
+        template = get_notification_template(
+            method="email", app="event", task="url", format="html"
+        )
+        subject = get_notification_template(
+            method="email", app="event", task="url", format="subject"
+        )
+        body = render_to_string(template, context)
+
+        subject = subject.format(event=registration.event.name)
+
+        send_email(
+            subject=subject, body=body, to=registration.user.email, tags=[MailTag.EVENT]
+        )

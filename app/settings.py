@@ -249,6 +249,7 @@ NOTIFY_TEMPLATES = dict(
                 subject="Registration cancellation for {event}",
                 html="email/event/cancel.html",
             ),
+            url=dict(subject="Remember to join {event}", html="email/event/url.html"),
         ),
     )
 )

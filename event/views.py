@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.db import IntegrityError
 from django.http import HttpResponseNotFound, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -79,10 +80,14 @@ def event(request, code):
                     registration.status = status
                     registration.save()
                 else:
-                    registration = Registration.objects.create(
-                        event=event, user=user_obj, status=status
-                    )
-                send_registration_email(registration_id=registration.id)
+                    try:
+                        registration = Registration.objects.create(
+                            event=event, user=user_obj, status=status
+                        )
+                    except IntegrityError:
+                        registration = Registration.objects.filter(event=event, user=user_obj).first()
+                if registration:
+                    send_registration_email(registration_id=registration.id)
 
         return render(
             request,

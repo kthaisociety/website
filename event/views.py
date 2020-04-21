@@ -103,3 +103,12 @@ def event_ics(request, code):
         response["Content-Disposition"] = f"attachment; filename={code}.ics"
         return response
     return HttpResponseNotFound()
+
+
+def registration_url(request, registration_id):
+    registration = Registration.objects.filter(id=registration_id).first()
+    if registration and registration.event.external_url:
+        registration.status = RegistrationStatus.JOINED
+        registration.save()
+        return HttpResponseRedirect(registration.event.external_url)
+    return HttpResponseNotFound()

@@ -85,7 +85,9 @@ def event(request, code):
                             event=event, user=user_obj, status=status
                         )
                     except IntegrityError:
-                        registration = Registration.objects.filter(event=event, user=user_obj).first()
+                        registration = Registration.objects.filter(
+                            event=event, user=user_obj
+                        ).first()
                 if registration:
                     send_registration_email(registration_id=registration.id)
 

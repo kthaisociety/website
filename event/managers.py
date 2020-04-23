@@ -20,8 +20,7 @@ class EventManager(models.Manager):
             super()
             .get_queryset()
             .filter(
-                status=EventStatus.PUBLISHED,
-                sessions__starts_at__gte=timezone.now(),
+                status=EventStatus.PUBLISHED, sessions__starts_at__gte=timezone.now()
             )
         )
 

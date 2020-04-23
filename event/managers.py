@@ -12,7 +12,7 @@ class EventManager(models.Manager):
         return (
             super()
             .get_queryset()
-            .filter(sessions__starts_at__date__gte=timezone.now().date())
+            .filter(sessions__starts_at__gte=timezone.now().date())
         )
 
     def published_future(self):
@@ -21,7 +21,7 @@ class EventManager(models.Manager):
             .get_queryset()
             .filter(
                 status=EventStatus.PUBLISHED,
-                sessions__starts_at__date__gte=timezone.now().date(),
+                sessions__starts_at__gte=timezone.now(),
             )
         )
 
@@ -30,5 +30,5 @@ class EventManager(models.Manager):
             super()
             .get_queryset()
             .filter(status=EventStatus.PUBLISHED)
-            .exclude(sessions__starts_at__date__gte=timezone.now().date())
+            .exclude(sessions__starts_at__lt=timezone.now().date())
         )

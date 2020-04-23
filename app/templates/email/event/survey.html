@@ -1,0 +1,19 @@
+{% extends "email/base.html" %}
+{% load app_tags %}
+{% load bootstrap4 %}
+{% load i18n %}
+
+{% block email_message_pre %}
+    <p>Thanks for attending the "Analytics for Good" webinar hosted by McKinsey & Company in conjunction with KTH AIS today.</p>
+    <p>We hope you enjoyed the webinar and found the content insightful. If you could fill out a short feedback survey to share your thoughts that would be much appreciated!<p>
+    <p>When asked please indicate Analytics for Good Webinar on 23 April as the name of the event.</p>
+    <p>We look forward to meeting you again soon!</p>
+{% endblock %}
+
+{% block email_closing %}
+    <p style="margin:0;">Stay safe and all the best,<br>Your McKinsey Analytics team</p>
+{% endblock %}
+
+{% block email_button_url %}https://www.surveymonkey.com/r/McKevents{% endblock %}
+
+{% block email_button_text %}Answer survey{% endblock %}

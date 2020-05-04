@@ -4,7 +4,11 @@
 {% load i18n %}
 
 {% block email_message_pre %}
-    <p>Remember to join us for <strong>{{ registration.event.name }}</strong>, you can find the link in this email.</p>
+    {% if registration.event.external_url %}
+        <p>Remember to join us for <strong>{{ registration.event.name }}</strong>, you can find the link in this email.</p>
+    {% else %}
+        <p>Remember to join us for <strong>{{ registration.event.name }}</strong>, we will send you the link for the webinar right before the event starts.</p>
+    {% endif %}
     {% if registration.event.sessions.all|length == 1 %}
         <h5 style="margin-bottom: 8px;">Time: {{ registration.event.starts_at|date:"F j, Y H:i" }}{% if registration.event.starts_at != registration.event.ends_at %} - {% if registration.event.starts_at.date != registration.event.ends_at.date %}{{ registration.event.ends_at|date:"F j, Y H:i" }}{% else %}{{ registration.event.ends_at|date:"H:i" }}{% endif %}{% endif %}</h5>
     {% elif registration.event.sessions.all|length > 1 %}
@@ -16,7 +20,9 @@
     {% if registration.event.location %}
         <h5 style="margin-top: 20px; margin-bottom: 8px;">Location: {{ registration.event.location }}</h5>
     {% endif %}
-    <h5 style="margin-top: 20px; margin-bottom: 8px;">Webinar URL: <a style="text-decoration: none !important; color: #3d5875 !important;" href="{% full_url "registration_url" registration.id %}" target="_blank">{% full_url "registration_url" registration.id %}</a></h5>
+    {% if registration.event.external_url %}
+        <h5 style="margin-top: 20px; margin-bottom: 8px;">Webinar URL: <a style="text-decoration: none !important; color: #3d5875 !important;" href="{% full_url "registration_url" registration.id %}" target="_blank">{% full_url "registration_url" registration.id %}</a></h5>
+    {% endif %}
     <br>
     <img src="https://{{ app_domain }}{{ registration.event.picture.url }}" style="width: 100%; margin-bottom: 25px;">
 {% endblock %}

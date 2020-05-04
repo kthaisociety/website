@@ -56,7 +56,6 @@ def send_url_email(registration_id: UUID):
             RegistrationStatus.JOINED,
             RegistrationStatus.ATTENDED,
         ]
-        and registration.event.external_url
     ):
         template = get_notification_template(
             method="email", app="event", task="url", format="html"

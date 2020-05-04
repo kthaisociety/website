@@ -27,6 +27,16 @@
     <img src="https://{{ app_domain }}{{ registration.event.picture.url }}" style="width: 100%; margin-bottom: 25px;">
 {% endblock %}
 
-{% block email_button_url %}{% full_url "registration_url" registration.id %}{% endblock %}
-
-{% block email_button_text %}Join the webinar{% endblock %}
+{% block email_button %}
+    {% if registration.event.external_url %}
+        <table>
+            <tr>
+                <td align="center">
+                    <p>
+                        <a href="{% block email_button_url %}{% full_url "registration_url" registration.id %}{% endblock %}" class="email-button">{% block email_button_text %}Join the webinar{% endblock %}</a>
+                    </p>
+                </td>
+            </tr>
+        </table>
+    {% endif %}
+{% endblock %}

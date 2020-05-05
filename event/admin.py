@@ -4,14 +4,6 @@ from event.models import Event, Registration, Session
 from event.tasks import send_url_email
 
 
-@admin.register(Event)
-class EventAdmin(admin.ModelAdmin):
-    search_fields = ("id", "name", "code", "type", "status")
-    list_display = ("name", "code", "type", "status")
-    list_filter = ("type", "status")
-    ordering = ("-created_at", "-updated_at", "name")
-
-
 @admin.register(Session)
 class SessionAdmin(admin.ModelAdmin):
     search_fields = ("id", "name", "event")
@@ -20,11 +12,19 @@ class SessionAdmin(admin.ModelAdmin):
     ordering = ("-created_at", "-updated_at", "name")
 
 
+class SessionInline(admin.StackedInline):
+    model = Session
+    ordering = ("starts_at", "ends_at", "name")
+    show_change_link = True
+    extra = 0
+
+
 def send_url(modeladmin, request, registrations):
     for registration in registrations:
         send_url_email(registration_id=registration.id)
     messages.success(
-        request, f"Link emails have been sent to {registrations.count()} registration/s."
+        request,
+        f"Link emails have been sent to {registrations.count()} registration/s.",
     )
 
 
@@ -38,3 +38,29 @@ class RegistrationAdmin(admin.ModelAdmin):
     list_filter = ("event", "status")
     ordering = ("-created_at", "-updated_at")
     actions = [send_url]
+
+
+class RegistrationInline(admin.StackedInline):
+    model = Registration
+    ordering = ("-created_at",)
+    show_change_link = False
+    can_delete = False
+    extra = 0
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+
+@admin.register(Event)
+class EventAdmin(admin.ModelAdmin):
+    search_fields = ("id", "name", "code", "type", "status")
+    list_display = ("name", "code", "type", "status")
+    list_filter = ("type", "status")
+    ordering = ("-created_at", "-updated_at", "name")
+    inlines = [SessionInline, RegistrationInline]

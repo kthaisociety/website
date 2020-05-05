@@ -47,14 +47,14 @@ class Event(models.Model):
 
     @property
     def starts_at(self):
-        session = self.sessions.all().order_by("-starts_at").first()
+        session = self.sessions.all().order_by("starts_at").first()
         if session:
             return session.starts_at
         return None
 
     @property
     def ends_at(self):
-        session = self.sessions.all().order_by("ends_at").first()
+        session = self.sessions.all().order_by("-ends_at").first()
         if session:
             return session.ends_at
         return None
@@ -104,7 +104,7 @@ class Event(models.Model):
 
     @property
     def is_event_future(self):
-        return timezone.now() < self.starts_at
+        return timezone.now() < self.ends_at
 
     @property
     def is_signup_open(self):
@@ -167,6 +167,9 @@ class Session(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.event.name} - {self.name}"
 
 
 class Registration(models.Model):

@@ -50,7 +50,7 @@
                 {{ event.description|apply_markup:"markdown" }}
             </div>
         </div>
-        {% endif %}
+    {% endif %}
     {% if event.is_event_future %}
         <div class="row">
             <div class="col-md-12 mb-3">
@@ -59,7 +59,28 @@
                 {% elif event.sessions.all|length > 1 %}
                     {% for session in event.sessions.all %}
                         <p class="mb-1"><i>{{ session.name }}</i></p>
-                        <h5 class="mb-4">{{ session.starts_at|date:"F j, Y H:i" }}{% if session.starts_at != session.ends_at %} - {% if session.starts_at.date != session.ends_at.date %}{{ session.ends_at|date:"F j, Y H:i" }}{% else %}{{ session.ends_at|date:"H:i" }}{% endif %}{% endif %}</h5>
+                        <h5 class="{% if registration and session.published_attachments_with_registration or not registration and session.published_attachments %}mb-1{% else %}mb-4{% endif %}">{{ session.starts_at|date:"F j, Y H:i" }}{% if session.starts_at != session.ends_at %} - {% if session.starts_at.date != session.ends_at.date %}{{ session.ends_at|date:"F j, Y H:i" }}{% else %}{{ session.ends_at|date:"H:i" }}{% endif %}{% endif %}</h5>
+                        {% if registration and session.published_attachments_with_registration or not registration and session.published_attachments %}
+                            <div class="row">
+                                {% for attachment in session.published_attachments_with_registration %}
+                                    {% if registration or not attachment.registration_required %}
+                                        <div class="col-12 col-md-4 mb-4">
+                                            <a class="link-unstyled" href="{{ attachment.url }}" target="_blank">
+                                                <div class="card mt-4">
+                                                    <img class="card-img-top" src="{{ attachment.preview.crop.500x300 }}">
+                                                    <div class="card-body">
+                                                        {% with attachment.type|event_attachment_type as type %}
+                                                            <span class="badge badge-main p-2 mb-3 ml-auto mr-auto d-table mt-4 d-md-inline-block mt-md-0">{{ type.name|title }}</span>
+                                                        {% endwith %}
+                                                        <h5 class="mb-1">{{ attachment.name }}</h5>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                     {% endfor %}
                 {% endif %}
                 {% if event.location %}

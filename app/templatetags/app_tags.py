@@ -11,6 +11,7 @@ from django_markup.markup import formatter
 from app import settings
 from app.settings import STATICFILES_DIRS, STATIC_URL, DEBUG, APP_DOMAIN
 from app.variables import APP_LOCALHOST
+from event.enums import AttachmentType
 
 register = template.Library()
 
@@ -68,3 +69,8 @@ def full_static(path):
     else:
         app_domain_prod = "https://" + app_domain_prod
     return f"{app_domain_prod}{STATIC_URL}{path}"
+
+
+@register.filter
+def event_attachment_type(value):
+    return AttachmentType(value)

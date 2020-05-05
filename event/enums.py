@@ -24,3 +24,16 @@ class RegistrationStatus(enum.IntEnum):
     CANCELLED = 4
     JOINED = 5
     ATTENDED = 6
+
+
+class AttachmentType(enum.IntEnum):
+    SLIDES = 0
+    FILE = 1
+    IMAGE = 2
+    VIDEO = 3
+
+
+class AttachmentStatus(enum.IntEnum):
+    DRAFT = 0
+    PUBLISHED = 1
+    DELETED = 2

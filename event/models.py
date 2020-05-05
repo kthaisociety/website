@@ -47,14 +47,14 @@ class Event(models.Model):
 
     @property
     def starts_at(self):
-        session = self.sessions.all().order_by("-starts_at").first()
+        session = self.sessions.all().order_by("starts_at").first()
         if session:
             return session.starts_at
         return None
 
     @property
     def ends_at(self):
-        session = self.sessions.all().order_by("ends_at").first()
+        session = self.sessions.all().order_by("-ends_at").first()
         if session:
             return session.ends_at
         return None

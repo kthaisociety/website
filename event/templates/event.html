@@ -92,7 +92,7 @@
                                                 <img class="card-img-top" src="{{ attachment.preview.crop.500x300 }}">
                                                 <div class="card-body">
                                                     {% with attachment.type|event_attachment_type as type %}
-                                                        <span class="badge badge-main p-2 mb-3 ml-auto mr-auto d-table mt-4 d-md-inline-block mt-md-0">{{ type.name|title }}</span>
+                                                        <span class="badge badge-main p-2 d-inline-block mb-3 mb-md-2 mt-0">{{ type.name|title }}</span>
                                                     {% endwith %}
                                                     <h5 class="mb-1">{{ attachment.name }}</h5>
                                                 </div>

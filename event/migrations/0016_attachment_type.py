@@ -6,14 +6,15 @@ import event.enums
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('event', '0015_attachment_file'),
-    ]
+    dependencies = [("event", "0015_attachment_file")]
 
     operations = [
         migrations.AlterField(
-            model_name='attachment',
-            name='type',
-            field=models.PositiveSmallIntegerField(choices=[(0, 'SLIDES'), (1, 'FILE'), (2, 'IMAGE'), (3, 'VIDEO')], default=event.enums.AttachmentType(0)),
-        ),
+            model_name="attachment",
+            name="type",
+            field=models.PositiveSmallIntegerField(
+                choices=[(0, "SLIDES"), (1, "FILE"), (2, "IMAGE"), (3, "VIDEO")],
+                default=event.enums.AttachmentType(0),
+            ),
+        )
     ]

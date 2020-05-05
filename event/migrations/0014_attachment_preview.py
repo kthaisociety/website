@@ -6,15 +6,15 @@ import versatileimagefield.fields
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('event', '0013_attachment'),
-    ]
+    dependencies = [("event", "0013_attachment")]
 
     operations = [
         migrations.AddField(
-            model_name='attachment',
-            name='preview',
-            field=versatileimagefield.fields.VersatileImageField(default='', upload_to='event/attachment/preview/', verbose_name='Image'),
+            model_name="attachment",
+            name="preview",
+            field=versatileimagefield.fields.VersatileImageField(
+                default="", upload_to="event/attachment/preview/", verbose_name="Image"
+            ),
             preserve_default=False,
-        ),
+        )
     ]

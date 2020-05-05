@@ -5,14 +5,14 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('event', '0014_attachment_preview'),
-    ]
+    dependencies = [("event", "0014_attachment_preview")]
 
     operations = [
         migrations.AlterField(
-            model_name='attachment',
-            name='file',
-            field=models.FileField(blank=True, null=True, upload_to='event/attachment/file/'),
-        ),
+            model_name="attachment",
+            name="file",
+            field=models.FileField(
+                blank=True, null=True, upload_to="event/attachment/file/"
+            ),
+        )
     ]

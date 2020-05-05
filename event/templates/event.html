@@ -55,7 +55,30 @@
         <div class="row">
             <div class="col-md-12 mb-3">
                 {% if event.sessions.all|length == 1 %}
-                    <h5 class="mb-3">Time: {{ event.starts_at|date:"F j, Y H:i" }}{% if event.starts_at != event.ends_at %} - {% if event.starts_at.date != event.ends_at.date %}{{ event.ends_at|date:"F j, Y H:i" }}{% else %}{{ event.ends_at|date:"H:i" }}{% endif %}{% endif %}</h5>
+                    {% with event.sessions.first as session %}
+                        <h5 class="{% if registration and session.published_attachments_with_registration or not registration and session.published_attachments %}mb-1{% else %}mb-3{% endif %}">Time: {{ event.starts_at|date:"F j, Y H:i" }}{% if event.starts_at != event.ends_at %} - {% if event.starts_at.date != event.ends_at.date %}{{ event.ends_at|date:"F j, Y H:i" }}{% else %}{{ event.ends_at|date:"H:i" }}{% endif %}{% endif %}</h5>
+                        {% if registration and session.published_attachments_with_registration or not registration and session.published_attachments %}
+                            <div class="row">
+                                {% for attachment in session.published_attachments_with_registration %}
+                                    {% if registration or not attachment.registration_required %}
+                                        <div class="col-12 col-md-4 mb-4">
+                                            <a class="link-unstyled" href="{{ attachment.url }}" target="_blank">
+                                                <div class="card mt-4">
+                                                    <img class="card-img-top" src="{{ attachment.preview.crop.500x300 }}">
+                                                    <div class="card-body">
+                                                        {% with attachment.type|event_attachment_type as type %}
+                                                            <span class="badge badge-main p-2 mb-3 ml-auto mr-auto d-table mt-4 d-md-inline-block mt-md-0">{{ type.name|title }}</span>
+                                                        {% endwith %}
+                                                        <h5 class="mb-1">{{ attachment.name }}</h5>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endwith %}
                 {% elif event.sessions.all|length > 1 %}
                     {% for session in event.sessions.all %}
                         <p class="mb-1"><i>{{ session.name }}</i></p>

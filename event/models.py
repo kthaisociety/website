@@ -15,7 +15,13 @@ from django.utils.html import strip_tags
 from django.utils.text import slugify
 from versatileimagefield.fields import VersatileImageField
 
-from event.enums import EventType, EventStatus, RegistrationStatus, AttachmentType, AttachmentStatus
+from event.enums import (
+    EventType,
+    EventStatus,
+    RegistrationStatus,
+    AttachmentType,
+    AttachmentStatus,
+)
 from event.managers import EventManager
 
 
@@ -170,7 +176,9 @@ class Session(models.Model):
 
     @property
     def published_attachments(self):
-        return self.attachments.filter(status=AttachmentStatus.PUBLISHED, registration_required=False)
+        return self.attachments.filter(
+            status=AttachmentStatus.PUBLISHED, registration_required=False
+        )
 
     @property
     def published_attachments_with_registration(self):
@@ -217,7 +225,8 @@ class Attachment(models.Model):
     external_url = models.CharField(max_length=255, blank=True, null=True)
     preview = VersatileImageField("Image", upload_to="event/attachment/preview/")
     status = models.PositiveSmallIntegerField(
-        choices=((s.value, s.name) for s in AttachmentStatus), default=AttachmentStatus.DRAFT
+        choices=((s.value, s.name) for s in AttachmentStatus),
+        default=AttachmentStatus.DRAFT,
     )
     registration_required = models.BooleanField(default=True)
 

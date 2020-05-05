@@ -104,7 +104,7 @@ class Event(models.Model):
 
     @property
     def is_event_future(self):
-        return timezone.now() < self.starts_at
+        return timezone.now() < self.ends_at
 
     @property
     def is_signup_open(self):

@@ -15,7 +15,13 @@ from django.utils.html import strip_tags
 from django.utils.text import slugify
 from versatileimagefield.fields import VersatileImageField
 
-from event.enums import EventType, EventStatus, RegistrationStatus
+from event.enums import (
+    EventType,
+    EventStatus,
+    RegistrationStatus,
+    AttachmentType,
+    AttachmentStatus,
+)
 from event.managers import EventManager
 
 
@@ -168,6 +174,16 @@ class Session(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    @property
+    def published_attachments(self):
+        return self.attachments.filter(
+            status=AttachmentStatus.PUBLISHED, registration_required=False
+        )
+
+    @property
+    def published_attachments_with_registration(self):
+        return self.attachments.filter(status=AttachmentStatus.PUBLISHED)
+
     def __str__(self):
         return f"{self.event.name} - {self.name}"
 
@@ -193,3 +209,35 @@ class Registration(models.Model):
 
     class Meta:
         unique_together = ("event", "user")
+
+
+class Attachment(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255)
+    session = models.ForeignKey(
+        "event.Session", on_delete=models.PROTECT, related_name="attachments"
+    )
+    type = models.PositiveSmallIntegerField(
+        choices=((t.value, t.name) for t in AttachmentType),
+        default=AttachmentType.SLIDES,
+    )
+    file = models.FileField(upload_to="event/attachment/file/", blank=True, null=True)
+    external_url = models.CharField(max_length=255, blank=True, null=True)
+    preview = VersatileImageField("Image", upload_to="event/attachment/preview/")
+    status = models.PositiveSmallIntegerField(
+        choices=((s.value, s.name) for s in AttachmentStatus),
+        default=AttachmentStatus.DRAFT,
+    )
+    registration_required = models.BooleanField(default=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def url(self):
+        if self.file:
+            return self.file.url
+        return self.external_url
+
+    def __str__(self):
+        return f"{self.session.event.name} - {self.name}"

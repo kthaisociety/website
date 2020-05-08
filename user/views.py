@@ -190,9 +190,13 @@ def user_register(request):
         }
         if not missing_required and not error_location:
             university = UNIVERSITIES[int(university)]
-            if ("Other university" in university and len(other_university) == 0) or (password != password2):
+            if ("Other university" in university and len(other_university) == 0) or (
+                password != password2
+            ):
                 if "Other university" in university and len(other_university) == 0:
-                    messages.error(request, "Must give a name if selecting Other university")
+                    messages.error(
+                        request, "Must give a name if selecting Other university"
+                    )
                 if password != password2:
                     messages.error(request, "Passwords do not match.")
             else:

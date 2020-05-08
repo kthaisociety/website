@@ -176,8 +176,13 @@ class User(AbstractBaseUser):
         if self.university is None:
             pass
         else:
-            if self.university.find("Other university") and len(self.other_university) == 0:
-                messages["other"] = "You have to specify the name of your university if selecting Other"
+            if (
+                self.university.find("Other university")
+                and len(self.other_university) == 0
+            ):
+                messages[
+                    "other"
+                ] = "You have to specify the name of your university if selecting Other"
 
         if messages:
             raise ValidationError(messages)

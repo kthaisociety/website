@@ -49,7 +49,6 @@ class User(AbstractBaseUser):
 
     # University
     university = models.CharField(max_length=255, blank=True, null=True)
-    other_university = models.CharField(max_length=255, blank=True, null=True)
     degree = models.CharField(max_length=255, blank=True, null=True)
     graduation_year = models.PositiveIntegerField(
         default=timezone.now().year, blank=True, null=True
@@ -142,7 +141,6 @@ class User(AbstractBaseUser):
         surname,
         phone,
         university,
-        other_university,
         degree,
         graduation_year,
         birthday,
@@ -154,7 +152,6 @@ class User(AbstractBaseUser):
         self.surname = surname
         self.phone = phone
         self.university = university
-        self.other_university = other_university
         self.degree = degree
         self.graduation_year = graduation_year
         self.birthday = birthday
@@ -171,19 +168,6 @@ class User(AbstractBaseUser):
             timezone.now().date() - self.birthday
         ) < timezone.timedelta(days=14 * 365):
             messages["age"] = "The minimum age is 14"
-
-        # If Other university selected, must supply university name
-        if self.university is None:
-            pass
-        else:
-            if (
-                self.university.find("Other university")
-                and len(self.other_university) == 0
-            ):
-                messages[
-                    "other"
-                ] = "You have to specify the name of your university if selecting Other"
-
         if messages:
             raise ValidationError(messages)
 

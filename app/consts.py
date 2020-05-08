@@ -38,6 +38,8 @@ UNIVERSITIES = [
     "University of Skövde",
     "Uppsala University",
     "Örebro University",
+    "Other university within EU/EEC",
+    "Other university outside EU/EEC",
 ]
 
 PROGRAMMES = [
@@ -102,4 +104,5 @@ PROGRAMMES = [
     "Transport, Mobility and Innovation",
     "Turbomachinery Aeromechanical University Training",
     "Vehicle Engineering",
+    "Other",
 ]

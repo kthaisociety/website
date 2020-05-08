@@ -5,14 +5,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ("user", "0009_user_website"),
-    ]
+    dependencies = [("user", "0009_user_website")]
 
     operations = [
         migrations.AddField(
             model_name="user",
             name="other_university",
             field=models.CharField(blank=True, max_length=255, null=True),
-        ),
+        )
     ]

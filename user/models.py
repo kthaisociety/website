@@ -173,7 +173,7 @@ class User(AbstractBaseUser):
             messages["age"] = "The minimum age is 14"
 
         # If Other university selected, must supply university name
-        if "Other university" in self.university:
+        if self.university.find("Other university"):
             if len(self.other_university) == 0:
                 messages["other"] = "You have to specify the name of your university if selecting Other"
 

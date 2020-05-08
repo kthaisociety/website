@@ -151,7 +151,6 @@
     </script>
     <script>
         // Hide by default if not filled (when pressing back we want it to show.)
-        console.log($('#id_other_university').val())
         $( document ).ready(function() {
             if($('#id_other_university').val() == "") {
                 $('.other_university').hide()
@@ -163,7 +162,6 @@
         // Each change of university field, show/hide other uni name depending on selection
         $("select").filter("#id_university").on('change', function () {
             var selected_uni = $("option:selected", this).text()
-            console.log(selected_uni)
             if (selected_uni.length > 0) {
                 if (selected_uni.includes("Other university")) {
                     $('.other_university').show()

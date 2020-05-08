@@ -1,4 +1,5 @@
 UNIVERSITIES = [
+    "KTH Royal Institute of Technology",
     "Blekinge Institute of Technology",
     "Chalmers University of Technology",
     "Dalarna University",
@@ -7,7 +8,6 @@ UNIVERSITIES = [
     "Halmstad University",
     "Jönköping University",
     "KMH – Royal College of Music in Stockholm",
-    "KTH Royal Institute of Technology",
     "Karlstad University",
     "Karolinska Institutet",
     "Konstfack",
@@ -38,6 +38,8 @@ UNIVERSITIES = [
     "University of Skövde",
     "Uppsala University",
     "Örebro University",
+    "Other university within EU/EEC",
+    "Other university outside EU/EEC",
 ]
 
 PROGRAMMES = [
@@ -102,4 +104,5 @@ PROGRAMMES = [
     "Transport, Mobility and Innovation",
     "Turbomachinery Aeromechanical University Training",
     "Vehicle Engineering",
+    "Other",
 ]

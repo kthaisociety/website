@@ -16,6 +16,7 @@ class UserManager(BaseUserManager):
         city,
         country,
         university,
+        other_university,
         degree,
         graduation_year,
     ):
@@ -33,6 +34,7 @@ class UserManager(BaseUserManager):
             city=city,
             country=country,
             university=university,
+            other_university=other_university,
             degree=degree,
             graduation_year=graduation_year,
         )

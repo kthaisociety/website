@@ -58,7 +58,7 @@
                                 <label for="id_university">University <small>(required)</small></label>
                                 <select name="university" class="form-control" id="id_university">
                                     {% for university in const_universities %}
-                                        <option value="{{ forloop.counter0 }}" {% if university == "KTH Royal Institute of Technology" %}selected=""{% endif %}>{{ university }}</option>
+                                        <option value="{{ forloop.counter0 }}" {% if form.university == forloop.counter0|stringformat:"i" %}selected=""{% elif not form.university and university == "KTH Royal Institute of Technology" %}selected=""{% endif %}>{{ university }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -66,26 +66,32 @@
                                 <label for="id_degree">Programme <small>(required)</small></label>
                                 <select name="degree" class="form-control" id="id_degree">
                                     {% for programme in const_programmes %}
-                                        <option value="{{ forloop.counter0 }}" {% if form.degree == "Machine Learning" %}selected=""{% elif request.user.degree == programme %}selected=""{% elif programme == "Machine Learning" and not form.degree %}selected=""{% endif %}>{{ programme }}</option>
+                                        <option value="{{ forloop.counter0 }}" {% if form.programme == forloop.counter0|stringformat:"i" %}selected=""{% elif not form.programme and request.user.degree == programme %}selected=""{% elif not form.programme and not request.user.degree and programme == "Machine Learning" %}selected=""{% endif %}>{{ programme }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
                             <div class="col-md-4">
                                 <label for="id_graduation">Graduation year <small>(required)</small></label>
                                 <select name="graduation" class="form-control" id="id_Graduation">
-                                    {% for i in "01234567"|make_list %}
-                                        {% with forloop.counter0|add:"-2"|year_from_now as year %}
-                                            <option value="{{ year }}" {% if form.graduation_year == year %}selected=""{% elif form.graduation_year == year %}selected=""{% elif forloop.counter0 == 2 and not form.graduation_year %}selected=""{% endif %}>{{ year }}</option>
+                                    {% for i in "0123456789"|make_list %}
+                                        {% with forloop.counter0|add:"-4"|year_from_now as year %}
+                                            <option value="{{ year }}" {% if form.graduation_year == year|stringformat:"i" %}selected=""{% elif not form.graduation_year and request.user.graduation_year == year %}selected=""{% elif not form.graduation_year and not request.user.graduation_year and forloop.counter0 == 4 %}selected=""{% endif %}>{{ year }}</option>
                                         {% endwith %}
                                     {% endfor %}
                                     <option value="0">Other</option>
                                 </select>
                             </div>
                         </div>
-                        <p class="mt-3">Please note the following information is only for demographic and statistic purposes.</p>
+                        <div class="form-row mt-3">
+                            <div class="col-md-12">
+                                <label class="other_university">University name <small>(required)</small></label>
+                                <input type="text" name="other_university" maxlength="225" class="form-control other_university" placeholder="Polytechnic University of Catalonia" id="id_other_university" {% if form.other_university %}value="{{ form.other_university }}"{% endif %}>
+                            </div>
+                        </div>
+                        <p class="mt-3">Please note the following information is only used for demographical purposes.</p> 
                         <div class="form-row">
                             <div class="col-md-6">
-                                <label for="id_birthday">Birthday</label>
+                                <label for="id_birthday">Date of birth</label>
                                 <input type="date" name="birthday" class="form-control" placeholder="1986-09-17" id="id_birthday" {% if form.birthday %}value="{{ form.birthday }}"{% endif %}>
                             </div>
                             <div class="col-md-6">
@@ -142,5 +148,21 @@
                 e.preventDefault();
             };
         }
+    </script>
+    <script>
+        // Each change of university field, show/hide other uni name depending on selection
+        $("select").filter("#id_university").on('change', toggleOtherUniversity);
+
+        function toggleOtherUniversity() {
+            var selected_uni = $("#id_university")[0].options[$("#id_university")[0].selectedIndex].text;
+            if (selected_uni.includes("Other university")) {
+                $('.other_university').show()
+            } else {
+                $('.other_university').hide();
+            }
+        }
+
+        // Hide by default if not filled (when pressing back we want it to show.)
+        window.onload(toggleOtherUniversity());
     </script>
 {% endblock %}

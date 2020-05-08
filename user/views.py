@@ -131,6 +131,7 @@ def user_register(request):
         password2 = request.POST.get("password2", None)
         phone = request.POST.get("phone", None)
         university = request.POST.get("university", None)
+        other_university = request.POST.get("other_university", None)
         degree = request.POST.get("degree", None)
         graduation_year = request.POST.get("graduation", None)
         birthday = request.POST.get("birthday", None)
@@ -170,6 +171,12 @@ def user_register(request):
             "city": city,
             "country": country,
         }
+        # 2 other selections at the end of UNIVERSITIES
+        if university and int(university) >= len(UNIVERSITIES) - 2:
+            university_str = other_university
+            form["university_name"] = university_str
+        else:
+            university_str = UNIVERSITIES[int(university)]
         missing_required = [
             field_name for field_name, field in form.items() if not field
         ]
@@ -179,19 +186,11 @@ def user_register(request):
                 for field in missing_required
                 if field not in ["email", "password", "repeat_password"]
             ]
-        form = {
-            **form,
-            "phone": phone,
-            "birthday": birthday,
-            "gender": gender,
-            "city": city,
-            "country": country,
-        }
+        form = {**form, "phone": phone, "birthday": birthday, "gender": gender}
         if not missing_required and not error_location:
             if password != password2:
                 messages.error(request, "Passwords do not match.")
             else:
-                university = UNIVERSITIES[int(university)]
                 degree = PROGRAMMES[int(degree)]
                 if gender:
                     gender = GenderType(int(gender))
@@ -203,7 +202,7 @@ def user_register(request):
                             name=name,
                             surname=surname,
                             phone=phone,
-                            university=university,
+                            university=university_str,
                             degree=degree,
                             graduation_year=graduation_year,
                             birthday=(
@@ -238,7 +237,7 @@ def user_register(request):
                         gender=gender,
                         city=city,
                         country=country,
-                        university=university,
+                        university=university_str,
                         degree=degree,
                         graduation_year=graduation_year,
                     )

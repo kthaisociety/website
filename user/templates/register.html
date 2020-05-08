@@ -82,10 +82,16 @@
                                 </select>
                             </div>
                         </div>
-                        <p class="mt-3">Please note the following information is only for demographic and statistic purposes.</p>
+                        <div class="form-row mt-3">
+                            <div class="col-md-4">
+                                <label class="other_university">Name of University <small>(if Other is selected)</small></label>
+                                <input type="text" name="other_university" maxlength="225" class="form-control other_university" placeholder="Polytechnic University of Catalonia" id="id_other_university" {% if form.other_university %}value="{{ form.other_university }}"{% endif %}>
+                            </div>
+                        </div>
+                        <p class="mt-3">Please note the following information is only used for demographical purposes.</p> 
                         <div class="form-row">
                             <div class="col-md-6">
-                                <label for="id_birthday">Birthday</label>
+                                <label for="id_birthday">Date of birth</label>
                                 <input type="date" name="birthday" class="form-control" placeholder="1986-09-17" id="id_birthday" {% if form.birthday %}value="{{ form.birthday }}"{% endif %}>
                             </div>
                             <div class="col-md-6">
@@ -142,5 +148,30 @@
                 e.preventDefault();
             };
         }
+    </script>
+    <script>
+        // Hide by default if not filled (when pressing back we want it to show.)
+        console.log($('#id_other_university').val())
+        $( document ).ready(function() {
+            if($('#id_other_university').val() == "") {
+                $('.other_university').hide()
+            } else {
+                $('.other_university').show()
+            }
+        });
+
+        // Each change of university field, show/hide other uni name depending on selection
+        $("select").filter("#id_university").on('change', function () {
+            var selected_uni = $("option:selected", this).text()
+            console.log(selected_uni)
+            if (selected_uni.length > 0) {
+                if (selected_uni.includes("Other university")) {
+                    $('.other_university').show()
+                } else {
+                    $('.other_university').hide()
+                    $('#id_other_university').val("") // Clears field
+                }
+            }
+        });
     </script>
 {% endblock %}

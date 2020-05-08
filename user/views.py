@@ -131,6 +131,7 @@ def user_register(request):
         password2 = request.POST.get("password2", None)
         phone = request.POST.get("phone", None)
         university = request.POST.get("university", None)
+        other_university = request.POST.get("other_university", None)
         degree = request.POST.get("degree", None)
         graduation_year = request.POST.get("graduation", None)
         birthday = request.POST.get("birthday", None)
@@ -188,10 +189,13 @@ def user_register(request):
             "country": country,
         }
         if not missing_required and not error_location:
-            if password != password2:
-                messages.error(request, "Passwords do not match.")
+            university = UNIVERSITIES[int(university)]
+            if ("Other university" in university and len(other_university) == 0) or (password != password2):
+                if "Other university" in university and len(other_university) == 0:
+                    messages.error(request, "Must give a name if selecting Other university")
+                if password != password2:
+                    messages.error(request, "Passwords do not match.")
             else:
-                university = UNIVERSITIES[int(university)]
                 degree = PROGRAMMES[int(degree)]
                 if gender:
                     gender = GenderType(int(gender))
@@ -204,6 +208,7 @@ def user_register(request):
                             surname=surname,
                             phone=phone,
                             university=university,
+                            other_university=other_university,
                             degree=degree,
                             graduation_year=graduation_year,
                             birthday=(
@@ -239,6 +244,7 @@ def user_register(request):
                         city=city,
                         country=country,
                         university=university,
+                        other_university=other_university,
                         degree=degree,
                         graduation_year=graduation_year,
                     )

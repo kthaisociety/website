@@ -1,4 +1,5 @@
 UNIVERSITIES = [
+    "KTH Royal Institute of Technology",
     "Blekinge Institute of Technology",
     "Chalmers University of Technology",
     "Dalarna University",
@@ -7,7 +8,6 @@ UNIVERSITIES = [
     "Halmstad University",
     "Jönköping University",
     "KMH – Royal College of Music in Stockholm",
-    "KTH Royal Institute of Technology",
     "Karlstad University",
     "Karolinska Institutet",
     "Konstfack",

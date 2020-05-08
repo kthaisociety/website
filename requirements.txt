@@ -16,4 +16,3 @@ requests~=2.22.0
 sentry-sdk==0.13.1
 social-auth-app-django~=3.1.0
 geopy~=1.21.0
-black~=19.10b0

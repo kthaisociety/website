@@ -153,7 +153,7 @@ SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # Maximum file upload size for forms
 
-MAX_UPLOAD_SIZE = 5242880
+MAX_UPLOAD_SIZE = 26214400  # 25 MB
 
 # Phone number format
 

@@ -151,9 +151,10 @@ CSRF_TRUSTED_ORIGINS = ALLOWED_HOSTS
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
-# Maximum file upload size for forms
+# Maximum file upload size and permissions
 
 MAX_UPLOAD_SIZE = 26214400  # 25 MB
+FILE_UPLOAD_PERMISSIONS = 0o644
 
 # Phone number format
 

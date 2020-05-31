@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load app_tags %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block head_title %}News{% endblock %}
+
+{% block in_body %}
+    <div class="container container-body py-5">
+        <div class="row">
+            <div class="col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent p-0 pb-2">
+                        <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'app_home' %}">Home</a></li>
+                        <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'news_articles' %}">News</a></li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        {% for article in articles %}
+            <div class="row pb-4">
+                <div class="col-md-4">
+                    <a class="link-unstyled" href="{{ article.url }}">
+                        <div class="w-100 image-radius" style="height: 250px; filter: grayscale(50%); -webkit-filter: grayscale(50%); background-image: linear-gradient(to bottom, rgba(61,88,117,0.5) 0%, rgba(61,88,117,0.5) 100%), url('{{ article.picture.url }}'); background-position: center center; background-size: cover;"></div>
+                    </a>
+                </div>
+                <div class="col-md-8 pl-4">
+                    <span class="badge badge-main2 p-2 mb-3 ml-auto mr-auto d-table mt-4 d-md-inline-block mt-md-0">Article</span>
+                    <a class="link-unstyled" href="{{ article.url }}">
+                        <h2 class="text-center text-md-left text-main mb-4">{{ article.title }}</h2>
+                    </a>
+                    <p class="text-center text-md-left mb-0">{{ article.description_short }}</p>
+                    <a class="link-unstyled mt-3 mb-0 d-block text-center text-md-left" href="{{ article.url }}"><p class="text-main mb-0">Read more <i class="fas fa-arrow-right ml-1"></i></p></a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -100,7 +100,8 @@ def event(request, code):
 
 
 def events(request):
-    return HttpResponseRedirect(reverse("app_home"))
+    event_objs = Event.objects.published()
+    return render(request, "events.html", {"events": event_objs})
 
 
 def event_ics(request, code):

@@ -489,6 +489,11 @@ padding-left:90px;
   margin-top: 5px;
 }
 
+.nav-link {
+    padding: 0 !important;
+    margin-left: 1rem;
+}
+
 /*
 .home {
     color: #fff;

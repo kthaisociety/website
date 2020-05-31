@@ -6,7 +6,7 @@ from news.models import Article
 
 
 def article(request, year, month, day, slug):
-    article = (
+    article_obj = (
         Article.objects.published()
         .filter(
             slug=slug,
@@ -16,10 +16,11 @@ def article(request, year, month, day, slug):
         )
         .first()
     )
-    if article:
-        return render(request, "article.html", {"article": article})
+    if article_obj:
+        return render(request, "article.html", {"article": article_obj})
     return HttpResponseNotFound()
 
 
 def articles(request):
-    return HttpResponseRedirect(reverse("app_home"))
+    article_objs = Article.objects.published()
+    return render(request, "articles.html", {"articles": article_objs})

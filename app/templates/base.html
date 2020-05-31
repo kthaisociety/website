@@ -47,8 +47,11 @@
                                             {% if request.user.email_verified and request.user.is_admin %}
                                                 <small class="ml-2"><a class="link-main" href="{% url 'admin:index' %}">Admin</a></small>
                                             {% endif %}
-                                            <small class="ml-2"><a class="link-main" href="">Settings</a></small>
+                                            <small class="ml-2"><a class="link-main" href="{% url 'app_dashboard' %}">Dashboard</a></small>
                                             <small class="ml-2"><a class="link-main" href="{% url 'user_logout' %}">Logout</a></small>
+                                            <a class="link-main" href="{% url 'app_dashboard' %}">
+                                                <img class="header-profile" src="{{ request.user.picture.crop.500x500 }}"/>
+                                            </a>
                                         {% else %}
                                             <small class="ml-2"><a class="link-main" href="{% url 'user_login' %}">Login</a></small>
                                             <small class="ml-2"><a class="link-main" href="{% url 'user_register' %}">Register</a></small>

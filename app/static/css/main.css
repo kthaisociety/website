@@ -494,6 +494,12 @@ padding-left:90px;
     margin-left: 1rem;
 }
 
+.header-profile {
+    height: 16px;
+    margin-left: 0.5rem;
+    border-radius: 8px;
+}
+
 /*
 .home {
     color: #fff;

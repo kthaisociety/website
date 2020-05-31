@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% load app_tags %}
+{% load social_share %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block head_title %}Dashboard{% endblock %}
+
+{% block in_body %}
+    <div class="container container-body py-5">
+        <div class="row">
+            <div class="col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent p-0 pb-2">
+                        <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'app_home' %}">Home</a></li>
+                        <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'events_events' %}">Dashboard</a></li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <h3 class="text-center mb-4">Your profile</h3>
+        <div class="row">
+            <div class="col-md-3">
+                <img src="{{ request.user.picture.url }}" class="w-100 image-radius" />
+            </div>
+            <div class="col-md-9">
+                <form action="" method="post" class="form">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="id_name">First name <small>(required)</small></label>
+                                <input type="text" name="name" maxlength="225" class="form-control" placeholder="Daniel" id="id_name" {% if form.first_name %}value="{{ form.first_name }}"{% elif request.user.name %}value="{{ request.user.name }}"{% endif %}>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="id_surname">Last name <small>(required)</small></label>
+                                <input type="text" name="surname" maxlength="225" class="form-control" placeholder="Stenberg" id="id_surname" {% if form.last_name %}value="{{ form.last_name }}"{% elif request.user.surname %}value="{{ request.user.surname }}"{% endif %}>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="id_email">Email <small>(required)</small></label>
+                                <input type="email" name="email" maxlength="225" class="form-control" placeholder="curl@kthais.com" id="id_email" {% if form.email %}value="{{ form.email }}"{% elif request.user.email %}value="{{ request.user.email }}"{% endif %}>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="id_phone">Phone</label>
+                                <input type="text" name="phone" maxlength="225" class="form-control" placeholder="070-000 00 00" id="id_phone" {% if form.phone %}value="{{ form.phone }}"{% elif request.user.phone %}value="{{ request.user.phone }}"{% endif %}>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-4">
+                            <label for="id_university">University <small>(required)</small></label>
+                            <select name="university" class="form-control" id="id_university">
+                                {% for university in const_universities %}
+                                    <option value="{{ forloop.counter0 }}" {% if form.university == forloop.counter0|stringformat:"i" %}selected=""{% elif not form.university and university == "KTH Royal Institute of Technology" %}selected=""{% endif %}>{{ university }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="id_degree">Programme <small>(required)</small></label>
+                            <select name="degree" class="form-control" id="id_degree">
+                                {% for programme in const_programmes %}
+                                    <option value="{{ forloop.counter0 }}" {% if form.programme == forloop.counter0|stringformat:"i" %}selected=""{% elif not form.programme and request.user.degree == programme %}selected=""{% elif not form.programme and not request.user.degree and programme == "Machine Learning" %}selected=""{% endif %}>{{ programme }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="id_graduation">Graduation year <small>(required)</small></label>
+                            <select name="graduation" class="form-control" id="id_Graduation">
+                                {% for i in "0123456789"|make_list %}
+                                    {% with forloop.counter0|add:"-4"|year_from_now as year %}
+                                        <option value="{{ year }}" {% if form.graduation_year == year|stringformat:"i" %}selected=""{% elif not form.graduation_year and request.user.graduation_year == year %}selected=""{% elif not form.graduation_year and not request.user.graduation_year and forloop.counter0 == 4 %}selected=""{% endif %}>{{ year }}</option>
+                                    {% endwith %}
+                                {% endfor %}
+                                <option value="0">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <label class="other_university mt-3">University name <small>(required)</small></label>
+                            <input type="text" name="other_university" maxlength="225" class="form-control other_university" placeholder="Polytechnic University of Catalonia" id="id_other_university" {% if form.other_university %}value="{{ form.other_university }}"{% endif %}>
+                        </div>
+                    </div>
+                    <div class="form-row mt-3">
+                        <div class="col-md-6">
+                            <label for="id_city">City <small>(required)</small></label>
+                            <input type="text" name="city" maxlength="225" class="form-control" placeholder="Stockholm" id="id_city" {% if form.city %}value="{{ form.city }}"{% elif request.user.city %}value="{{ request.user.city }}"{% endif %}>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="id_country">Country <small>(required)</small></label>
+                            <input type="text" name="country" maxlength="225" class="form-control" placeholder="Sweden" id="id_country" {% if form.country %}value="{{ form.country }}"{% elif request.user.country %}value="{{ request.user.country }}"{% endif %}>
+                        </div>
+                    </div>
+                    <div class="form-group text-center mt-4">
+                        <button class="btn btn-main w-100" type="submit">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% if registrations %}
+            <h3 class="text-center mt-3 mb-2">Your registrations</h3>
+            <div class="row">
+                {% for registration in registrations %}
+                    <div class="col-md-4">
+                        <a class="link-unstyled" href="{{ registration.event.url }}">
+                            <div class="card mt-4">
+                                <img class="card-img-top" src="{{ registration.event.picture.crop.500x300 }}">
+                                <div class="card-body">
+                                    {% if registration.status == 1 or registration.status == 2 or registration.status == 5 or registration.status == 6 %}
+                                        <span class="badge badge-main p-2 d-inline-block mb-3 mb-md-2 mt-0">Registered</span>
+                                    {% else %}
+                                        <span class="badge badge-main2 p-2 d-inline-block mb-3 mb-md-2 mt-0">Cancelled</span>
+                                    {% endif %}
+                                    <h5 class="mb-1">{{ registration.event.name }}</h5>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        // Each change of university field, show/hide other uni name depending on selection
+        $("select").filter("#id_university").on('change', toggleOtherUniversity);
+
+        function toggleOtherUniversity() {
+            var selected_uni = $("#id_university")[0].options[$("#id_university")[0].selectedIndex].text;
+            if (selected_uni.includes("Other university")) {
+                $('.other_university').show()
+            } else {
+                $('.other_university').hide();
+            }
+        }
+
+        // Hide by default if not filled (when pressing back we want it to show.)
+        window.onload(toggleOtherUniversity());
+    </script>
+{% endblock %}

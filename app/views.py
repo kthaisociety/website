@@ -5,13 +5,12 @@ import subprocess
 from _sha1 import sha1
 from ipaddress import ip_address, ip_network
 
+from django.contrib.auth.decorators import login_required
 from django.http import (
     StreamingHttpResponse,
     HttpResponseNotFound,
-    HttpResponseRedirect,
 )
 from django.shortcuts import render
-from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
@@ -21,8 +20,7 @@ import requests
 from app import settings
 from app.settings import GH_KEY, GH_BRANCH
 from app.slack import send_deploy_message
-from user.enums import UserType
-from user.utils import get_user_by_picture
+from event.utils import get_user_registrations
 
 
 def home(request):
@@ -31,6 +29,12 @@ def home(request):
 
 def maintenance(request):
     return render(request, "maintenance.html", {})
+
+
+@login_required
+def dashboard(request):
+    registrations = get_user_registrations(request.user.id)
+    return render(request, "dashboard.html", {"registrations": registrations})
 
 
 def files(request, file_):

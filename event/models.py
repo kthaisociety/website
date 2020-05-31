@@ -178,11 +178,13 @@ class Session(models.Model):
     def published_attachments(self):
         return self.attachments.filter(
             status=AttachmentStatus.PUBLISHED, registration_required=False
-        )
+        ).order_by("name")
 
     @property
     def published_attachments_with_registration(self):
-        return self.attachments.filter(status=AttachmentStatus.PUBLISHED)
+        return self.attachments.filter(status=AttachmentStatus.PUBLISHED).order_by(
+            "name"
+        )
 
     def __str__(self):
         return f"{self.event.name} - {self.name}"

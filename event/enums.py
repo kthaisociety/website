@@ -48,3 +48,5 @@ class ScheduleType(enum.IntEnum):
     DEMO = 5
     EVENT_START = 6
     EVENT_END = 7
+    GAME = 8
+    PRIZE = 0

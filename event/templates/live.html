@@ -35,7 +35,7 @@
                 <h1 id="live-time">{% if now < starts_at %}{{ duration | timedelta_display }}{% elif now >= ends_at %}00:00:00{% else %}{{ ends_at | time_left | timedelta_display }}{% endif %}</h1>
             </div>
             <!-- TODO: Autoscroll -->
-            <div class="container" id="live-schedule" style="position: absolute; top: 0;">
+            <div class="container" id="live-schedule" style="position: absolute; top: 0; padding-top: 100px;">
                 {% for schedule in schedules %}
                     <div id="schedule-item-{{ schedule.starts_at | date:"YmdH" }}" class="row {% if now >= schedule.starts_at and now < schedule.ends_at %}schedule-event-active {% elif now > schedule.ends_at %}schedule-event-passed {% endif %}schedule-event">
                         {% for schedule_item in schedule.schedules %}

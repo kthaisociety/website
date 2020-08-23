@@ -35,14 +35,16 @@ html, body {
 
 .schedule-event-active {
     margin-right: 400px;
+    opacity: 1 !important;
 }
 
 .schedule-event-passed {
-    opacity: 0.25;
+    opacity: 0.25 !important;
 }
 
 .schedule-event {
     position: relative;
+    opacity: 0.75;
 }
 
 .schedule-event-time {

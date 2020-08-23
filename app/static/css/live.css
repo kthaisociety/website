@@ -1,3 +1,91 @@
+html, body {
+    background-color: #f6f6f6;
+}
+
+.content {
+    padding-top: 100px !important;
+    padding-bottom: 100px !important;
+    position: relative;
+}
+
+#live-bar{
+    position: absolute;
+    top: 100px;
+    right: 0;
+    z-index: 25;
+    text-align: right;
+}
+
+#live-bar h1 {
+    line-height: 100%;
+    margin-bottom: 0;
+    font-size: 64px;
+    color: #3d5875;
+}
+
+#live-bar h3 {
+    font-weight: 200;
+    line-height: 100%;
+    margin-bottom: 0.5rem;
+}
+
+#live-time {
+    font-weight: 600;
+}
+
+.schedule-event-active {
+    margin-right: 400px;
+}
+
+.schedule-event-passed {
+    opacity: 0.25;
+}
+
+.schedule-event {
+    position: relative;
+}
+
+.schedule-event-time {
+    display: inline-block;
+    color: #3d5875;
+    width: 110px;
+    position: absolute;
+    top: 0;
+}
+
+.schedule-event-time h3 {
+    display: inline-block;
+    font-size: 24px;
+    margin-bottom: 0.5rem;
+}
+
+.schedule-event-time h4 {
+    display: inline-block;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    text-align: right;
+    float: right;
+}
+
+.schedule-event-time h5 {
+    font-size: 20px;
+    text-align: right;
+    float: right;
+}
+
+.schedule-event-item {
+    display: inline-block;
+    margin-left: 135px;
+}
+
+.schedule-event-item h3 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+/*
 html {
     background-color: #f5f5f5;
 }
@@ -79,3 +167,4 @@ body {
     display: block;
     top: 0;
 }
+*/

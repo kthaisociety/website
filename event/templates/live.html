@@ -28,34 +28,38 @@
 {% endblock %}
 
 {% block page %}
-    <div id="live-bar">
-        <h3>Remaining time</h3>
-        <h1 id="live-time">{% if now < starts_at %}{{ duration | timedelta_display }}{% elif now >= ends_at %}00:00:00{% else %}{{ ends_at | time_left | timedelta_display }}{% endif %}</h1>
-    </div>
-    <!-- TODO: Autoscroll -->
-    <div class="container" id="live-schedule" style="position: absolute; top: 0;">
-        {% for schedule in schedules %}
-            <div id="schedule-item-{{ schedule.starts_at | date:"YmdH" }}" class="row {% if now >= schedule.starts_at and now < schedule.ends_at %}schedule-event-active {% elif now > schedule.ends_at %}schedule-event-passed {% endif %}schedule-event">
-                {% for schedule_item in schedule.schedules %}
-                    <div class="col-md-12 col-lg-12 mb-12" style="margin: 0.5rem 0;">
-                        <div class="schedule-event-time">
-                            <h3 style="margin-right: 4px;">{{ schedule_item.starts_at | display_clock }}</h3>
-                            <h3>{{ schedule_item.starts_at | date:"H:i" }}</h3>
-                            {% if schedule_item.ends_at %}
-                                <br>
-                                <h5>{{ schedule_item.ends_at | date:"H:i" }}</h5>
-                            {% endif %}
-                        </div>
-                        <div class="schedule-event-item">
-                            <h3>{{ schedule_item.name }}</h3>
-                            {% if schedule_item.description %}
-                                <p>{{ schedule_item.description }}</p>
-                            {% endif %}
-                        </div>
+    <div class="container container-body">
+        <div class="content">
+            <div id="live-bar">
+                <h3>Remaining time</h3>
+                <h1 id="live-time">{% if now < starts_at %}{{ duration | timedelta_display }}{% elif now >= ends_at %}00:00:00{% else %}{{ ends_at | time_left | timedelta_display }}{% endif %}</h1>
+            </div>
+            <!-- TODO: Autoscroll -->
+            <div class="container" id="live-schedule" style="position: absolute; top: 0;">
+                {% for schedule in schedules %}
+                    <div id="schedule-item-{{ schedule.starts_at | date:"YmdH" }}" class="row {% if now >= schedule.starts_at and now < schedule.ends_at %}schedule-event-active {% elif now > schedule.ends_at %}schedule-event-passed {% endif %}schedule-event">
+                        {% for schedule_item in schedule.schedules %}
+                            <div class="col-md-12 col-lg-12 mb-12" style="margin: 0.5rem 0;">
+                                <div class="schedule-event-time">
+                                    <h3 style="margin-right: 4px;">{{ schedule_item.starts_at | display_clock }}</h3>
+                                    <h4>{{ schedule_item.starts_at | date:"H:i" }}</h4>
+                                    {% if schedule_item.ends_at %}
+                                        <br>
+                                        <h5>{{ schedule_item.ends_at | date:"H:i" }}</h5>
+                                    {% endif %}
+                                </div>
+                                <div class="schedule-event-item">
+                                    <h3>{{ schedule_item.name }}</h3>
+                                    {% if schedule_item.description %}
+                                        <p>{{ schedule_item.description }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
                 {% endfor %}
             </div>
-        {% endfor %}
+        </div>
     </div>
 
     <link rel="stylesheet" href="{% static 'css/live.css' %}">

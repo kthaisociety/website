@@ -107,14 +107,16 @@ def live(request, code):
     starts_at = session.starts_at
     ends_at = session.ends_at
     schedule_dict = {}
+    start_time = starts_at.replace(minute=0, second=0)
+    while start_time <= ends_at:
+        schedule_dict[start_time] = []
+        start_time += timezone.timedelta(hours=1)
     for schedule in schedules:
         if schedule.type == ScheduleType.EVENT_START:
             starts_at = schedule.starts_at
         elif schedule.type == ScheduleType.EVENT_END:
             ends_at = schedule.starts_at
         schedule_starts_at = schedule.starts_at.replace(minute=0, second=0)
-        if schedule_starts_at not in schedule_dict:
-            schedule_dict[schedule_starts_at] = []
         schedule_dict[schedule_starts_at].append(schedule)
     duration = ends_at - starts_at
     schedules = sorted([{"starts_at": t, "ends_at": t + timezone.timedelta(hours=1), "schedules": ss} for t, ss in schedule_dict.items()], key=lambda el: el["starts_at"])

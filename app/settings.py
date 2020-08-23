@@ -188,6 +188,8 @@ GH_BRANCH = os.environ.get("GH_BRANCH", "master")
 # Slack integration
 
 SL_INURL = os.environ.get("SL_INURL", None)
+SL_TOKEN = os.environ.get("SL_TOKEN", None)
+SL_CHANNEL_GENERAL = os.environ.get("SL_CHANNEL_GENERAL", None)
 
 # Set CORS allowed hosts
 

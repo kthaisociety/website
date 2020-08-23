@@ -175,6 +175,8 @@ location /deploy/ {
 - **SL_ID**: Slack app client ID.
 - **SL_SECRET**: Slack app client secret.
 - **SL_INURL**: Internal organisation Slack webhook URL for deployments.
+- **SL_TOKEN**: Slack legacy API token.
+- **SL_CHANNEL_GENERAL**: Slack general channel ID.
 - **MAINTENANCE_MODE**: Determines is site is under maintenance mode.
 - **GO_KEY**: Google OAuth2 key.
 - **GO_SECRET**: Google OAuth2 secret.

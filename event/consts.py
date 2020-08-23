@@ -9,4 +9,6 @@ SCHEDULE_EMOJIS = {
     ScheduleType.DEMO: "👩‍🏫",
     ScheduleType.EVENT_START: "🏁",
     ScheduleType.EVENT_END: "🏁",
+    ScheduleType.GAME: "🕹️",
+    ScheduleType.PRIZE: "🏆",
 }

@@ -132,6 +132,7 @@ class User(AbstractBaseUser):
             self.save()
 
             from user.utils import slack_invite
+
             slack_invite(user=self)
 
     def mark_as_inactive(self):

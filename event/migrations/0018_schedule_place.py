@@ -5,14 +5,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('event', '0017_schedule'),
-    ]
+    dependencies = [("event", "0017_schedule")]
 
     operations = [
         migrations.AddField(
-            model_name='schedule',
-            name='place',
+            model_name="schedule",
+            name="place",
             field=models.CharField(blank=True, max_length=255, null=True),
-        ),
+        )
     ]

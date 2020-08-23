@@ -21,7 +21,8 @@ from event.enums import (
     RegistrationStatus,
     AttachmentType,
     AttachmentStatus,
-    ScheduleType)
+    ScheduleType,
+)
 from event.managers import EventManager, SessionManager
 
 
@@ -214,13 +215,12 @@ class Schedule(models.Model):
         # TODO: Check if more than one EVENT_START and EVENT_END
         messages = {}
         if not self.session.starts_at <= self.starts_at <= self.session.ends_at:
-            messages[
-                "starts_at"
-            ] = "The start time must be inside the session times."
-        if self.ends_at and not self.session.starts_at <= self.ends_at <= self.session.ends_at:
-            messages[
-                "ends_at"
-            ] = "The end time must be inside the session times."
+            messages["starts_at"] = "The start time must be inside the session times."
+        if (
+            self.ends_at
+            and not self.session.starts_at <= self.ends_at <= self.session.ends_at
+        ):
+            messages["ends_at"] = "The end time must be inside the session times."
         if messages:
             raise ValidationError(messages)
 

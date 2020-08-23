@@ -119,11 +119,28 @@ def live(request, code):
         schedule_starts_at = schedule.starts_at.replace(minute=0, second=0)
         schedule_dict[schedule_starts_at].append(schedule)
     duration = ends_at - starts_at
-    schedules = sorted([{"starts_at": t, "ends_at": t + timezone.timedelta(hours=1), "schedules": ss} for t, ss in schedule_dict.items()], key=lambda el: el["starts_at"])
+    schedules = sorted(
+        [
+            {
+                "starts_at": t,
+                "ends_at": t + timezone.timedelta(hours=1),
+                "schedules": ss,
+            }
+            for t, ss in schedule_dict.items()
+        ],
+        key=lambda el: el["starts_at"],
+    )
     return render(
         request,
         "live.html",
-        {"session": session, "now": timezone.now(), "schedules": schedules, "starts_at": starts_at, "ends_at": ends_at, "duration": duration},
+        {
+            "session": session,
+            "now": timezone.now(),
+            "schedules": schedules,
+            "starts_at": starts_at,
+            "ends_at": ends_at,
+            "duration": duration,
+        },
     )
 
 

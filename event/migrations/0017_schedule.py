@@ -7,23 +7,54 @@ import event.enums
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('event', '0016_attachment_type'),
-    ]
+    dependencies = [("event", "0016_attachment_type")]
 
     operations = [
         migrations.CreateModel(
-            name='Schedule',
+            name="Schedule",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('type', models.PositiveSmallIntegerField(choices=[(0, 'GENERAL'), (1, 'CEREMONY'), (2, 'TALK'), (3, 'TEAM_BUILDING'), (4, 'MEAL'), (5, 'DEMO'), (6, 'EVENT_START'), (7, 'EVENT_END')], default=event.enums.ScheduleType(0))),
-                ('description', models.TextField(blank=True, max_length=1000, null=True)),
-                ('starts_at', models.DateTimeField()),
-                ('ends_at', models.DateTimeField(blank=True, null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('session', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='schedules', to='event.Session')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                (
+                    "type",
+                    models.PositiveSmallIntegerField(
+                        choices=[
+                            (0, "GENERAL"),
+                            (1, "CEREMONY"),
+                            (2, "TALK"),
+                            (3, "TEAM_BUILDING"),
+                            (4, "MEAL"),
+                            (5, "DEMO"),
+                            (6, "EVENT_START"),
+                            (7, "EVENT_END"),
+                        ],
+                        default=event.enums.ScheduleType(0),
+                    ),
+                ),
+                (
+                    "description",
+                    models.TextField(blank=True, max_length=1000, null=True),
+                ),
+                ("starts_at", models.DateTimeField()),
+                ("ends_at", models.DateTimeField(blank=True, null=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "session",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="schedules",
+                        to="event.Session",
+                    ),
+                ),
             ],
-        ),
+        )
     ]

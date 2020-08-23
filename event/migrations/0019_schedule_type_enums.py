@@ -23,6 +23,7 @@ class Migration(migrations.Migration):
                     (6, "EVENT_START"),
                     (7, "EVENT_END"),
                     (8, "GAME"),
+                    (9, "PRIZE"),
                 ],
                 default=event.enums.ScheduleType(0),
             ),

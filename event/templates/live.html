@@ -39,7 +39,7 @@
                 {% for schedule in schedules %}
                     <div id="schedule-item-{{ schedule.starts_at | date:"YmdH" }}" class="row {% if now >= schedule.starts_at and now < schedule.ends_at %}schedule-event-active {% elif now > schedule.ends_at %}schedule-event-passed {% endif %}schedule-event">
                         {% for schedule_item in schedule.schedules %}
-                            <div class="col-md-12 col-lg-12 mb-12" style="margin: 0.5rem 0;">
+                            <div class="col-md-12 col-lg-12 mb-12" style="margin: 0.5rem 0; min-height: 75px;">
                                 <div class="schedule-event-time">
                                     <h3 style="margin-right: 4px;">{{ schedule_item.starts_at | display_clock }}</h3>
                                     <h4>{{ schedule_item.starts_at | date:"H:i" }}</h4>
@@ -49,7 +49,10 @@
                                     {% endif %}
                                 </div>
                                 <div class="schedule-event-item">
-                                    <h3>{{ schedule_item.name }}</h3>
+                                    <h3>{{ schedule_item.type|schedule_emoji }} {{ schedule_item.name }}</h3>
+                                    {% if schedule_item.place %}
+                                        <p>📍 {{ schedule_item.place }}</p>
+                                    {% endif %}
                                     {% if schedule_item.description %}
                                         <p>{{ schedule_item.description }}</p>
                                     {% endif %}

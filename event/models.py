@@ -198,6 +198,7 @@ class Schedule(models.Model):
     type = models.PositiveSmallIntegerField(
         choices=((t.value, t.name) for t in ScheduleType), default=ScheduleType.GENERAL
     )
+    place = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField(max_length=1000, blank=True, null=True)
 
     starts_at = models.DateTimeField()

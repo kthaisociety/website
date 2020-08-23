@@ -37,3 +37,14 @@ class AttachmentStatus(enum.IntEnum):
     DRAFT = 0
     PUBLISHED = 1
     DELETED = 2
+
+
+class ScheduleType(enum.IntEnum):
+    GENERAL = 0
+    CEREMONY = 1
+    TALK = 2
+    TEAM_BUILDING = 3
+    MEAL = 4
+    DEMO = 5
+    EVENT_START = 6
+    EVENT_END = 7

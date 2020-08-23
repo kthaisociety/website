@@ -31,3 +31,8 @@ class EventManager(models.Manager):
             .filter(status=EventStatus.PUBLISHED)
             .exclude(sessions__starts_at__lt=timezone.now().date())
         )
+
+
+class SessionManager(models.Manager):
+    def published(self):
+        return super().get_queryset().filter(event__status=EventStatus.PUBLISHED)

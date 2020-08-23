@@ -75,5 +75,5 @@ def slack_invite(user: User):
     if user.is_active and user.email_verified:
         if SL_TOKEN and SL_CHANNEL_GENERAL:
             requests.get(
-                f"https://slack.com/api/users.admin.invite?token={SL_TOKEN}&email={user.email}&channels={SL_CHANNEL_GENERAL}"
+                f"https://slack.com/api/users.admin.invite?token={SL_TOKEN}&email={user.email}&real_name={user.full_name}&channels={SL_CHANNEL_GENERAL}&resend=true"
             )

@@ -30,7 +30,7 @@
 {% block page %}
     <div class="container container-body">
         <div class="content">
-            <div id="live-bar">
+            <div class="d-none d-lg-block" id="live-bar">
                 <h3>Remaining time</h3>
                 <h1 id="live-time">{% if now < starts_at %}{{ duration | timedelta_display }}{% elif now >= ends_at %}00:00:00{% else %}{{ ends_at | time_left | timedelta_display }}{% endif %}</h1>
             </div>

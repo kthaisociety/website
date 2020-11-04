@@ -6,7 +6,9 @@
 {% block og %}
     <meta property="og:title" content="{{ page.title }} | {{ app_name }}" />
     <meta property="og:url" content="https://{{ app_domain }}{{ page.url }}" />
-    <meta property="og:image" content="https://{{ app_domain }}{{ page.picture.url }}" />
+    {% if page.picture %}
+        <meta property="og:image" content="https://{{ app_domain }}{{ page.picture.url }}" />
+    {% endif %}
 {% endblock %}
 
 {% block head_title %}{{ page.title }}{% endblock %}

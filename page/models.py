@@ -4,6 +4,9 @@ from django.core.exceptions import ValidationError
 from django.db import models
 import urllib.request
 
+from django.urls import reverse
+from versatileimagefield.fields import VersatileImageField
+
 from page.enums import PageContentType, PageSourceType, PageStatus
 from page.managers import PageManager
 
@@ -20,6 +23,8 @@ class Page(models.Model):
     status = models.PositiveSmallIntegerField(
         choices=((s.value, s.name) for s in PageStatus), default=PageStatus.DRAFT.value
     )
+    picture = VersatileImageField("Image", upload_to="page/page/", blank=True, null=True)
+    in_menu = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -41,6 +46,16 @@ class Page(models.Model):
             urllib.request.urlopen(self.content_markdown_url).read().decode("utf-8"),
             PageContentType.MARKDOWN,
             PageSourceType.URL,
+        )
+
+    @property
+    def url(self):
+        return reverse(
+            "page_page",
+            kwargs=dict(
+                category=self.category.code,
+                code=self.code,
+            ),
         )
 
     class Meta:

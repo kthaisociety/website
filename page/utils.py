@@ -1,5 +1,6 @@
 from typing import List, Dict
 
+from page.enums import PageStatus
 from page.models import Page, Category
 
 
@@ -8,7 +9,9 @@ def get_page(category, code):
 
 
 def get_menu_pages() -> Dict[Category, List[Page]]:
-    pages = Page.objects.filter(in_menu=True).order_by("category", "title")
+    pages = Page.objects.filter(in_menu=True, status=PageStatus.PUBLISHED).order_by(
+        "category", "title"
+    )
     categories = {c: [] for c in Category.objects.filter(page__in=pages)}
     for page in pages:
         categories[page.category].append(page)

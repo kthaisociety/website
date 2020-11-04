@@ -145,7 +145,7 @@ def live(request, code):
 
 
 def events(request):
-    event_objs = Event.objects.published()
+    event_objs = Event.objects.published().order_by("-created_at")
     return render(request, "events.html", {"events": event_objs})
 
 

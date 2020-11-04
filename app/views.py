@@ -5,10 +5,7 @@ import subprocess
 from _sha1 import sha1
 from ipaddress import ip_address, ip_network
 
-from django.http import (
-    StreamingHttpResponse,
-    HttpResponseNotFound,
-)
+from django.http import StreamingHttpResponse, HttpResponseNotFound
 from django.shortcuts import render
 from django.utils.encoding import force_bytes
 from django.views.decorators.csrf import csrf_exempt

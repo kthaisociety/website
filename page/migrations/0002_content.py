@@ -6,19 +6,17 @@ import versatileimagefield.fields
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('page', '0001_initial'),
-    ]
+    dependencies = [("page", "0001_initial")]
 
     operations = [
         migrations.AddField(
-            model_name='page',
-            name='in_menu',
-            field=models.BooleanField(default=False),
+            model_name="page", name="in_menu", field=models.BooleanField(default=False)
         ),
         migrations.AddField(
-            model_name='page',
-            name='picture',
-            field=versatileimagefield.fields.VersatileImageField(blank=True, null=True, upload_to='page/page/', verbose_name='Image'),
+            model_name="page",
+            name="picture",
+            field=versatileimagefield.fields.VersatileImageField(
+                blank=True, null=True, upload_to="page/page/", verbose_name="Image"
+            ),
         ),
     ]

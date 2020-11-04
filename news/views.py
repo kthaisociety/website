@@ -22,5 +22,5 @@ def article(request, year, month, day, slug):
 
 
 def articles(request):
-    article_objs = Article.objects.published()
+    article_objs = Article.objects.published().order_by("-created_at")
     return render(request, "articles.html", {"articles": article_objs})

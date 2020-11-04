@@ -3,16 +3,50 @@
 {% load static %}
 {% load bootstrap4 %}
 
+{% block og %}
+    <meta property="og:title" content="{{ page.title }} | {{ app_name }}" />
+    <meta property="og:url" content="https://{{ app_domain }}{{ page.url }}" />
+    <meta property="og:image" content="https://{{ app_domain }}{{ page.picture.url }}" />
+{% endblock %}
+
 {% block head_title %}{{ page.title }}{% endblock %}
 
 {% block in_body %}
     <div class="container py-5">
-        {% if page.content.2.value != 1 %}
+        <div class="row">
+            <div class="col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent p-0 pb-2">
+                        <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'app_home' %}">Home</a></li>
+                        <li class="breadcrumb-item">{{ page.category.title }}</li>
+                        <li class="breadcrumb-item active" aria-current="page"><a class="link-unstyled" href="{{ page.url }}">{{ page.title }}</a></li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        {% if page.picture %}
             <div class="row">
                 <div class="col-md-12">
-                    <h1 class="">{{ page.title }}</h1>
+                    <div class="jumbotron p-0 p-lg-5 text-white rounded bg-dark article-header carousel-darken" style="background-image: url('{{ page.picture.url }}'); background-size: cover;">
+                        <!-- Desktop version -->
+                        <div class="col-md-8 px-0 article-title-lg d-none d-lg-block d-xl-block">
+                            <h1 class="display-4">{{ page.title }}</h1>
+                        </div>
+                        <!-- Mobile version -->
+                        <div class="article-title px-0 text-center d-block d-lg-none d-xl-none">
+                            <h1 class="display-4">{{ page.title }}</h1>
+                        </div>
+                    </div>
                 </div>
             </div>
+        {% else %}
+            {% if page.content.2.value != 1 %}
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="">{{ page.title }}</h1>
+                    </div>
+                </div>
+            {% endif %}
         {% endif %}
         <div class="row">
             <div class="col-md-12">

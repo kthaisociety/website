@@ -5,13 +5,8 @@ import subprocess
 from _sha1 import sha1
 from ipaddress import ip_address, ip_network
 
-from django.http import (
-    StreamingHttpResponse,
-    HttpResponseNotFound,
-    HttpResponseRedirect,
-)
+from django.http import StreamingHttpResponse, HttpResponseNotFound
 from django.shortcuts import render
-from django.urls import reverse
 from django.utils.encoding import force_bytes
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
@@ -21,8 +16,6 @@ import requests
 from app import settings
 from app.settings import GH_KEY, GH_BRANCH
 from app.slack import send_deploy_message
-from user.enums import UserType
-from user.utils import get_user_by_picture
 
 
 def home(request):
@@ -52,6 +45,8 @@ def files(request, file_):
         "event/attachment/file",
         "event/attachment/preview",
         "__sized__/event/attachment/preview",
+        "page/page",
+        "__sized__/page/page",
     ]:
         if file_[:7] != "/files/":
             file_ = "/files/" + file_

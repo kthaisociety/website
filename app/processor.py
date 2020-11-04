@@ -7,8 +7,10 @@ def variables_processor(request=None):
     from event.utils import get_future_events
     from event.utils import get_past_events
     from user.utils import get_organisers
+    from page.utils import get_menu_pages
 
     c["articles"] = get_latest_articles()
     c["events"] = {"future": get_future_events(), "past": get_past_events()}
     c["organisers"] = get_organisers()
+    c["categories"] = get_menu_pages()
     return c

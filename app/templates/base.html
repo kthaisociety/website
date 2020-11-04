@@ -76,6 +76,13 @@
                                     <li class="nav-item {% if request.resolver_match.url_name == "news_articles" %}active{% endif %}">
                                         <a class="nav-link" href="{% url 'news_articles' %}">News</a>
                                     </li>
+                                    {% for category, pages in categories.items %}
+                                        {% for page in pages %}
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{{ page.url }}">{{ page.title }}</a>
+                                            </li>
+                                        {% endfor %}
+                                    {% endfor %}
                                     <li class="nav-item {% if request.resolver_match.url_name == "events_events" %}active{% endif %}">
                                         <a class="nav-link" href="{% url 'events_events' %}">Events</a>
                                     </li>

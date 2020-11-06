@@ -1,6 +1,7 @@
 import base64
 import math
 import os
+import re
 
 from django import template
 from django.urls import reverse
@@ -75,6 +76,11 @@ def full_static(path):
 @register.filter
 def event_attachment_type(value):
     return AttachmentType(value)
+
+
+@register.filter
+def apply_pictures(text):
+    return re.sub(r"!\[(.*)\]\((.*)\)", r"![\1](/files/page/picture/\2)", text)
 
 
 @register.filter

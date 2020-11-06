@@ -51,9 +51,9 @@
             {% endif %}
         {% endif %}
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 page-content">
                 {% if page.content.1.value == 2 %}
-                    {{ page.content.0|apply_markup:"markdown" }}
+                    {{ page.content.0|apply_pictures|apply_markup:"markdown" }}
                 {% else %}
                     {{ page.content.0|safe }}
                 {% endif %}

@@ -73,16 +73,21 @@
                                     <li class="nav-item {% if request.resolver_match.url_name == "app_home" %}active{% endif %}">
                                         <a class="nav-link" href="{% url 'app_home' %}">Home</a>
                                     </li>
+                                    {% for category, pages in categories.items %}
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle" href="#" id="dropdown-{{ category.code }}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                {{ category.title }}
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdown-{{ category.code }}">
+                                                {% for page in pages %}
+                                                    <a class="dropdown-item" href="{{ page.url }}">{{ page.title }}</a>
+                                                {% endfor %}
+                                            </div>
+                                        </li>
+                                    {% endfor %}
                                     <li class="nav-item {% if request.resolver_match.url_name == "news_articles" %}active{% endif %}">
                                         <a class="nav-link" href="{% url 'news_articles' %}">News</a>
                                     </li>
-                                    {% for category, pages in categories.items %}
-                                        {% for page in pages %}
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="{{ page.url }}">{{ page.title }}</a>
-                                            </li>
-                                        {% endfor %}
-                                    {% endfor %}
                                     <li class="nav-item {% if request.resolver_match.url_name == "events_events" %}active{% endif %}">
                                         <a class="nav-link" href="{% url 'events_events' %}">Events</a>
                                     </li>

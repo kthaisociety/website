@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from page.models import Page, Category
+from page.models import Page, Category, Picture
 
 
 @admin.register(Page)
@@ -24,3 +24,10 @@ class CategoryAdmin(admin.ModelAdmin):
     search_fields = ("id", "title", "code")
     list_display = ("title", "code")
     ordering = ("title",)
+
+
+@admin.register(Picture)
+class PictureAdmin(admin.ModelAdmin):
+    search_fields = ("id",)
+    list_display = ("picture",)
+    ordering = ("picture",)

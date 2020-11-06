@@ -1,6 +1,6 @@
 from django.contrib import admin, messages
 
-from event.models import Event, Registration, Session, Attachment
+from event.models import Event, Registration, Session, Attachment, Schedule
 from event.tasks import send_url_email
 
 
@@ -19,13 +19,20 @@ class AttachmentInline(admin.StackedInline):
     extra = 0
 
 
+class ScheduleInline(admin.StackedInline):
+    model = Schedule
+    ordering = ("starts_at",)
+    show_change_link = True
+    extra = 0
+
+
 @admin.register(Session)
 class SessionAdmin(admin.ModelAdmin):
     search_fields = ("id", "name", "event")
     list_display = ("name", "event", "starts_at", "ends_at")
     list_filter = ("starts_at", "ends_at")
     ordering = ("-created_at", "-updated_at", "name")
-    inlines = [AttachmentInline]
+    inlines = [AttachmentInline, ScheduleInline]
 
 
 class SessionInline(admin.StackedInline):

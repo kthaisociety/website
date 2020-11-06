@@ -131,6 +131,10 @@ class User(AbstractBaseUser):
             self.delete_verify_key()
             self.save()
 
+            from user.utils import slack_invite
+
+            slack_invite(user=self)
+
     def mark_as_inactive(self):
         self.is_active = False
         self.save()

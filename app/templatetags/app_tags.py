@@ -1,4 +1,5 @@
 import base64
+import math
 import os
 import re
 
@@ -79,5 +80,23 @@ def event_attachment_type(value):
 
 @register.filter
 def apply_pictures(text):
-    text = re.sub(r"!\[(.*)\]\((.*)\)", r"![\1](/files/page/picture/\2)", text)
-    return text
+    return re.sub(r"!\[(.*)\]\((.*)\)", r"![\1](/files/page/picture/\2)", text)
+
+
+@register.filter
+def timedelta_display(time: timezone.timedelta):
+    seconds = time.total_seconds()
+    m, s = divmod(seconds, 60)
+    h, m = divmod(m, 60)
+    return "{:02d}:{:02d}:{:02d}".format(math.floor(h), math.floor(m), math.floor(s))
+
+
+@register.filter
+def time_left(time: timezone.datetime):
+    return time - timezone.now()
+
+
+@register.filter
+def days_left(timedelta: timezone.timedelta):
+    return int(timedelta.total_seconds() // (60 * 60 * 24))
+

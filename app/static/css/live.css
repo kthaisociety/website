@@ -1,0 +1,182 @@
+html, body {
+    background-color: #f6f6f6;
+}
+
+.content {
+    padding-top: 100px !important;
+    padding-bottom: 100px !important;
+    position: relative;
+}
+
+#live-bar {
+    position: absolute;
+    top: 100px;
+    right: 0;
+    z-index: 25;
+    text-align: right;
+}
+
+@media only screen and (max-width: 999px) {
+    #live-bar {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        position: initial;
+        margin-top: -75px;
+    }
+}
+
+#live-bar h1 {
+    line-height: 100%;
+    margin-bottom: 0;
+    font-size: 64px;
+    color: #3d5875;
+}
+
+#live-bar h3 {
+    font-weight: 200;
+    line-height: 100%;
+    margin-bottom: 0.5rem;
+}
+
+#live-time {
+    font-weight: 600;
+}
+
+.schedule-event-active {
+    margin-right: 400px;
+    opacity: 1 !important;
+}
+
+.schedule-event-passed {
+    opacity: 0.25 !important;
+}
+
+.schedule-event {
+    position: relative;
+    opacity: 0.75;
+}
+
+.schedule-event-time {
+    display: inline-block;
+    color: #3d5875;
+    width: 110px;
+    position: absolute;
+    top: 0;
+}
+
+.schedule-event-time h3 {
+    display: inline-block;
+    font-size: 24px;
+    margin-bottom: 0.5rem;
+}
+
+.schedule-event-time h4 {
+    display: inline-block;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    text-align: right;
+    float: right;
+}
+
+.schedule-event-time h5 {
+    font-size: 20px;
+    text-align: right;
+    float: right;
+}
+
+.schedule-event-item {
+    display: inline-block;
+    margin-left: 135px;
+}
+
+.schedule-event-item h3 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+/*
+html {
+    background-color: #f5f5f5;
+}
+
+body {
+    overflow-y: hidden;
+}
+
+.content {
+    padding-top: 100px !important;
+    padding-bottom: 100px !important;
+}
+
+@media (max-width: 768px) {
+    body .content {
+        padding: 125px 35px 25px 35px !important;
+    }
+    #live-bar{
+        position: fixed !important;
+        width: 100% !important;
+        z-index: 25 !important;
+        text-align: center !important;
+        background-color: #f5f5f5;
+        padding-top: 25px;
+        padding-bottom: 22.5px;
+    }
+    #live-back{
+        display: none !important;
+    }
+    h2 {
+        font-size: 24px !important;
+    }
+    h3 {
+        font-size: 20px !important;
+    }
+    h4 {
+        font-size: 18px !important;
+    }
+    h5 {
+        font-size: 16px !important;
+    }
+    .schedule-event-item {
+        max-width: 55%;
+    }
+    #live-schedule {
+        margin-top: 25px;
+    }
+}
+
+.content-inside {
+    position: relative;
+}
+
+#live-bar{
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 25;
+    text-align: right;
+}
+
+#live-bar h1 {
+    line-height: 100%;
+    margin-bottom: 0.5rem;
+}
+
+#live-bar h3 {
+    color: #333333;
+    font-weight: 200;
+    line-height: 100%;
+}
+
+#live-back{
+    margin: 0;
+}
+
+#live-schedule {
+    position: absolute;
+    display: block;
+    top: 0;
+}
+*/

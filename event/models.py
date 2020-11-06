@@ -21,8 +21,9 @@ from event.enums import (
     RegistrationStatus,
     AttachmentType,
     AttachmentStatus,
+    ScheduleType,
 )
-from event.managers import EventManager
+from event.managers import EventManager, SessionManager
 
 
 class Event(models.Model):
@@ -174,6 +175,8 @@ class Session(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    objects = SessionManager()
+
     @property
     def published_attachments(self):
         return self.attachments.filter(
@@ -186,6 +189,40 @@ class Session(models.Model):
 
     def __str__(self):
         return f"{self.event.name} - {self.name}"
+
+
+class Schedule(models.Model):
+    name = models.CharField(max_length=255)
+    session = models.ForeignKey(
+        "Session", on_delete=models.PROTECT, related_name="schedules"
+    )
+    type = models.PositiveSmallIntegerField(
+        choices=((t.value, t.name) for t in ScheduleType), default=ScheduleType.GENERAL
+    )
+    place = models.CharField(max_length=255, blank=True, null=True)
+    description = models.TextField(max_length=1000, blank=True, null=True)
+
+    starts_at = models.DateTimeField()
+    ends_at = models.DateTimeField(blank=True, null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.session.event.name} - {self.session.name} - {self.name}"
+
+    def clean(self):
+        # TODO: Check if more than one EVENT_START and EVENT_END
+        messages = {}
+        if not self.session.starts_at <= self.starts_at <= self.session.ends_at:
+            messages["starts_at"] = "The start time must be inside the session times."
+        if (
+            self.ends_at
+            and not self.session.starts_at <= self.ends_at <= self.session.ends_at
+        ):
+            messages["ends_at"] = "The end time must be inside the session times."
+        if messages:
+            raise ValidationError(messages)
 
 
 class Registration(models.Model):

@@ -2,13 +2,12 @@ import base64
 import math
 import os
 import re
+import markdown
 
 from django import template
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.safestring import mark_safe
-
-from django_markup.markup import formatter
 
 from app import settings
 from app.settings import STATICFILES_DIRS, STATIC_URL, DEBUG, APP_DOMAIN
@@ -24,8 +23,8 @@ def settings_value(name):
 
 
 @register.filter
-def apply_markup(text, filter_name):
-    return mark_safe(formatter(text, filter_name))
+def apply_markup(text):
+    return mark_safe(markdown.markdown(text))
 
 
 @register.filter

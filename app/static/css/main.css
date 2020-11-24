@@ -1,3 +1,38 @@
+@font-face {
+    font-family: "Futura";
+    src: url("/static/fonts/Futura-Book.woff") format("woff");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Roboto Slab";
+    src: url("/static/fonts/RobotoSlab-Regular.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url("/static/fonts/Roboto-Regular.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url("/static/fonts/Roboto-Light.ttf");
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url("/static/fonts/Roboto-Bold.ttf");
+    font-weight: 700;
+    font-style: normal;
+}
+
 html {
     position: relative;
     min-height: 100%;
@@ -13,10 +48,10 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: "PT Sans", sans-serif;
+    font-family: "Futura", sans-serif;
     line-height: 1 !important;
     margin-bottom: 1.5rem;
-    font-weight: 700;
+    font-weight: 600;
 }
 
 a {
@@ -30,7 +65,7 @@ a:hover, a:active, a:visited {
 }
 
 .navbar, label {
-    font-family: "PT Sans", sans-serif;
+    font-family: "Futura", sans-serif;
     font-weight: 500;
 }
 

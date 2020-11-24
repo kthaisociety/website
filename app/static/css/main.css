@@ -1,7 +1,21 @@
 @font-face {
     font-family: "Futura";
-    src: url("/static/fonts/Futura-Book.woff") format("woff");
+    src: url("/static/fonts/Futura-Regular.ttf");
     font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Futura";
+    src: url("/static/fonts/Futura-Medium.ttf");
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Futura";
+    src: url("/static/fonts/Futura-Bold.ttf");
+    font-weight: 700;
     font-style: normal;
 }
 
@@ -51,7 +65,6 @@ h1, h2, h3, h4, h5, h6 {
     font-family: "Futura", sans-serif;
     line-height: 1 !important;
     margin-bottom: 1.5rem;
-    font-weight: 600;
 }
 
 a {
@@ -71,6 +84,7 @@ a:hover, a:active, a:visited {
 
 .display-4 {
     font-weight: 700;
+    font-size: 3em;
 }
 
 .bg-main {

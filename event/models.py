@@ -2,9 +2,9 @@ import re
 import textwrap
 import uuid
 from io import StringIO
+import markdown
 
 from django.core.exceptions import ValidationError
-from django_markup.markup import formatter
 
 from app.variables import APP_NAME, APP_ATTENDANCE_RATIO
 
@@ -80,7 +80,7 @@ class Event(models.Model):
 
     @property
     def ics(self):
-        description = formatter(self.description, "markup")
+        description = markdown.markdown(self.description)
         description_text = (
             re.sub("[ \t]+", " ", strip_tags(description)).replace("\n ", "\n").strip()
         )

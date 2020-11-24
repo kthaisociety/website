@@ -7,7 +7,7 @@
 {% block og %}
     <meta property="og:title" content="{{ event.name }} | {{ app_name }}" />
     <meta property="og:url" content="https://{{ app_domain }}{{ event.url }}" />
-    <meta property="og:image" content="https://{{ app_domain }}{{ event.picture.url }}" />
+    <meta property="og:image" content="https://{{ app_domain }}{{ event.picture.crop.750x500 }}" />
 {% endblock %}
 
 {% block head_title %}{{ event.name }}{% endblock %}

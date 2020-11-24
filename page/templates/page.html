@@ -7,7 +7,7 @@
     <meta property="og:title" content="{{ page.title }} | {{ app_name }}" />
     <meta property="og:url" content="https://{{ app_domain }}{{ page.url }}" />
     {% if page.picture %}
-        <meta property="og:image" content="https://{{ app_domain }}{{ page.picture.url }}" />
+        <meta property="og:image" content="https://{{ app_domain }}{{ page.picture.crop.750x500 }}" />
     {% endif %}
 {% endblock %}
 

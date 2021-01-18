@@ -35,10 +35,10 @@
                     <p class="lead my-2">{{ article.created_at|date:"F j, Y" }}</p>
                 </div>
                 <!-- Mobile version -->
-                <div class="article-title px-0 text-center d-block d-lg-none d-xl-none">
+                <div class="article-title-ph article-title px-0 text-center d-block d-lg-none d-xl-none">
                     <h1 class="display-4-ph">{{ article.title }}</h1>
                     {% if article.subtitle %}
-                        <h3 class="display-4-ph">{{ article.subtitle }}</h3>
+                        <h3 class="display-5-ph">{{ article.subtitle }}</h3>
                     {% endif %}
                     <p class="lead my-2">{{ article.created_at|date:"F j, Y" }}</p>
                 </div>

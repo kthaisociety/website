@@ -87,6 +87,11 @@ a:hover, a:active, a:visited {
     font-size: 3em;
 }
 
+.display-4-ph {
+    font-weight: 700;
+    font-size: 1.5em;
+}
+
 .bg-main {
     background-color: #3d5875;
 }
@@ -260,8 +265,16 @@ a:hover, a:active, a:visited {
     margin-top: 76px;
 } */
 
-.article-header {
-    height: 650px;
+@media only screen and (max-width: 991px) {
+    .article-header {
+        height: 350px;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .article-header {
+        height: 650px;
+    }
 }
 
 .article-title {

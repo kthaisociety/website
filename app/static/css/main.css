@@ -92,6 +92,11 @@ a:hover, a:active, a:visited {
     font-size: 1.5em;
 }
 
+.display-5-ph {
+    font-weight: 200;
+    font-size: 1em;
+}
+
 .bg-main {
     background-color: #3d5875;
 }
@@ -280,6 +285,13 @@ a:hover, a:active, a:visited {
 .article-title {
     position: absolute;
     bottom: 70px;
+}
+
+.article-title-ph {
+    left: 0;
+    padding-left: 25px !important;
+    padding-right: 25px !important;
+    width: 100%;
 }
 
 .article-title-lg {

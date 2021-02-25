@@ -1,6 +1,6 @@
 from django.contrib import admin, messages
 
-from user.models import User
+from user.models import User, Team, Division, Role
 from user.utils import send_imported, slack_invite
 
 
@@ -31,3 +31,27 @@ class UserAdmin(admin.ModelAdmin):
     list_filter = ("type", "email_verified", "is_active")
     ordering = ("name", "surname", "email", "type")
     actions = [send_welcome, send_slack_invite]
+
+
+@admin.register(Team)
+class TeamAdmin(admin.ModelAdmin):
+    search_fields = ("id",)
+    list_display = ("id", "starts_at", "ends_at")
+    list_filter = ("starts_at", "ends_at")
+    ordering = ("-starts_at",)
+
+
+@admin.register(Division)
+class DivisionAdmin(admin.ModelAdmin):
+    search_fields = ("id", "name")
+    list_display = ("id", "name", "team")
+    list_filter = ("team",)
+    ordering = ("-team__starts_at", "name")
+
+
+@admin.register(Role)
+class RoleAdmin(admin.ModelAdmin):
+    search_fields = ("id", "user", "division")
+    list_display = ("id", "division", "user", "starts_at", "ends_at", "is_head")
+    list_filter = ("division__team", "user", "starts_at", "ends_at")
+    ordering = ("-division__team__starts_at", "-starts_at", "user")

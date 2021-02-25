@@ -46,6 +46,10 @@ def get_organisers():
     return User.objects.organisers()
 
 
+def get_board():
+    return User.objects.board()
+
+
 def generate_verify_key(user: User):
     chars = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)"
     secret_key = get_random_string(32, chars)

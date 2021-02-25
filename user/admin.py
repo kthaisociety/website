@@ -29,7 +29,7 @@ class UserAdmin(admin.ModelAdmin):
     search_fields = ("id", "email", "name", "surname", "type")
     list_display = ("email", "name", "surname", "type", "created_at")
     list_filter = ("type", "email_verified", "is_active")
-    ordering = ("name", "surname", "email", "type")
+    ordering = ("-created_at",)
     actions = [send_welcome, send_slack_invite]
 
 

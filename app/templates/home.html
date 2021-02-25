@@ -74,7 +74,8 @@
                     <div class="row pb-5">
                         <div class="col-md-4">
                             <a class="link-unstyled" href="{{ events.future.0.url }}">
-                                <div class="w-100 image-radius" style="height: 250px; filter: grayscale(50%); -webkit-filter: grayscale(50%); background-image: linear-gradient(to bottom, rgba(61,88,117,0.25) 0%, rgba(61,88,117,0.25) 100%), url('{{ events.future.0.picture.url }}'); background-position: center center; background-size: cover;"></div>
+                                <!-- <div class="w-100 image-radius" style="height: 250px; filter: grayscale(50%); -webkit-filter: grayscale(50%); background-image: linear-gradient(to bottom, rgba(61,88,117,0.25) 0%, rgba(61,88,117,0.25) 100%), url('{{ events.future.0.picture.url }}'); background-position: center center; background-size: cover;"></div> -->
+                                <div class="w-100 image-radius" style="height: 250px; filter: grayscale(50%); -webkit-filter: grayscale(50%); background-image: url('{{ events.future.0.picture.url }}'); background-position: center center; background-size: cover;"></div>
                             </a>
                         </div>
                         <div class="col-md-8 pl-4">
@@ -93,7 +94,8 @@
                     <div class="row pb-5">
                         <div class="col-md-4">
                             <a class="link-unstyled" href="{{ events.past.0.url }}">
-                                <div class="w-100 image-radius" style="height: 250px; filter: grayscale(50%); -webkit-filter: grayscale(50%); background-image: linear-gradient(to bottom, rgba(61,88,117,0.25) 0%, rgba(61,88,117,0.25) 100%), url('{{ events.past.0.picture.url }}'); background-position: center center; background-size: cover;"></div>
+                                <!-- <div class="w-100 image-radius" style="height: 250px; filter: grayscale(50%); -webkit-filter: grayscale(50%); background-image: linear-gradient(to bottom, rgba(61,88,117,0.25) 0%, rgba(61,88,117,0.25) 100%), url('{{ events.past.0.picture.url }}'); background-position: center center; background-size: cover;"></div> -->
+                                <div class="w-100 image-radius" style="height: 250px; filter: grayscale(50%); -webkit-filter: grayscale(50%); background-image: url('{{ events.past.0.picture.url }}'); background-position: center center; background-size: cover;"></div>
                             </a>
                         </div>
                         <div class="col-md-8 pl-4">
@@ -110,7 +112,8 @@
                         <div class="row pb-5">
                             <div class="col-md-4">
                                 <a class="link-unstyled" href="{{ article.url }}">
-                                    <div class="w-100 image-radius" style="height: 250px; filter: grayscale(50%); -webkit-filter: grayscale(50%); background-image: linear-gradient(to bottom, rgba(61,88,117,0.25) 0%, rgba(61,88,117,0.25) 100%), url('{{ article.picture.url }}'); background-position: center center; background-size: cover;"></div>
+                                    <!-- <div class="w-100 image-radius" style="height: 250px; filter: grayscale(50%); -webkit-filter: grayscale(50%); background-image: linear-gradient(to bottom, rgba(61,88,117,0.25) 0%, rgba(61,88,117,0.25) 100%), url('{{ article.picture.url }}'); background-position: center center; background-size: cover;"></div> -->
+                                    <div class="w-100 image-radius" style="height: 250px; filter: grayscale(50%); -webkit-filter: grayscale(50%); background-image: url('{{ article.picture.url }}'); background-position: center center; background-size: cover;"></div>
                                 </a>
                             </div>
                             <div class="col-md-8 pl-4">
@@ -198,15 +201,15 @@
                 <h2 class="text-center mb-4 text-main">Our goals</h2>
                 <div class="row text-center pt-2 pb-2">
                     <div class="col-md-4 mb-4 mb-md-0">
-                        <img class="w-100 mb-2 mb-md-3" src="{% static "img/home_2_b.png" %}" />
+                        <img class="w-100 mb-2 mb-md-3" src="{% static "img/home_2.png" %}" />
                         <p class="mt-2 mb-0">Provide all students at KTH with working knowledge of AI and its impacts on society in general and their specific field in particular.</p>
                     </div>
                     <div class="col-md-4 mb-4 mb-md-0">
-                        <img class="w-100 mb-2 mb-md-3" src="{% static "img/home_1_b.png" %}" />
+                        <img class="w-100 mb-2 mb-md-3" src="{% static "img/home_1.png" %}" />
                         <p class="mt-2 mb-0">Cultivate collaboration between academia and industry to promote job placement and business creation.</p>
                     </div>
                     <div class="col-md-4 mb-4 mb-md-0">
-                        <img class="w-100 mb-2 mb-md-3" src="{% static "img/home_3_b.png" %}" />
+                        <img class="w-100 mb-2 mb-md-3" src="{% static "img/home_3.png" %}" />
                         <p class="mt-2 mb-0">Broadcast new insights and results stemming from our activities to further the development and adoption of universally beneficial AI.</p>
                     </div>
                 </div>

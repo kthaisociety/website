@@ -104,7 +104,9 @@ class UserManager(BaseUserManager):
                 ),
                 role_is_head=Subquery(
                     Role.objects.filter(
-                        user_id=OuterRef("id"), ends_at__isnull=True, division__name=OuterRef("role_name")
+                        user_id=OuterRef("id"),
+                        ends_at__isnull=True,
+                        division__name=OuterRef("role_name"),
                     ).values("is_head")[:1],
                     output_field=BooleanField(),
                 ),

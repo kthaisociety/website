@@ -19,8 +19,12 @@ def create_roles(apps, schema_editor):
     current_team = Team.objects.create(starts_at=starts_at)
     for user in User.objects.filter(type=UserType.ORGANISER):
         if user.description:
-            current_division = Division.objects.create(name=user.description, team=current_team)
-            Role.objects.create(user=user, division=current_division, starts_at=starts_at)
+            current_division = Division.objects.create(
+                name=user.description, team=current_team
+            )
+            Role.objects.create(
+                user=user, division=current_division, starts_at=starts_at
+            )
 
 
 def restore_descriptions(apps, schema_editor):
@@ -33,58 +37,88 @@ def restore_descriptions(apps, schema_editor):
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('user', '0009_user_website'),
-    ]
+    dependencies = [("user", "0009_user_website")]
 
     operations = [
         migrations.CreateModel(
-            name='Division',
+            name="Division",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=255)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Team',
+            name="Team",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('starts_at', models.DateTimeField()),
-                ('ends_at', models.DateTimeField(blank=True, null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("starts_at", models.DateTimeField()),
+                ("ends_at", models.DateTimeField(blank=True, null=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
             ],
         ),
         migrations.AlterField(
-            model_name='user',
-            name='graduation_year',
+            model_name="user",
+            name="graduation_year",
             field=models.PositiveIntegerField(blank=True, default=2021, null=True),
         ),
         migrations.CreateModel(
-            name='Role',
+            name="Role",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('is_head', models.BooleanField(default=False)),
-                ('starts_at', models.DateTimeField()),
-                ('ends_at', models.DateTimeField(blank=True, null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('division', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='user.Division')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("is_head", models.BooleanField(default=False)),
+                ("starts_at", models.DateTimeField()),
+                ("ends_at", models.DateTimeField(blank=True, null=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "division",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT, to="user.Division"
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='division',
-            name='team',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='user.Team'),
+            model_name="division",
+            name="team",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT, to="user.Team"
+            ),
         ),
-        migrations.RunPython(
-            create_roles, restore_descriptions
-        ),
-        migrations.RemoveField(
-            model_name='user',
-            name='description',
-        ),
+        migrations.RunPython(create_roles, restore_descriptions),
+        migrations.RemoveField(model_name="user", name="description"),
     ]

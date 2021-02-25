@@ -1,4 +1,5 @@
 import hashlib
+from collections import OrderedDict
 from uuid import UUID
 
 import requests
@@ -47,7 +48,20 @@ def get_organisers():
 
 
 def get_board():
-    return User.objects.board()
+    board = User.objects.board()
+    role_names = {user.role_name for user in board}
+    return OrderedDict(
+        [
+            (
+                role_name,
+                sorted(
+                    [user for user in board if user.role_name == role_name],
+                    key=lambda u: (not u.role_is_head, u.name, u.surname),
+                ),
+            )
+            for role_name in sorted(list(role_names))
+        ]
+    )
 
 
 def generate_verify_key(user: User):

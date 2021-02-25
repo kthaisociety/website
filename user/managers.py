@@ -1,6 +1,6 @@
 from django.apps import apps
 from django.contrib.auth.base_user import BaseUserManager
-from django.db.models import Subquery, OuterRef, CharField
+from django.db.models import Subquery, OuterRef, CharField, BooleanField
 
 from user.enums import UserType
 
@@ -98,10 +98,18 @@ class UserManager(BaseUserManager):
             .annotate(
                 role_name=Subquery(
                     Role.objects.filter(
-                        user_id=OuterRef("id"), ends_at__isnull=True, is_head=True
+                        user_id=OuterRef("id"), ends_at__isnull=True
                     ).values("division__name")[:1],
                     output_field=CharField(),
-                )
+                ),
+                role_is_head=Subquery(
+                    Role.objects.filter(
+                        user_id=OuterRef("id"),
+                        ends_at__isnull=True,
+                        division__name=OuterRef("role_name"),
+                    ).values("is_head")[:1],
+                    output_field=BooleanField(),
+                ),
             )
             .filter(role_name__isnull=False)
             .order_by("name", "surname")

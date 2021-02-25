@@ -272,24 +272,26 @@
             </div>
         </div>
     </div>
-    <div class="jumbotron jumbotron-fluid mt-5 mb-0 bg-main-s2 text-white">
-        <div class="container container-fluid pb-5 pb-md-0">
-            <h2 class="text-center mt-0 mb-5">Project group</h2>
-            <div class="row justify-content-md-center home-organisers">
-                {% for organiser in organisers %}
-                    <div class="col-4 col-md-2 text-center ml-auto mr-auto ml-md-0 mr-md-0">
-                        {% if organiser.website %}<a href="{{ organiser.website }}" target="_blank" class="link-unstyled">{% endif %}
-                        {% comment %}
-                            <img src="{{ organiser.picture.url }}" class="ml-auto mr-auto">
-                        {% endcomment %}
-                        <h6 class="mt-1 mb-2">{{ organiser.full_name }}</h6>
-                        {% if organiser.description %}
-                            <p class="mb-0" style="line-height: 1;"><small>{{ organiser.description|upper }}</small></p>
-                        {% endif %}
-                        {% if organiser.website %}</a>{% endif %}
-                    </div>
-                {% endfor %}
+    {% if board %}
+        <div class="jumbotron jumbotron-fluid mt-5 mb-0 bg-main-s2 text-white">
+            <div class="container container-fluid pb-5 pb-md-0">
+                <h2 class="text-center mt-0 mb-5">Project group</h2>
+                <div class="row justify-content-md-center home-organisers">
+                    {% for organiser in board %}
+                        <div class="col-4 col-md-2 text-center ml-auto mr-auto ml-md-0 mr-md-0">
+                            {% if organiser.website %}<a href="{{ organiser.website }}" target="_blank" class="link-unstyled">{% endif %}
+                            {% comment %}
+                                <img src="{{ organiser.picture.url }}" class="ml-auto mr-auto">
+                            {% endcomment %}
+                            <h6 class="mt-1 mb-2">{{ organiser.full_name }}</h6>
+                            {% if organiser.role_name %}
+                                <p class="mb-0" style="line-height: 1;"><small>{{ organiser.role_name|upper }}</small></p>
+                            {% endif %}
+                            {% if organiser.website %}</a>{% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
-    </div>
+    {% endif %}
 {% endblock %}

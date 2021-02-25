@@ -1,4 +1,6 @@
+from django.apps import apps
 from django.contrib.auth.base_user import BaseUserManager
+from django.db.models import Subquery, OuterRef, CharField
 
 from user.enums import UserType
 
@@ -85,5 +87,22 @@ class UserManager(BaseUserManager):
             super()
             .get_queryset()
             .filter(type=UserType.ORGANISER)
+            .order_by("name", "surname")
+        )
+
+    def board(self):
+        Role = apps.get_model("user", "Role")
+        return (
+            super()
+            .get_queryset()
+            .annotate(
+                role_name=Subquery(
+                    Role.objects.filter(
+                        user_id=OuterRef("id"), ends_at__isnull=True, is_head=True
+                    ).values("division__name")[:1],
+                    output_field=CharField(),
+                )
+            )
+            .filter(role_name__isnull=False)
             .order_by("name", "surname")
         )

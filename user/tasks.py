@@ -8,7 +8,7 @@ from app.utils import get_notification_template, send_email, get_substitutions_t
 from user.models import User
 
 
-@shared_task
+# @shared_task
 def send_verify_email(user_id: UUID):
     context = get_substitutions_templates()
     user = User.objects.get(id=user_id)
@@ -24,7 +24,7 @@ def send_verify_email(user_id: UUID):
     send_email(subject=subject, body=body, to=user.email, tags=[MailTag.REGISTER])
 
 
-@shared_task
+# @shared_task
 def send_password_email(user_id: UUID):
     context = get_substitutions_templates()
     user = User.objects.get(id=user_id)
@@ -40,7 +40,7 @@ def send_password_email(user_id: UUID):
     send_email(subject=subject, body=body, to=user.email, tags=[MailTag.PASSWORD])
 
 
-@shared_task
+# @shared_task
 def send_imported_email(user_id: UUID):
     context = get_substitutions_templates()
     user = User.objects.get(id=user_id)

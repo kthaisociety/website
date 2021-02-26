@@ -9,7 +9,7 @@ from event.enums import RegistrationStatus
 from event.models import Registration
 
 
-@shared_task
+# @shared_task
 def send_registration_email(registration_id: UUID):
     context = get_substitutions_templates()
     registration = Registration.objects.get(id=registration_id)
@@ -42,7 +42,7 @@ def send_registration_email(registration_id: UUID):
         )
 
 
-@shared_task
+# @shared_task
 def send_url_email(registration_id: UUID):
     context = get_substitutions_templates()
     registration = Registration.objects.get(id=registration_id)

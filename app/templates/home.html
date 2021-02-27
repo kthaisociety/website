@@ -283,12 +283,12 @@
                                 <p class="mb-2" style="line-height: 1;">{{ role|upper }}</p>
                             </div>
                             {% for organiser in organisers %}
-                                <div class="col-2 text-center ml-auto mr-auto ml-md-0 mr-md-0">
+                                <div class="col-4 col-md-4 col-lg-2 text-center ml-auto mr-auto ml-md-0 mr-md-0">
                                     {% if organiser.website %}<a href="{{ organiser.website }}" target="_blank" class="link-unstyled">{% endif %}
                                     {% comment %}
                                         <img src="{{ organiser.picture.url }}" class="ml-auto mr-auto">
                                     {% endcomment %}
-                                    <h6 class="mt-1 mb-1">{{ organiser.full_name }} {% if organiser.role_is_head %}⭐{% endif %}</h6>
+                                    <h6 class="mt-1 mb-1" {% if organiser.full_name|length > 15 %}style="font-size: 14px;"{% endif %}>{{ organiser.full_name }} {% if organiser.role_is_head %}⭐{% endif %}</h6>
                                     <p class="mb-0" style="line-height: 1;"><small><a href="mailto:{{ organiser.email }}" target="_blank" class="link-unstyled">{{ organiser.email }}</a></small></p>
                                     {% if organiser.website %}</a>{% endif %}
                                 </div>

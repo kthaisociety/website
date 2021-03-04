@@ -49,6 +49,7 @@ def get_organisers():
         key=lambda u: (
             not u.role.division.name.lower() == APP_ROLE_CHAIRMAN.lower(),
             u.role.division.name,
+            not u.role.is_head,
         ),
     )
 

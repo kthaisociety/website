@@ -89,6 +89,7 @@ def send_imported(user: User):
     send_imported_email(user_id=user.id)
 
 
+# TODO: Replace this to not use token
 def slack_invite(user: User):
     if user.is_active and user.email_verified:
         if SL_TOKEN and SL_CHANNEL_GENERAL:

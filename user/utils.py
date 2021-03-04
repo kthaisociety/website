@@ -5,7 +5,7 @@ from uuid import UUID
 import requests
 from django.utils.crypto import get_random_string
 
-from app.settings import SL_TOKEN, SL_CHANNEL_GENERAL
+from app.settings import SL_TOKEN, SL_CHANNEL_GENERAL, APP_ROLE_CHAIRMAN
 from user.enums import GenderType
 from user.models import User
 from user.tasks import send_verify_email, send_password_email, send_imported_email
@@ -44,7 +44,13 @@ def get_user_by_picture(picture):
 
 
 def get_organisers():
-    return User.objects.organisers()
+    return sorted(
+        [u for u in User.objects.organisers() if u.role],
+        key=lambda u: (
+            not u.role.division.name.lower() == APP_ROLE_CHAIRMAN.lower(),
+            u.role.division.name,
+        ),
+    )
 
 
 def get_board():
@@ -89,6 +95,7 @@ def send_imported(user: User):
     send_imported_email(user_id=user.id)
 
 
+# TODO: Replace this to not use token
 def slack_invite(user: User):
     if user.is_active and user.email_verified:
         if SL_TOKEN and SL_CHANNEL_GENERAL:

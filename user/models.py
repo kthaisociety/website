@@ -4,6 +4,7 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
+from django.utils.functional import cached_property
 from versatileimagefield.fields import VersatileImageField
 
 from app.utils import is_email_organiser
@@ -74,6 +75,10 @@ class User(AbstractBaseUser):
     @property
     def is_staff(self):
         return self.is_admin
+
+    @cached_property
+    def role(self):
+        return self.role_set.filter(ends_at__isnull=True).order_by("-is_head").first()
 
     def has_perm(self, perm, obj=None):
         return True

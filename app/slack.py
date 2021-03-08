@@ -83,35 +83,40 @@ def check_users() -> List[Dict]:
                 elif not u.registration_finished:
                     non_finished_users.append(slack_user)
 
-        text = ">>> :slack: *Check users task*\n"
-        if missing_users:
-            text += (
-                ("_Missing users_\n")
-                + "\n".join(
-                    f"\t{u.get('real_name', u.get('name', u.get('id')))} <<mailto:{u.get('profile', {}).get('email')}|{u.get('profile', {}).get('email')}>>"
-                    for u in missing_users
+        if (
+            missing_users is []
+            and non_confirmed_users is []
+            and non_finished_users is []
+        ):
+            text = ">>> :white_check_mark: *Check users task*\nNo issues found\n"
+        else:
+            text = ">>> :siren: *Check users task*\n"
+            if missing_users:
+                text += (
+                    ("_Missing users_\n")
+                    + "\n".join(
+                        f"\t{u.get('real_name', u.get('name', u.get('id')))} <<mailto:{u.get('profile', {}).get('email')}|{u.get('profile', {}).get('email')}>>"
+                        for u in missing_users
+                    )
+                    + "\n"
                 )
-                + "\n"
-            )
-        if non_confirmed_users:
-            text += (
-                ("_Non-confirmed users_\n")
-                + "\n".join(
-                    f"\t{u.get('real_name', u.get('name', u.get('id')))} <<mailto:{u.get('profile', {}).get('email')}|{u.get('profile', {}).get('email')}>>"
-                    for u in non_confirmed_users
+            if non_confirmed_users:
+                text += (
+                    ("_Non-confirmed users_\n")
+                    + "\n".join(
+                        f"\t{u.get('real_name', u.get('name', u.get('id')))} <<mailto:{u.get('profile', {}).get('email')}|{u.get('profile', {}).get('email')}>>"
+                        for u in non_confirmed_users
+                    )
+                    + "\n"
                 )
-                + "\n"
-            )
-        if non_finished_users:
-            text += (
-                ("_Non-finished users_\n")
-                + "\n".join(
-                    f"\t{u.get('real_name', u.get('name', u.get('id')))} <<mailto:{u.get('profile', {}).get('email')}|{u.get('profile', {}).get('email')}>>"
-                    for u in non_finished_users
+            if non_finished_users:
+                text += (
+                    ("_Non-finished users_\n")
+                    + "\n".join(
+                        f"\t{u.get('real_name', u.get('name', u.get('id')))} <<mailto:{u.get('profile', {}).get('email')}|{u.get('profile', {}).get('email')}>>"
+                        for u in non_finished_users
+                    )
+                    + "\n"
                 )
-                + "\n"
-            )
-        if not missing_users and not non_confirmed_users and non_finished_users:
-            text += "No issues found\n"
         response = requests.post(SL_INURL, json={"text": text})
         return response.content

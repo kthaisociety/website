@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "bootstrap4",
     "versatileimagefield",
+    "django_crontab",
     "app",
     "user",
     "news",
@@ -187,9 +188,12 @@ GH_BRANCH = os.environ.get("GH_BRANCH", "master")
 
 # Slack integration
 
-SL_INURL = os.environ.get("SL_INURL", None)
+SL_ID = os.environ.get("SL_ID", None)
+SL_SECRET = os.environ.get("SL_SECRET", None)
 SL_TOKEN = os.environ.get("SL_TOKEN", None)
+SL_INURL = os.environ.get("SL_INURL", None)
 SL_CHANNEL_GENERAL = os.environ.get("SL_CHANNEL_GENERAL", None)
+SL_CHANNEL_WEBDEV = os.environ.get("SL_CHANNEL_WEBDEV", None)
 
 # Set CORS allowed hosts
 
@@ -256,3 +260,7 @@ NOTIFY_TEMPLATES = dict(
         ),
     )
 )
+
+# Cron
+
+CRONJOBS = [("0 20 * * *", "app.cron.slack_check_users")]

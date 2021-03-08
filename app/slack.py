@@ -54,7 +54,7 @@ def send_error_message(error: SlackError):
     if SL_INURL:
         text = None
         if error == SlackError.CHECK_USERS:
-            text = ">>> :siren: *Check users task failed*\n"
+            text = ">>> :rotating_light: *Check users task failed*\n"
         if text:
             response = requests.post(SL_INURL, json={"text": text})
             return response.content
@@ -90,7 +90,7 @@ def check_users() -> List[Dict]:
         ):
             text = ">>> :white_check_mark: *Check users task*\nNo issues found\n"
         else:
-            text = ">>> :siren: *Check users task*\n"
+            text = ">>> :rotating_light: *Check users task*\n"
             if missing_users:
                 text += (
                     ("_Missing users_\n")

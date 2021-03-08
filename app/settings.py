@@ -263,6 +263,4 @@ NOTIFY_TEMPLATES = dict(
 
 # Cron
 
-CRONJOBS = [
-    ("0 20 * * *", "app.cron.slack_check_users"),
-]
+CRONJOBS = [("0 20 * * *", "app.cron.slack_check_users")]

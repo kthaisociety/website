@@ -1,5 +1,6 @@
 import hashlib
 from collections import OrderedDict
+from typing import List
 from uuid import UUID
 
 import requests
@@ -15,7 +16,11 @@ def get_user_by_email(email: str) -> User:
     return User.objects.filter(email=email).first()
 
 
-def create_user(name: str, surname: str, email: str) -> User():
+def get_users() -> List[User]:
+    return User.objects.all()
+
+
+def create_user(name: str, surname: str, email: str) -> User:
     user = User.objects.create_participant(
         name=name,
         surname=surname,

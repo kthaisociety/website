@@ -13,7 +13,7 @@ from user.tasks import (
     send_verify_email,
     send_password_email,
     send_imported_email,
-    send_slack_email,
+    send_slack_email, send_created_email,
 )
 
 
@@ -109,3 +109,9 @@ def send_imported(user: User):
 def send_slack(user: User):
     if user.is_active and user.email_verified:
         send_slack_email(user_id=user.id)
+
+
+def send_created(user: User):
+    verify_key = generate_verify_key(user)
+    user.update_verify(verify_key=verify_key)
+    send_created_email(user_id=user.id)

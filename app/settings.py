@@ -247,7 +247,7 @@ NOTIFY_TEMPLATES = dict(
     email=dict(
         user=dict(
             register=dict(
-                subject="Confirm your email to register",
+                subject="Confirm your email to finish your registration",
                 html="email/user/register.html",
             ),
             password=dict(
@@ -258,6 +258,9 @@ NOTIFY_TEMPLATES = dict(
             ),
             slack=dict(
                 subject="You have been invited to Slack", html="email/user/slack.html"
+            ),
+            created=dict(
+                subject="Confirm your email to finish your registration", html="email/user/created.html"
             ),
         ),
         event=dict(

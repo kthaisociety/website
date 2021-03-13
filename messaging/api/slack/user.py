@@ -5,6 +5,7 @@ import requests
 from django.core.files import File
 
 from user.models import User
+from user.utils import send_created
 
 
 def update(user_data: Dict) -> bool:
@@ -24,7 +25,8 @@ def update(user_data: Dict) -> bool:
                 file = BytesIO(response.content)
                 user.slack_picture.save(f"{user.id}.jpg", File(file), save=False)
 
-        return user.save()
+        user.save()
+        return True
 
     return False
 
@@ -35,8 +37,14 @@ def create(user_data: Dict) -> bool:
     user_slack_name = user_slack_profile.get("real_name")
     user_slack_surname = " ".join(user_slack_name.split(" ")[1:])
     user_slack_name = user_slack_name.split(" ")[0]
-    User.objects.create_participant_from_slack(
+    user = User.objects.create_participant_from_slack(
         email=user_slack_email, name=user_slack_name, surname=user_slack_surname
     )
+    user.email_verified = True
+    user.save()
+    success = True
 
-    return update(user_data=user_data)
+    success &= update(user_data=user_data)
+    send_created(user)
+
+    return success

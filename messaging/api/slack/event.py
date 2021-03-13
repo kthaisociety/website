@@ -1,7 +1,7 @@
 from typing import Dict
 
 from app.settings import SL_EMOJI_BOT, SL_ANSWER_BOT
-from messaging.api.slack import reaction, chat
+from messaging.api.slack import reaction, channel, chat
 
 
 def run(body: Dict) -> bool:
@@ -17,4 +17,6 @@ def run(body: Dict) -> bool:
                 channel_id=channel_id, message_id=message_id, emoji=emoji
             ) or not chat.post(channel_id=channel_id, message_id=message_id, text=text):
                 success = False
+    elif event_type.startswith("channel"):
+        channel.retrieve()
     return success

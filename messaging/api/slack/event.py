@@ -24,7 +24,4 @@ def run(body: Dict) -> bool:
     elif event_type == "user_change":
         if not user.update(user_data=body.get("user")):
             success = False
-    elif event_type == "team_join":
-        if not user.create(user_data=body.get("user")):
-            success = False
     return success

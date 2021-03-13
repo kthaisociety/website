@@ -16,7 +16,5 @@ def slack_event(request):
         run(body=body.get("event"))
     challenge = body.get("challenge")
     if challenge:
-        return JsonResponse(
-            {"challenge": body.get("challenge")}
-        )
+        return JsonResponse({"challenge": body.get("challenge")})
     return HttpResponse()

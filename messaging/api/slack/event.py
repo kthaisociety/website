@@ -13,6 +13,8 @@ def run(body: Dict) -> bool:
         emoji = SL_EMOJI_BOT
         text = SL_ANSWER_BOT
         if channel_id and message_id and emoji and text:
-            success &= reaction.add(channel_id=channel_id, message_id=message_id, emoji=emoji)
-            success &= chat.post(channel_id=channel_id, message_id=message_id, text=text)
+            if not reaction.add(
+                channel_id=channel_id, message_id=message_id, emoji=emoji
+            ) or not chat.post(channel_id=channel_id, message_id=message_id, text=text):
+                success = False
     return success

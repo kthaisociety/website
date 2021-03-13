@@ -2,6 +2,7 @@ from typing import List, Dict
 
 import requests
 import slack
+from django.db import transaction
 
 from app.enums import SlackError
 from app.settings import (
@@ -55,16 +56,30 @@ def send_error_message(error: SlackError):
         text = None
         if error == SlackError.CHECK_USERS:
             text = ">>> :rotating_light: *Check users task failed*\n"
+        elif error == SlackError.RETRIEVE_CHANNELS:
+            text = ">>> :rotating_light: *Retrieve channels task failed*\n"
+        elif error == SlackError.SET_CHANNEL_NAME:
+            text = ">>> :rotating_light: *Set channel name failed*\n"
+        elif error == SlackError.SET_CHANNEL_TOPIC:
+            text = ">>> :rotating_light: *Set channel topic failed*\n"
+        elif error == SlackError.SET_CHANNEL_PURPOSE:
+            text = ">>> :rotating_light: *Set channel purpose failed*\n"
+        elif error == SlackError.INVITE_CHANNEL_USERS:
+            text = ">>> :rotating_light: *Invite users to channel task failed*\n"
+        elif error == SlackError.CREATE_CHANNEL:
+            text = ">>> :rotating_light: *Create channel failed*\n"
         if text:
             response = requests.post(SL_INURL, json={"text": text})
             return response.content
     return False
 
 
+@transaction.atomic
 def check_users() -> List[Dict]:
     if SL_TOKEN and SL_CHANNEL_WEBDEV:
         client = slack.WebClient(SL_TOKEN)
-        response = client.users_list(limit=20)
+        # TODO: Maybe add pagination, large lists could 500
+        response = client.users_list()
         if not response.status_code == 200 or not response.data.get("ok", False):
             return send_error_message(error=SlackError.CHECK_USERS)
 
@@ -82,6 +97,13 @@ def check_users() -> List[Dict]:
                     non_confirmed_users.append(slack_user)
                 elif not u.registration_finished:
                     non_finished_users.append(slack_user)
+                # TODO: Sync other user information
+                # Update user Slack ID
+                if u:
+                    slack_id = slack_user.get("id")
+                    if slack_id and slack_id != u.slack_id:
+                        u.slack_id = slack_id
+                        u.save()
 
         if (
             missing_users is []

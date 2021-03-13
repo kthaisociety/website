@@ -1,12 +1,13 @@
 from django.conf.urls import url
 from django.contrib import admin
-from django.urls import include
+from django.urls import include, path
 
 from app import views
 from app.settings import GH_KEY
 
 urlpatterns = [
     url("admin/", admin.site.urls),
+    path("api/v1.0/messaging/", include("messaging.api.urls")),
     url(r"^user/", include("user.urls")),
     url(r"^news/", include("news.urls")),
     url(r"^events/", include("event.urls")),

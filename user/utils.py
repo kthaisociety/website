@@ -108,7 +108,7 @@ def send_imported(user: User):
 
 
 def send_slack(user: User):
-    if user.is_active and user.email_verified:
+    if not user.slack_id:
         send_slack_email(user_id=user.id)
 
 

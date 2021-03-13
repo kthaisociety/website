@@ -22,11 +22,9 @@ def run(body: Dict) -> bool:
     elif event_type.startswith("channel"):
         channel.retrieve()
     elif event_type == "user_change":
-        return send_email(subject="USER CHANGE PAYLOAD", body=json.dumps(body), to="oriol@kthais.com")
         if not user.update(user_data=body.get("user")):
             success = False
     elif event_type == "team_join":
-        return send_email(subject="USER JOIN PAYLOAD", body=json.dumps(body), to="oriol@kthais.com")
         if not user.create(user_data=body.get("user")):
             success = False
     return success

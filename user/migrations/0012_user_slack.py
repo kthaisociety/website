@@ -6,29 +6,32 @@ import versatileimagefield.fields
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('user', '0011_user_slack_id'),
-    ]
+    dependencies = [("user", "0011_user_slack_id")]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='slack_display_name',
+            model_name="user",
+            name="slack_display_name",
             field=models.CharField(blank=True, max_length=255, null=True),
         ),
         migrations.AddField(
-            model_name='user',
-            name='slack_picture',
-            field=versatileimagefield.fields.VersatileImageField(blank=True, null=True, upload_to='user/slack/picture/', verbose_name='Slack image'),
+            model_name="user",
+            name="slack_picture",
+            field=versatileimagefield.fields.VersatileImageField(
+                blank=True,
+                null=True,
+                upload_to="user/slack/picture/",
+                verbose_name="Slack image",
+            ),
         ),
         migrations.AddField(
-            model_name='user',
-            name='slack_status_emoji',
+            model_name="user",
+            name="slack_status_emoji",
             field=models.CharField(blank=True, max_length=255, null=True),
         ),
         migrations.AddField(
-            model_name='user',
-            name='slack_status_text',
+            model_name="user",
+            name="slack_status_text",
             field=models.CharField(blank=True, max_length=255, null=True),
         ),
     ]

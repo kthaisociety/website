@@ -65,10 +65,7 @@ class User(AbstractBaseUser):
     slack_status_emoji = models.CharField(max_length=255, blank=True, null=True)
     slack_display_name = models.CharField(max_length=255, blank=True, null=True)
     slack_picture = VersatileImageField(
-        "Slack image",
-        upload_to="user/slack/picture/",
-        blank=True,
-        null=True
+        "Slack image", upload_to="user/slack/picture/", blank=True, null=True
     )
 
     objects = UserManager()

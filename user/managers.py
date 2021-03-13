@@ -43,6 +43,17 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
+    def create_participant_from_slack(self, email, name, surname):
+        if not email:
+            raise ValueError("A user must have an email")
+
+        user = self.model(
+            email=email, name=name, surname=surname, type=UserType.PARTICIPANT.value
+        )
+
+        user.save(using=self._db)
+        return user
+
     def create_user(
         self,
         email,

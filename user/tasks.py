@@ -30,10 +30,10 @@ def send_password_email(user_id: UUID):
     user = User.objects.get(id=user_id)
     context["user"] = user
     template = get_notification_template(
-        method="email", app="user", task="register", format="html"
+        method="email", app="user", task="password", format="html"
     )
     subject = get_notification_template(
-        method="email", app="user", task="register", format="subject"
+        method="email", app="user", task="password", format="subject"
     )
     body = render_to_string(template, context)
 
@@ -70,3 +70,19 @@ def send_slack_email(user_id: UUID):
     body = render_to_string(template, context)
 
     send_email(subject=subject, body=body, to=user.email, tags=[MailTag.SLACK])
+
+
+# @shared_task
+def send_created_email(user_id: UUID):
+    context = get_substitutions_templates()
+    user = User.objects.get(id=user_id)
+    context["user"] = user
+    template = get_notification_template(
+        method="email", app="user", task="created", format="html"
+    )
+    subject = get_notification_template(
+        method="email", app="user", task="created", format="subject"
+    )
+    body = render_to_string(template, context)
+
+    send_email(subject=subject, body=body, to=user.email, tags=[MailTag.CREATED])

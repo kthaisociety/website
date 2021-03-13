@@ -65,6 +65,8 @@ def send_error_message(error: SlackError):
             text = ">>> :rotating_light: *Add reaction failed*\n"
         elif error == SlackError.ADD_MESSAGE:
             text = ">>> :rotating_light: *Add message failed*\n"
+        elif error == SlackError.UPDATE_USER:
+            text = ">>> :rotating_light: *Update user task failed*\n"
         if text:
             response = requests.post(SL_INURL, json={"text": text})
             return response.content

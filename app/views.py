@@ -29,7 +29,12 @@ def maintenance(request):
 def files(request, file_):
     path, file_name = os.path.split(file_)
     if request.user.is_authenticated:
-        if path in ["user/picture", "__sized__/user/picture"]:
+        if path in [
+            "user/picture",
+            "__sized__/user/picture",
+            "user/slack/picture",
+            "__sized__/user/slack/picture",
+        ]:
             if file_[:7] != "/files/":
                 file_ = "/files/" + file_
             response = StreamingHttpResponse(open(settings.BASE_DIR + file_, "rb"))

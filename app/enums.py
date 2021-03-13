@@ -6,6 +6,7 @@ class MailTag(enum.Enum):
     PASSWORD = "password"
     EVENT = "event"
     SLACK = "slack"
+    CREATED = "created"
 
 
 class SlackError(enum.Enum):
@@ -18,3 +19,5 @@ class SlackError(enum.Enum):
     CREATE_CHANNEL = "create_channel"
     ADD_REACTION = "add_reaction"
     ADD_MESSAGE = "add_message"
+    CREATE_USER = "create_user"
+    UPDATE_USER = "update_user"

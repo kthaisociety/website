@@ -11,7 +11,9 @@ from messaging.api.slack.event import run
 @require_http_methods(["POST"])
 def slack_event(request):
     body = json.loads(request.body)
-    run(body=body)
+    event_type = body.get("type")
+    if event_type == "event_callback":
+        run(body=body.get("event"))
     return JsonResponse(
         {"challenge": body.get("challenge")}
     )

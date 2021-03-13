@@ -1,7 +1,7 @@
 from django.contrib import admin, messages
 
 from user.models import User, Team, Division, Role
-from user.utils import send_imported, slack_invite
+from user.utils import send_imported, send_slack
 
 
 def send_welcome(modeladmin, request, users):
@@ -14,7 +14,7 @@ def send_welcome(modeladmin, request, users):
 
 def send_slack_invite(modeladmin, request, users):
     for user in users:
-        slack_invite(user=user)
+        send_slack(user=user)
     messages.success(
         request, f"Slack invitations have been sent to {users.count()} user/s."
     )

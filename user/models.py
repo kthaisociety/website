@@ -2,7 +2,7 @@ import uuid
 
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.core.exceptions import ValidationError
-from django.db import models
+from django.db import models, transaction
 from django.utils import timezone
 from django.utils.functional import cached_property
 from versatileimagefield.fields import VersatileImageField
@@ -139,9 +139,8 @@ class User(AbstractBaseUser):
             self.delete_verify_key()
             self.save()
 
-            from user.utils import slack_invite
-
-            slack_invite(user=self)
+            from user.utils import send_slack
+            transaction.on_commit(lambda: send_slack(user=self))
 
     def mark_as_inactive(self):
         self.is_active = False

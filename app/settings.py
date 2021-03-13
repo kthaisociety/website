@@ -144,6 +144,8 @@ PASSWORD_RESET_TIMEOUT_DAYS = 1
 # Add domain to allowed hosts
 
 APP_DOMAIN = os.environ.get("APP_DOMAIN", APP_LOCALHOST)
+APP_PROTOCOL = os.environ.get("APP_PROTOCOL", "http")
+APP_FULL_DOMAIN = f"{APP_PROTOCOL}://{APP_DOMAIN}"
 APP_IP = os.environ.get("APP_IP", APP_LOCALHOST)
 ALLOWED_HOSTS.append(APP_DOMAIN)
 ALLOWED_HOSTS.append("www." + APP_DOMAIN)
@@ -253,6 +255,9 @@ NOTIFY_TEMPLATES = dict(
             ),
             imported=dict(
                 subject="Welcome to KTHAIS new website", html="email/user/imported.html"
+            ),
+            slack=dict(
+                subject="You have been invited to Slack", html="email/user/slack.html"
             ),
         ),
         event=dict(

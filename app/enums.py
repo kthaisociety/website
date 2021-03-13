@@ -5,6 +5,7 @@ class MailTag(enum.Enum):
     REGISTER = "register"
     PASSWORD = "password"
     EVENT = "event"
+    SLACK = "slack"
 
 
 class SlackError(enum.Enum):

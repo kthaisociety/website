@@ -18,60 +18,62 @@
 <table class="body-wrap">
     <tr>
         <td class="container" style="padding-top: 35px !important;">
-            <table>
-                <tr>
-                    <td align="center" class="masthead">
-                        <img style="height: 25px;" src="{% full_static "img/logo_text_white.png" %}" alt="KTHAIS"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="content" style="margin: 30px 35px !important; background-color:#f8f8f8;">
-                        {% block email_opening %}
-                            {% if user and user.name %}
-                                <h4>Hej, {{ user.name }}!</h4>
-                            {% else %}
-                                <h4>Hej!</h4>
-                            {% endif %}
-                        {% endblock %}
-                        {% block email_body %}
-                            {% block email_message_pre %}
-                                <p>Looks like there's been a problem, this email doesn't have content! Please, let us know if this is the result of registering, subscribing or any other action you might think that have caused this.</p>
+            {% block email_all %}
+                <table>
+                    <tr>
+                        <td align="center" class="masthead">
+                            <img style="height: 25px;" src="{% full_static "img/logo_text_white.png" %}" alt="KTHAIS"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="content" style="margin: 30px 35px !important; background-color:#f8f8f8;">
+                            {% block email_opening %}
+                                {% if user and user.name %}
+                                    <h4>Hej, {{ user.name }}!</h4>
+                                {% else %}
+                                    <h4>Hej!</h4>
+                                {% endif %}
                             {% endblock %}
-                            {% block email_button %}
-                                <table>
-                                    <tr>
-                                        <td align="center">
-                                            <p>
-                                                <a href="{% block email_button_url %}mailto:{{ app_email_contact }}{% endblock %}" class="email-button">{% block email_button_text %}Contact us{% endblock %}</a>
-                                            </p>
-                                        </td>
-                                    </tr>
-                                </table>
+                            {% block email_body %}
+                                {% block email_message_pre %}
+                                    <p>Looks like there's been a problem, this email doesn't have content! Please, let us know if this is the result of registering, subscribing or any other action you might think that have caused this.</p>
+                                {% endblock %}
+                                {% block email_button %}
+                                    <table>
+                                        <tr>
+                                            <td align="center">
+                                                <p>
+                                                    <a href="{% block email_button_url %}mailto:{{ app_email_contact }}{% endblock %}" class="email-button">{% block email_button_text %}Contact us{% endblock %}</a>
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                {% endblock %}
+                                {% block email_message_post %}
+                                {% endblock %}
                             {% endblock %}
-                            {% block email_message_post %}
+                            {% block email_closing %}
+                                <p style="margin:0;">Best, {{ app_name }}.</p>
                             {% endblock %}
-                        {% endblock %}
-                        {% block email_closing %}
-                            <p style="margin:0;">Best, {{ app_name }}.</p>
-                        {% endblock %}
-                    </td>
-                </tr>
-                <tr>
-                    <td class="container" style="margin: 0 auto !important;">
-                        <table>
-                            <tr>
-                                <td class="content footer" align="center">
-                                    <p style="margin: 5px auto; display: inline-block;" class="email-footer">Sent with 💛 by students in KTH 🇸🇪</p>
-                                    <br>
-                                    <a href="{% full_url 'page_page' 'legal' 'legal-notice' %}" class="email-legal">Legal notice</a>
-                                    <a href="{% full_url 'page_page' 'legal' 'terms-and-conditions' %}" class="email-legal">Terms and Conditions</a>
-                                    <a href="{% full_url 'page_page' 'legal' 'privacy-and-cookies' %}" class="email-legal">Privacy and Cookies</a>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="container" style="margin: 0 auto !important;">
+                            <table>
+                                <tr>
+                                    <td class="content footer" align="center">
+                                        <p style="margin: 5px auto; display: inline-block;" class="email-footer">Sent with 💛 by students in KTH 🇸🇪</p>
+                                        <br>
+                                        <a href="{% full_url 'page_page' 'legal' 'legal-notice' %}" class="email-legal">Legal notice</a>
+                                        <a href="{% full_url 'page_page' 'legal' 'terms-and-conditions' %}" class="email-legal">Terms and Conditions</a>
+                                        <a href="{% full_url 'page_page' 'legal' 'privacy-and-cookies' %}" class="email-legal">Privacy and Cookies</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            {% endblock %}
         </td>
     </tr>
 </table>

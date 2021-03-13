@@ -42,9 +42,6 @@ class UserAdmin(admin.ModelAdmin):
     ordering = ("-created_at",)
     actions = [send_welcome, send_slack_invite]
 
-    def get_queryset(self, request):
-        return super().get_queryset(request).exclude(name__isnull=True).exclude(name="")
-
 
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):

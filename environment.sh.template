@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Django secret key and production mode
+export SECRET_KEY="[VARIABLE]"
+export PROD_MODE="True"
+
+# PostgreSQL connection
+export PG_NAME="[VARIABLE]"
+export PG_USER="[VARIABLE]"
+export PG_PWD="[VARIABLE]"
+
+# SendGrid configuration
+export SG_KEY="[VARIABLE]"
+
+# Hackathon information
+export APP_DOMAIN="kthais.com"
+
+# Google Analytics
+export GO_ID="[VARIABLE]"
+
+# Signup status
+export SIGNUP_DISABLED="False"
+
+# Github webhook key
+export GH_KEY="[VARIABLE]"
+export GH_BRANCH="[VARIABLE]"
+
+./env/bin/gunicorn --workers 2 --log-file=gunicorn.log --bind unix:kthais.sock app.wsgi:application

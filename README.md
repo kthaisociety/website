@@ -49,11 +49,12 @@ ALTER ROLE [DATABASE_USER] SET timezone TO 'UTC';
 
 #### Script files
 
+- `cp environment.sh.template environment.sh`.
+- Edit the `environment.sh` file with the correct values of the environmental variables on each `[VARIABLE]`.
+- `chmod +x environment.sh`.
 - `cp server.sh.template server.sh`.
-- Edit the `server.sh` file with the correct values of the environmental variables on each `[VARIABLE]`.
 - `chmod +x server.sh`.
 - `cp restart.sh.template restart.sh`.
-- Edit the `restart.sh` file with the correct values of the environmental variables on each `[VARIABLE]`.
 - `chmod +x restart.sh`.
 - `./restart.sh`.
 

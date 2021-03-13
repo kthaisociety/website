@@ -13,7 +13,8 @@ from user.tasks import (
     send_verify_email,
     send_password_email,
     send_imported_email,
-    send_slack_email, send_created_email,
+    send_slack_email,
+    send_created_email,
 )
 
 

@@ -260,7 +260,8 @@ NOTIFY_TEMPLATES = dict(
                 subject="You have been invited to Slack", html="email/user/slack.html"
             ),
             created=dict(
-                subject="Confirm your email to finish your registration", html="email/user/created.html"
+                subject="Confirm your email to finish your registration",
+                html="email/user/created.html",
             ),
         ),
         event=dict(

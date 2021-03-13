@@ -140,6 +140,7 @@ class User(AbstractBaseUser):
             self.save()
 
             from user.utils import send_slack
+
             transaction.on_commit(lambda: send_slack(user=self))
 
     def mark_as_inactive(self):

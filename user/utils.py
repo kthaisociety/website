@@ -9,7 +9,12 @@ from django.utils.crypto import get_random_string
 from app.settings import SL_TOKEN, SL_CHANNEL_GENERAL, APP_ROLE_CHAIRMAN
 from user.enums import GenderType
 from user.models import User
-from user.tasks import send_verify_email, send_password_email, send_imported_email, send_slack_email
+from user.tasks import (
+    send_verify_email,
+    send_password_email,
+    send_imported_email,
+    send_slack_email,
+)
 
 
 def get_user_by_email(email: str) -> User:

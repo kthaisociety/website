@@ -1,8 +1,6 @@
-import json
 from typing import Dict
 
 from app.settings import SL_EMOJI_BOT, SL_ANSWER_BOT
-from app.utils import send_email
 from messaging.api.slack import reaction, channel, chat, user
 
 

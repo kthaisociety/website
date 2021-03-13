@@ -1,15 +1,7 @@
 #!/bin/bash
 
-# Django secret key and production mode
-export PROD_MODE="True"
-
-# PostgreSQL connection
-export PG_NAME="[VARIABLE]"
-export PG_USER="[VARIABLE]"
-export PG_PWD="[VARIABLE]"
-
-# Hackathon information
-export APP_DOMAIN="kthais.com"
+# Load environment
+source environment.sh
 
 echo "[KTHAIS] REDEPLOYING"
 echo "Installing new requirements..."

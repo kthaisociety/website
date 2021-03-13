@@ -270,3 +270,5 @@ CRONJOBS = [
     ("0 20 * * *", "app.cron.slack_check_users"),
     ("5 * * * *", "messaging.cron.slack_retrieve_channels"),
 ]
+
+CRONTAB_COMMAND_PREFIX = "source environment.sh &&"

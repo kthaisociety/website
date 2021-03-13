@@ -5,14 +5,7 @@ import slack
 from django.db import transaction
 
 from app.enums import SlackError
-from app.settings import (
-    SL_INURL,
-    APP_DOMAIN,
-    SL_TOKEN,
-    SL_CHANNEL_WEBDEV,
-    SL_ID,
-    SL_SECRET,
-)
+from app.settings import SL_INURL, APP_DOMAIN, SL_CHANNEL_WEBDEV, SL_USER_TOKEN
 
 import user.utils
 
@@ -76,8 +69,8 @@ def send_error_message(error: SlackError):
 
 @transaction.atomic
 def check_users() -> List[Dict]:
-    if SL_TOKEN and SL_CHANNEL_WEBDEV:
-        client = slack.WebClient(SL_TOKEN)
+    if SL_USER_TOKEN and SL_CHANNEL_WEBDEV:
+        client = slack.WebClient(SL_USER_TOKEN)
         # TODO: Maybe add pagination, large lists could 500
         response = client.users_list()
         if not response.status_code == 200 or not response.data.get("ok", False):

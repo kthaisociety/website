@@ -23,6 +23,8 @@ def get_substitutions_templates(request: Optional = None):
         "app_description": getattr(settings, "APP_DESCRIPTION", None),
         "app_timezone": getattr(settings, "APP_TIMEZONE", None),
         "app_domain": getattr(settings, "APP_DOMAIN", None),
+        "app_protocol": getattr(settings, "APP_PROTOCOL", None),
+        "app_full_domain": getattr(settings, "APP_FULL_DOMAIN", None),
         "app_email_contact": getattr(settings, "APP_EMAIL_CONTACT", None),
         "app_email_webdev": getattr(settings, "APP_EMAIL_WEBDEV", None),
         "app_sn_facebook": getattr(settings, "APP_SN_FACEBOOK", None),

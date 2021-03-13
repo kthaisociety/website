@@ -16,7 +16,7 @@ def send_slack_invite(modeladmin, request, users):
     for user in users:
         slack_invite(user=user)
     messages.success(
-        request, f"Slack inivtations have been sent to {users.count()} user/s."
+        request, f"Slack invitations have been sent to {users.count()} user/s."
     )
 
 
@@ -26,13 +26,7 @@ send_slack_invite.short_description = "Send Slack invitation"
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    search_fields = (
-        "id",
-        "email",
-        "name",
-        "surname",
-        "type",
-    )
+    search_fields = ("id", "email", "name", "surname", "type")
     list_display = ("email", "name", "surname", "type", "slack_id", "created_at")
     list_filter = (
         "type",
@@ -49,8 +43,7 @@ class UserAdmin(admin.ModelAdmin):
     actions = [send_welcome, send_slack_invite]
 
     def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        return qs.exclude(name__isnull=True).exclude(name="")
+        return super().get_queryset(request).exclude(name__isnull=True).exclude(name="")
 
 
 @admin.register(Team)

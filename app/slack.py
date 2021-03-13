@@ -56,6 +56,16 @@ def send_error_message(error: SlackError):
         text = None
         if error == SlackError.CHECK_USERS:
             text = ">>> :rotating_light: *Check users task failed*\n"
+        elif error == SlackError.RETRIEVE_CHANNELS:
+            text = ">>> :rotating_light: *Retrieve channels task failed*\n"
+        elif error == SlackError.SET_CHANNEL_NAME:
+            text = ">>> :rotating_light: *Set channel name failed*\n"
+        elif error == SlackError.SET_CHANNEL_TOPIC:
+            text = ">>> :rotating_light: *Set channel topic failed*\n"
+        elif error == SlackError.SET_CHANNEL_PURPOSE:
+            text = ">>> :rotating_light: *Set channel purpose failed*\n"
+        elif error == SlackError.INVITE_CHANNEL_USERS:
+            text = ">>> :rotating_light: *Invite users to channel task failed*\n"
         if text:
             response = requests.post(SL_INURL, json={"text": text})
             return response.content
@@ -66,7 +76,8 @@ def send_error_message(error: SlackError):
 def check_users() -> List[Dict]:
     if SL_TOKEN and SL_CHANNEL_WEBDEV:
         client = slack.WebClient(SL_TOKEN)
-        response = client.users_list(limit=20)
+        # TODO: Maybe add pagination, large lists could 500
+        response = client.users_list()
         if not response.status_code == 200 or not response.data.get("ok", False):
             return send_error_message(error=SlackError.CHECK_USERS)
 

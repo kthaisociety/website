@@ -59,6 +59,7 @@ class User(AbstractBaseUser):
     website = models.CharField(max_length=255, blank=True, null=True)
 
     # Slack
+    # TODO: Should somehow be unique if not null
     slack_id = models.CharField(max_length=255, blank=True, null=True)
 
     objects = UserManager()

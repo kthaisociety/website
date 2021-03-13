@@ -90,6 +90,15 @@ class UserManager(BaseUserManager):
             .order_by("name", "surname")
         )
 
+    def current(self):
+        return super().get_queryset().exclude(name__isnull=True).exclude(name="")
+
+    def active(self):
+        return self.current().filter(is_active=True)
+
+    def slack_active(self):
+        return self.current().filter(is_active=True, slack_id__isnull=False)
+
     def board(self):
         Role = apps.get_model("user", "Role")
         return (

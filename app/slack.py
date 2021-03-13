@@ -66,6 +66,8 @@ def send_error_message(error: SlackError):
             text = ">>> :rotating_light: *Set channel purpose failed*\n"
         elif error == SlackError.INVITE_CHANNEL_USERS:
             text = ">>> :rotating_light: *Invite users to channel task failed*\n"
+        elif error == SlackError.CREATE_CHANNEL:
+            text = ">>> :rotating_light: *Create channel failed*\n"
         if text:
             response = requests.post(SL_INURL, json={"text": text})
             return response.content

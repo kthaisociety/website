@@ -131,7 +131,7 @@ def create(
         client = slack.WebClient(SL_USER_TOKEN)
         response = client.conversations_create(name=name)
         if not response.status_code == 200 or not response.data.get("ok", False):
-            return send_error_message(error=SlackError.SET_CHANNEL_NAME)
+            return send_error_message(error=SlackError.CREATE_CHANNEL)
 
         slack_channel = response.data.get("channel")
         slack_channel["topic"] = {"value": topic}

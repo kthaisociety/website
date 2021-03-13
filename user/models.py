@@ -58,6 +58,9 @@ class User(AbstractBaseUser):
     # Details
     website = models.CharField(max_length=255, blank=True, null=True)
 
+    # Slack
+    slack_id = models.CharField(max_length=255, blank=True, null=True)
+
     objects = UserManager()
 
     USERNAME_FIELD = "email"

@@ -26,11 +26,31 @@ send_slack_invite.short_description = "Send Slack invitation"
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    search_fields = ("id", "email", "name", "surname", "type")
-    list_display = ("email", "name", "surname", "type", "created_at")
-    list_filter = ("type", "email_verified", "is_active")
+    search_fields = (
+        "id",
+        "email",
+        "name",
+        "surname",
+        "type",
+    )
+    list_display = ("email", "name", "surname", "type", "slack_id", "created_at")
+    list_filter = (
+        "type",
+        "email_verified",
+        "registration_finished",
+        "is_active",
+        "gender",
+        "university",
+        "degree",
+        "graduation_year",
+    )
+    readonly_fields = ("slack_id", "password", "last_login", "created_at")
     ordering = ("-created_at",)
     actions = [send_welcome, send_slack_invite]
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.exclude(name__isnull=True).exclude(name="")
 
 
 @admin.register(Team)

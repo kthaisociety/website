@@ -40,11 +40,13 @@ INSTALLED_APPS = [
     "bootstrap4",
     "versatileimagefield",
     "django_crontab",
+    "django_extensions",
     "app",
     "user",
     "news",
     "event",
     "page",
+    "messaging",
     "cookielaw",
     "django_social_share",
 ]

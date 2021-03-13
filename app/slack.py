@@ -2,6 +2,7 @@ from typing import List, Dict
 
 import requests
 import slack
+from django.db import transaction
 
 from app.enums import SlackError
 from app.settings import (
@@ -61,6 +62,7 @@ def send_error_message(error: SlackError):
     return False
 
 
+@transaction.atomic
 def check_users() -> List[Dict]:
     if SL_TOKEN and SL_CHANNEL_WEBDEV:
         client = slack.WebClient(SL_TOKEN)
@@ -82,6 +84,13 @@ def check_users() -> List[Dict]:
                     non_confirmed_users.append(slack_user)
                 elif not u.registration_finished:
                     non_finished_users.append(slack_user)
+                # TODO: Sync other user information
+                # Update user Slack ID
+                if u:
+                    slack_id = slack_user.get("id")
+                    if slack_id and slack_id != u.slack_id:
+                        u.slack_id = slack_id
+                        u.save()
 
         if (
             missing_users is []

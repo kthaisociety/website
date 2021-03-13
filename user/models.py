@@ -61,6 +61,15 @@ class User(AbstractBaseUser):
     # Slack
     # TODO: Should somehow be unique if not null
     slack_id = models.CharField(max_length=255, blank=True, null=True)
+    slack_status_text = models.CharField(max_length=255, blank=True, null=True)
+    slack_status_emoji = models.CharField(max_length=255, blank=True, null=True)
+    slack_display_name = models.CharField(max_length=255, blank=True, null=True)
+    slack_picture = VersatileImageField(
+        "Slack image",
+        upload_to="user/slack/picture/",
+        blank=True,
+        null=True
+    )
 
     objects = UserManager()
 

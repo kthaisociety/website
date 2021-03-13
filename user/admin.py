@@ -38,7 +38,16 @@ class UserAdmin(admin.ModelAdmin):
         "degree",
         "graduation_year",
     )
-    readonly_fields = ("slack_id", "password", "last_login", "created_at")
+    readonly_fields = (
+        "password",
+        "last_login",
+        "slack_id",
+        "slack_status_text",
+        "slack_status_emoji",
+        "slack_display_name",
+        "slack_picture",
+        "created_at",
+    )
     ordering = ("-created_at",)
     actions = [send_welcome, send_slack_invite]
 

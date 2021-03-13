@@ -1,7 +1,9 @@
+import json
 from typing import Dict
 
 from app.settings import SL_EMOJI_BOT, SL_ANSWER_BOT
-from messaging.api.slack import reaction, channel, chat
+from app.utils import send_email
+from messaging.api.slack import reaction, channel, chat, user
 
 
 def run(body: Dict) -> bool:
@@ -19,4 +21,12 @@ def run(body: Dict) -> bool:
                 success = False
     elif event_type.startswith("channel"):
         channel.retrieve()
+    elif event_type == "user_change":
+        return send_email(subject="USER CHANGE PAYLOAD", body=json.dumps(body), to="oriol@kthais.com")
+        if not user.update(user_data=body.get("user")):
+            success = False
+    elif event_type == "team_join":
+        return send_email(subject="USER JOIN PAYLOAD", body=json.dumps(body), to="oriol@kthais.com")
+        if not user.create(user_data=body.get("user")):
+            success = False
     return success

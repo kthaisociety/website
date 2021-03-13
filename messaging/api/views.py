@@ -1,6 +1,6 @@
 import json
 
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 
@@ -14,6 +14,9 @@ def slack_event(request):
     event_type = body.get("type")
     if event_type == "event_callback":
         run(body=body.get("event"))
-    return JsonResponse(
-        {"challenge": body.get("challenge")}
-    )
+    challenge = body.get("challenge")
+    if challenge:
+        return JsonResponse(
+            {"challenge": body.get("challenge")}
+        )
+    return HttpResponse()

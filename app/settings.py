@@ -197,6 +197,11 @@ SL_USER_TOKEN = os.environ.get("SL_USER_TOKEN", None)
 SL_INURL = os.environ.get("SL_INURL", None)
 SL_CHANNEL_GENERAL = os.environ.get("SL_CHANNEL_GENERAL", None)
 SL_CHANNEL_WEBDEV = os.environ.get("SL_CHANNEL_WEBDEV", None)
+SL_EMOJI_BOT = os.environ.get("SL_EMOJI_BOT", "mascot")
+SL_ANSWER_BOT = os.environ.get(
+    "SL_ANSWER_BOT",
+    "Did someone mention me? I can't do much at the moment but maybe that will change soon!",
+)
 
 # Set CORS allowed hosts
 

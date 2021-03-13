@@ -15,3 +15,5 @@ class SlackError(enum.Enum):
     SET_CHANNEL_PURPOSE = "set_channel_purpose"
     INVITE_CHANNEL_USERS = "invite_channel_users"
     CREATE_CHANNEL = "create_channel"
+    ADD_REACTION = "add_reaction"
+    ADD_MESSAGE = "add_message"

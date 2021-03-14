@@ -36,11 +36,7 @@ def set_picture(token: str, file: BytesIO) -> bool:
 def update(user_data: Dict) -> bool:
     user_slack_profile = user_data.get("profile")
     user_slack_email = user_slack_profile.get("email")
-    user = User.objects.filter(
-        email=user_slack_email,
-        # Avoid updates on updates
-        updated_at__lt=timezone.now() - timezone.timedelta(minutes=1),
-    ).first()
+    user = User.objects.filter(email=user_slack_email).first()
     profile_picture_updated = False
     success = True
     if user:
@@ -50,7 +46,12 @@ def update(user_data: Dict) -> bool:
         user.slack_display_name = user_slack_profile.get("display_name")
 
         user_slack_image_original = user_slack_profile.get("image_original")
-        if user_slack_image_original:
+        user_slack_image_hash = user_slack_profile.get("avatar_hash")
+        # Update the profile picture only if it changed
+        if (
+            user_slack_image_hash != user.slack_picture_hash
+            and user_slack_image_original
+        ):
             response = requests.get(user_slack_image_original)
             if response.status_code == 200:
                 profile_picture_file = BytesIO(response.content)
@@ -65,6 +66,7 @@ def update(user_data: Dict) -> bool:
                 user.slack_picture.save(
                     f"{user.id}.jpg", File(profile_picture_file), save=False
                 )
+        user.slack_picture_hash = user_slack_image_hash
 
         user.save()
 

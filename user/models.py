@@ -71,6 +71,7 @@ class User(AbstractBaseUser):
     slack_picture = VersatileImageField(
         "Slack image", upload_to="user/slack/picture/", blank=True, null=True
     )
+    slack_picture_hash = models.CharField(max_length=255, blank=True, null=True)
 
     objects = UserManager()
 

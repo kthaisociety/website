@@ -14,6 +14,7 @@ from user.models import User
 from user.utils import send_created
 
 
+# TODO: Set picture as well when updated through the website
 def get_profile_picture(file: BytesIO) -> BytesIO:
     picture = Image.open(file).resize(size=(1024, 1024))
     mask = Image.open(os.path.join(STATIC_ROOT, "img/mask.png"))

@@ -22,3 +22,4 @@ class SlackError(enum.Enum):
     ADD_MESSAGE = "add_message"
     CREATE_USER = "create_user"
     UPDATE_USER = "update_user"
+    AUTH_USER = "auth_user"

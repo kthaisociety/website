@@ -56,6 +56,8 @@ def get_substitutions_templates(request: Optional = None):
         "maintenance_mode": maintenance_mode,
         "const_universities": UNIVERSITIES,
         "const_programmes": PROGRAMMES,
+        "sl_id": getattr(settings, "SL_ID", None),
+        "sl_user_scopes": getattr(settings, "SL_USER_SCOPES", None),
     }
 
 

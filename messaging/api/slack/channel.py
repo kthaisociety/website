@@ -67,7 +67,9 @@ def retrieve() -> List[SlackChannel]:
 def retrieve(external_id: str) -> Optional[SlackChannel]:
     if SL_TOKEN and SL_CHANNEL_WEBDEV:
         client = slack.WebClient(SL_TOKEN)
-        response = client.conversations_info(channel=external_id, include_num_members=True)
+        response = client.conversations_info(
+            channel=external_id, include_num_members=True
+        )
         if not response.status_code == 200 or not response.data.get("ok", False):
             return send_error_message(error=SlackError.RETRIEVE_CHANNEL)
 

@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load app_tags %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block head_title %}Dashboard{% endblock %}
+
+{% block in_body %}
+    <div class="container container-body py-5">
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <div class="dashboard-profile">
+                    <img id="dashboard-profile-picture" src="{{ request.user.profile_picture.crop.500x500 }}" alt="Profile picture">
+                    {% if request.user.slack_status %}
+                        <div class="dashboard-status">
+                            <p class="mb-0">{{ request.user.slack_status }}</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-9 pl-md-4">
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="card w-100">
+                            <div class="card-body">
+                                <h3 class="card-title">🙂 Profile</h3>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <p class="card-text mb-0"><strong>First name:</strong> {{ request.user.name }}</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <p class="card-text mb-0"><strong>Last name:</strong> {{ request.user.surname }}</p>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <p class="card-text mb-0"><strong>Email:</strong> <a href="mailto:{{ request.user.email }}" target="_blank" class="link-unstyled">{{ request.user.email }}</a></p>
+                                    </div>
+                                </div>
+                                <hr>
+                                {% if request.user.email_verified %}
+                                    <h6 class="card-text mt-3 mb-3">✅ Email verified</h6>
+                                {% else %}
+                                    <h6 class="card-text mt-3 mb-3">❌ Email not verified</h6>
+                                {% endif %}
+                                {% if request.user.registration_finished %}
+                                    <h6 class="card-text mt-3 mb-0">✅ Registration finished</h6>
+                                {% else %}
+                                    <h6 class="card-text mt-3 mb-0">❌ Registration not finished</h6>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card w-100">
+                            <div class="card-body">
+                                <h3 class="card-title"><img alt="Slack icon" class="inline-icon-h3" src="{{ app_full_domain }}{% static "img/slack.png" %}">Slack</h3>
+                                {% if request.user.slack_token %}
+                                    <h6 class="card-text mt-3 mb-3">✅ Connected</h6>
+                                    <hr>
+                                    <p class="card-text"><strong>User ID:</strong> {{ request.user.slack_id }}</p>
+                                    <a class="link-unstyled" href="https://kthaisociety.slack.com">
+                                        <button type="button" class="btn btn-main">Open Slack</button>
+                                    </a>
+                                {% else %}
+                                    <h6 class="card-text mt-3 mb-3">❌ Not connected</h6>
+                                    <hr>
+                                    <p class="card-text">If you want to get the most out of KTH AI Society you can authorise Slack!</p>
+                                    <a class="link-unstyled" href="https://slack.com/oauth/v2/authorize?client_id={{ sl_id }}&user_scope={{ sl_user_scopes }}&redirect_uri={{ app_full_domain }}{% url "slack_user_auth" %}">
+                                        <button type="button" class="btn btn-main">Authorize</button>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

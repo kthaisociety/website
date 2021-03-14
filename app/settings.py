@@ -196,6 +196,9 @@ SL_ID = os.environ.get("SL_ID", None)
 SL_SECRET = os.environ.get("SL_SECRET", None)
 SL_TOKEN = os.environ.get("SL_TOKEN", None)
 SL_USER_TOKEN = os.environ.get("SL_USER_TOKEN", None)
+SL_USER_SCOPES = os.environ.get(
+    "SL_USER_SCOPES", "users.profile:read,users.profile:write"
+)
 SL_INURL = os.environ.get("SL_INURL", None)
 SL_CHANNEL_GENERAL = os.environ.get("SL_CHANNEL_GENERAL", None)
 SL_CHANNEL_WEBDEV = os.environ.get("SL_CHANNEL_WEBDEV", None)

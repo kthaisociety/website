@@ -15,5 +15,6 @@ urlpatterns = [
         name="user_verifypassword",
     ),
     url(r"^send-verification/$", views.send_verification, name="user_sendverification"),
+    url(r"^dashboard/$", views.dashboard, name="user_dashboard"),
     url("", include("social_django.urls", namespace="social")),
 ]

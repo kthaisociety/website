@@ -5,14 +5,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('user', '0012_user_slack'),
-    ]
+    dependencies = [("user", "0012_user_slack")]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='resume',
-            field=models.FileField(blank=True, null=True, upload_to='user/resume/'),
-        ),
+            model_name="user",
+            name="resume",
+            field=models.FileField(blank=True, null=True, upload_to="user/resume/"),
+        )
     ]

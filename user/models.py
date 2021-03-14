@@ -8,6 +8,7 @@ from django.utils.functional import cached_property
 from versatileimagefield.fields import VersatileImageField
 
 from app.utils import is_email_organiser
+from user.consts import EMOJIS
 from user.enums import UserType, GenderType
 from user.managers import UserManager
 
@@ -62,6 +63,8 @@ class User(AbstractBaseUser):
     # Slack
     # TODO: Should somehow be unique if not null
     slack_id = models.CharField(max_length=255, blank=True, null=True)
+    slack_token = models.CharField(max_length=255, blank=True, null=True)
+    slack_scopes = models.CharField(max_length=255, blank=True, null=True)
     slack_status_text = models.CharField(max_length=255, blank=True, null=True)
     slack_status_emoji = models.CharField(max_length=255, blank=True, null=True)
     slack_display_name = models.CharField(max_length=255, blank=True, null=True)
@@ -80,6 +83,21 @@ class User(AbstractBaseUser):
         if self.slack_picture:
             return self.slack_picture
         return self.picture
+
+    @property
+    def slack_status(self):
+        if self.slack_status_emoji:
+            try:
+                emoji = (
+                    EMOJIS[self.slack_status_emoji[1:-1]]
+                    .encode("utf-16", "surrogatepass")
+                    .decode("utf-16")
+                )
+                return f"{emoji} {self.slack_status_text}"
+            except KeyError:
+                return f"{self.slack_status_text}"
+        else:
+            return ""
 
     @property
     def is_organiser(self):

@@ -52,7 +52,7 @@
                                             {% if request.user.email_verified and request.user.is_admin %}
                                                 <small class="ml-2"><a class="link-main" href="{% url 'admin:index' %}">Admin</a></small>
                                             {% endif %}
-                                            <!-- <small class="ml-2"><a class="link-main" href="">Settings</a></small> -->
+                                            <small class="ml-2"><a class="link-main" href="{% url 'user_dashboard' %}">Dashboard</a></small>
                                             <small class="ml-2"><a class="link-main" href="{% url 'user_logout' %}">Logout</a></small>
                                         {% else %}
                                             <small class="ml-2"><a class="link-main" href="{% url 'user_login' %}">Login</a></small>

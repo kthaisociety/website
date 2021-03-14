@@ -287,3 +287,8 @@ def send_verification(request):
     send_verify(request.user)
     messages.success(request, "The verification email has been sent again.")
     return HttpResponseRedirect(reverse("app_home"))
+
+
+@login_required
+def dashboard(request):
+    return render(request, "dashboard.html", {})

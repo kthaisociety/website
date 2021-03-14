@@ -22,4 +22,8 @@ def run(body: Dict) -> bool:
     elif event_type == "user_change":
         if not user.update(user_data=body.get("user")):
             success = False
+    elif event_type in ["member_joined_channel", "member_left_channel"]:
+        channel_id = body.get("channel")
+        if not channel.retrieve(external_id=channel_id):
+            success = False
     return success

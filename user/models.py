@@ -75,6 +75,12 @@ class User(AbstractBaseUser):
     REQUIRED_FIELDS = ["name", "surname"]
 
     @property
+    def profile_picture(self):
+        if self.slack_picture:
+            return self.slack_picture
+        return self.picture
+
+    @property
     def is_organiser(self):
         return self.type == UserType.ORGANISER.value
 

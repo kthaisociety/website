@@ -46,6 +46,7 @@ class UserAdmin(admin.ModelAdmin):
         "slack_status_emoji",
         "slack_display_name",
         "slack_picture",
+        "slack_picture_hash",
         "created_at",
     )
     # exclude = ("slack_token", "slack_scopes")

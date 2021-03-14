@@ -36,7 +36,9 @@
                     {% if not maintenance_mode %}
                         <nav class="navbar-top navbar navbar-expand-lg navbar-dark bg-black pt-2 pb-2">
                             <div class="container">
-                                <img src="{{ request.user.profile_picture.url }}" style="width: 18px;border-radius: 50%;border: 1px solid #73A2C6;margin-right: 5px;">
+                                {% if request.user.is_authenticated %}
+                                    <img alt="Profile picture" src="{{ request.user.profile_picture.url }}" style="width: 18px;border-radius: 50%;border: 1px solid #73A2C6;margin-right: 5px;">
+                                {% endif %}
                                 <p class="navbar-nav mr-auto">
                                     {% if request.user.is_authenticated %}
                                         Welcome, {{ request.user.name }}!

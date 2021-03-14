@@ -12,6 +12,7 @@ class MailTag(enum.Enum):
 class SlackError(enum.Enum):
     CHECK_USERS = "check_users"
     RETRIEVE_CHANNELS = "retrieve_channels"
+    RETRIEVE_CHANNEL = "retrieve_channel"
     SET_CHANNEL_NAME = "set_channel_name"
     SET_CHANNEL_TOPIC = "set_channel_topic"
     SET_CHANNEL_PURPOSE = "set_channel_purpose"

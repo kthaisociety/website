@@ -63,6 +63,26 @@ def retrieve() -> List[SlackChannel]:
         return slack_channels
 
 
+@transaction.atomic
+def retrieve(external_id: str) -> Optional[SlackChannel]:
+    if SL_TOKEN and SL_CHANNEL_WEBDEV:
+        client = slack.WebClient(SL_TOKEN)
+        response = client.conversations_info(channel=external_id, include_num_members=True)
+        if not response.status_code == 200 or not response.data.get("ok", False):
+            return send_error_message(error=SlackError.RETRIEVE_CHANNEL)
+
+        channel = None
+        slack_channel = response.data["channel"]
+        # Filter only public channels
+        if slack_channel.get("is_channel", False) and not slack_channel.get(
+            "is_private", True
+        ):
+            channel = create_slack_channel(slack_channel=slack_channel)
+            client.conversations_join(channel=slack_channel.get("id"))
+
+        return channel
+
+
 def set_name(external_id: str, name: str) -> bool:
     if SL_USER_TOKEN and SL_CHANNEL_WEBDEV:
         client = slack.WebClient(SL_USER_TOKEN)

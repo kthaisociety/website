@@ -57,6 +57,7 @@ class User(AbstractBaseUser):
 
     # Details
     website = models.CharField(max_length=255, blank=True, null=True)
+    resume = models.FileField(upload_to="user/resume/", blank=True, null=True)
 
     # Slack
     # TODO: Should somehow be unique if not null
@@ -73,6 +74,12 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = "email"
     EMAIL_FIELD = "email"
     REQUIRED_FIELDS = ["name", "surname"]
+
+    @property
+    def profile_picture(self):
+        if self.slack_picture:
+            return self.slack_picture
+        return self.picture
 
     @property
     def is_organiser(self):

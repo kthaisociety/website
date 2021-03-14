@@ -51,6 +51,8 @@ def send_error_message(error: SlackError):
             text = ">>> :rotating_light: *Check users task failed*\n"
         elif error == SlackError.RETRIEVE_CHANNELS:
             text = ">>> :rotating_light: *Retrieve channels task failed*\n"
+        elif error == SlackError.RETRIEVE_CHANNEL:
+            text = ">>> :rotating_light: *Retrieve channel task failed*\n"
         elif error == SlackError.SET_CHANNEL_NAME:
             text = ">>> :rotating_light: *Set channel name failed*\n"
         elif error == SlackError.SET_CHANNEL_TOPIC:

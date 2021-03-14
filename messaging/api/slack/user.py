@@ -36,9 +36,7 @@ def set_picture(token: str, file: BytesIO) -> bool:
 def update(user_data: Dict) -> bool:
     user_slack_profile = user_data.get("profile")
     user_slack_email = user_slack_profile.get("email")
-    user = User.objects.filter(
-        email=user_slack_email
-    ).first()
+    user = User.objects.filter(email=user_slack_email).first()
     profile_picture_updated = False
     success = True
     if user:

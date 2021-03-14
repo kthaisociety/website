@@ -1,17 +1,43 @@
+import os
 from io import BytesIO
 from typing import Dict
 
 import requests
+import slack
+from PIL import Image
 from django.core.files import File
 
+from app.enums import SlackError
+from app.settings import STATIC_ROOT
+from app.slack import send_error_message
 from user.models import User
 from user.utils import send_created
+
+
+def get_profile_picture(file: BytesIO) -> BytesIO:
+    picture = Image.open(file).resize(size=(1024, 1024))
+    mask = Image.open(os.path.join(STATIC_ROOT, "img/mask.png"))
+    picture.paste(mask, (0, 0), mask=mask)
+    new_file = BytesIO()
+    picture.save(new_file, format="JPEG")
+    return new_file
+
+
+# TODO: Set picture as well when updated through the website
+def set_picture(token: str, file: BytesIO) -> bool:
+    client = slack.WebClient(token)
+    response = client.users_setPhoto(image=file.read())
+    if not response.status_code == 200 or not response.data.get("ok", False):
+        return send_error_message(error=SlackError.RETRIEVE_CHANNELS)
+    return True
 
 
 def update(user_data: Dict) -> bool:
     user_slack_profile = user_data.get("profile")
     user_slack_email = user_slack_profile.get("email")
     user = User.objects.filter(email=user_slack_email).first()
+    profile_picture_updated = False
+    success = True
     if user:
         user.slack_id = user_data.get("id")
         user.slack_status_text = user_slack_profile.get("status_text")
@@ -22,12 +48,28 @@ def update(user_data: Dict) -> bool:
         if user_slack_image_original:
             response = requests.get(user_slack_image_original)
             if response.status_code == 200:
-                file = BytesIO(response.content)
-                user.slack_picture.save(f"{user.id}.jpg", File(file), save=False)
+                profile_picture_file = BytesIO(response.content)
+                user.picture.save(
+                    f"{user.id}.jpg", File(profile_picture_file), save=False
+                )
+                if user.is_organiser:
+                    profile_picture_file = get_profile_picture(
+                        file=profile_picture_file
+                    )
+                    profile_picture_updated = True
+                user.slack_picture.save(
+                    f"{user.id}.jpg", File(profile_picture_file), save=False
+                )
 
         user.save()
-        return True
 
+        if profile_picture_updated and user.slack_token:
+            if not set_picture(
+                token=user.slack_token, file=BytesIO(user.slack_picture.file.read())
+            ):
+                success = False
+
+        return success
     return False
 
 

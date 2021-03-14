@@ -71,6 +71,8 @@ def send_error_message(error: SlackError):
             text = ">>> :rotating_light: *Update user task failed*\n"
         elif error == SlackError.AUTH_USER:
             text = ">>> :rotating_light: *Auth user failed*\n"
+        elif error == SlackError.SET_USER_PICTURE:
+            text = ">>> :rotating_light: *Set user picture failed*\n"
         if text:
             response = requests.post(SL_INURL, json={"text": text})
             return response.content

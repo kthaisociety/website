@@ -6,6 +6,7 @@ import requests
 import slack
 from PIL import Image
 from django.core.files import File
+from django.utils import timezone
 
 from app.enums import SlackError
 from app.settings import STATIC_ROOT
@@ -35,7 +36,11 @@ def set_picture(token: str, file: BytesIO) -> bool:
 def update(user_data: Dict) -> bool:
     user_slack_profile = user_data.get("profile")
     user_slack_email = user_slack_profile.get("email")
-    user = User.objects.filter(email=user_slack_email).first()
+    user = User.objects.filter(
+        email=user_slack_email,
+        # Avoid updates on updates
+        updated_at__lt=timezone.now() - timezone.timedelta(minutes=1),
+    ).first()
     profile_picture_updated = False
     success = True
     if user:

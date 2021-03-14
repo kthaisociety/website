@@ -37,8 +37,7 @@ def update(user_data: Dict) -> bool:
     user_slack_profile = user_data.get("profile")
     user_slack_email = user_slack_profile.get("email")
     user = User.objects.filter(
-        email=user_slack_email,
-        updated_at__lt=timezone.now() - timezone.timedelta(minutes=2),
+        email=user_slack_email
     ).first()
     profile_picture_updated = False
     success = True
@@ -70,15 +69,15 @@ def update(user_data: Dict) -> bool:
                     f"{user.id}.jpg", File(profile_picture_file), save=False
                 )
         user.slack_picture_hash = user_slack_image_hash
-        user.updated_at = timezone.now()
 
         user.save()
 
-        if profile_picture_updated and user.slack_token:
-            if not set_picture(
-                token=user.slack_token, file=BytesIO(user.slack_picture.file.read())
-            ):
-                success = False
+        # TODO: Find a way to avoid infinite update regression
+        # if profile_picture_updated and user.slack_token:
+        #     if not set_picture(
+        #         token=user.slack_token, file=BytesIO(user.slack_picture.file.read())
+        #     ):
+        #         success = False
 
         return success
     return False

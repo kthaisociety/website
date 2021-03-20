@@ -1,6 +1,6 @@
 import os
 from io import BytesIO
-from typing import Dict
+from typing import Dict, Tuple, Optional
 
 import requests
 import slack
@@ -25,12 +25,12 @@ def get_profile_picture(file: BytesIO) -> BytesIO:
     return new_file
 
 
-def set_picture(token: str, file: BytesIO) -> bool:
+def set_picture(token: str, file: BytesIO) -> Tuple[bool, Optional[str]]:
     client = slack.WebClient(token)
     response = client.users_setPhoto(image=file.read())
     if not response.status_code == 200 or not response.data.get("ok", False):
-        return send_error_message(error=SlackError.RETRIEVE_CHANNELS)
-    return True
+        return send_error_message(error=SlackError.RETRIEVE_CHANNELS), None
+    return True, response.data.get("profile", {}).get("avatar_hash")
 
 
 def update(user_data: Dict) -> bool:
@@ -70,12 +70,15 @@ def update(user_data: Dict) -> bool:
 
         user.save()
 
-        # TODO: Find a way to avoid infinite update regression
-        # if profile_picture_updated and user.slack_token:
-        #     if not set_picture(
-        #         token=user.slack_token, file=BytesIO(user.slack_picture.file.read())
-        #     ):
-        #         success = False
+        if profile_picture_updated and user.slack_token:
+            picture_success, picture_hash = set_picture(
+                token=user.slack_token, file=BytesIO(user.slack_picture.file.read())
+            )
+            if picture_success:
+                user.slack_picture_hash = picture_hash
+                user.save()
+            else:
+                success = False
 
         return success
     return False

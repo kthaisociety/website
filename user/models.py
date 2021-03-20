@@ -118,7 +118,7 @@ class User(AbstractBaseUser):
 
     @cached_property
     def event_registrations(self):
-        return self.registrations.order_by("created_at").all()
+        return self.registrations.order_by("-created_at").all()
 
     def has_perm(self, perm, obj=None):
         return True

@@ -27,7 +27,17 @@ send_slack_invite.short_description = "Send Slack invitation"
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     search_fields = ("id", "email", "name", "surname", "type")
-    list_display = ("email", "name", "surname", "type", "slack_id", "created_at")
+    list_display = (
+        "email",
+        "name",
+        "surname",
+        "type",
+        "email_verified",
+        "registration_finished",
+        "is_active",
+        "slack_id",
+        "created_at",
+    )
     list_filter = (
         "type",
         "email_verified",

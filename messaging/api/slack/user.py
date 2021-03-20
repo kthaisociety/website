@@ -18,12 +18,14 @@ from user.utils import send_created
 # TODO: Set picture as well when updated through the website
 def get_profile_picture(file: BytesIO) -> BytesIO:
     original_picture = Image.open(file).resize(size=(1024, 1024))
-    picture = Image.new("RGB", original_picture.size)
+    picture = Image.new("RGBA", original_picture.size)
     picture.paste(original_picture)
     mask = Image.open(os.path.join(STATIC_ROOT, "img/mask.png"))
     picture.paste(mask, (0, 0), mask=mask)
+    final_picture = Image.new("RGB", picture.size)
+    final_picture.paste(picture)
     new_file = BytesIO()
-    picture.save(new_file, format="JPEG")
+    final_picture.save(new_file, format="JPEG")
     return new_file
 
 

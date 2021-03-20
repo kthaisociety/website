@@ -36,6 +36,26 @@
                                         <p class="card-text mb-0"><strong>Email:</strong> <a href="mailto:{{ request.user.email }}" target="_blank" class="link-unstyled">{{ request.user.email }}</a></p>
                                     </div>
                                 </div>
+                                {% if request.user.registration_finished %}
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <p class="card-text mb-0"><strong>University:</strong> {{ request.user.university }}</p>
+                                            <p class="card-text mb-0"><strong>Programme:</strong> {{ request.user.degree }}</p>
+                                            <p class="card-text mb-0"><strong>Graduation year:</strong> {{ request.user.graduation_year }}</p>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <p class="card-text mb-0"><strong>City:</strong> {{ request.user.city }}</p>
+                                            <p class="card-text mb-0"><strong>Country:</strong> {{ request.user.country }}</p>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <hr>
+                                {% if request.user.resume %}
+                                    <h6 class="card-text mt-3 mb-3">✅ Resume available</h6>
+                                {% else %}
+                                    <h6 class="card-text mt-3 mb-3">❌ You have no uploaded resume</h6>
+                                {% endif %}
                                 <hr>
                                 {% if request.user.email_verified %}
                                     <h6 class="card-text mt-3 mb-3">✅ Email verified</h6>
@@ -51,7 +71,39 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="card w-100">
+                            <div class="card-body">
+                                <h3 class="card-title mb-0">📅 Events</h3>
+                                {% if request.user.event_registrations %}
+                                    <div class="row pl-2 pr-2">
+                                        {% for registration in request.user.event_registrations %}
+                                            <div class="col-12 col-md-4 mt-2 mb-0 pl-2 pr-2">
+                                                <a class="link-unstyled" href="{{ registration.event.url }}" target="_blank">
+                                                    <div class="card mt-2 mb-0">
+                                                        <img class="card-img-top" src="{{ registration.event.picture.crop.500x300 }}">
+                                                        <div class="card-body">
+                                                            {% if registration.event.is_event_future %}
+                                                                <span class="badge badge-main p-2 mb-3 ml-auto mr-auto d-table mt-4 d-md-inline-block mt-md-0">Upcoming event</span>
+                                                            {% else %}
+                                                                <span class="badge badge-main-s2 p-2 mb-3 ml-auto mr-auto d-table mt-4 d-md-inline-block mt-md-0">Past event</span>
+                                                            {% endif %}
+                                                            <h5 class="mb-0">{{ registration.event.name }}</h5>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <h6 class="card-text mt-3">❌ You have no event registrations</h6>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-4">
                     <div class="col-md-12">
                         <div class="card w-100">
                             <div class="card-body">

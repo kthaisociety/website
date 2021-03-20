@@ -22,8 +22,10 @@ def get_profile_picture(file: BytesIO) -> BytesIO:
     picture.paste(original_picture)
     mask = Image.open(os.path.join(STATIC_ROOT, "img/mask.png"))
     picture.paste(mask, (0, 0), mask=mask)
+    final_picture = Image.new("RGB", picture.size)
+    final_picture.paste(picture)
     new_file = BytesIO()
-    picture.save(new_file, format="JPEG")
+    final_picture.save(new_file, format="JPEG")
     return new_file
 
 

@@ -116,6 +116,10 @@ class User(AbstractBaseUser):
     def role(self):
         return self.role_set.filter(ends_at__isnull=True).order_by("-is_head").first()
 
+    @cached_property
+    def event_registrations(self):
+        return self.registrations.order_by("created_at").all()
+
     def has_perm(self, perm, obj=None):
         return True
 

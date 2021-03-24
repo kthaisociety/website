@@ -71,6 +71,7 @@ class User(AbstractBaseUser):
     slack_picture = VersatileImageField(
         "Slack image", upload_to="user/slack/picture/", blank=True, null=True
     )
+    slack_picture_hash = models.CharField(max_length=255, blank=True, null=True)
 
     objects = UserManager()
 
@@ -114,6 +115,10 @@ class User(AbstractBaseUser):
     @cached_property
     def role(self):
         return self.role_set.filter(ends_at__isnull=True).order_by("-is_head").first()
+
+    @cached_property
+    def event_registrations(self):
+        return self.registrations.order_by("-created_at").all()
 
     def has_perm(self, perm, obj=None):
         return True

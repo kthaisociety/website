@@ -30,15 +30,17 @@ class Company(models.Model):
 class Contact(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(verbose_name="First name", max_length=255)
-    surname = models.CharField(
-        verbose_name="Last name", max_length=255
-    )
+    surname = models.CharField(verbose_name="Last name", max_length=255)
     email = models.EmailField(max_length=255, unique=True)
     company = models.ForeignKey(
         "Company", on_delete=models.PROTECT, related_name="contacts"
     )
     user = models.OneToOneField(
-        "user.User", null=True, blank=True, on_delete=models.PROTECT, related_name="contact"
+        "user.User",
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name="contact",
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -80,7 +82,11 @@ class Sponsorship(models.Model):
         "Company", on_delete=models.PROTECT, related_name="sponsorships"
     )
     tier = models.OneToOneField(
-        "Tier", null=True, blank=True, on_delete=models.PROTECT, related_name="sponsorships"
+        "Tier",
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+        related_name="sponsorships",
     )
     starts_at = models.DateTimeField()
     ends_at = models.DateTimeField(blank=True, null=True)

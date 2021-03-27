@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "event",
     "page",
     "messaging",
+    "business",
     "cookielaw",
     "django_social_share",
 ]

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load app_tags %}
+{% load social_share %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block head_title %}Sponsorship tiers{% endblock %}
+
+{% block in_body %}
+    <div class="container container-body py-5">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="">Sponsorship tiers</h1>
+            </div>
+        </div>
+        {% for tier in tiers %}
+            <div class="row">
+                <div class="col-md-12 page-content">
+                    <h2>{{ tier.name }}</h2>
+                    {{ tier.description|apply_markup }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

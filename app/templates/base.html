@@ -96,6 +96,14 @@
                                     <li class="nav-item {% if request.resolver_match.url_name == "events_events" %}active{% endif %}">
                                         <a class="nav-link" href="{% url 'events_events' %}">Events</a>
                                     </li>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="dropdown-sponsor" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Sponsor
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdown-sponsor">
+                                            <a class="dropdown-item" href="{% url 'business_tiers' %}">Tiers</a>
+                                        </div>
+                                    </li>
                                 </ul>
                                 {% comment %}
                                     <form class="form-inline">

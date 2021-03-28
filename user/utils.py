@@ -8,7 +8,7 @@ from django.utils.crypto import get_random_string
 
 from app.settings import SL_TOKEN, SL_CHANNEL_GENERAL, APP_ROLE_CHAIRMAN
 from user.enums import GenderType
-from user.models import User
+from user.models import User, History
 from user.tasks import (
     send_verify_email,
     send_password_email,
@@ -80,6 +80,10 @@ def get_board():
             for role_name in sorted(list(role_names))
         ]
     )
+
+
+def get_histories():
+    return History.objects.all().order_by("-time")
 
 
 def generate_verify_key(user: User):

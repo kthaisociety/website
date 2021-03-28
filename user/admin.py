@@ -1,6 +1,6 @@
 from django.contrib import admin, messages
 
-from user.models import User, Team, Division, Role
+from user.models import User, Team, Division, Role, History
 from user.utils import send_imported, send_slack
 
 
@@ -86,3 +86,11 @@ class RoleAdmin(admin.ModelAdmin):
     list_display = ("id", "division", "user", "starts_at", "ends_at", "is_head")
     list_filter = ("division__team", "user", "starts_at", "ends_at")
     ordering = ("-division__team__starts_at", "-starts_at", "user")
+
+
+@admin.register(History)
+class HistoryAdmin(admin.ModelAdmin):
+    search_fields = ("id", "title", "body")
+    list_display = ("title", "time")
+    list_filter = ("time",)
+    ordering = ("-time",)

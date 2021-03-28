@@ -273,3 +273,19 @@ class Role(models.Model):
 
     def __str__(self):
         return f"{self.user} <{str(self.division.name)}>"
+
+
+class History(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.CharField(max_length=255)
+    body = models.TextField(max_length=5000)
+    time = models.DateField()
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name_plural = "histories"

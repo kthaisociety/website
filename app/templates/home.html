@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load app_tags %}
 {% load social_share %}
 {% load static %}
 
@@ -6,15 +7,28 @@
 
 {% block pre_body %}
     {% if articles %}
-        <div class="jumbotron jumbotron-fluid d-flex mb-0" style="background-image: linear-gradient(to bottom, rgba(38,54,66,0.6) 0%,rgba(38,54,66,0.6) 100%), url('{{ articles.0.picture.url }}'); background-size: cover; background-position: center center; min-height: 550px;">
-            <div class="container my-auto text-center text-lg-left">
+        <div class="jumbotron jumbotron-fluid d-flex mb-0" style="background-image: linear-gradient(to bottom, rgba(38,54,66,0.6) 0%,rgba(38,54,66,0.6) 100%), url('{{ articles.0.picture.url }}'); background-size: cover; background-position: center center; min-height: 750px;">
+            <div class="container my-auto w-100 text-center">
+                <a href="{% url "news_article" articles.0.created_at.year articles.0.created_at.month articles.0.created_at.day articles.0.slug %}">
+                    <div class="card w-75 bg-main border mx-auto p-4 rounded-0 border-0">
+                        <div class="card-body">
+                            <h3 class="card-title mb-3 text-white font-weight-bold">{{ articles.0.title }}</h3>
+                            {% if articles.0.subtitle %}
+                                <h6 class="card-subtitle mb-0 text-grey font-weight-light">{{ articles.0.subtitle }}</h6>
+                            {% endif %}
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!--<div class="container my-auto text-center text-lg-left">
                 <h1 class="d-none d-md-block display-4 mb-5 mb-lg-4 text-white">{{ articles.0.title }}</h1>
                 <h1 class="d-block d-md-none mb-5 mb-lg-4 text-white">{{ articles.0.title }}</h1>
                 <p class="lead text-white">{{ articles.0.lead }}</p>
                 <a class="link-unstyled" href="{% url "news_article" articles.0.created_at.year articles.0.created_at.month articles.0.created_at.day articles.0.slug %}">
                     <button type="button" class="btn btn-main mb-2">Read more</button>
                 </a>
-            </div>
+            </div>-->
         </div>
     {% endif %}
     {% comment %}
@@ -212,65 +226,27 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-4 mb-0">
-            <div class="col-md-12">
-                <h2 class="text-center mb-4 text-main">Our history</h2>
-                <div class="row text-center pt-2 pb-2">
-                    <div class="col-md-12">
-                        <ul class="timeline">
-                            <li>
-                                <div class="timeline-badge badge-main2"><i class="fas fa-users"></i></div>
-                                <div class="timeline-panel">
-                                    <div class="timeline-heading">
-                                        <h4 class="timeline-title text-main">Brand new start</h4>
-                                        <p><small class="text-muted">January 2020 <i class="far fa-calendar ml-1"></i></small></p>
-                                    </div>
-                                    <div class="timeline-body">
-                                        <p>A new board was elected for the year of 2020 and a long-term partnership with McKinsey & Company was signed. 2020 is looking to be the greatest year yet for KTHAIS.</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="timeline-inverted">
-                                <div class="timeline-badge badge-main2"><i class="fas fa-calendar-day"></i></div>
-                                <div class="timeline-panel">
-                                    <div class="timeline-heading">
-                                        <h4 class="timeline-title text-main">The first KTH AI day</h4>
-                                        <p><small class="text-muted">September 2019 <i class="far fa-calendar ml-1"></i></small></p>
-                                    </div>
-                                    <div class="timeline-body">
-                                        <p>Over 150 students attend KTHAIS flagship event at Nymble. Members join Ericsson and Accenture during workshops, listen to a panel discussion with AI Startups and chat with the wonderful Furhat of Furhat Robotics.</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="timeline-badge badge-main2"><i class="fas fa-running"></i></div>
-                                <div class="timeline-panel">
-                                    <div class="timeline-heading">
-                                        <h4 class="timeline-title text-main">Out the gates running</h4>
-                                        <p><small class="text-muted">January 2019 <i class="far fa-calendar ml-1"></i></small></p>
-                                    </div>
-                                    <div class="timeline-body">
-                                        <p>A core team is recruited and several soon to be successful projects are planned. Massive positive feedback is received from the KTH student community and KTHAIS becomes the fastest growing organisation at KTH.</p>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="timeline-inverted">
-                                <div class="timeline-badge badge-main"><i class="fas fa-plus"></i></div>
-                                <div class="timeline-panel">
-                                    <div class="timeline-heading">
-                                        <h4 class="timeline-title text-main">An idea is born</h4>
-                                        <p><small class="text-muted">August 2018 <i class="far fa-calendar ml-1"></i></small></p>
-                                    </div>
-                                    <div class="timeline-body">
-                                        <p>Alexander Jacobsen came to Filip Matz with an idea: To create a driven community of people interested in AI at KTH that could enable students to change the future of the field.</p>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
+        {% if histories %}
+            <div class="row mt-4 mb-0">
+                <div class="col-md-12">
+                    <h2 class="text-center mb-4 text-main">Our history</h2>
+                    <div class="row text-center pt-2 pb-2">
+                        <div class="col-md-12">
+                            <div id="content">
+                                <ul class="timeline">
+                                    {% for history in histories %}
+                                        <li class="event" data-date="{{ history.time|date:"F Y" }}">
+                                            <h3>{{ history.title }}</h3>
+                                            {{ history.body|apply_markup }}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        {% endif %}
     </div>
     {% if board %}
         <div class="jumbotron jumbotron-fluid mt-5 mb-0 bg-main-s2 text-white">

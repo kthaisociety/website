@@ -6,14 +6,17 @@ import versatileimagefield.fields
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('event', '0019_schedule_type_enums'),
-    ]
+    dependencies = [("event", "0019_schedule_type_enums")]
 
     operations = [
         migrations.AddField(
-            model_name='event',
-            name='social_picture',
-            field=versatileimagefield.fields.VersatileImageField(blank=True, null=True, upload_to='event/social/', verbose_name='Social image'),
-        ),
+            model_name="event",
+            name="social_picture",
+            field=versatileimagefield.fields.VersatileImageField(
+                blank=True,
+                null=True,
+                upload_to="event/social/",
+                verbose_name="Social image",
+            ),
+        )
     ]

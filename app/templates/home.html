@@ -7,7 +7,7 @@
 
 {% block pre_body %}
     {% if articles %}
-        <div class="jumbotron jumbotron-fluid d-flex mb-0" style="background-image: linear-gradient(to bottom, rgba(38,54,66,0.6) 0%,rgba(38,54,66,0.6) 100%), url('{{ articles.0.picture.url }}'); background-size: cover; background-position: center center; min-height: 750px;">
+        <div class="jumbotron jumbotron-fluid jumbotron-home d-flex mb-0" style="background-image: linear-gradient(to bottom, rgba(38,54,66,0.6) 0%,rgba(38,54,66,0.6) 100%), url('{{ articles.0.picture.url }}'); background-size: cover; background-position: center center;">
             <div class="container my-auto w-100 text-center">
                 <a href="{% url "news_article" articles.0.created_at.year articles.0.created_at.month articles.0.created_at.day articles.0.slug %}">
                     <div class="card w-75 bg-main border mx-auto p-4 rounded-0 border-0">
@@ -200,7 +200,7 @@
         {% endif %}
     </div>
     {% endcomment %}
-    <div class="container">
+    <div class="container mb-5">
         <div class="row mt-4 mb-0">
             <div class="col-md-12">
                 <h1 class="text-main text-center text-md-left">Our mission</h1>
@@ -248,13 +248,31 @@
             </div>
         {% endif %}
     </div>
+    {% if sponsorships %}
+        <div class="jumbotron jumbotron-fluid mt-0 mb-0 bg-main-s3 text-white">
+            <div class="container container-fluid pb-5 pb-md-0">
+                <h2 class="text-center mt-0 mb-3">Sponsors</h2>
+                <div class="row justify-content-md-center">
+                    {% for tier, sps in sponsorships.items %}
+                        {% for sponsorship in sps %}
+                            <div class="col-12 col-md-3 text-center ml-auto mr-auto ml-md-0 mr-md-0 mt-4">
+                                <a href="{{ sponsorship.company.website }}">
+                                    <img class="w-100 image-white" src="{{ sponsorship.company.logo.url }}" />
+                                </a>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
     {% if board %}
-        <div class="jumbotron jumbotron-fluid mt-5 mb-0 bg-main-s2 text-white">
+        <div class="jumbotron jumbotron-fluid mt-0 mb-0 bg-main-s2 text-white">
             <div class="container container-fluid pb-5 pb-md-0">
                 <h2 class="text-center mt-0 mb-3">Project group</h2>
                 <div class="row justify-content-md-center home-organisers">
                     {% for organiser in organisers %}
-                        <div class="col-4 col-md-2 text-center ml-auto mr-auto ml-md-0 mr-md-0 mt-4">
+                        <div class="col-6 col-md-2 text-center ml-auto mr-auto ml-md-0 mr-md-0 mt-4">
                             {% if organiser.website %}<a href="{{ organiser.website }}" target="_blank" class="link-unstyled">{% endif %}
                             {% comment %}
                                 <img src="{{ organiser.picture.url }}" class="ml-auto mr-auto">

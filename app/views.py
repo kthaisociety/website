@@ -54,6 +54,8 @@ def files(request, file_):
         "__sized__/page/page",
         "page/picture",
         "__sized__/page/picture",
+        "business/company/logo",
+        "__sized__/business/company/logo",
     ]:
         if file_[:7] != "/files/":
             file_ = "/files/" + file_

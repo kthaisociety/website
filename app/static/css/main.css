@@ -113,6 +113,10 @@ a:hover, a:active, a:visited {
     background-color: #637990;
 }
 
+.bg-main-s3 {
+    background-color: #879BB0;
+}
+
 .bg-black {
     background-color: #263642;
 }
@@ -134,6 +138,10 @@ a:hover, a:active, a:visited {
 
 .text-orange {
     color: #EC8C24;
+}
+
+.image-white {
+    filter: brightness(0) invert(1);
 }
 
 .btn-main {
@@ -748,4 +756,15 @@ a:hover, a:active, a:visited {
 .rtl .timeline .event::after {
     left: 0;
     right: -55.8px;
+}
+
+@media (max-width: 767px) {
+    .jumbotron-home {
+        min-height: 550px;
+    }
+}
+@media (min-width: 768px) {
+    .jumbotron-home {
+        min-height: 750px;
+    }
 }

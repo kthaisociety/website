@@ -7,7 +7,7 @@
 {% block og %}
     <meta property="og:title" content="{{ event.name }} | {{ app_name }}" />
     <meta property="og:url" content="https://{{ app_domain }}{{ event.url }}" />
-    <meta property="og:image" content="https://{{ app_domain }}{{ event.picture.crop.750x500 }}" />
+    <meta property="og:image" content="https://{{ app_domain }}{{ event.social.crop.1500x1000 }}" />
 {% endblock %}
 
 {% block head_title %}{{ event.name }}{% endblock %}
@@ -46,8 +46,19 @@
     </div>
     {% if event.description %}
         <div class="row mt-2">
-            <div class="col-md-12 mb-2">
+            <div class="col-md-12 mb-0">
                 {{ event.description|apply_markup }}
+            </div>
+        </div>
+    {% endif %}
+    {% if event.social_url %}
+        <div class="row">
+            <div class="col-md-12 mb-4">
+                <a class="mb-0" href="{{ event.social_url }}">
+                    <button type="button" class="btn btn-facebook">
+                        <i class="bi bi-facebook mr-1"></i> Facebook event
+                    </button>
+                </a>
             </div>
         </div>
     {% endif %}
@@ -108,7 +119,7 @@
             {% if event.location %}
                 <h5 class="mb-3">Location: <a class="link-unstyled" href="https://maps.google.com/maps?hl=en&amp;q={{ event.location }}">{{ event.location }}</a></h5>
             {% endif %}
-        </div>
+            </div>
         {% if event.registration_available %}
             <div class="col-md-12">
                 <div class="card mb-4">

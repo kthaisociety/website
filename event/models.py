@@ -36,6 +36,8 @@ class Event(models.Model):
     )
     external_url = models.CharField(max_length=255, blank=True, null=True)
     picture = VersatileImageField("Image", upload_to="event/picture/")
+    social_picture = VersatileImageField("Social image", blank=True, null=True, upload_to="event/social/")
+    social_url = models.URLField(max_length=200, blank=True, null=True)
     status = models.PositiveSmallIntegerField(
         choices=((s.value, s.name) for s in EventStatus), default=EventStatus.DRAFT
     )
@@ -141,6 +143,12 @@ class Event(models.Model):
                 >= self.attendance_limit
             )
         return False
+
+    @property
+    def social(self):
+        if self.social_picture:
+            return self.social_picture
+        return self.picture
 
     def clean(self):
         messages = {}

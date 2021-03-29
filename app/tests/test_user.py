@@ -8,7 +8,7 @@ from app.tests.factories import UserFactory
 @pytest.mark.django_db
 def test_login():
     # Create a user
-    password = factory.Faker("word")
+    password = factory.Faker("word").generate()
     user = UserFactory(
         password=factory.PostGenerationMethodCall("set_password", password)
     )

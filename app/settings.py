@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "bootstrap4",
     "versatileimagefield",
     "django_crontab",
     "django_extensions",
@@ -48,7 +47,6 @@ INSTALLED_APPS = [
     "page",
     "messaging",
     "business",
-    "cookielaw",
     "django_social_share",
 ]
 

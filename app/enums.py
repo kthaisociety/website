@@ -24,3 +24,4 @@ class SlackError(enum.Enum):
     UPDATE_USER = "update_user"
     AUTH_USER = "auth_user"
     SET_USER_PICTURE = "set_user_picture"
+    SEND_CHANNEL_MESSAGE = "send_channel_message"

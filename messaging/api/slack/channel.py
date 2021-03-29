@@ -5,10 +5,12 @@ import slack
 from django.db import transaction
 from django.utils import timezone
 from slack.errors import SlackApiError
+from slack.web.slack_response import SlackResponse
 
 from app.enums import SlackError
 from app.settings import SL_TOKEN, SL_CHANNEL_WEBDEV, SL_USER_TOKEN
 from app.slack import send_error_message
+from messaging.api.slack import log
 from messaging.models import SlackChannel
 from user.models import User
 
@@ -170,3 +172,20 @@ def create(
             set_purpose(external_id=channel.external_id, purpose=purpose)
 
         return True
+
+
+@transaction.atomic
+def send_message(
+    external_id: str, blocks: List, unfurl_links: bool = True, unfurl_media: bool = True
+) -> SlackResponse:
+    if SL_TOKEN and SL_CHANNEL_WEBDEV:
+        client = slack.WebClient(SL_TOKEN)
+        response = client.chat_postMessage(
+            channel=external_id,
+            blocks=blocks,
+            unfurl_links=unfurl_links,
+            unfurl_media=unfurl_media,
+        )
+        if not response.status_code == 200 or not response.data.get("ok", False):
+            send_error_message(error=SlackError.SET_CHANNEL_TOPIC)
+        return response

@@ -2,6 +2,7 @@ from django.contrib import admin, messages
 
 from event.models import Event, Registration, Session, Attachment, Schedule
 from event.tasks import send_url_email
+from messaging.api.slack.announcement import announce_event
 
 
 @admin.register(Attachment)
@@ -80,6 +81,17 @@ class RegistrationInline(admin.StackedInline):
         return False
 
 
+def send_slack_announcement(modeladmin, request, events):
+    for event in events:
+        announce_event(event=event, user_id=request.user.id)
+    messages.success(
+        request, f"Slack announcements have been posted for {events.count()} event/s."
+    )
+
+
+send_slack_announcement.short_description = "Send Slack announcement"
+
+
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     search_fields = ("id", "name", "code", "type", "status")
@@ -87,3 +99,4 @@ class EventAdmin(admin.ModelAdmin):
     list_filter = ("type", "status")
     ordering = ("-created_at", "-updated_at", "name")
     inlines = [SessionInline, RegistrationInline]
+    actions = [send_slack_announcement]

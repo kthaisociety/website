@@ -1,8 +1,12 @@
 import uuid
 from typing import Optional
 
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
+from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 
+from messaging.enums import LogType
 from user.models import User
 
 
@@ -33,3 +37,39 @@ class SlackChannel(models.Model):
 
     def __str__(self):
         return f"#{self.name}"
+
+
+class SlackLog(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    type = models.PositiveSmallIntegerField(
+        choices=((s.value, s.name) for s in LogType), default=LogType.ARTICLE.value
+    )
+    channel = models.ForeignKey(
+        "SlackChannel", on_delete=models.CASCADE, related_name="slack_logs"
+    )
+    user = models.ForeignKey(
+        "user.User",
+        on_delete=models.CASCADE,
+        related_name="slack_logs",
+        null=True,
+        blank=True,
+    )
+    data = models.JSONField(default=dict, encoder=DjangoJSONEncoder)
+
+    target_type = models.ForeignKey(
+        ContentType,
+        db_index=True,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="slack_logs",
+    )
+    target_id = models.CharField(max_length=255, db_index=True, null=True, blank=True)
+    target = GenericForeignKey("target_type", "target_id")
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        owner = self.user if self.user else "System"
+        return f"{LogType(self.type).name} - {self.created_at.strftime('%Y-%m-%d %H:%M:%S')} <{str(owner)}>"

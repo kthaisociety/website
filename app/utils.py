@@ -3,6 +3,7 @@ from typing import Optional
 
 import html2text
 from django.conf import settings
+from django.contrib import admin
 from django.core.mail import EmailMultiAlternatives
 
 from app.consts import UNIVERSITIES, PROGRAMMES
@@ -110,3 +111,14 @@ def send_email(
     msg.track_clicks = track_clicks
 
     return msg.send(fail_silently=fail_silently)
+
+
+class ReadOnlyAdmin(admin.ModelAdmin):
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False

@@ -73,6 +73,8 @@ def send_error_message(error: SlackError):
             text = ">>> :rotating_light: *Auth user failed*\n"
         elif error == SlackError.SET_USER_PICTURE:
             text = ">>> :rotating_light: *Set user picture failed*\n"
+        elif error == SlackError.SEND_CHANNEL_MESSAGE:
+            text = ">>> :rotating_light: *Send channel message failed*\n"
         if text:
             response = requests.post(SL_INURL, json={"text": text})
             return response.content

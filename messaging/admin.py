@@ -4,7 +4,8 @@ from django.db import transaction
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 
-from messaging.models import SlackChannel
+from app.utils import ReadOnlyAdmin
+from messaging.models import SlackChannel, SlackLog
 
 import messaging.api.slack.channel
 
@@ -115,3 +116,11 @@ class SlackChannelAdmin(admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return False
+
+
+@admin.register(SlackLog)
+class SlackLogAdmin(ReadOnlyAdmin):
+    search_fields = ("id", "type", "channel")
+    list_display = ("id", "type", "channel", "user")
+    list_filter = ("type", "channel", "user")
+    ordering = ("-created_at",)

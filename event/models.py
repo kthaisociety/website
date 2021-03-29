@@ -71,8 +71,25 @@ class Event(models.Model):
         return None
 
     @property
+    def description_plaintext(self):
+        text_only = re.sub("[ \t]+", " ", strip_tags(self.description))
+        return text_only.replace("\n ", "\n").strip()
+
+    @property
+    def description_extra_short(self):
+        return textwrap.shorten(
+            self.description_plaintext, width=125, placeholder="..."
+        )
+
+    @property
     def description_short(self):
-        return textwrap.shorten(self.description, width=250, placeholder="...")
+        return textwrap.shorten(
+            self.description_plaintext, width=250, placeholder="..."
+        )
+
+    @property
+    def description_paragraph(self):
+        return self.description_plaintext.partition("\n")[0]
 
     @property
     def url(self):

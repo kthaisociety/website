@@ -37,6 +37,10 @@ class Article(models.Model):
         return textwrap.shorten(self.body_plaintext, width=250, placeholder="...")
 
     @property
+    def description_paragraph(self):
+        return self.body_plaintext.partition("\n")[0]
+
+    @property
     def lead(self):
         if self.subtitle:
             return self.subtitle

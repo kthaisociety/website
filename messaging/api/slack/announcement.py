@@ -36,7 +36,7 @@ def announce_event(event: Event, user_id: UUID):
             },
             "accessory": {
                 "type": "image",
-                "image_url": event.picture.url,
+                "image_url": f"{APP_FULL_DOMAIN}{event.picture.url}",
                 "alt_text": "Event picture",
             },
         },
@@ -76,7 +76,7 @@ def announce_article(article: Article, user_id: UUID):
             },
             "accessory": {
                 "type": "image",
-                "image_url": article.picture.url,
+                "image_url": f"{APP_FULL_DOMAIN}{article.picture.url}",
                 "alt_text": "Article picture",
             },
         },

@@ -29,7 +29,10 @@ def apply_markup(text):
 
 @register.filter
 def extract_app(url):
-    return [u for u in url.split("/") if u][0]
+    try:
+        return [u for u in url.split("/") if u][0]
+    except IndexError:
+        return None
 
 
 @register.filter

@@ -200,6 +200,8 @@ SL_USER_SCOPES = os.environ.get(
 )
 SL_INURL = os.environ.get("SL_INURL", None)
 SL_CHANNEL_GENERAL = os.environ.get("SL_CHANNEL_GENERAL", None)
+SL_CHANNEL_EVENTS = os.environ.get("SL_CHANNEL_EVENTS", None)
+SL_CHANNEL_ARTICLES = os.environ.get("SL_CHANNEL_ARTICLES", None)
 SL_CHANNEL_WEBDEV = os.environ.get("SL_CHANNEL_WEBDEV", None)
 SL_EMOJI_BOT = os.environ.get("SL_EMOJI_BOT", "mascot")
 SL_ANSWER_BOT = os.environ.get(

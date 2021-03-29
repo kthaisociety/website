@@ -1,6 +1,11 @@
 from uuid import UUID
 
-from app.settings import SL_CHANNEL_GENERAL, APP_FULL_DOMAIN
+from app.settings import (
+    SL_CHANNEL_GENERAL,
+    APP_FULL_DOMAIN,
+    SL_CHANNEL_EVENTS,
+    SL_CHANNEL_ARTICLES,
+)
 from event.models import Event
 from messaging.api.slack import log
 from messaging.api.slack.channel import send_message
@@ -36,7 +41,7 @@ def announce_event(event: Event, user_id: UUID):
             },
             "accessory": {
                 "type": "image",
-                "image_url": event.picture.url,
+                "image_url": f"{APP_FULL_DOMAIN}{event.picture.url}",
                 "alt_text": "Event picture",
             },
         },
@@ -44,7 +49,9 @@ def announce_event(event: Event, user_id: UUID):
         {"type": "section", "text": {"type": "mrkdwn", "text": event_extra}},
     ]
 
-    channel = SlackChannel.objects.get(external_id=SL_CHANNEL_GENERAL)
+    channel = SlackChannel.objects.get(
+        external_id=SL_CHANNEL_EVENTS or SL_CHANNEL_GENERAL
+    )
     response = send_message(
         external_id=channel.external_id,
         blocks=blocks,
@@ -76,7 +83,7 @@ def announce_article(article: Article, user_id: UUID):
             },
             "accessory": {
                 "type": "image",
-                "image_url": article.picture.url,
+                "image_url": f"{APP_FULL_DOMAIN}{article.picture.url}",
                 "alt_text": "Article picture",
             },
         },
@@ -90,7 +97,9 @@ def announce_article(article: Article, user_id: UUID):
         },
     ]
 
-    channel = SlackChannel.objects.get(external_id=SL_CHANNEL_GENERAL)
+    channel = SlackChannel.objects.get(
+        external_id=SL_CHANNEL_ARTICLES or SL_CHANNEL_GENERAL
+    )
     response = send_message(
         external_id=channel.external_id,
         blocks=blocks,

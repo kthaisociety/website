@@ -9,8 +9,8 @@ from app.enums import SlackError
 from app.settings import SL_INURL, APP_DOMAIN, SL_CHANNEL_WEBDEV, SL_USER_TOKEN
 
 import user.utils
-from messaging.api.slack import log
-from messaging.api.slack.user import warn_registration
+import messaging.api.slack.log
+import messaging.api.slack.user
 from messaging.consts import WARNING_TIME_DAYS
 from messaging.enums import LogType
 
@@ -96,7 +96,7 @@ def check_users() -> List[Dict]:
             return send_error_message(error=SlackError.CHECK_USERS)
 
         users_by_email = {u.email: u for u in user.utils.get_users()}
-        logs_by_email = {l.target.email: l for l in log.find(type=LogType.WARNING)}
+        logs_by_email = {l.target.email: l for l in messaging.api.slack.log.find(type=LogType.WARNING)}
         users_to_warn = []
         for slack_user in response.data["members"]:
             user_email = slack_user.get("profile", {}).get("email")
@@ -126,7 +126,7 @@ def check_users() -> List[Dict]:
                 if log_obj.create_at < timezone.now() - timezone.timedelta(days=WARNING_TIME_DAYS):
                     users_to_delete.append(u)
             else:
-                warn_registration(id=u.id)
+                messaging.api.slack.user.warn_registration(id=u.id)
 
         if (
             users_to_warn is []

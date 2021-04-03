@@ -10,11 +10,10 @@ from django.core.files import File
 from django.urls import reverse
 from django.utils import timezone
 
+import app.slack
 from app.enums import SlackError
 from app.settings import STATIC_ROOT, APP_FULL_DOMAIN
-from app.slack import send_error_message
 from messaging.api.slack import log
-from messaging.api.slack.channel import send_message
 from messaging.consts import WARNING_TIME_DAYS
 from messaging.enums import LogType
 from user.models import User
@@ -39,7 +38,7 @@ def set_picture(token: str, file: BytesIO) -> Tuple[bool, Optional[str]]:
     client = slack.WebClient(token)
     response = client.users_setPhoto(image=file.read())
     if not response.status_code == 200 or not response.data.get("ok", False):
-        return send_error_message(error=SlackError.RETRIEVE_CHANNELS), None
+        return app.slack.send_error_message(error=SlackError.RETRIEVE_CHANNELS), None
     return True, response.data.get("profile", {}).get("avatar_hash")
 
 

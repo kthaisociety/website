@@ -14,7 +14,7 @@ import app.slack
 from app.enums import SlackError
 from app.settings import STATIC_ROOT, APP_FULL_DOMAIN
 from messaging.api.slack import log
-from messaging.api.slack.channel import send_message
+import messaging.api.slack.channel
 from messaging.consts import WARNING_TIME_DAYS
 from messaging.enums import LogType
 from user.models import User
@@ -145,7 +145,7 @@ def warn_registration(id: UUID):
             },
         ]
 
-        response = send_message(
+        response = messaging.api.slack.channel.send_message(
             external_id=user_obj.slack_id,
             blocks=blocks,
             unfurl_links=False,

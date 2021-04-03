@@ -96,7 +96,10 @@ def check_users() -> List[Dict]:
             return send_error_message(error=SlackError.CHECK_USERS)
 
         users_by_email = {u.email: u for u in user.utils.get_users()}
-        logs_by_email = {l.target.email: l for l in messaging.api.slack.log.find(type=LogType.WARNING)}
+        logs_by_email = {
+            l.target.email: l
+            for l in messaging.api.slack.log.find(type=LogType.WARNING)
+        }
         users_to_warn = []
         for slack_user in response.data["members"]:
             user_email = slack_user.get("profile", {}).get("email")
@@ -105,7 +108,9 @@ def check_users() -> List[Dict]:
                 if not u:
                     real_name = slack_user.get("profile", {}).get("real_name", "")
                     u = user.utils.create_user(
-                        name=real_name.split(" ")[0], surname=" ".join(real_name.split(" ")[1:]), email=user_email
+                        name=real_name.split(" ")[0],
+                        surname=" ".join(real_name.split(" ")[1:]),
+                        email=user_email,
                     )
                     user.utils.send_imported(user=u)
 
@@ -123,14 +128,14 @@ def check_users() -> List[Dict]:
         for u in users_to_warn:
             log_obj = logs_by_email.get(u.email)
             if log_obj:
-                if log_obj.created_at < timezone.now() - timezone.timedelta(days=WARNING_TIME_DAYS):
+                if log_obj.created_at < timezone.now() - timezone.timedelta(
+                    days=WARNING_TIME_DAYS
+                ):
                     users_to_delete.append(u)
             else:
                 messaging.api.slack.user.warn_registration(id=u.id)
 
-        if (
-            users_to_delete is []
-        ):
+        if users_to_delete is []:
             text = ">>> :white_check_mark: *Check users task*\nNo issues found\n"
         else:
             text = ">>> :rotating_light: *Check users task*\n"

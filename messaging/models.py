@@ -45,7 +45,11 @@ class SlackLog(models.Model):
         choices=((s.value, s.name) for s in LogType), default=LogType.ARTICLE.value
     )
     channel = models.ForeignKey(
-        "SlackChannel", blank=True, null=True, on_delete=models.CASCADE, related_name="slack_logs"
+        "SlackChannel",
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name="slack_logs",
     )
     creator = models.ForeignKey(
         "user.User",

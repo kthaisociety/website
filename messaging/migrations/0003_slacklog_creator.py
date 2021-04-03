@@ -5,19 +5,17 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('messaging', '0002_slacklog'),
-    ]
+    dependencies = [("messaging", "0002_slacklog")]
 
     operations = [
         migrations.RenameField(
-            model_name='slacklog',
-            old_name='user',
-            new_name='creator',
+            model_name="slacklog", old_name="user", new_name="creator"
         ),
         migrations.AlterField(
-            model_name='slacklog',
-            name='type',
-            field=models.PositiveSmallIntegerField(choices=[(1, 'ARTICLE'), (2, 'EVENT'), (3, 'WARNING')], default=1),
+            model_name="slacklog",
+            name="type",
+            field=models.PositiveSmallIntegerField(
+                choices=[(1, "ARTICLE"), (2, "EVENT"), (3, "WARNING")], default=1
+            ),
         ),
     ]

@@ -6,14 +6,18 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('messaging', '0003_slacklog_creator'),
-    ]
+    dependencies = [("messaging", "0003_slacklog_creator")]
 
     operations = [
         migrations.AlterField(
-            model_name='slacklog',
-            name='channel',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='slack_logs', to='messaging.slackchannel'),
-        ),
+            model_name="slacklog",
+            name="channel",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="slack_logs",
+                to="messaging.slackchannel",
+            ),
+        )
     ]

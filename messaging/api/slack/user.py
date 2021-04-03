@@ -116,7 +116,9 @@ def create(user_data: Dict) -> bool:
 def warn_registration(id: UUID):
     user_obj = User.objects.get(id=id)
     if user_obj and user_obj.slack_id:
-        user_finish_before = timezone.localtime(timezone.now() + timezone.timedelta(days=WARNING_TIME_DAYS))
+        user_finish_before = timezone.localtime(
+            timezone.now() + timezone.timedelta(days=WARNING_TIME_DAYS)
+        )
 
         blocks = [
             {
@@ -150,9 +152,4 @@ def warn_registration(id: UUID):
             unfurl_media=False,
         )
 
-        log.create(
-            type=LogType.WARNING,
-            target=user_obj,
-            data=response.data,
-        )
-
+        log.create(type=LogType.WARNING, target=user_obj, data=response.data)

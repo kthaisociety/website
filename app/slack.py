@@ -123,13 +123,13 @@ def check_users() -> List[Dict]:
         for u in users_to_warn:
             log_obj = logs_by_email.get(u.email)
             if log_obj:
-                if log_obj.create_at < timezone.now() - timezone.timedelta(days=WARNING_TIME_DAYS):
+                if log_obj.created_at < timezone.now() - timezone.timedelta(days=WARNING_TIME_DAYS):
                     users_to_delete.append(u)
             else:
                 messaging.api.slack.user.warn_registration(id=u.id)
 
         if (
-            users_to_warn is []
+            users_to_delete is []
         ):
             text = ">>> :white_check_mark: *Check users task*\nNo issues found\n"
         else:

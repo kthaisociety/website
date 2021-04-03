@@ -1,10 +1,16 @@
+import json
 import re
-from typing import Optional
+from json import JSONEncoder
+from typing import Optional, Dict
 
 import html2text
 from django.conf import settings
 from django.contrib import admin
 from django.core.mail import EmailMultiAlternatives
+
+from pygments import highlight
+from pygments.formatters import HtmlFormatter
+from pygments.lexers import JsonLexer
 
 from app.consts import UNIVERSITIES, PROGRAMMES
 from app.variables import (
@@ -122,3 +128,16 @@ class ReadOnlyAdmin(admin.ModelAdmin):
 
     def has_change_permission(self, request, obj=None):
         return False
+
+
+def pretty_json(data: Dict, return_as_tuple=False):
+    response = json.dumps(data, sort_keys=True, indent=2, cls=JSONEncoder)
+    html_formatter = HtmlFormatter(style="colorful")
+
+    response = highlight(response, JsonLexer(), html_formatter)
+
+    if return_as_tuple:
+        return (html_formatter.get_style_defs(), response)
+
+    style = "<style>" + html_formatter.get_style_defs() + "</style><br>"
+    return "{}{}".format(style, response)

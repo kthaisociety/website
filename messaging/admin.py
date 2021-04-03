@@ -4,7 +4,7 @@ from django.db import transaction
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 
-from app.utils import ReadOnlyAdmin
+from app.utils import ReadOnlyAdmin, pretty_json
 from messaging.models import SlackChannel, SlackLog
 
 import messaging.api.slack.channel
@@ -121,6 +121,13 @@ class SlackChannelAdmin(admin.ModelAdmin):
 @admin.register(SlackLog)
 class SlackLogAdmin(ReadOnlyAdmin):
     search_fields = ("id", "type", "channel")
-    list_display = ("id", "type", "channel", "user")
-    list_filter = ("type", "channel", "user")
+    list_display = ("id", "type", "channel", "creator", "target")
+    list_filter = ("type", "channel")
+    readonly_fields = ("data_nice",)
+    exclude = ("data",)
     ordering = ("-created_at",)
+
+    def data_nice(self, obj):
+        return mark_safe(pretty_json(obj.data))
+
+    data_nice.short_description = "data"

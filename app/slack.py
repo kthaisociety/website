@@ -3,11 +3,16 @@ from typing import List, Dict
 import requests
 import slack
 from django.db import transaction
+from django.utils import timezone
 
 from app.enums import SlackError
 from app.settings import SL_INURL, APP_DOMAIN, SL_CHANNEL_WEBDEV, SL_USER_TOKEN
 
 import user.utils
+from messaging.api.slack import log
+from messaging.api.slack.user import warn_registration
+from messaging.consts import WARNING_TIME_DAYS
+from messaging.enums import LogType
 
 
 def send_deploy_message(deploy_data, succedded=True):
@@ -91,61 +96,51 @@ def check_users() -> List[Dict]:
             return send_error_message(error=SlackError.CHECK_USERS)
 
         users_by_email = {u.email: u for u in user.utils.get_users()}
-        missing_users = []
-        non_confirmed_users = []
-        non_finished_users = []
+        logs_by_email = {l.target.email: l for l in log.find(type=LogType.WARNING)}
+        users_to_warn = []
         for slack_user in response.data["members"]:
             user_email = slack_user.get("profile", {}).get("email")
             if user_email:
                 u = users_by_email.get(user_email)
                 if not u:
-                    missing_users.append(slack_user)
-                elif not u.email_verified:
-                    non_confirmed_users.append(slack_user)
-                elif not u.registration_finished:
-                    non_finished_users.append(slack_user)
+                    real_name = slack_user.get("profile", {}).get("real_name", "")
+                    u = user.utils.create_user(
+                        name=real_name.split(" ")[0], surname=" ".join(real_name.split(" ")[1:]), email=user_email
+                    )
+                    user.utils.send_imported(user=u)
+
                 # TODO: Sync other user information
                 # Update user Slack ID
-                if u:
-                    slack_id = slack_user.get("id")
-                    if slack_id and slack_id != u.slack_id:
-                        u.slack_id = slack_id
-                        u.save()
+                slack_id = slack_user.get("id")
+                if slack_id and slack_id != u.slack_id:
+                    u.slack_id = slack_id
+                    u.save()
+
+                if not u.email_verified or not u.registration_finished:
+                    users_to_warn.append(u)
+
+        users_to_delete = []
+        for u in users_to_warn:
+            log_obj = logs_by_email.get(u.email)
+            if log_obj:
+                if log_obj.create_at < timezone.now() - timezone.timedelta(days=WARNING_TIME_DAYS):
+                    users_to_delete.append(u)
+            else:
+                warn_registration(id=u.id)
 
         if (
-            missing_users is []
-            and non_confirmed_users is []
-            and non_finished_users is []
+            users_to_warn is []
         ):
             text = ">>> :white_check_mark: *Check users task*\nNo issues found\n"
         else:
             text = ">>> :rotating_light: *Check users task*\n"
-            if missing_users:
-                text += (
-                    ("_Missing users_\n")
-                    + "\n".join(
-                        f"\t{u.get('real_name', u.get('name', u.get('id')))} <<mailto:{u.get('profile', {}).get('email')}|{u.get('profile', {}).get('email')}>>"
-                        for u in missing_users
-                    )
-                    + "\n"
+            text += (
+                ("_Users to delete_\n")
+                + "\n".join(
+                    f"\t{u.full_name if u.full_name else u.slack_id} <<mailto:{u.email}|{u.email}>>"
+                    for u in users_to_delete
                 )
-            if non_confirmed_users:
-                text += (
-                    ("_Non-confirmed users_\n")
-                    + "\n".join(
-                        f"\t{u.get('real_name', u.get('name', u.get('id')))} <<mailto:{u.get('profile', {}).get('email')}|{u.get('profile', {}).get('email')}>>"
-                        for u in non_confirmed_users
-                    )
-                    + "\n"
-                )
-            if non_finished_users:
-                text += (
-                    ("_Non-finished users_\n")
-                    + "\n".join(
-                        f"\t{u.get('real_name', u.get('name', u.get('id')))} <<mailto:{u.get('profile', {}).get('email')}|{u.get('profile', {}).get('email')}>>"
-                        for u in non_finished_users
-                    )
-                    + "\n"
-                )
+                + "\n"
+            )
         response = requests.post(SL_INURL, json={"text": text})
         return response.content

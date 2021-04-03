@@ -45,9 +45,9 @@ class SlackLog(models.Model):
         choices=((s.value, s.name) for s in LogType), default=LogType.ARTICLE.value
     )
     channel = models.ForeignKey(
-        "SlackChannel", on_delete=models.CASCADE, related_name="slack_logs"
+        "SlackChannel", blank=True, null=True, on_delete=models.CASCADE, related_name="slack_logs"
     )
-    user = models.ForeignKey(
+    creator = models.ForeignKey(
         "user.User",
         on_delete=models.CASCADE,
         related_name="slack_logs",
@@ -71,5 +71,5 @@ class SlackLog(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        owner = self.user if self.user else "System"
+        owner = self.creator if self.creator else "System"
         return f"{LogType(self.type).name} - {self.created_at.strftime('%Y-%m-%d %H:%M:%S')} <{str(owner)}>"

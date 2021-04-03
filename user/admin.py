@@ -59,7 +59,7 @@ class UserAdmin(admin.ModelAdmin):
         "slack_picture_hash",
         "created_at",
     )
-    # exclude = ("slack_token", "slack_scopes")
+    exclude = ("slack_token", "slack_scopes")
     ordering = ("-created_at",)
     actions = [send_welcome, send_slack_invite]
 

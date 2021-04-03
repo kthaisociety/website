@@ -14,7 +14,7 @@ from messaging.models import SlackChannel
 from news.models import Article
 
 
-def announce_event(event: Event, user_id: UUID):
+def announce_event(event: Event, creator_id: UUID):
     event_extra = f":clock3: {event.starts_at.strftime('%B %-d, %Y %H:%M')}\n"
     if event.location:
         event_extra += f":round_pushpin: {event.location}\n"
@@ -63,12 +63,12 @@ def announce_event(event: Event, user_id: UUID):
         type=LogType.EVENT,
         target=event,
         channel_id=channel.id,
-        user_id=user_id,
+        creator_id=creator_id,
         data=response.data,
     )
 
 
-def announce_article(article: Article, user_id: UUID):
+def announce_article(article: Article, creator_id: UUID):
     blocks = [
         {
             "type": "header",
@@ -111,6 +111,6 @@ def announce_article(article: Article, user_id: UUID):
         type=LogType.ARTICLE,
         target=article,
         channel_id=channel.id,
-        user_id=user_id,
+        creator_id=creator_id,
         data=response.data,
     )

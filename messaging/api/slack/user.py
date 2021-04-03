@@ -1,16 +1,22 @@
 import os
 from io import BytesIO
 from typing import Dict, Tuple, Optional
+from uuid import UUID
 
 import requests
 import slack
 from PIL import Image
 from django.core.files import File
+from django.urls import reverse
 from django.utils import timezone
 
 from app.enums import SlackError
-from app.settings import STATIC_ROOT
+from app.settings import STATIC_ROOT, APP_FULL_DOMAIN
 from app.slack import send_error_message
+from messaging.api.slack import log
+from messaging.api.slack.channel import send_message
+from messaging.consts import WARNING_TIME_DAYS
+from messaging.enums import LogType
 from user.models import User
 from user.utils import send_created
 
@@ -105,3 +111,48 @@ def create(user_data: Dict) -> bool:
     send_created(user)
 
     return success
+
+
+def warn_registration(id: UUID):
+    user_obj = User.objects.get(id=id)
+    if user_obj and user_obj.slack_id:
+        user_finish_before = timezone.localtime(timezone.now() + timezone.timedelta(days=WARNING_TIME_DAYS))
+
+        blocks = [
+            {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": f"Hey there{(' ' + user_obj.name if user_obj.name else '')}!\n\nWe noticed you haven't finished registering :rotating_light: on our site. In order for us to be able to offer you the most out of this workplace *we need you to complete your details*, it will take only a minute :clock1:. If you don't manage to do so by {user_finish_before.strftime('%A %-d, %B %Y')} we will have to deactivate your account :grimacing:.",
+                },
+            },
+            {
+                "type": "actions",
+                "elements": [
+                    {
+                        "type": "button",
+                        "text": {
+                            "type": "plain_text",
+                            "emoji": True,
+                            "text": ":white_check_mark: Finish my registration",
+                        },
+                        "style": "primary",
+                        "url": f"{APP_FULL_DOMAIN}{reverse('user_login')}",
+                    }
+                ],
+            },
+        ]
+
+        # response = send_message(
+        #     external_id=user_obj.slack_id,
+        #     blocks=blocks,
+        #     unfurl_links=False,
+        #     unfurl_media=False,
+        # )
+
+        log.create(
+            type=LogType.WARNING,
+            target=user_obj,
+            # data=response.data,
+        )
+

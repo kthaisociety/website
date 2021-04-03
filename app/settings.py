@@ -20,7 +20,8 @@ SECRET_KEY = os.environ.get(
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("PROD_MODE", "false").lower() == "false"
+PROD_MODE = os.environ.get("PROD_MODE", "false").lower() == "true"
+DEBUG = not PROD_MODE
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0"]
 
@@ -241,9 +242,10 @@ if SOCIAL_AUTH_GOOGLE_OAUTH2_KEY and SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET:
 # TODO: Document this
 # https://support.google.com/a/answer/2956491?hl=en
 
-EMAIL_HOST = "smtp-relay.gmail.com"
-EMAIL_PORT = "587"
-EMAIL_USE_TLS = True
+if PROD_MODE:
+    EMAIL_HOST = "smtp-relay.gmail.com"
+    EMAIL_PORT = "587"
+    EMAIL_USE_TLS = True
 
 # Notify templates
 
@@ -289,4 +291,4 @@ CRONJOBS = [
     ("5 * * * *", "messaging.cron.slack_retrieve_channels"),
 ]
 
-CRONTAB_COMMAND_PREFIX = "source environment.sh &&"
+CRONTAB_COMMAND_PREFIX = ". environment.sh &&"

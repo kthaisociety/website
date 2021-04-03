@@ -16,3 +16,4 @@ slackclient~=2.9.3
 django-crontab~=0.7.1
 django-extensions~=3.1.1
 Pillow~=8.1.2
+Pygments~=2.8.1

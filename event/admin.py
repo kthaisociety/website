@@ -83,7 +83,7 @@ class RegistrationInline(admin.StackedInline):
 
 def send_slack_announcement(modeladmin, request, events):
     for event in events:
-        announce_event(event=event, user_id=request.user.id)
+        announce_event(event=event, creator_id=request.user.id)
     messages.success(
         request, f"Slack announcements have been posted for {events.count()} event/s."
     )

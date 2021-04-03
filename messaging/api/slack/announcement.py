@@ -14,17 +14,17 @@ from messaging.models import SlackChannel
 from news.models import Article
 
 
-def announce_event(event: Event, user_id: UUID):
-    event_extra = f":clock3: {event.starts_at.strftime('%B %-d, %Y %H:%M')}\n"
+def announce_event(event: Event, creator_id: UUID):
+    event_extra = f":clock3: {event.starts_at.strftime('%B %-d, %Y %H:%M')}"
     if event.location:
-        event_extra += f":round_pushpin: {event.location}\n"
+        event_extra += f"\n:round_pushpin: {event.location}"
     if event.is_signup_open:
         event_extra += (
-            f":pencil: Make sure to *<{APP_FULL_DOMAIN}{event.url}|signup here>*\n"
+            f"\n:pencil: Make sure to *<{APP_FULL_DOMAIN}{event.url}|signup here>*"
         )
     if event.social_url:
         event_extra += (
-            f":facebook: Checkout our *<{event.social_url}|Facebook event>*\n"
+            f"\n:facebook: Checkout our *<{event.social_url}|Facebook event>*"
         )
 
     blocks = [
@@ -35,9 +35,8 @@ def announce_event(event: Event, user_id: UUID):
         {
             "type": "section",
             "text": {
-                "type": "plain_text",
-                "emoji": True,
-                "text": event.description_paragraph,
+                "type": "mrkdwn",
+                "text": event.description_paragraph + "\n\n" + event_extra,
             },
             "accessory": {
                 "type": "image",
@@ -45,8 +44,6 @@ def announce_event(event: Event, user_id: UUID):
                 "alt_text": "Event picture",
             },
         },
-        {"type": "divider"},
-        {"type": "section", "text": {"type": "mrkdwn", "text": event_extra}},
     ]
 
     channel = SlackChannel.objects.get(
@@ -63,12 +60,12 @@ def announce_event(event: Event, user_id: UUID):
         type=LogType.EVENT,
         target=event,
         channel_id=channel.id,
-        user_id=user_id,
+        creator_id=creator_id,
         data=response.data,
     )
 
 
-def announce_article(article: Article, user_id: UUID):
+def announce_article(article: Article, creator_id: UUID):
     blocks = [
         {
             "type": "header",
@@ -77,22 +74,14 @@ def announce_article(article: Article, user_id: UUID):
         {
             "type": "section",
             "text": {
-                "type": "plain_text",
-                "emoji": True,
-                "text": article.description_paragraph,
+                "type": "mrkdwn",
+                "text": article.description_paragraph
+                + f"\n\n:computer: Check it out in *<{APP_FULL_DOMAIN}{article.url}|our website>*",
             },
             "accessory": {
                 "type": "image",
                 "image_url": f"{APP_FULL_DOMAIN}{article.picture.url}",
                 "alt_text": "Article picture",
-            },
-        },
-        {"type": "divider"},
-        {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": f":computer: Check it out in *<{APP_FULL_DOMAIN}{article.url}|our website>*\n",
             },
         },
     ]
@@ -111,6 +100,6 @@ def announce_article(article: Article, user_id: UUID):
         type=LogType.ARTICLE,
         target=article,
         channel_id=channel.id,
-        user_id=user_id,
+        creator_id=creator_id,
         data=response.data,
     )

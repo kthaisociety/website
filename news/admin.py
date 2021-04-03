@@ -6,7 +6,7 @@ from news.models import Article
 
 def send_slack_announcement(modeladmin, request, articles):
     for article in articles:
-        announce_article(article=article, user_id=request.user.id)
+        announce_article(article=article, creator_id=request.user.id)
     messages.success(
         request,
         f"Slack announcements have been posted for {articles.count()} article/s.",

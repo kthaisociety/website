@@ -18,7 +18,7 @@ def run(body: Dict) -> bool:
             ) or not chat.post(channel_id=channel_id, message_id=message_id, text=text):
                 success = False
     elif event_type.startswith("channel"):
-        channel.retrieve()
+        channel.retrieve_all()
     elif event_type == "user_change":
         if not user.update(user_data=body.get("user")):
             success = False

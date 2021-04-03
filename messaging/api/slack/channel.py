@@ -10,7 +10,6 @@ from slack.web.slack_response import SlackResponse
 from app.enums import SlackError
 from app.settings import SL_TOKEN, SL_CHANNEL_WEBDEV, SL_USER_TOKEN
 from app.slack import send_error_message
-from messaging.api.slack import log
 from messaging.models import SlackChannel
 from user.models import User
 
@@ -39,7 +38,7 @@ def create_slack_channel(slack_channel: Dict) -> SlackChannel:
 
 
 @transaction.atomic
-def retrieve() -> List[SlackChannel]:
+def retrieve_all() -> List[SlackChannel]:
     if SL_TOKEN and SL_CHANNEL_WEBDEV:
         client = slack.WebClient(SL_TOKEN)
         response = client.conversations_list()
@@ -142,7 +141,7 @@ def invite_users(external_id: str) -> bool:
             return send_error_message(error=SlackError.INVITE_CHANNEL_USERS)
 
         # Update channel information
-        retrieve()
+        retrieve(external_id=external_id)
 
         return True
 

@@ -135,9 +135,7 @@ def check_users() -> List[Dict]:
             else:
                 messaging.api.slack.user.warn_registration(id=u.id)
 
-        if users_to_delete is []:
-            text = ">>> :white_check_mark: *Check users task*\nNo issues found\n"
-        else:
+        if users_to_delete:
             text = ">>> :rotating_light: *Check users task*\n"
             text += (
                 ("_Users to delete_\n")
@@ -147,5 +145,7 @@ def check_users() -> List[Dict]:
                 )
                 + "\n"
             )
+        else:
+            text = ">>> :white_check_mark: *Check users task*\nNo issues found\n"
         response = requests.post(SL_INURL, json={"text": text})
         return response.content

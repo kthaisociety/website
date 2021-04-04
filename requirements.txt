@@ -17,3 +17,6 @@ django-crontab~=0.7.1
 django-extensions~=3.1.1
 Pillow~=8.1.2
 Pygments~=2.8.1
+google-api-python-client~=2.1.0
+google-auth-httplib2~=0.1.0
+google-auth-oauthlib~=0.4.4

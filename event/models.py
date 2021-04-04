@@ -8,7 +8,7 @@ from django.core.exceptions import ValidationError
 
 from app.variables import APP_NAME, APP_ATTENDANCE_RATIO
 
-from django.db import models
+from django.db import models, transaction
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.html import strip_tags
@@ -184,7 +184,29 @@ class Event(models.Model):
             self.code = slugify(self.name)
         if self.attendance_target and not self.attendance_limit:
             self.attendance_limit = APP_ATTENDANCE_RATIO * self.attendance_target
+
+        import event.api.event.calendar
+
+        transaction.on_commit(
+            lambda: event.api.event.calendar.create_or_update(event=self)
+        )
+
         super().save()
+
+    def delete(self, *args, **kwargs):
+        import event.api.event.calendar
+
+        transaction.on_commit(
+            lambda: event.api.event.calendar.delete(
+                google_ids=[
+                    session.google_id
+                    for session in self.sessions.all()
+                    if session.google_id
+                ]
+            )
+        )
+
+        super().delete()
 
     def __str__(self):
         return self.name
@@ -198,6 +220,8 @@ class Session(models.Model):
     )
     starts_at = models.DateTimeField()
     ends_at = models.DateTimeField()
+
+    google_id = models.CharField(max_length=255, blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -213,6 +237,25 @@ class Session(models.Model):
     @property
     def published_attachments_with_registration(self):
         return self.attachments.filter(status=AttachmentStatus.PUBLISHED)
+
+    def save(self, *args, **kwargs):
+        import event.api.event.calendar
+
+        transaction.on_commit(
+            lambda: event.api.event.calendar.create_or_update(event=self.event)
+        )
+
+        super().save()
+
+    def delete(self, *args, **kwargs):
+        import event.api.event.calendar
+
+        if self.google_id:
+            transaction.on_commit(
+                lambda: event.api.event.calendar.delete(google_ids=[self.google_id])
+            )
+
+        super().delete()
 
     def __str__(self):
         return f"{self.event.name} - {self.name}"

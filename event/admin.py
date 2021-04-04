@@ -1,5 +1,8 @@
 from django.contrib import admin, messages
+from django.db import transaction
+from django.forms import ModelForm
 
+import event.api.event.calendar
 from event.models import Event, Registration, Session, Attachment, Schedule
 from event.tasks import send_url_email
 from messaging.api.slack.announcement import announce_event
@@ -33,12 +36,14 @@ class SessionAdmin(admin.ModelAdmin):
     list_display = ("name", "event", "starts_at", "ends_at")
     list_filter = ("starts_at", "ends_at")
     ordering = ("-created_at", "-updated_at", "name")
+    readonly_fields = ("google_id",)
     inlines = [AttachmentInline, ScheduleInline]
 
 
 class SessionInline(admin.StackedInline):
     model = Session
     ordering = ("starts_at", "ends_at", "name")
+    exclude = ("google_id",)
     show_change_link = True
     extra = 0
 

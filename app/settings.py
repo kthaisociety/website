@@ -1,6 +1,8 @@
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from google.oauth2 import service_account
+
 from app.variables import APP_TIMEZONE
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -293,3 +295,18 @@ CRONJOBS = [
 
 CRONTAB_COMMAND_PREFIX = f". {BASE_DIR}/environment.sh;"
 CRONTAB_COMMAND_SUFFIX = f">> {BASE_DIR}/cron.log 2>&1"
+
+# Google
+# https://console.cloud.google.com/iam-admin/serviceaccounts
+# https://developers.google.com/identity/protocols/oauth2/service-account#delegatingauthority
+# https://admin.google.com/u/3/ac/owl/domainwidedelegation
+
+GOOGLE_CALENDAR_TEAM_ID = os.environ.get("GO_CALENDAR_TEAM_ID", None)
+GOOGLE_CALENDAR_TEAM_EMAIL = os.environ.get("GO_CALENDAR_TEAM_EMAIL", None)
+GOOGLE_CALENDAR_ADMIN_EMAIL = os.environ.get("GO_CALENDAR_ADMIN_EMAIL", None)
+GOOGLE_CALENDAR_SCOPES = ["https://www.googleapis.com/auth/calendar"]
+GOOGLE_CALENDAR_CREDS_FILE = BASE_DIR + "/" + os.environ.get("GO_CALENDAR_CREDS", None)
+GOOGLE_CALENDAR_CREDS_SERVICE = service_account.Credentials.from_service_account_file(
+    GOOGLE_CALENDAR_CREDS_FILE, scopes=GOOGLE_CALENDAR_SCOPES
+)
+GOOGLE_CALENDAR_CREDS = GOOGLE_CALENDAR_CREDS_SERVICE.with_subject(GOOGLE_CALENDAR_ADMIN_EMAIL)

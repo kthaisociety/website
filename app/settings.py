@@ -305,10 +305,14 @@ GOOGLE_CALENDAR_TEAM_ID = os.environ.get("GO_CALENDAR_TEAM_ID", None)
 GOOGLE_CALENDAR_TEAM_EMAIL = os.environ.get("GO_CALENDAR_TEAM_EMAIL", None)
 GOOGLE_CALENDAR_ADMIN_EMAIL = os.environ.get("GO_CALENDAR_ADMIN_EMAIL", None)
 GOOGLE_CALENDAR_SCOPES = ["https://www.googleapis.com/auth/calendar"]
-GOOGLE_CALENDAR_CREDS_FILE = BASE_DIR + "/" + os.environ.get("GO_CALENDAR_CREDS", None)
-GOOGLE_CALENDAR_CREDS_SERVICE = service_account.Credentials.from_service_account_file(
-    GOOGLE_CALENDAR_CREDS_FILE, scopes=GOOGLE_CALENDAR_SCOPES
-)
-GOOGLE_CALENDAR_CREDS = GOOGLE_CALENDAR_CREDS_SERVICE.with_subject(
-    GOOGLE_CALENDAR_ADMIN_EMAIL
-)
+if os.environ.get("GO_CALENDAR_CREDS", None):
+    GOOGLE_CALENDAR_CREDS_FILE = (
+        BASE_DIR + "/" + os.environ.get("GO_CALENDAR_CREDS", None)
+    )
+    GOOGLE_CALENDAR_CREDS_SERVICE = service_account.Credentials.from_service_account_file(
+        GOOGLE_CALENDAR_CREDS_FILE, scopes=GOOGLE_CALENDAR_SCOPES
+    )
+    if GOOGLE_CALENDAR_ADMIN_EMAIL:
+        GOOGLE_CALENDAR_CREDS = GOOGLE_CALENDAR_CREDS_SERVICE.with_subject(
+            GOOGLE_CALENDAR_ADMIN_EMAIL
+        )

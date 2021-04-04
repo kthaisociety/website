@@ -291,4 +291,5 @@ CRONJOBS = [
     ("5 * * * *", "messaging.cron.slack_retrieve_channels"),
 ]
 
-CRONTAB_COMMAND_PREFIX = ". environment.sh &&"
+CRONTAB_COMMAND_PREFIX = f". {BASE_DIR}/environment.sh;"
+CRONTAB_COMMAND_SUFFIX = f">> {BASE_DIR}/cron.log 2>&1"

@@ -7,7 +7,6 @@ from app.settings import (
     GOOGLE_CALENDAR_TEAM_ID,
     GOOGLE_CALENDAR_TEAM_EMAIL,
     APP_FULL_DOMAIN,
-    GOOGLE_CALENDAR_ADMIN_EMAIL,
 )
 from event.models import Session
 

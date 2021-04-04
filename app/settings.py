@@ -305,6 +305,7 @@ GOOGLE_CALENDAR_TEAM_ID = os.environ.get("GO_CALENDAR_TEAM_ID", None)
 GOOGLE_CALENDAR_TEAM_EMAIL = os.environ.get("GO_CALENDAR_TEAM_EMAIL", None)
 GOOGLE_CALENDAR_ADMIN_EMAIL = os.environ.get("GO_CALENDAR_ADMIN_EMAIL", None)
 GOOGLE_CALENDAR_SCOPES = ["https://www.googleapis.com/auth/calendar"]
+GOOGLE_CALENDAR_CREDS = None
 if os.environ.get("GO_CALENDAR_CREDS", None):
     GOOGLE_CALENDAR_CREDS_FILE = (
         BASE_DIR + "/" + os.environ.get("GO_CALENDAR_CREDS", None)

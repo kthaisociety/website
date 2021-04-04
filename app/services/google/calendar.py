@@ -6,13 +6,18 @@ from app.settings import (
     GOOGLE_CALENDAR_CREDS,
     GOOGLE_CALENDAR_TEAM_ID,
     GOOGLE_CALENDAR_TEAM_EMAIL,
-    APP_FULL_DOMAIN, GOOGLE_CALENDAR_ADMIN_EMAIL,
+    APP_FULL_DOMAIN,
+    GOOGLE_CALENDAR_ADMIN_EMAIL,
 )
 from event.models import Session
 
 
 def create_or_update(session: Session) -> Dict:
-    if not GOOGLE_CALENDAR_CREDS or not GOOGLE_CALENDAR_TEAM_ID or not GOOGLE_CALENDAR_ADMIN_EMAIL:
+    if (
+        not GOOGLE_CALENDAR_CREDS
+        or not GOOGLE_CALENDAR_TEAM_ID
+        or not GOOGLE_CALENDAR_ADMIN_EMAIL
+    ):
         return {}
 
     service = build("calendar", "v3", credentials=GOOGLE_CALENDAR_CREDS)
@@ -66,7 +71,11 @@ def create_or_update(session: Session) -> Dict:
 
 
 def delete(google_id: str) -> Dict:
-    if not GOOGLE_CALENDAR_CREDS or not GOOGLE_CALENDAR_TEAM_ID or not GOOGLE_CALENDAR_ADMIN_EMAIL:
+    if (
+        not GOOGLE_CALENDAR_CREDS
+        or not GOOGLE_CALENDAR_TEAM_ID
+        or not GOOGLE_CALENDAR_ADMIN_EMAIL
+    ):
         return {}
 
     service = build("calendar", "v3", credentials=GOOGLE_CALENDAR_CREDS)

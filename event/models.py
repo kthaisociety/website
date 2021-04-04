@@ -199,7 +199,9 @@ class Event(models.Model):
         transaction.on_commit(
             lambda: event.api.event.calendar.delete(
                 google_ids=[
-                    session.google_id for session in self.sessions.all() if session.google_id
+                    session.google_id
+                    for session in self.sessions.all()
+                    if session.google_id
                 ]
             )
         )

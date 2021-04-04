@@ -15,7 +15,9 @@ def create_or_update(event: Event):
             if session.google_id:
                 app.services.google.calendar.create_or_update(session=session)
             else:
-                google_response = app.services.google.calendar.create_or_update(session=session)
+                google_response = app.services.google.calendar.create_or_update(
+                    session=session
+                )
                 session.google_id = google_response.get("id")
                 session_updates.append(session)
     else:
@@ -30,4 +32,3 @@ def create_or_update(event: Event):
 def delete(google_ids: List[str]):
     for google_id in google_ids:
         app.services.google.calendar.delete(google_id=google_id)
-

@@ -5,14 +5,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('event', '0021_event_social_url'),
-    ]
+    dependencies = [("event", "0021_event_social_url")]
 
     operations = [
         migrations.AddField(
-            model_name='session',
-            name='google_id',
+            model_name="session",
+            name="google_id",
             field=models.CharField(blank=True, max_length=255, null=True),
-        ),
+        )
     ]

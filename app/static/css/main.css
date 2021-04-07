@@ -145,15 +145,45 @@ a:hover, a:active, a:visited {
 }
 
 .btn-main {
-    color: #FFFFFF;
+    color: #f6f6f6;
     background-color: #3d5875;
     border-color: #3d5875;
 }
 
+.btn-main:hover, .btn-main-active {
+    color: #f6f6f6;
+    background-color: #3d5875;
+    border-color: #f6f6f6;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+
+}
+
 .btn-main2 {
-    color: #FFFFFF;
+    color: #f6f6f6;
     background-color: #73A2C6;
     border-color: #73A2C6;
+}
+
+.btn-main2:hover, .btn-main2-active {
+    color: #73A2C6;
+    background-color: #f6f6f6;
+    border-color: #73A2C6;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+
+}
+
+.btn-main3 {
+    color: #f6f6f6;
+    background-color: #3d5875;
+    border-color: #f6f6f6;
+}
+
+.btn-main3:hover, .btn-main3-active {
+    color: #3d5875;
+    background-color: #f6f6f6;
+    border-color: #3d5875;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+
 }
 
 .btn-twitter {

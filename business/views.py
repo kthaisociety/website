@@ -3,6 +3,6 @@ from django.shortcuts import render
 from business.models import Tier
 
 
-def tiers(request):
+def sponsor(request):
     tier_objs = Tier.objects.order_by("-price")
-    return render(request, "tiers.html", {"tiers": tier_objs})
+    return render(request, "sponsor.html", {"tiers": tier_objs})

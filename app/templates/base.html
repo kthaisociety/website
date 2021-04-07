@@ -97,15 +97,12 @@
                                     <li class="nav-item {% if request.resolver_match.url_name == "events_events" %}active{% endif %}">
                                         <a class="nav-link" href="{% url 'events_events' %}">Events</a>
                                     </li>
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle" href="#" id="dropdown-sponsor" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Sponsor
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="dropdown-sponsor">
-                                            <a class="dropdown-item" href="{% url 'business_tiers' %}">Tiers</a>
-                                        </div>
-                                    </li>
                                 </ul>
+                                <a class="mb-0 ml-3" href="{% url 'business_sponsor' %}">
+                                    <button type="button" class="btn {% if request.resolver_match.url_name == "business_sponsor" %}btn-main3-active{% else %}btn-main3{% endif %}">
+                                        Sponsor
+                                    </button>
+                                </a>
                                 {% comment %}
                                     <form class="form-inline">
                                         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">

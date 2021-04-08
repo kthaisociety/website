@@ -33,12 +33,12 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <div class="jumbotron p-0 p-lg-5 text-white rounded bg-dark event-header" style="background-image: url('{{ event.picture.crop.1500x1000 }}'); background-size: cover;">
+            <div class="jumbotron p-0 p-lg-5 text-white rounded bg-dark event-header" style="background-image: url('{{ event.picture.crop.1500x1000 }}');">
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12 mb-3 text-center text-lg-left">
+        <div class="col-md-12 mb-0 text-center text-lg-left">
             {% include "include/share.html" with title=event.name url=event.url %}
             {% include "include/calendar.html" with url=event.ics_url %}
         </div>

@@ -183,7 +183,17 @@ a:hover, a:active, a:visited {
     background-color: #f6f6f6;
     border-color: #3d5875;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
 
+.meta-act-link button {
+    padding: 0.25rem 0.5rem;
+    min-width: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.meta-act-link button p {
+    margin: 0 !important;
+    font-size: 1.2rem;
 }
 
 .btn-twitter {
@@ -797,4 +807,10 @@ a:hover, a:active, a:visited {
     .jumbotron-home {
         min-height: 750px;
     }
+}
+
+.jumbotron {
+    margin-bottom: 1.5rem;
+    background-size: cover;
+    background-position: center;
 }

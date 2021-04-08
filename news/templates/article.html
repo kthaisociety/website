@@ -24,7 +24,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <div class="jumbotron p-0 p-lg-5 text-white rounded bg-dark article-header carousel-darken" style="background-image: url('{{ article.picture.crop.1500x1000 }}'); background-size: cover;">
+            <div class="jumbotron p-0 p-lg-5 text-white rounded bg-dark article-header carousel-darken" style="background-image: url('{{ article.picture.crop.1500x1000 }}');">
                 <!-- Desktop version -->
                 <div class="col-md-8 px-0 article-title-lg d-none d-lg-block d-xl-block">
                     <h1 class="display-4">{{ article.title }}</h1>
@@ -48,7 +48,7 @@
 
 {% block in_in_body %}
     <div class="row">
-        <div class="col-md-12 mb-3 text-center text-lg-left">
+        <div class="col-md-12 mb-0 text-center text-lg-left">
             {% include "include/share.html" with title=article.title url=article.url %}
         </div>
     </div>

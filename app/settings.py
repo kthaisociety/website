@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "versatileimagefield",
     "django_crontab",
     "django_extensions",
+    "compressor",
     "app",
     "user",
     "news",
@@ -132,6 +133,20 @@ STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR + "/staticfiles"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, os.path.join("app", "static"))]
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
+
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "compressor.finders.CompressorFinder",
+]
+
+COMPRESS_PRECOMPILERS = (
+    ('text/x-scss', 'django_libsass.SassCompiler'),
+)
+
+if PROD_MODE:
+    COMPRESS_OFFLINE = True
+    LIBSASS_OUTPUT_STYLE = "compressed"
 
 # File upload configuration
 

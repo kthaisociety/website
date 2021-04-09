@@ -1,11 +1,12 @@
 {% load static %}
 {% load app_tags %}
+{% load compress %}
 
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <meta name="theme-color" content="#3d5875">
+        <meta name="theme-color" content="#000000">
         <meta name="author" content="{{ app_name }}">
         <meta name="description" content="{{ app_description }}">
         <link rel="icon" href="{% static 'favicon.png' %}" type="image/png">
@@ -16,10 +17,11 @@
         {% endblock %}
         <!-- TODO: Add social network URLs and information -->
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+        {% compress css %}
+            <link type="text/x-scss" href="{% static 'scss/theme.scss' %}" rel="stylesheet" media="screen">
+        {% endcompress %}
         <link rel="stylesheet" href="{% static 'css/fontawesome.css' %}">
         <link rel="stylesheet" href="{% static 'css/icons.css' %}">
-        <link rel="stylesheet" href="{% static 'css/main.css' %}">
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200;0,400;0,500;0,700;1,200;1,400;1,500;1,700&display=swap" rel="stylesheet">
 
@@ -35,10 +37,10 @@
             {% block header %}
                 {% block in_pre_header %}
                     {% if not maintenance_mode %}
-                        <nav class="navbar-top navbar navbar-expand-lg navbar-dark bg-black pt-2 pb-2">
+                        <nav class="navbar-top navbar navbar-expand-lg navbar-dark bg-dark pt-2 pb-2">
                             <div class="container">
                                 {% if request.user.is_authenticated and request.user.profile_picture.crop.50x50 %}
-                                    <img alt="Profile picture" src="{{ request.user.profile_picture.crop.50x50 }}" style="width: 18px;border-radius: 50%;border: 1px solid #73A2C6;margin-right: 5px;">
+                                    <img class="profile-picture-nav" alt="Profile picture" src="{{ request.user.profile_picture.crop.50x50 }}">
                                 {% endif %}
                                 <p class="navbar-nav mr-auto">
                                     {% if request.user.is_authenticated %}
@@ -65,7 +67,7 @@
                         </nav>
                     {% endif %}
                 {% endblock %}
-                <nav class="navbar navbar-expand-lg navbar-dark bg-main pt-3 pb-3">
+                <nav class="navbar navbar-expand-lg navbar-dark bg-dark-700 pt-3 pb-3">
                     <div class="container">
                         <a class="navbar-brand" href="{% url 'app_home' %}">
                             <img src="{% static 'img/logo_text_white.png' %}" width="128" height="24" alt="KTHAIS">
@@ -102,7 +104,7 @@
                                     </li>
                                 </ul>
                                 <a class="mb-0 ml-3 d-none d-md-inline-block" href="{% url 'business_sponsor' %}">
-                                    <button type="button" class="btn {% if request.resolver_match.url_name == "business_sponsor" %}btn-main3-active{% else %}btn-main3{% endif %}">
+                                    <button type="button" class="btn btn-light">
                                         Sponsor
                                     </button>
                                 </a>
@@ -117,7 +119,7 @@
                     </div>
                 </nav>
                 {% if messages %}
-                    <nav class="navbar-top navbar navbar-expand-lg navbar-light bg-main2 text-white">
+                    <nav class="navbar-top navbar navbar-expand-lg navbar-light bg-primary-100 text-white">
                         <div class="container">
                             <div class="row">
                                 {% for message in messages %}
@@ -216,7 +218,7 @@
                 {% endblock %}
             {% endblock %}
             {% block footer %}
-                <nav class="footer navbar navbar-expand-lg navbar-dark bg-main pt-3 pb-3">
+                <nav class="footer navbar navbar-expand-lg navbar-dark bg-dark pt-3 pb-3">
                     <!-- Desktop -->
                     <div class="container text-white d-none d-lg-flex">
                         <ul class="navbar-nav mr-auto mb-2">

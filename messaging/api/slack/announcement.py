@@ -28,7 +28,7 @@ def announce_event(event: Event, creator_id: UUID):
         )
     if event.social_url:
         event_extra += (
-            f"\n:facebook: Checkout our *<{event.social_url}|Facebook event>*"
+            f"\n:facebook: Check out our *<{event.social_url}|Facebook event>*"
         )
 
     blocks = [

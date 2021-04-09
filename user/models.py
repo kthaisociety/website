@@ -1,8 +1,9 @@
 import uuid
 
 from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.models import PermissionsMixin
 from django.core.exceptions import ValidationError
-from django.db import models, transaction
+from django.db import models
 from django.utils import timezone
 from django.utils.functional import cached_property
 from versatileimagefield.fields import VersatileImageField
@@ -13,7 +14,7 @@ from user.enums import UserType, GenderType
 from user.managers import UserManager
 
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(verbose_name="First name", max_length=255)
@@ -119,12 +120,6 @@ class User(AbstractBaseUser):
     @cached_property
     def event_registrations(self):
         return self.registrations.order_by("-created_at").all()
-
-    def has_perm(self, perm, obj=None):
-        return True
-
-    def has_module_perms(self, app_label):
-        return True
 
     @property
     def full_name(self):
@@ -270,6 +265,12 @@ class Role(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def is_active(self):
+        if self.ends_at:
+            return self.starts_at <= timezone.now() < self.ends_at
+        return timezone.now() >= self.starts_at
 
     def __str__(self):
         return f"{self.user} <{str(self.division.name)}>"

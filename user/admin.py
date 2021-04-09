@@ -1,5 +1,7 @@
 from django.contrib import admin, messages
+from django.contrib.auth.models import Group
 
+from app.settings import GROUP_BY_DIVISION_NAME
 from user.models import User, Team, Division, Role, History
 from user.utils import send_imported, send_slack
 
@@ -49,7 +51,7 @@ class UserAdmin(admin.ModelAdmin):
         "graduation_year",
     )
     readonly_fields = (
-        "password",
+        "groups",
         "last_login",
         "slack_id",
         "slack_status_text",
@@ -59,7 +61,7 @@ class UserAdmin(admin.ModelAdmin):
         "slack_picture_hash",
         "created_at",
     )
-    exclude = ("slack_token", "slack_scopes")
+    exclude = ("password", "slack_token", "slack_scopes", "user_permissions")
     ordering = ("-created_at",)
     actions = [send_welcome, send_slack_invite]
 
@@ -86,6 +88,18 @@ class RoleAdmin(admin.ModelAdmin):
     list_display = ("id", "division", "user", "starts_at", "ends_at", "is_head")
     list_filter = ("division__team", "user", "starts_at", "ends_at")
     ordering = ("-division__team__starts_at", "-starts_at", "user")
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+        group_name = GROUP_BY_DIVISION_NAME.get(obj.division.name)
+        if group_name:
+            group = Group.objects.get(name=group_name)
+            print(obj.user)
+            print(obj.user.__dict__)
+            if obj.is_active:
+                obj.user.groups.add(group)
+            else:
+                obj.user.groups.remove(group)
 
 
 @admin.register(History)

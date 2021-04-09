@@ -317,3 +317,83 @@ if os.environ.get("GO_CALENDAR_CREDS", None):
         GOOGLE_CALENDAR_CREDS = GOOGLE_CALENDAR_CREDS_SERVICE.with_subject(
             GOOGLE_CALENDAR_ADMIN_EMAIL
         )
+
+# Permissions
+PERMISSION_GROUPS = {
+    "BRC": {
+        "add": {
+            "business": ["company", "contact", "sponsorship", "tier"],
+            "event": ["attachment", "event", "session"],
+            "news": ["article"],
+        },
+        "change": {
+            "business": ["company", "contact", "sponsorship", "tier"],
+            "event": ["attachment", "event", "session"],
+            "news": ["article"],
+        },
+        "view": {"business": ["contact"], "event": ["registration"]},
+        "delete": {
+            "business": ["company", "contact", "sponsorship", "tier"],
+            "event": ["attachment", "event", "session"],
+            "news": ["article"],
+        },
+    },
+    "EDU": {
+        "add": {
+            "event": ["attachment", "event", "session"],
+            "messaging": ["slackchannel"],
+            "news": ["article"],
+        },
+        "change": {
+            "event": ["attachment", "event", "session"],
+            "messaging": ["slackchannel"],
+            "news": ["article"],
+        },
+        "view": {"event": ["registration"]},
+        "delete": {
+            "event": ["attachment", "event", "session"],
+            "messaging": ["slackchannel"],
+            "news": ["article"],
+        },
+    },
+    "ITO": {
+        "add": {
+            "event": ["attachment", "event", "session"],
+            "messaging": ["slackchannel"],
+            "news": ["article"],
+        },
+        "change": {
+            "event": ["attachment", "event", "session"],
+            "messaging": ["slackchannel"],
+            "news": ["article"],
+        },
+        "view": {"event": ["registration"], "user": ["user"]},
+        "delete": {
+            "event": ["attachment", "event", "session"],
+            "messaging": ["slackchannel"],
+            "news": ["article"],
+        },
+    },
+}
+
+PERMISSIONS_COMMON = {
+    "add": {"page": ["category", "page", "picture"], "user": ["history"]},
+    "change": {"page": ["category", "page", "picture"], "user": ["history"]},
+    "view": {
+        "business": ["company", "sponsorship", "tier"],
+        "event": ["attachment", "event", "session"],
+        "messaging": ["slackchannel", "slacklog"],
+        "news": ["article"],
+        "page": ["category", "page", "picture"],
+        "user": ["division", "history", "role", "team"],
+    },
+    "delete": {"page": ["category", "page", "picture"], "user": ["history"]},
+}
+
+GROUP_BY_DIVISION_NAME = {
+    "Business Relations": "BRC",
+    "Communications": "BRC",
+    "Education": "EDU",
+    "IT": "ITO",
+    "Operations": "ITO",
+}

@@ -17,7 +17,9 @@ from news.models import Article
 
 
 def announce_event(event: Event, creator_id: UUID):
-    event_extra = f":clock3: {timezone.localtime(event.starts_at).strftime('%B %-d, %Y %H:%M')}"
+    event_extra = (
+        f":clock3: {timezone.localtime(event.starts_at).strftime('%B %-d, %Y %H:%M')}"
+    )
     if event.location:
         event_extra += f"\n:round_pushpin: {event.location}"
     if event.is_signup_open:

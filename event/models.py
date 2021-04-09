@@ -3,6 +3,7 @@ import textwrap
 import uuid
 from io import StringIO
 import markdown
+from bs4 import BeautifulSoup
 
 from django.core.exceptions import ValidationError
 
@@ -72,8 +73,8 @@ class Event(models.Model):
 
     @property
     def description_plaintext(self):
-        text_only = re.sub("[ \t]+", " ", strip_tags(self.description))
-        return text_only.replace("\n ", "\n").strip()
+        html = markdown.markdown(self.description)
+        return "".join(BeautifulSoup(html, "html.parser").findAll(text=True))
 
     @property
     def description_extra_short(self):

@@ -2,6 +2,8 @@ import re
 import textwrap
 import uuid
 
+import markdown
+from bs4 import BeautifulSoup
 from django.db import models
 from django.urls import reverse
 from django.utils.html import strip_tags
@@ -60,8 +62,8 @@ class Article(models.Model):
 
     @property
     def body_plaintext(self):
-        text_only = re.sub("[ \t]+", " ", strip_tags(self.body))
-        return text_only.replace("\n ", "\n").strip()
+        html = markdown.markdown(self.body)
+        return "".join(BeautifulSoup(html, "html.parser").findAll(text=True))
 
     def save(self, *args, **kwargs):
         if not self.slug:

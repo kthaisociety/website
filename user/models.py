@@ -1,4 +1,5 @@
 import uuid
+from typing import Optional
 
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
@@ -154,8 +155,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         self.save()
 
     def update_verify(
-        self, verify_key, verify_expiration=timezone.now() + timezone.timedelta(days=1)
+        self, verify_key, verify_expiration: Optional[timezone.datetime] = None
     ):
+        if not verify_expiration:
+            verify_expiration = timezone.now() + timezone.timedelta(days=1)
+
         self.verify_key = verify_key
         self.verify_expiration = verify_expiration
         self.save()

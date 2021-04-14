@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from business.models import Company, Contact, Tier, Sponsorship
+from business.models import Company, Contact, Tier, Sponsorship, Offer
 
 
 @admin.register(Company)
@@ -30,4 +30,12 @@ class SponsorshipAdmin(admin.ModelAdmin):
     search_fields = ("id", "company", "tier")
     list_display = ("company", "tier", "starts_at", "ends_at", "is_visible")
     list_filter = ("company", "tier")
+    ordering = ("-starts_at", "company")
+
+
+@admin.register(Offer)
+class OfferAdmin(admin.ModelAdmin):
+    search_fields = ("id", "title", "company", "description")
+    list_display = ("title", "company", "type", "starts_at", "ends_at", "is_visible")
+    list_filter = ("company", "type", "starts_at", "ends_at", "is_visible")
     ordering = ("-starts_at", "company")

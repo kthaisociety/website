@@ -7,19 +7,28 @@ import versatileimagefield.fields
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('user', '0017_groups'),
-    ]
+    dependencies = [("user", "0017_groups")]
 
     operations = [
         migrations.AlterField(
-            model_name='user',
-            name='picture',
-            field=versatileimagefield.fields.VersatileImageField(default='user/picture/profile.png', storage=app.storage.OverwriteStorage(), upload_to='user/picture/', verbose_name='Image'),
+            model_name="user",
+            name="picture",
+            field=versatileimagefield.fields.VersatileImageField(
+                default="user/picture/profile.png",
+                storage=app.storage.OverwriteStorage(),
+                upload_to="user/picture/",
+                verbose_name="Image",
+            ),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='slack_picture',
-            field=versatileimagefield.fields.VersatileImageField(blank=True, null=True, storage=app.storage.OverwriteStorage(), upload_to='user/slack/picture/', verbose_name='Slack image'),
+            model_name="user",
+            name="slack_picture",
+            field=versatileimagefield.fields.VersatileImageField(
+                blank=True,
+                null=True,
+                storage=app.storage.OverwriteStorage(),
+                upload_to="user/slack/picture/",
+                verbose_name="Slack image",
+            ),
         ),
     ]

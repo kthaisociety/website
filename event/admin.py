@@ -3,6 +3,7 @@ from django.db import transaction
 from django.forms import ModelForm
 
 import event.api.event.calendar
+from event.enums import RegistrationStatus
 from event.models import Event, Registration, Session, Attachment, Schedule
 from event.tasks import send_url_email
 from messaging.api.slack.announcement import announce_event
@@ -101,8 +102,19 @@ send_slack_announcement.short_description = "Send Slack announcement"
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     search_fields = ("id", "name", "code", "type", "status")
-    list_display = ("name", "code", "type", "status")
+    list_display = ("name", "code", "type", "status", "registration_count")
     list_filter = ("type", "status")
     ordering = ("-created_at", "-updated_at", "name")
     inlines = [SessionInline, RegistrationInline]
     actions = [send_slack_announcement]
+
+    def registration_count(self, obj):
+        return obj.registrations.filter(
+            status__in=[
+                RegistrationStatus.REGISTERED,
+                RegistrationStatus.JOINED,
+                RegistrationStatus.ATTENDED,
+            ]
+        ).count()
+
+    registration_count.short_description = "registrations"

@@ -103,7 +103,7 @@ def check_users() -> List[Dict]:
         users_to_warn = []
         for slack_user in response.data["members"]:
             user_email = slack_user.get("profile", {}).get("email")
-            if user_email:
+            if user_email and not slack_user.get("deleted", False):
                 u = users_by_email.get(user_email)
                 if not u:
                     real_name = slack_user.get("profile", {}).get("real_name", "")

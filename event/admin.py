@@ -75,6 +75,7 @@ class RegistrationInline(admin.StackedInline):
     show_change_link = False
     can_delete = False
     extra = 0
+    readonly_fields = ("user", "status", "created_at")
 
     def has_add_permission(self, request, obj=None):
         return False

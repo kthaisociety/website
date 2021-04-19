@@ -8,6 +8,7 @@ from django.utils import timezone
 from django.utils.functional import cached_property
 from versatileimagefield.fields import VersatileImageField
 
+from app.storage import OverwriteStorage
 from app.utils import is_email_organiser
 from user.consts import EMOJIS
 from user.enums import UserType, GenderType
@@ -40,7 +41,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     # Personal information
     picture = VersatileImageField(
-        "Image", upload_to="user/picture/", default="user/picture/profile.png"
+        "Image", upload_to="user/picture/", default="user/picture/profile.png", storage=OverwriteStorage()
     )
     gender = models.PositiveSmallIntegerField(
         choices=((t.value, t.name) for t in GenderType), default=GenderType.NONE
@@ -70,7 +71,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     slack_status_emoji = models.CharField(max_length=255, blank=True, null=True)
     slack_display_name = models.CharField(max_length=255, blank=True, null=True)
     slack_picture = VersatileImageField(
-        "Slack image", upload_to="user/slack/picture/", blank=True, null=True
+        "Slack image", upload_to="user/slack/picture/", blank=True, null=True, storage=OverwriteStorage()
     )
     slack_picture_hash = models.CharField(max_length=255, blank=True, null=True)
 

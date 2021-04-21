@@ -1,0 +1,3 @@
+[submodule "badgeprint"]
+	path = badgeprint
+	url = git@github.com:isakcodes/badgeprint.git

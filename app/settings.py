@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "messaging",
     "business",
     "django_social_share",
+    "badgeprint",
 ]
 
 MIDDLEWARE = [

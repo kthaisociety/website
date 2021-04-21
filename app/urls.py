@@ -15,6 +15,7 @@ urlpatterns = [
     url(r"^page/", include("page.urls")),
     url(r"^$", views.home, name="app_home"),
     url(r"^files/(?P<file_>.*)$", views.files, name="app_files"),
+    url(r"^badgeprint/", include("badgeprint.urls")),
 ]
 
 if GH_KEY:

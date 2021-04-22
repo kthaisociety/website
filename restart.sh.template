@@ -10,6 +10,8 @@ echo "Migrating database..."
 ./env/bin/python manage.py migrate
 echo "Collecting static data..."
 ./env/bin/python manage.py collectstatic --no-input
+echo "Compressing files..."
+./env/bin/python manage.py compress
 echo "Updating crontab..."
 ./env/bin/python manage.py crontab add
 echo "Removing .pyc files..."

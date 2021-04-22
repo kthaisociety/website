@@ -6,12 +6,14 @@ source environment.sh
 echo "[KTHAIS] REDEPLOYING"
 echo "Installing new requirements..."
 ./env/bin/pip install -r requirements.txt
+echo "Collecting static data..."
+./env/bin/python manage.py collectstatic --no-input
+echo "Compressing files..."
+./env/bin/python manage.py compress
 echo "Migrating database..."
 ./env/bin/python manage.py migrate
 echo "Updating crontab..."
 ./env/bin/python manage.py crontab add
-echo "Collecting static data..."
-./env/bin/python manage.py collectstatic --no-input
 echo "Removing .pyc files..."
 find . -name \*.pyc -delete
 echo "[KTHAIS] REDEPLOY COMPLETED"

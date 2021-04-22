@@ -6,7 +6,7 @@
 
 {% block title_plain %}{{ app_name }}{% endblock %}
 
-{% block body_pre %}
+{% block body %}
     {% if articles and events %}
         <div class="jumbotron jumbotron-fluid jumbotron-home d-flex mb-0" style="margin-top: -102px; height: 100vh; background-image: linear-gradient(45deg, rgba(20, 20, 20, 0.95) 0%, rgba(20, 20, 20, 0.85) 100%), url('{{ articles.0.picture.url }}'); background-size: cover; background-position: center center;">
             <div class="container-home justify-content-center align-self-center">
@@ -98,9 +98,6 @@
             </div>
         </div>
     {% endif %}
-{% endblock %}
-
-{% block in_body %}
     <div class="container container-content">
         <div class="row mb-0">
             <div class="col-md-12">

@@ -2,11 +2,12 @@
 {% load app_tags %}
 {% load social_share %}
 {% load static %}
+{% load humanize %}
 
 {% block title_plain %}{{ app_name }}{% endblock %}
 
 {% block pre_body %}
-    {% if articles %}
+    {% if articles and events %}
         <div class="jumbotron jumbotron-fluid jumbotron-home d-flex mb-0" style="margin-top: -102px; height: 100vh; background-image: linear-gradient(45deg, rgba(20, 20, 20, 0.95) 0%, rgba(20, 20, 20, 0.85) 100%), url('{{ articles.0.picture.url }}'); background-size: cover; background-position: center center;">
             <div class="container-home justify-content-center align-self-center">
                 <div class="row">
@@ -27,19 +28,22 @@
                     <div class="d-none d-lg-block col-1"></div>
                     <div class="d-none d-lg-block col-3">
                         <div>
-                            <div class="mb-5">
+                            <div class="mb-5 text-right">
                                 <a href="{{ events.0.url }}">
-                                    <div class="container-image mb-3" style="background-image: linear-gradient(315deg, rgba(20, 20, 20, 0.75) 0%, rgba(20, 20, 20, 0.25) 100%), url('{{ events.0.picture.crop.500x250 }}'); background-size: cover; background-position: center center;"></div>
+                                    <div class="container-image mb-3" style="background-image: linear-gradient(315deg, rgba(20, 20, 20, 0.25) 0%, rgba(20, 20, 20, 0.15) 100%), url('{{ events.0.picture.crop.500x250 }}'); background-size: cover; background-position: center center;"></div>
                                 </a>
-                                <h4 class="text-white text-right mb-0">
+                                <h4 class="text-white mb-3">
                                     <a href="{{ events.0.url }}">
                                         {{ events.0.name }}
                                     </a>
                                 </h4>
+                                {% if events.0.is_event_future %}
+                                    <span class="badge badge-white p-2 ml-auto d-table mt-4 d-md-inline-block mt-md-0">Register before {{ events.0.ends_at|naturalday }}</span>
+                                {% endif %}
                             </div>
                             <div>
                                 <a href="{{ articles.1.url }}">
-                                    <div class="container-image mb-3" style="background-image: linear-gradient(315deg, rgba(20, 20, 20, 0.75) 0%, rgba(20, 20, 20, 0.25) 100%), url('{{ articles.1.picture.crop.500x250 }}'); background-size: cover; background-position: center center;"></div>
+                                    <div class="container-image mb-3" style="background-image: linear-gradient(315deg, rgba(20, 20, 20, 0.25) 0%, rgba(20, 20, 20, 0.15) 100%), url('{{ articles.1.picture.crop.500x250 }}'); background-size: cover; background-position: center center;"></div>
                                 </a>
                                 <h4 class="text-white text-right mb-2">
                                     <a href="{{ articles.1.url }}">
@@ -55,6 +59,42 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="row mt-5 ml-2 mr-2 d-block d-lg-none">
+            <div class="col-12 mb-3">
+                <a class="link-unstyled" href="{{ events.0.url }}">
+                    <div class="w-100 image-radius" style="height: 250px; filter: grayscale(10%); -webkit-filter: grayscale(10%); background-image: linear-gradient(to bottom, rgba(61,88,117,0.1) 0%, rgba(61,88,117,0.1) 100%), url('{{ events.0.picture.url }}'); background-position: center center; background-size: cover;"></div>
+                </a>
+            </div>
+            <div class="col-12">
+                <h4 class="text-center mb-3">
+                    <a href="{{ events.0.url }}">
+                        {{ events.0.name }}
+                    </a>
+                </h4>
+            </div>
+            {% if not events.0.is_event_future %}
+                <span class="badge badge-primary p-2 ml-auto mr-auto d-table mt-2 d-md-inline-block mt-md-0">Register before {{ events.0.ends_at|naturalday }}</span>
+            {% endif %}
+        </div>
+        <div class="row mt-5 ml-2 mr-2 d-block d-lg-none">
+            <div class="col-12 mb-3">
+                <a class="link-unstyled" href="{{ articles.1.url }}">
+                    <div class="w-100 image-radius" style="height: 250px; filter: grayscale(10%); -webkit-filter: grayscale(10%); background-image: linear-gradient(to bottom, rgba(61,88,117,0.1) 0%, rgba(61,88,117,0.1) 100%), url('{{ articles.1.picture.url }}'); background-position: center center; background-size: cover;"></div>
+                </a>
+            </div>
+            <div class="col-12">
+                <h4 class="text-center mb-2">
+                    <a href="{{ articles.1.url }}">
+                        {{ articles.1.title }}
+                    </a>
+                </h4>
+                <h6 class="text-center text-grey mb-0">
+                    <a href="{{ articles.1.url }}">
+                        {{ articles.1.subtitle }}
+                    </a>
+                </h6>
             </div>
         </div>
     {% endif %}
@@ -116,7 +156,7 @@
                 <div class="row justify-content-md-center">
                     {% for tier, sps in sponsorships.items %}
                         {% for sponsorship in sps %}
-                            <div class="col-12 col-md-3 text-center ml-auto mr-auto ml-md-0 mr-md-0 mt-4">
+                            <div class="col-12 col-md-3 text-center ml-auto mr-auto ml-md-0 mr-md-0 mt-4 pl-5 pr-5 pl-md-0 pr-md-0">
                                 <a href="{{ sponsorship.company.website }}">
                                     <img class="w-100 image-white" src="{{ sponsorship.company.logo.url }}" />
                                 </a>
@@ -138,7 +178,8 @@
                             {% comment %}
                                 <img src="{{ organiser.picture.url }}" class="ml-auto mr-auto">
                             {% endcomment %}
-                            <h6 class="mt-1 mb-1 text-white" {% if organiser.full_name|length > 15 %}style="font-size: 14px; padding-top: 1px; padding-bottom: 1px;"{% endif %}>{{ organiser.full_name }}{% if organiser.role.is_head %} ⭐{% endif %}</h6>
+                            <div class="{% if organiser.role.is_head %}role-picture-head {% endif %}role-picture"><img alt="Role picture" src="{{ organiser.role.picture.crop.200x200 }}"></div>
+                            <h6 class="mt-1 mb-1 text-white" {% if organiser.full_name|length > 15 %}style="font-size: 14px; padding-top: 1px; padding-bottom: 1px;"{% endif %}>{{ organiser.full_name }}</h6>
                             <p class="mb-2" style="line-height: 1;"><small><a href="mailto:{{ organiser.email }}" target="_blank" class="link-unstyled">{{ organiser.email }}</a></small></p>
                             <p class="mb-0" style="line-height: 1; font-size: 14px">{{ organiser.role.division.name|upper }}</p>
                             {% if organiser.website %}</a>{% endif %}

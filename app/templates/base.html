@@ -99,11 +99,11 @@
                                     <li class="nav-item {% if request.resolver_match.url_name == "events_events" %}active{% endif %}">
                                         <a class="nav-link" href="{% url 'events_events' %}">Events</a>
                                     </li>
-                                    <li class="nav-item d-inline-block d-md-none {% if request.resolver_match.url_name == "business_sponsor" %}active{% endif %}">
+                                    <li class="nav-item d-inline-block d-lg-none {% if request.resolver_match.url_name == "business_sponsor" %}active{% endif %}">
                                         <a class="nav-link" href="{% url 'business_sponsor' %}">Sponsor</a>
                                     </li>
                                 </ul>
-                                <a class="mb-0 ml-3 d-none d-md-inline-block" href="{% url 'business_sponsor' %}">
+                                <a class="mb-0 ml-3 d-none d-lg-inline-block" href="{% url 'business_sponsor' %}">
                                     <button type="button" class="btn btn-light">
                                         Sponsor
                                     </button>

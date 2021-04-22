@@ -210,6 +210,7 @@ nav {
 .container-home {
     width: 100%;
     max-width: 1840px;
+    margin-top: 102px;
     padding-right: 5%;
     padding-left: 5%;
     margin-right: auto;
@@ -219,6 +220,13 @@ nav {
 .container-image {
     width: 100%;
     height: 250px;
+}
+
+@media (max-width: 1200px) {
+    .container-image {
+        width: 100%;
+        height: 150px;
+    }
 }
 
 .card-title {
@@ -237,6 +245,13 @@ nav {
 .container-content {
     margin-top: 5rem;
     margin-bottom: 5rem;
+}
+
+@media (max-width: 991px) {
+    .container-content {
+        margin-top: 3rem;
+        margin-bottom: 3rem;
+    }
 }
 
 .section-title::after {
@@ -711,3 +726,41 @@ nav {
     background-size: cover;
     background-position: center;
 }
+
+.role-picture {
+    border-radius: 50%;
+    max-width: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0.75rem;
+    border: 0.2rem solid $white;
+}
+
+.role-picture-head {
+    border: 0.2rem solid $primary-900;
+}
+
+.role-picture img {
+    width: 100%;
+    margin: 0;
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+}
+
+@media (max-width: 991px) {
+    .nav-link {
+        margin-left: 0;
+    }
+}
+
+.badge-white {
+  color: $black;
+  background-color: $white; }
+  /* line 17, app/static/scss/bootstrap/mixins/_hover.scss */
+  a.badge-white:hover, a.badge-white:focus {
+    color: $dark-900;
+    background-color: $light-900; }
+  /* line 11, app/static/scss/bootstrap/mixins/_badge.scss */
+  a.badge-white:focus, a.badge-white.focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem $primary-100; }

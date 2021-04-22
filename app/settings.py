@@ -145,10 +145,6 @@ COMPRESS_PRECOMPILERS = (
     ('text/x-scss', 'django_libsass.SassCompiler'),
 )
 
-if PROD_MODE:
-    COMPRESS_OFFLINE = True
-    LIBSASS_OUTPUT_STYLE = "compressed"
-
 # File upload configuration
 
 MEDIA_URL = "/files/"

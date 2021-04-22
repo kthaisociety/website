@@ -52,6 +52,7 @@
                                         {% if request.user.is_authenticated %}
                                             {% if request.user.email_verified and request.user.is_admin %}
                                                 <small class="ml-2"><a class="link-main" href="{% url 'admin:index' %}">Admin</a></small>
+                                                <small class="ml-2"><a class="link-main" href="{% url 'list_all_event' %}">Badgeprint</a></small>
                                             {% endif %}
                                             <small class="ml-2"><a class="link-main" href="{% url 'user_dashboard' %}">Dashboard</a></small>
                                             <small class="ml-2"><a class="link-main" href="{% url 'user_logout' %}">Logout</a></small>

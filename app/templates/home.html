@@ -74,7 +74,7 @@
                     </a>
                 </h4>
             </div>
-            {% if not events.0.is_event_future %}
+            {% if events.0.is_event_future %}
                 <span class="badge badge-primary p-2 ml-auto mr-auto d-table mt-2 d-md-inline-block mt-md-0">Register before {{ events.0.ends_at|naturalday }}</span>
             {% endif %}
         </div>

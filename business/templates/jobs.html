@@ -7,13 +7,28 @@
 
 {% block in_body %}
     <div class="container container-body py-5">
+        <div class="row d-none d-lg-block">
+            <div class="col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent p-0 pb-2">
+                        <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'app_home' %}">Home</a></li>
+                        <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'business_jobs' %}">Job board</a></li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <h1>Job board</h1>
-                <p>...</p>
+                <p>We at KTH AI Society strive to bridge the gap between our members and the industry. It’s quite simple, companies working for the solutions of tomorrow need the talent of today. So below we listed all relevant work opportunities for you to take on new challenges.</p>
+                <p>For more opportunities, visit our strategic partner, <a target="_blank" href="http://stockholm.ai/job-board/">Stockholm AI</a>.</p>
+                <a class="link-unstyled mt-3 mb-0 d-block text-center text-md-left" href="{% url 'business_jobs_faq' %}"><p class="text-main mb-0"><strong>Any questions? Check out our FAQ <i class="fas fa-arrow-right ml-1"></i></strong></p></a>
             </div>
         </div>
         <hr>
+        {% if not offers %}
+            <p>There's no offers at the moment but make sure to check this page soon again!</p>
+        {% endif %}
         {% for offer in offers %}
             <div class="row mt-4 mb-4">
                 <div class="col-md-2">

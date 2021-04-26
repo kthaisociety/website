@@ -17,3 +17,7 @@ def jobs(request):
         starts_at__lte=timezone.now(),
     ).order_by("-created_at")
     return render(request, "jobs.html", {"offers": offers_objs})
+
+
+def jobs_faq(request):
+    return render(request, "jobs_faq.html")

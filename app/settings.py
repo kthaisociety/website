@@ -338,18 +338,18 @@ if os.environ.get("GO_CALENDAR_CREDS", None):
 PERMISSION_GROUPS = {
     "BRC": {
         "add": {
-            "business": ["company", "contact", "sponsorship", "tier"],
+            "business": ["company", "contact", "offer", "sponsorship", "tier"],
             "event": ["attachment", "event", "session"],
             "news": ["article"],
         },
         "change": {
-            "business": ["company", "contact", "sponsorship", "tier"],
+            "business": ["company", "contact", "offer", "sponsorship", "tier"],
             "event": ["attachment", "event", "session"],
             "news": ["article"],
         },
         "view": {"business": ["contact"], "event": ["registration"]},
         "delete": {
-            "business": ["company", "contact", "sponsorship", "tier"],
+            "business": ["company", "contact", "offer", "sponsorship", "tier"],
             "event": ["attachment", "event", "session"],
             "news": ["article"],
         },
@@ -396,7 +396,7 @@ PERMISSIONS_COMMON = {
     "add": {"page": ["category", "page", "picture"], "user": ["history"]},
     "change": {"page": ["category", "page", "picture"], "user": ["history"]},
     "view": {
-        "business": ["company", "sponsorship", "tier"],
+        "business": ["company", "offer", "sponsorship", "tier"],
         "event": ["attachment", "event", "session"],
         "messaging": ["slackchannel", "slacklog"],
         "news": ["article"],
@@ -409,6 +409,7 @@ PERMISSIONS_COMMON = {
 GROUP_BY_DIVISION_NAME = {
     "Business Relations": "BRC",
     "Communications": "BRC",
+    "Design": "DES",
     "Education": "EDU",
     "IT": "ITO",
     "Operations": "ITO",

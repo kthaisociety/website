@@ -9,70 +9,54 @@
 {% block body %}
     {% if articles and events %}
         <div class="jumbotron jumbotron-fluid jumbotron-home d-flex mb-0" style="margin-top: -102px; height: 100vh; background-image: linear-gradient(45deg, rgba(20, 20, 20, 0.95) 0%, rgba(20, 20, 20, 0.85) 100%), url('{{ articles.0.picture.url }}'); background-size: cover; background-position: center center;">
-            <div class="container-home position-relative">
-                <div class="container-home-middle align-self-center d-flex align-items-center justify-content-center">
-                    <div>
-                        <h1 class="card-title text-white">
-                            <a href="{{ articles.0.url }}">
-                                {{ articles.0.title }}
-                            </a>
-                        </h1>
-                        {% if articles.0.subtitle %}
+            <div class="container-home justify-content-center align-self-center">
+                <div class="row">
+                    <div class="col-12 col-lg-8 d-flex">
+                        <div class="justify-content-center align-self-center">
+                            <h1 class="card-title text-white">
+                                <a href="{{ articles.0.url }}">
+                                    {{ articles.0.title }}
+                                </a>
+                            </h1>
                             <h5 class="card-subtitle mb-0 text-grey font-weight-light">
                                 <a href="{{ articles.0.url }}">
                                     {{ articles.0.subtitle }}
                                 </a>
                             </h5>
-                        {% endif %}
+                        </div>
                     </div>
-                </div>
-                <div class="row d-none d-md-flex container-home-bottom position-absolute">
-                    <div class="col-6 col-lg-4">
-                        <a href="{{ events.0.url }}">
-                            <div class="container-image mb-3" style="background-image: linear-gradient(315deg, rgba(20, 20, 20, 0.25) 0%, rgba(20, 20, 20, 0.15) 100%), url('{{ events.0.picture.crop.1500x1000 }}'); background-size: cover; background-position: center center;"></div>
-                        </a>
-                        <h4 class="text-white mb-3">
-                            <a href="{{ events.0.url }}">
-                                {{ events.0.name }}
-                            </a>
-                        </h4>
-                        {% if events.0.is_event_future %}
-                            <span class="badge badge-white p-2 ml-auto d-table mt-4 d-md-inline-block mt-md-0">Register before {{ events.0.ends_at|naturalday }}</span>
-                        {% endif %}
-                    </div>
-                    <div class="col-6 col-lg-4">
-                        <a href="{{ articles.1.url }}">
-                            <div class="container-image mb-3" style="background-image: linear-gradient(315deg, rgba(20, 20, 20, 0.25) 0%, rgba(20, 20, 20, 0.15) 100%), url('{{ articles.1.picture.crop.1500x1000 }}'); background-size: cover; background-position: center center;"></div>
-                        </a>
-                        <h4 class="text-white mb-2">
-                            <a href="{{ articles.1.url }}">
-                                {{ articles.1.title }}
-                            </a>
-                        </h4>
-                        {% if articles.1.subtitle %}
-                            <h6 class="text-grey mb-0">
+                    <div class="d-none d-lg-block col-1"></div>
+                    <div class="d-none d-lg-block col-3">
+                        <div>
+                            <div class="mb-5 text-right">
+                                <a href="{{ events.0.url }}">
+                                    <div class="container-image mb-3" style="background-image: linear-gradient(315deg, rgba(20, 20, 20, 0.25) 0%, rgba(20, 20, 20, 0.15) 100%), url('{{ events.0.picture.crop.500x250 }}'); background-size: cover; background-position: center center;"></div>
+                                </a>
+                                <h4 class="text-white mb-3">
+                                    <a href="{{ events.0.url }}">
+                                        {{ events.0.name }}
+                                    </a>
+                                </h4>
+                                {% if events.0.is_event_future %}
+                                    <span class="badge badge-white p-2 ml-auto d-table mt-4 d-md-inline-block mt-md-0">Register before {{ events.0.ends_at|naturalday }}</span>
+                                {% endif %}
+                            </div>
+                            <div>
                                 <a href="{{ articles.1.url }}">
-                                    {{ articles.1.subtitle }}
+                                    <div class="container-image mb-3" style="background-image: linear-gradient(315deg, rgba(20, 20, 20, 0.25) 0%, rgba(20, 20, 20, 0.15) 100%), url('{{ articles.1.picture.crop.500x250 }}'); background-size: cover; background-position: center center;"></div>
                                 </a>
-                            </h6>
-                        {% endif %}
-                    </div>
-                    <div class="d-none d-lg-block col-4">
-                        <a href="{{ articles.2.url }}">
-                            <div class="container-image mb-3" style="background-image: linear-gradient(315deg, rgba(20, 20, 20, 0.25) 0%, rgba(20, 20, 20, 0.15) 100%), url('{{ articles.2.picture.crop.1500x1000 }}'); background-size: cover; background-position: center center;"></div>
-                        </a>
-                        <h4 class="text-white mb-2">
-                            <a href="{{ articles.2.url }}">
-                                {{ articles.2.title }}
-                            </a>
-                        </h4>
-                        {% if articles.2.subtitle %}
-                            <h6 class="text-grey mb-0">
-                                <a href="{{ articles.2.url }}">
-                                    {{ articles.2.subtitle }}
-                                </a>
-                            </h6>
-                        {% endif %}
+                                <h4 class="text-white text-right mb-2">
+                                    <a href="{{ articles.1.url }}">
+                                        {{ articles.1.title }}
+                                    </a>
+                                </h4>
+                                <h6 class="text-grey text-right mb-0">
+                                    <a href="{{ articles.1.url }}">
+                                        {{ articles.1.subtitle }}
+                                    </a>
+                                </h6>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

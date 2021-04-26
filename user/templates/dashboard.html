@@ -81,12 +81,12 @@
                                             <div class="col-12 col-md-4 mt-2 mb-0 pl-2 pr-2">
                                                 <a class="link-unstyled" href="{{ registration.event.url }}" target="_blank">
                                                     <div class="card mt-2 mb-0">
-                                                        <img class="card-img-top" src="{{ registration.event.picture.crop.500x300 }}">
+                                                        <img class="card-img-top rounded-0" src="{{ registration.event.picture.crop.500x300 }}">
                                                         <div class="card-body">
                                                             {% if registration.event.is_event_future %}
-                                                                <span class="badge badge-main p-2 mb-3 ml-auto mr-auto d-table mt-4 d-md-inline-block mt-md-0">Upcoming event</span>
+                                                                <span class="badge badge-primary p-2 mb-3 ml-auto mr-auto d-table mt-4 d-md-inline-block mt-md-0">Upcoming event</span>
                                                             {% else %}
-                                                                <span class="badge badge-main-s2 p-2 mb-3 ml-auto mr-auto d-table mt-4 d-md-inline-block mt-md-0">Past event</span>
+                                                                <span class="badge badge-dark p-2 mb-3 ml-auto mr-auto d-table mt-4 d-md-inline-block mt-md-0">Past event</span>
                                                             {% endif %}
                                                             <h5 class="mb-0">{{ registration.event.name }}</h5>
                                                         </div>
@@ -112,14 +112,14 @@
                                     <hr>
                                     <p class="card-text"><strong>User ID:</strong> {{ request.user.slack_id }}</p>
                                     <a class="link-unstyled" href="https://kthaisociety.slack.com">
-                                        <button type="button" class="btn btn-main">Open Slack</button>
+                                        <button type="button" class="btn btn-primary">Open Slack</button>
                                     </a>
                                 {% else %}
                                     <h6 class="card-text mt-3 mb-3">❌ Not connected</h6>
                                     <hr>
                                     <p class="card-text">If you want to get the most out of KTH AI Society you can authorise Slack!</p>
                                     <a class="link-unstyled" href="https://slack.com/oauth/v2/authorize?client_id={{ sl_id }}&user_scope={{ sl_user_scopes }}&redirect_uri={{ app_full_domain }}{% url "slack_user_auth" %}">
-                                        <button type="button" class="btn btn-main">Authorize</button>
+                                        <button type="button" class="btn btn-primary">Authorize</button>
                                     </a>
                                 {% endif %}
                             </div>

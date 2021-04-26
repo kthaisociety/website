@@ -12,7 +12,7 @@
                 <div class="container-home position-relative">
                     <div class="container-home-middle align-self-center d-flex align-items-center justify-content-center">
                         <div>
-                            <h1 class="card-title text-white">
+                            <h1 class="main-title text-white">
                                 <a href="{{ articles.0.url }}">
                                     {{ articles.0.title }}
                                 </a>
@@ -106,6 +106,20 @@
             </div>
         {% endif %}
         <div class="container container-content">
+            {% if offers %}
+                <div class="row mb-0">
+                    <div class="col-md-12">
+                        <h1 class="section-title text-main text-center text-md-left">Job opportunities</h1>
+                    </div>
+                </div>
+                <div class="row d-flex mb-5">
+                    {% for offer in offers|slice:":2" %}
+                        <div class="col-12 col-md-6 d-flex align-items-stretch">
+                            {% include "include/offer.html" with offer=offer with_description=False %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
             <div class="row mb-0">
                 <div class="col-md-12">
                     <h1 class="section-title text-main text-center text-md-left">Our mission</h1>

@@ -27,7 +27,7 @@
 
 {% block in_in_body %}
     <div class="row">
-        <div class="col-md-12 mb-3">
+        <div class="col-md-12 mb-1">
             <h1>{{ event.name }}</h1>
         </div>
     </div>
@@ -102,7 +102,7 @@
                                                 <img class="card-img-top" src="{{ attachment.preview.crop.500x300 }}">
                                                 <div class="card-body">
                                                     {% with attachment.type|event_attachment_type as type %}
-                                                        <span class="badge badge-main p-2 d-inline-block mb-3 mb-md-2 mt-0">{{ type.name|title }}</span>
+                                                        <span class="badge badge-primary p-2 d-inline-block mb-3 mb-md-2 mt-0">{{ type.name|title }}</span>
                                                     {% endwith %}
                                                     <h5 class="mb-1">{{ attachment.name }}</h5>
                                                 </div>
@@ -129,9 +129,9 @@
                                 {% if registration %}
                                     <p class="text-center text-md-left mb-0">Status:
                                         {% if registration.status == 1 or registration.status == 2 or registration.status == 5 or registration.status == 6 %}
-                                            <span class="badge badge-main p-2 ml-1">Registered</span>
+                                            <span class="badge badge-primary p-2 ml-1">Registered</span>
                                         {% else %}
-                                            <span class="badge badge-main2 p-2 ml-1">Cancelled</span>
+                                            <span class="badge badge-dark p-2 ml-1">Cancelled</span>
                                         {% endif %}
                                     </p>
                                     {% if event.type == 5 and registration.status == 2 or registration.status == 5 or registration.status == 6 and event.external_url %}
@@ -143,15 +143,15 @@
                                         <p class="text-center text-md-left mt-3 mb-2">Can't attend this event? Please, cancel your registration so someone else can fill your spot!</p>
                                         <form action="" method="post" class="form">
                                             {% csrf_token %}
-                                            <button class="btn btn-main2" type="submit" name="submit" value="cancel">Cancel</button>
+                                            <button class="btn btn-dark" type="submit" name="submit" value="cancel">Cancel</button>
                                         </form>
                                     {% endif %}
                                 {% elif request.user.is_authenticated %}
                                     <p class="text-center text-md-left mb-2">Do you want to register for this event?</p>
                                     <form action="" method="post" class="form">
                                         {% csrf_token %}
-                                        <button class="btn btn-main" type="submit" name="submit" value="register">Register</button>
-                                        <!-- <button class="btn btn-main2 ml-2" type="submit" name="submit" value="interest">I can't attend</button> -->
+                                        <button class="btn btn-primary" type="submit" name="submit" value="register">Register</button>
+                                        <!-- <button class="btn btn-dark ml-2" type="submit" name="submit" value="interest">I can't attend</button> -->
                                     </form>
                                 {% else %}
                                     <p class="text-center text-md-left mb-2">Do you want to register for this event?</p>
@@ -173,14 +173,14 @@
                                             <input type="checkbox" name="terms" class="mr-1 form-check-inline" id="id_terms" required="">
                                             <label for="id_terms">I've read, understand and accept the <a href="{% url 'page_page' 'legal' 'terms-and-conditions' %}" class="link-colour" target="_blank">Terms & Conditions</a> and the <a href="{% url 'page_page' 'legal' 'privacy-and-cookies' %}" class="link-colour" target="_blank">Privacy and Cookies Policy</a>.</label>
                                         </div>
-                                        <button class="btn btn-main" type="submit" name="submit" value="register">Register</button>
+                                        <button class="btn btn-primary" type="submit" name="submit" value="register">Register</button>
                                     </form>
                                 {% endif %}
                             {% else %}
                                 <p class="text-center text-md-left mb-0">You need to be logged-in to register to this event!</p>
                                 <p class="text-center text-md-left"><small>You can login or register in a moment with your Google account or just using any other email.</small></p>
-                                <a class="btn btn-main text-white" href="{% url "user_login" %}?next={{ event.url }}">Login</a>
-                                <a class="btn btn-main2 text-white ml-2" href="{% url "user_register" %}?next={{ event.url }}">Register</a>
+                                <a class="btn btn-primary text-white" href="{% url "user_login" %}?next={{ event.url }}">Login</a>
+                                <a class="btn btn-dark text-white ml-2" href="{% url "user_register" %}?next={{ event.url }}">Register</a>
                             {% endif %}
                         {% else %}
                             <p class="text-center text-md-left mb-0">Sorry, registration closed! Ping us at <a href="mailto:{{ app_email_contact }}" class="link-colour">{{ app_email_contact }}</a> if you need help.</p>

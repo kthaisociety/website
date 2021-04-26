@@ -104,6 +104,11 @@ a:hover, a:active, a:visited {
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
+.btn:hover, .btn:active, .btn:visited {
+    color: $light-700;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
     color: inherit;
 }
@@ -114,6 +119,10 @@ h1 a:hover, h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, h6 a:hover, h1 a:vis
 
 nav {
     z-index: 100;
+}
+
+.navbar-top-menu {
+    font-size: 12px;
 }
 
 .navbar, label {
@@ -267,11 +276,11 @@ nav {
     }
 }
 
-.card-title {
+.main-title {
     margin-bottom: 25px;
 }
 
-.card-title::after {
+.main-title::after {
     content: "";
     display: block;
     width: 5rem;

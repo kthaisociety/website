@@ -29,22 +29,19 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="jumbotron p-0 p-lg-5 text-white rounded bg-dark article-header carousel-darken" style="background-image: url('{{ page.picture.url }}'); background-size: cover;">
-                        <!-- Desktop version -->
-                        <div class="col-md-8 px-0 article-title-lg d-none d-lg-block d-xl-block">
-                            <h1 class="display-4">{{ page.title }}</h1>
-                        </div>
-                        <!-- Mobile version -->
-                        <div class="article-title-ph article-title px-0 text-center d-block d-lg-none d-xl-none">
-                            <h1 class="display-4-ph">{{ page.title }}</h1>
-                        </div>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>{{ page.title }}</h1>
                 </div>
             </div>
         {% else %}
             {% if page.content.2.value != 1 %}
                 <div class="row">
                     <div class="col-md-12">
-                        <h1 class="">{{ page.title }}</h1>
+                        <h1>{{ page.title }}</h1>
                     </div>
                 </div>
             {% endif %}

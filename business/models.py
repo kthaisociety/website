@@ -124,7 +124,9 @@ class Offer(models.Model):
 
     @property
     def is_current(self):
-        return timezone.now() >= self.starts_at and (not self.ends_at or timezone.now() < self.ends_at)
+        return timezone.now() >= self.starts_at and (
+            not self.ends_at or timezone.now() < self.ends_at
+        )
 
     def __str__(self):
         return f"{self.title} <{str(self.company)}>"

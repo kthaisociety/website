@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load app_tags %}
+{% load social_share %}
+{% load static %}
+
+{% block head_title %}Job board{% endblock %}
+
+{% block in_body %}
+    <div class="container container-body py-5">
+        <div class="row d-none d-lg-block">
+            <div class="col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent p-0 pb-2">
+                        <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'app_home' %}">Home</a></li>
+                        <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'business_jobs' %}">Job board</a></li>
+                        <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'business_jobs_faq' %}">FAQ</a></li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h1>FAQ</h1>
+            </div>
+        </div>
+        <h4>I want to post here, how do I proceed?</h4>
+        <p>For now, the job board is operating manually and you inquire by sending an email to {{ app_email_business|urlize }}. To make the process as sufficient as possible, please include a short description of the position, title, company name, location, logotype, and a link to your job posting.</p>
+        <h4>What's the benefit of posting on this job board?</h4>
+        <p>Posting your position here is a unique way of reaching the talented students at KTH. Especially to our 300+ members in the society who are interested in the field AI. That makes the job board an effective way to attract the right talent to your business.</p>
+        <h4>How much does it cost?</h4>
+        <p>For now, to post on the job board will be free of charge!</p>
+        <h4>If I make an Inquiry how long before I can see the position?</h4>
+        <p>The job board gets manually updated. We will follow up on our request as soon as possible. Once the payment is successful, the position will be published.</p>
+        <a class="link-unstyled mt-3 mb-0 d-block text-center text-md-left" href="{% url 'business_jobs' %}"><p class="text-main mb-0"><strong><i class="fas fa-arrow-left mr-1"></i> Go back</strong></p></a>
+    </div>
+{% endblock %}

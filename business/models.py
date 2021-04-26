@@ -1,8 +1,11 @@
 import uuid
 
 from django.db import models
+from django.utils import timezone
 from django.utils.text import slugify
 from versatileimagefield.fields import VersatileImageField
+
+from business.enums import OfferType
 
 
 class Company(models.Model):
@@ -97,3 +100,33 @@ class Sponsorship(models.Model):
 
     def __str__(self):
         return f"{str(self.tier)} <{str(self.company)}>"
+
+
+class Offer(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.CharField(max_length=255)
+    company = models.ForeignKey(
+        "Company", on_delete=models.PROTECT, related_name="offers"
+    )
+    type = models.PositiveSmallIntegerField(
+        choices=((ot.value, ot.name) for ot in OfferType),
+        default=OfferType.INTERNSHIP.value,
+    )
+    description = models.TextField(max_length=5000, blank=True, null=True)
+    location = models.CharField(max_length=255, blank=True, null=True)
+    url = models.URLField(max_length=200)
+    starts_at = models.DateTimeField()
+    ends_at = models.DateTimeField(blank=True, null=True)
+    is_visible = models.BooleanField(default=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def is_current(self):
+        return timezone.now() >= self.starts_at and (
+            not self.ends_at or timezone.now() < self.ends_at
+        )
+
+    def __str__(self):
+        return f"{self.title} <{str(self.company)}>"

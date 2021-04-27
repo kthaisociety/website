@@ -120,11 +120,11 @@
                         </div>
                         <div class="form-group text-center mt-4">
                             {% if request.user.is_authenticated %}
-                                <button class="btn btn-main" type="submit">Save</button>
+                                <button class="btn btn-primary" type="submit">Save</button>
                             {% else %}
-                                <button class="btn btn-main" type="submit">Register</button>
+                                <button class="btn btn-primary" type="submit">Register</button>
                                 <a class="link-unstyled" href="{% url "social:begin" "google-oauth2" %}">
-                                    <button type="button" class="btn btn-main2 ml-2">Register with Google <i class="fab fa-google ml-1"></i></button>
+                                    <button type="button" class="btn btn-dark ml-2">Register with Google <i class="fab fa-google ml-1"></i></button>
                                 </a>
                             {% endif %}
                         </div>

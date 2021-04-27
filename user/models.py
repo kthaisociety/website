@@ -274,6 +274,9 @@ class Role(models.Model):
     is_head = models.BooleanField(default=False)
     starts_at = models.DateTimeField()
     ends_at = models.DateTimeField(blank=True, null=True)
+    picture = VersatileImageField(
+        "Image", upload_to="user/role/picture/", default="user/role/picture/profile.png"
+    )
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

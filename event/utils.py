@@ -13,3 +13,7 @@ def get_past_events() -> List[Event]:
     return list(set(Event.objects.published_past().order_by("-sessions__starts_at")))[
         :3
     ]
+
+
+def get_events() -> List[Event]:
+    return list(set(Event.objects.published().order_by("-sessions__starts_at")))[:3]

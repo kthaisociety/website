@@ -7,7 +7,7 @@ import versatileimagefield.fields
 
 class Migration(migrations.Migration):
 
-    dependencies = [("user", "0017_groups")]
+    dependencies = [("user", "0018_role_picture")]
 
     operations = [
         migrations.AlterField(

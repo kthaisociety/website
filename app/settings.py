@@ -40,9 +40,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.humanize",
     "versatileimagefield",
     "django_crontab",
     "django_extensions",
+    "compressor",
     "app",
     "user",
     "news",
@@ -132,6 +134,18 @@ STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR + "/staticfiles"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, os.path.join("app", "static"))]
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
+
+STATICFILES_FINDERS = [
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "compressor.finders.CompressorFinder",
+]
+
+COMPRESS_PRECOMPILERS = (("text/x-scss", "django_libsass.SassCompiler"),)
+
+if PROD_MODE:
+    COMPRESS_OFFLINE = True
+    LIBSASS_OUTPUT_STYLE = "compressed"
 
 # File upload configuration
 
@@ -322,18 +336,18 @@ if os.environ.get("GO_CALENDAR_CREDS", None):
 PERMISSION_GROUPS = {
     "BRC": {
         "add": {
-            "business": ["company", "contact", "sponsorship", "tier"],
+            "business": ["company", "contact", "offer", "sponsorship", "tier"],
             "event": ["attachment", "event", "session"],
             "news": ["article"],
         },
         "change": {
-            "business": ["company", "contact", "sponsorship", "tier"],
+            "business": ["company", "contact", "offer", "sponsorship", "tier"],
             "event": ["attachment", "event", "session"],
             "news": ["article"],
         },
         "view": {"business": ["contact"], "event": ["registration"]},
         "delete": {
-            "business": ["company", "contact", "sponsorship", "tier"],
+            "business": ["company", "contact", "offer", "sponsorship", "tier"],
             "event": ["attachment", "event", "session"],
             "news": ["article"],
         },
@@ -380,7 +394,7 @@ PERMISSIONS_COMMON = {
     "add": {"page": ["category", "page", "picture"], "user": ["history"]},
     "change": {"page": ["category", "page", "picture"], "user": ["history"]},
     "view": {
-        "business": ["company", "sponsorship", "tier"],
+        "business": ["company", "offer", "sponsorship", "tier"],
         "event": ["attachment", "event", "session"],
         "messaging": ["slackchannel", "slacklog"],
         "news": ["article"],
@@ -393,6 +407,7 @@ PERMISSIONS_COMMON = {
 GROUP_BY_DIVISION_NAME = {
     "Business Relations": "BRC",
     "Communications": "BRC",
+    "Design": "DES",
     "Education": "EDU",
     "IT": "ITO",
     "Operations": "ITO",

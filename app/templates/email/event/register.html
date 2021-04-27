@@ -16,6 +16,7 @@
         <h5 style="margin-top: 20px; margin-bottom: 8px;">Location: {{ registration.event.location }}</h5>
     {% endif %}
     <br>
+    <img src="https://{{ app_domain }}{{ registration.event.picture.crop.1500x1000 }}" style="width: 100%; margin-bottom: 25px;">
 {% endblock %}
 
 {% block email_button_url %}{% full_url "events_event" registration.event.code %}{% endblock %}

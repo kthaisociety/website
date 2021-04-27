@@ -16,15 +16,20 @@
                 </nav>
             </div>
         </div>
+        <div class="row mb-1">
+            <div class="col-md-12">
+                <h1 class="section-title text-main text-center text-md-left">News</h1>
+            </div>
+        </div>
         {% for article in articles %}
             <div class="row pb-4">
                 <div class="col-md-4">
                     <a class="link-unstyled" href="{{ article.url }}">
-                        <div class="w-100 image-radius" style="height: 250px; filter: grayscale(10%); -webkit-filter: grayscale(10%); background-image: linear-gradient(to bottom, rgba(61,88,117,0.1) 0%, rgba(61,88,117,0.1) 100%), url('{{ article.picture.url }}'); background-position: center center; background-size: cover;"></div>
+                        <div class="w-100 image-radius" style="height: 250px; filter: grayscale(10%); -webkit-filter: grayscale(10%); background-image: linear-gradient(to bottom, rgba(61,88,117,0.1) 0%, rgba(61,88,117,0.1) 100%), url('{{ article.picture.crop.1500x1000 }}'); background-position: center center; background-size: cover;"></div>
                     </a>
                 </div>
-                <div class="col-md-8 pl-4">
-                    <span class="badge badge-main2 p-2 mb-3 ml-auto mr-auto d-table mt-4 d-md-inline-block mt-md-0">Article</span>
+                <div class="col-md-8 pl-3">
+                    <span class="badge badge-primary p-2 mb-3 ml-auto mr-auto d-table mt-4 d-md-inline-block mt-md-0">Article</span>
                     <a class="link-unstyled" href="{{ article.url }}">
                         <h2 class="text-center text-md-left text-main mb-4">{{ article.title }}</h2>
                     </a>

@@ -17,18 +17,23 @@
                 </nav>
             </div>
         </div>
+        <div class="row mb-1">
+            <div class="col-md-12">
+                <h1 class="section-title text-main text-center text-md-left">Events</h1>
+            </div>
+        </div>
         {% for event in events %}
             <div class="row pb-4">
                 <div class="col-md-4">
                     <a class="link-unstyled" href="{{ event.url }}">
-                        <div class="w-100 image-radius" style="height: 250px; filter: grayscale(10%); -webkit-filter: grayscale(10%); background-image: linear-gradient(to bottom, rgba(61,88,117,0.1) 0%, rgba(61,88,117,0.1) 100%), url('{{ event.picture.url }}'); background-position: center center; background-size: cover;"></div>
+                        <div class="w-100 image-radius" style="height: 250px; filter: grayscale(10%); -webkit-filter: grayscale(10%); background-image: linear-gradient(to bottom, rgba(61,88,117,0.1) 0%, rgba(61,88,117,0.1) 100%), url('{{ event.picture.crop.1500x1000 }}'); background-position: center center; background-size: cover;"></div>
                     </a>
                 </div>
-                <div class="col-md-8 pl-4">
+                <div class="col-md-8 pl-3">
                     {% if event.is_event_future %}
-                        <span class="badge badge-main p-2 mb-3 ml-auto mr-auto d-table mt-4 d-md-inline-block mt-md-0">Upcoming event</span>
+                        <span class="badge badge-primary p-2 mb-3 ml-auto mr-auto d-table mt-4 d-md-inline-block mt-md-0">Upcoming event</span>
                     {% else %}
-                        <span class="badge badge-main-s2 p-2 mb-3 ml-auto mr-auto d-table mt-4 d-md-inline-block mt-md-0">Past event</span>
+                        <span class="badge badge-dark p-2 mb-3 ml-auto mr-auto d-table mt-4 d-md-inline-block mt-md-0">Past event</span>
                     {% endif %}
                     <a class="link-unstyled" href="{{ event.url }}">
                         <h2 class="text-center text-md-left text-main mb-4">{{ event.name }}</h2>

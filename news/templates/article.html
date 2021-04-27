@@ -10,7 +10,7 @@
 
 {% block head_title %}{{ article.title }}{% endblock %}
 
-{% block in_pre_body %}
+{% block body_pre_in %}
     <div class="row d-none d-lg-block">
         <div class="col-md-12">
             <nav aria-label="breadcrumb">
@@ -25,22 +25,6 @@
     <div class="row">
         <div class="col-md-12">
             <div class="jumbotron p-0 p-lg-5 text-white rounded bg-dark article-header carousel-darken" style="background-image: url('{{ article.picture.crop.1500x1000 }}');">
-                <!-- Desktop version -->
-                <div class="col-md-8 px-0 article-title-lg d-none d-lg-block d-xl-block">
-                    <h1 class="display-4">{{ article.title }}</h1>
-                    {% if article.subtitle %}
-                        <h3>{{ article.subtitle }}</h3>
-                    {% endif %}
-                    <p class="lead my-2">{{ article.created_at|date:"F j, Y" }}</p>
-                </div>
-                <!-- Mobile version -->
-                <div class="article-title-ph article-title px-0 text-center d-block d-lg-none d-xl-none">
-                    <h1 class="display-4-ph">{{ article.title }}</h1>
-                    {% if article.subtitle %}
-                        <h3 class="display-5-ph">{{ article.subtitle }}</h3>
-                    {% endif %}
-                    <p class="lead my-2">{{ article.created_at|date:"F j, Y" }}</p>
-                </div>
             </div>
         </div>
     </div>
@@ -48,7 +32,16 @@
 
 {% block in_in_body %}
     <div class="row">
-        <div class="col-md-12 mb-0 text-center text-lg-left">
+        <div class="col-md-12">
+            <h1 class="mb-3 mb-md-1">{{ article.title }}</h1>
+            {% if article.subtitle %}
+                <h4 class="mb-1">{{ article.subtitle }}</h4>
+            {% endif %}
+            <p class="lead">{{ article.created_at|date:"F j, Y" }}</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 mb-0">
             {% include "include/share.html" with title=article.title url=article.url %}
         </div>
     </div>

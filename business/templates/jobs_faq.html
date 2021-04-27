@@ -6,7 +6,7 @@
 {% block head_title %}Job board{% endblock %}
 
 {% block in_body %}
-    <div class="container container-body py-5">
+    <div class="container container-body py-4 py-md-5">
         <div class="row d-none d-lg-block">
             <div class="col-md-12">
                 <nav aria-label="breadcrumb">
@@ -20,7 +20,7 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <h1>FAQ</h1>
+                <h1 class="section-title">FAQ</h1>
             </div>
         </div>
         <h4>I want to post here, how do I proceed?</h4>
@@ -30,7 +30,7 @@
         <h4>How much does it cost?</h4>
         <p>For now, to post on the job board will be free of charge!</p>
         <h4>If I make an Inquiry how long before I can see the position?</h4>
-        <p>The job board gets manually updated. We will follow up on our request as soon as possible. Once the payment is successful, the position will be published.</p>
-        <a class="link-unstyled mt-3 mb-0 d-block text-center text-md-left" href="{% url 'business_jobs' %}"><p class="text-main mb-0"><strong><i class="fas fa-arrow-left mr-1"></i> Go back</strong></p></a>
+        <p>The job board gets manually updated. We will follow up on our request as soon as possible.</p>
+        <a class="link-unstyled mt-3" href="{% url 'business_jobs' %}"><p class="mb-4"><strong><i class="fas fa-arrow-left mr-1"></i> Go back</strong></p></a>
     </div>
 {% endblock %}

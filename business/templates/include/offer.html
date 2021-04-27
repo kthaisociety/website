@@ -7,7 +7,7 @@
         <div class="col-md-2 bg-light">
             <div class="d-flex align-items-center justify-content-center h-100">
                 <a class="link-unstyled" href="{{ offer.company.website }}">
-                    <img class="w-100 p-3" src="{{ offer.company.logo.url }}"  alt="{{ offer.company.name }}"/>
+                    <img class="w-100 pt-3 pr-5 pb-3 pl-5 pt-md-3 pr-md-3 pb-mb-3 pl-md-3 offer-company-logo" src="{{ offer.company.logo.url }}"  alt="{{ offer.company.name }}"/>
                 </a>
             </div>
         </div>
@@ -27,11 +27,17 @@
                 {% endif %}
             </div>
             {% if with_description %}
-                <a class="link-unstyled" href="{{ offer.url }}">
-                    <button type="button" class="btn btn-primary">Apply</button>
-                </a>
+                {% if offer.url %}
+                    <a class="link-unstyled" href="{{ offer.url }}">
+                        <button type="button" class="btn btn-primary">Apply here</button>
+                    </a>
+                {% elif offer.email %}
+                    <a class="link-unstyled" href="mailto:{{ offer.email }}">
+                        <button type="button" class="btn btn-primary">Contact {{ offer.email }}</button>
+                    </a>
+                {% endif %}
             {% else %}
-                <a class="link-unstyled mt-3 mb-0 d-block text-center text-md-left" href="{% url "business_jobs" %}"><p class="text-main mb-0">Read more <i class="fas fa-arrow-right ml-1"></i></p></a>
+                <a class="link-unstyled mt-3 mb-0 d-block text-left" href="{% url "business_jobs" %}"><p class="text-main mb-0">Read more <i class="fas fa-arrow-right ml-1"></i></p></a>
             {% endif %}
         </div>
     </div>

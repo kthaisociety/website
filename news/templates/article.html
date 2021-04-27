@@ -33,7 +33,7 @@
 {% block in_in_body %}
     <div class="row">
         <div class="col-md-12">
-            <h1 class="mb-1">{{ article.title }}</h1>
+            <h1 class="mb-3 mb-md-1">{{ article.title }}</h1>
             {% if article.subtitle %}
                 <h4 class="mb-1">{{ article.subtitle }}</h4>
             {% endif %}
@@ -41,7 +41,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12 mb-0 text-center text-lg-left">
+        <div class="col-md-12 mb-0">
             {% include "include/share.html" with title=article.title url=article.url %}
         </div>
     </div>

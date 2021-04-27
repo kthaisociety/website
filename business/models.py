@@ -1,5 +1,6 @@
 import uuid
 
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
@@ -114,7 +115,8 @@ class Offer(models.Model):
     )
     description = models.TextField(max_length=5000, blank=True, null=True)
     location = models.CharField(max_length=255, blank=True, null=True)
-    url = models.URLField(max_length=200)
+    url = models.URLField(max_length=200, blank=True, null=True)
+    email = models.EmailField(max_length=255, blank=True, null=True)
     starts_at = models.DateTimeField()
     ends_at = models.DateTimeField(blank=True, null=True)
     is_visible = models.BooleanField(default=True)
@@ -130,3 +132,10 @@ class Offer(models.Model):
 
     def __str__(self):
         return f"{self.title} <{str(self.company)}>"
+
+    def clean(self):
+        messages = dict()
+        if not self.url and not self.email:
+            messages["url"] = "Either the application URL or email has to be provided"
+        if messages:
+            raise ValidationError(messages)

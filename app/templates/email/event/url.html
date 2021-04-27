@@ -23,7 +23,7 @@
         <h5 style="margin-top: 20px; margin-bottom: 8px;">Webinar URL: <a style="text-decoration: none !important; color: #3d5875 !important;" href="{% full_url "registration_url" registration.id %}" target="_blank">{% full_url "registration_url" registration.id %}</a></h5>
     {% endif %}
     <br>
-    <img src="https://{{ app_domain }}{{ registration.event.picture.url }}" style="width: 100%; margin-bottom: 25px;">
+    <img src="https://{{ app_domain }}{{ registration.event.picture.crop.1500x1000 }}" style="width: 100%; margin-bottom: 25px;">
 {% endblock %}
 
 {% block email_button %}

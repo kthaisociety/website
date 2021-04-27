@@ -12,7 +12,7 @@
 {% block head_title %}{{ event.name }}{% endblock %}
 
 {% block body_pre_in %}
-    <div class="row">
+    <div class="row d-none d-lg-block">
         <div class="col-md-12">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent p-0 pb-2">
@@ -38,7 +38,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12 mb-0 text-center text-lg-left">
+        <div class="col-md-12 mb-0">
             {% include "include/share.html" with title=event.name url=event.url %}
             {% include "include/calendar.html" with url=event.ics_url %}
         </div>
@@ -76,7 +76,7 @@
                                                 <img class="card-img-top" src="{{ attachment.preview.crop.500x300 }}">
                                                 <div class="card-body">
                                                     {% with attachment.type|event_attachment_type as type %}
-                                                        <span class="badge badge-main p-2 d-inline-block mb-3 mb-md-2 mt-0">{{ type.name|title }}</span>
+                                                        <span class="badge badge-primary p-2 d-inline-block mb-3 mb-md-2 mt-0">{{ type.name|title }}</span>
                                                     {% endwith %}
                                                     <h5 class="mb-1">{{ attachment.name }}</h5>
                                                 </div>
@@ -123,11 +123,11 @@
             <div class="col-md-12">
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h3 class="text-center text-md-left">Registration</h3>
+                        <h3>Registration</h3>
                         {% if event.is_signup_open or registration %}
                             {% if request.user.is_authenticated or not event.account_required %}
                                 {% if registration %}
-                                    <p class="text-center text-md-left mb-0">Status:
+                                    <p class="mb-0">Status:
                                         {% if registration.status == 1 or registration.status == 2 or registration.status == 5 or registration.status == 6 %}
                                             <span class="badge badge-primary p-2 ml-1">Registered</span>
                                         {% else %}
@@ -135,26 +135,26 @@
                                         {% endif %}
                                     </p>
                                     {% if event.type == 5 and registration.status == 2 or registration.status == 5 or registration.status == 6 and event.external_url %}
-                                        <p class="text-center text-md-left mb-0 mt-1">Webinar link: <a href="{% full_url "registration_url" registration.id %}" class="link-colour">{% full_url "registration_url" registration.id %}</a></p>
+                                        <p class="mb-0 mt-1">Webinar link: <a href="{% full_url "registration_url" registration.id %}" class="link-colour">{% full_url "registration_url" registration.id %}</a></p>
                                     {% endif %}
                                     {% if not registration.status == 1 and not registration.status == 2 and not registration.status == 5 and not registration.status == 6 %}
-                                        <p class="text-center text-md-left mb-0 mt-3">Ping us at <a href="mailto:{{ app_email_contact }}" class="link-colour">{{ app_email_contact }}</a> if you need help.</p>
+                                        <p class="mb-0 mt-3">Ping us at <a href="mailto:{{ app_email_contact }}" class="link-colour">{{ app_email_contact }}</a> if you need help.</p>
                                     {% else %}
-                                        <p class="text-center text-md-left mt-3 mb-2">Can't attend this event? Please, cancel your registration so someone else can fill your spot!</p>
+                                        <p class="mt-3 mb-2">Can't attend this event? Please, cancel your registration so someone else can fill your spot!</p>
                                         <form action="" method="post" class="form">
                                             {% csrf_token %}
                                             <button class="btn btn-dark" type="submit" name="submit" value="cancel">Cancel</button>
                                         </form>
                                     {% endif %}
                                 {% elif request.user.is_authenticated %}
-                                    <p class="text-center text-md-left mb-2">Do you want to register for this event?</p>
+                                    <p class="mb-2">Do you want to register for this event?</p>
                                     <form action="" method="post" class="form">
                                         {% csrf_token %}
                                         <button class="btn btn-primary" type="submit" name="submit" value="register">Register</button>
                                         <!-- <button class="btn btn-dark ml-2" type="submit" name="submit" value="interest">I can't attend</button> -->
                                     </form>
                                 {% else %}
-                                    <p class="text-center text-md-left mb-2">Do you want to register for this event?</p>
+                                    <p class="mb-2">Do you want to register for this event?</p>
                                     <form action="" method="post" class="form">
                                         {% csrf_token %}
                                          <div class="form-group">
@@ -177,13 +177,13 @@
                                     </form>
                                 {% endif %}
                             {% else %}
-                                <p class="text-center text-md-left mb-0">You need to be logged-in to register to this event!</p>
-                                <p class="text-center text-md-left"><small>You can login or register in a moment with your Google account or just using any other email.</small></p>
+                                <p class="mb-0">You need to be logged-in to register to this event!</p>
+                                <p><small>You can login or register in a moment with your Google account or just using any other email.</small></p>
                                 <a class="btn btn-primary text-white" href="{% url "user_login" %}?next={{ event.url }}">Login</a>
                                 <a class="btn btn-dark text-white ml-2" href="{% url "user_register" %}?next={{ event.url }}">Register</a>
                             {% endif %}
                         {% else %}
-                            <p class="text-center text-md-left mb-0">Sorry, registration closed! Ping us at <a href="mailto:{{ app_email_contact }}" class="link-colour">{{ app_email_contact }}</a> if you need help.</p>
+                            <p class="mb-0">Sorry, registration closed! Ping us at <a href="mailto:{{ app_email_contact }}" class="link-colour">{{ app_email_contact }}</a> if you need help.</p>
                         {% endif %}
                     </div>
                 </div>

@@ -104,7 +104,7 @@ a:hover, a:active, a:visited {
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
-.btn:hover, .btn:active, .btn:visited {
+.btn-primary:hover, .btn-primary:active, .btn-primary:visited, .btn-dark:hover, .btn-dark:active, .btn-dark:visited {
     color: $light-700;
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
@@ -278,6 +278,9 @@ nav {
 
 .main-title {
     margin-bottom: 25px;
+    @media (max-width: 991px) {
+        text-align: center;
+    }
 }
 
 .main-title::after {
@@ -287,6 +290,16 @@ nav {
     height: 0.25rem;
     background-color: $primary;
     margin-top: 25px;
+    @media (max-width: 991px) {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+.main-subtitle {
+    @media (max-width: 991px) {
+        text-align: center;
+    }
 }
 
 .container-content {
@@ -301,6 +314,12 @@ nav {
     }
 }
 
+.section-title{
+    @media (max-width: 991px) {
+        text-align: center;
+    }
+}
+
 .section-title::after {
     content: "";
     display: block;
@@ -308,6 +327,14 @@ nav {
     height: 0.15rem;
     background-color: $primary;
     margin-top: 20px;
+    @media (max-width: 991px) {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+.offer-company-logo {
+    max-height: 150px;
 }
 
 .text-primary {
@@ -623,9 +650,9 @@ nav {
 
 .dashboard-status {
     font-size: 12px;
-    border-left: 1px solid $light;
-    border-bottom: 1px solid $light;
-    border-right: 1px solid $light;
+    border-left: 1px solid rgba(0, 0, 0, 0.125);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    border-right: 1px solid rgba(0, 0, 0, 0.125);
     border-radius: 0 0 0.1rem 0.1rem;
     padding: 0.5rem;
 }

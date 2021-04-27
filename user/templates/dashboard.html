@@ -5,7 +5,7 @@
 {% block head_title %}Dashboard{% endblock %}
 
 {% block in_body %}
-    <div class="container container-body py-5">
+    <div class="container container-body py-4 py-md-5">
         <div class="row">
             <div class="col-md-3 mb-4">
                 <div class="dashboard-profile">
@@ -84,9 +84,9 @@
                                                         <img class="card-img-top rounded-0" src="{{ registration.event.picture.crop.500x300 }}">
                                                         <div class="card-body">
                                                             {% if registration.event.is_event_future %}
-                                                                <span class="badge badge-primary p-2 mb-3 ml-auto mr-auto d-table mt-4 d-md-inline-block mt-md-0">Upcoming event</span>
+                                                                <span class="badge badge-primary p-2 mb-3 d-table d-md-inline-block mt-0">Upcoming event</span>
                                                             {% else %}
-                                                                <span class="badge badge-dark p-2 mb-3 ml-auto mr-auto d-table mt-4 d-md-inline-block mt-md-0">Past event</span>
+                                                                <span class="badge badge-dark p-2 mb-3 d-table d-md-inline-block mt-0">Past event</span>
                                                             {% endif %}
                                                             <h5 class="mb-0">{{ registration.event.name }}</h5>
                                                         </div>

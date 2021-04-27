@@ -388,6 +388,7 @@ PERMISSION_GROUPS = {
             "news": ["article"],
         },
     },
+    "DES": {"add": {}, "change": {}, "view": {}, "delete": {}},
 }
 
 PERMISSIONS_COMMON = {

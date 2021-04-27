@@ -94,8 +94,6 @@ class RoleAdmin(admin.ModelAdmin):
         group_name = GROUP_BY_DIVISION_NAME.get(obj.division.name)
         if group_name:
             group = Group.objects.get(name=group_name)
-            print(obj.user)
-            print(obj.user.__dict__)
             if obj.is_active:
                 obj.user.groups.add(group)
             else:

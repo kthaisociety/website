@@ -5,19 +5,15 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('business', '0002_offer'),
-    ]
+    dependencies = [("business", "0002_offer")]
 
     operations = [
         migrations.AddField(
-            model_name='offer',
-            name='email',
+            model_name="offer",
+            name="email",
             field=models.EmailField(blank=True, max_length=255, null=True),
         ),
         migrations.AlterField(
-            model_name='offer',
-            name='url',
-            field=models.URLField(blank=True, null=True),
+            model_name="offer", name="url", field=models.URLField(blank=True, null=True)
         ),
     ]

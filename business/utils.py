@@ -17,8 +17,10 @@ def get_sponsorships() -> Dict[Tier, List[Sponsorship]]:
 
 
 def get_offers() -> List[Offer]:
-    return list(Offer.objects.filter(
-        Q(ends_at__isnull=True) | Q(ends_at__gt=timezone.now()),
-        is_visible=True,
-        starts_at__lte=timezone.now(),
-    ).order_by("-created_at"))[:2]
+    return list(
+        Offer.objects.filter(
+            Q(ends_at__isnull=True) | Q(ends_at__gt=timezone.now()),
+            is_visible=True,
+            starts_at__lte=timezone.now(),
+        ).order_by("-created_at")
+    )[:2]

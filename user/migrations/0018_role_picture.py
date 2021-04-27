@@ -6,14 +6,16 @@ import versatileimagefield.fields
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('user', '0017_groups'),
-    ]
+    dependencies = [("user", "0017_groups")]
 
     operations = [
         migrations.AddField(
-            model_name='role',
-            name='picture',
-            field=versatileimagefield.fields.VersatileImageField(default='user/role/picture/profile.png', upload_to='user/role/picture/', verbose_name='Image'),
-        ),
+            model_name="role",
+            name="picture",
+            field=versatileimagefield.fields.VersatileImageField(
+                default="user/role/picture/profile.png",
+                upload_to="user/role/picture/",
+                verbose_name="Image",
+            ),
+        )
     ]

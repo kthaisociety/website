@@ -63,6 +63,15 @@
     {% endif %}
     <div class="row">
         <div class="col-md-12 mb-3">
+            {% if event.location %}
+                <h5 class="mb-3">Location: <a class="link-unstyled" href="https://maps.google.com/maps?hl=en&amp;q={{ event.location }}">{{ event.location }}</a></h5>
+            {% else %}
+                {% if event.streaming_provider %}
+                    <h5 class="mb-3">Location: {{ enums.event.streaming_provider|keyvalue:event.streaming_provider }} <img class="location-streaming-icon" src="{% static "img/external/" %}{{ event.streaming_provider.name|lower }}.png"></h5>
+                {% else %}
+                    <h5 class="mb-3">Location: ONLINE</h5>
+                {% endif %}
+            {% endif %}
             {% if event.sessions.all|length == 1 %}
                 {% with event.sessions.first as session %}
                     <h5 class="{% if registration and session.published_attachments_with_registration or not registration and session.published_attachments %}mb-1{% else %}mb-3{% endif %}">Time: {{ event.starts_at|date:"F j, Y H:i" }}{% if event.starts_at != event.ends_at %} - {% if event.starts_at.date != event.ends_at.date %}{{ event.ends_at|date:"F j, Y H:i" }}{% else %}{{ event.ends_at|date:"H:i" }}{% endif %}{% endif %}</h5>
@@ -115,9 +124,6 @@
                     {% endif %}
                 {% endfor %}
             {% endif %}
-            {% if event.location %}
-                <h5 class="mb-3">Location: <a class="link-unstyled" href="https://maps.google.com/maps?hl=en&amp;q={{ event.location }}">{{ event.location }}</a></h5>
-            {% endif %}
             </div>
         {% if event.registration_available %}
             <div class="col-md-12">
@@ -135,7 +141,7 @@
                                         {% endif %}
                                     </p>
                                     {% if event.type == 5 and registration.status == 2 or registration.status == 5 or registration.status == 6 and event.external_url %}
-                                        <p class="mb-0 mt-1">Webinar link: <a href="{% full_url "registration_url" registration.id %}" class="link-colour">{% full_url "registration_url" registration.id %}</a></p>
+                                        <p class="mb-0 mt-1">Join: <a href="{% full_url "registration_url" registration.id %}" class="link-colour" style="white-space: nowrap;">{% full_url "registration_url" registration.id %}</a>{% if event.streaming_provider %} <img class="webinar-streaming-icon" src="{% static "img/external/" %}{{ event.streaming_provider.name|lower }}.png">{% endif %}</p>
                                     {% endif %}
                                     {% if not registration.status == 1 and not registration.status == 2 and not registration.status == 5 and not registration.status == 6 %}
                                         <p class="mb-0 mt-3">Ping us at <a href="mailto:{{ app_email_contact }}" class="link-colour">{{ app_email_contact }}</a> if you need help.</p>

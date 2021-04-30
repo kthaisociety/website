@@ -50,3 +50,17 @@ class ScheduleType(enum.IntEnum):
     EVENT_END = 7
     GAME = 8
     PRIZE = 9
+
+
+class StreamingProvider(enum.IntEnum):
+    GOOGLE_MEET = 10
+    YOUTUBE = 20
+    ZOOM = 30
+
+
+StreamingProvider.labels = {
+    StreamingProvider.GOOGLE_MEET: "Google Meet",
+    StreamingProvider.YOUTUBE: "Youtube",
+    StreamingProvider.ZOOM: "Zoom",
+}
+StreamingProviderDict = StreamingProvider.labels

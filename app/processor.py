@@ -9,6 +9,8 @@ def variables_processor(request=None):
     from page.utils import get_menu_pages
     from business.utils import get_sponsorships, get_offers
 
+    from event.enums import StreamingProviderDict
+
     c["articles"] = get_latest_articles()
     c["events"] = get_future_events()
     c["organisers"] = get_organisers()
@@ -17,4 +19,7 @@ def variables_processor(request=None):
     c["histories"] = get_histories()
     c["sponsorships"] = get_sponsorships()
     c["offers"] = get_offers()
+
+    c["enums"] = {"event": {"streaming_provider": StreamingProviderDict}}
+
     return c

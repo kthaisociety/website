@@ -17,6 +17,11 @@ from event.enums import AttachmentType
 register = template.Library()
 
 
+@register.filter
+def keyvalue(dict, key):
+    return dict.get(key)
+
+
 @register.simple_tag
 def settings_value(name):
     return getattr(settings, name, "")

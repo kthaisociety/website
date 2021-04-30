@@ -2,6 +2,8 @@ import re
 import textwrap
 import uuid
 from io import StringIO
+from typing import Optional
+
 import markdown
 from bs4 import BeautifulSoup
 
@@ -23,6 +25,7 @@ from event.enums import (
     AttachmentType,
     AttachmentStatus,
     ScheduleType,
+    StreamingProvider,
 )
 from event.managers import EventManager, SessionManager
 
@@ -69,6 +72,19 @@ class Event(models.Model):
         session = self.sessions.all().order_by("-ends_at").first()
         if session:
             return session.ends_at
+        return None
+
+    @property
+    def streaming_provider(self) -> Optional[StreamingProvider]:
+        if self.type == EventType.WEBINAR:
+            pre_domain = r"((http|https):\/\/)([a-zA-Z0-9\-]+\.)*"
+            post_domain = r"\..*"
+            if re.match(rf"^{pre_domain}meet{post_domain}$", self.external_url):
+                return StreamingProvider.GOOGLE_MEET
+            if re.match(rf"^{pre_domain}youtube{post_domain}$", self.external_url):
+                return StreamingProvider.YOUTUBE
+            if re.match(rf"^{pre_domain}zoom{post_domain}$", self.external_url):
+                return StreamingProvider.ZOOM
         return None
 
     @property

@@ -141,7 +141,7 @@
                                         {% endif %}
                                     </p>
                                     {% if event.type == 5 and registration.status == 2 or registration.status == 5 or registration.status == 6 and event.external_url %}
-                                        <p class="mb-0 mt-1">Join: <a href="{% full_url "registration_url" registration.id %}" class="link-colour" style="white-space: nowrap;">{% full_url "registration_url" registration.id %}</a>{% if event.streaming_provider %} <img class="webinar-streaming-icon" src="{% static "img/external/" %}{{ event.streaming_provider.name|lower }}.png">{% endif %}</p>
+                                        <p class="mb-0 mt-1">Join: <a href="{% full_url "registration_url" registration.id %}" class="link-colour">{% full_url "registration_url" registration.id %}</a>{% if event.streaming_provider %} <img class="webinar-streaming-icon" src="{% static "img/external/" %}{{ event.streaming_provider.name|lower }}.png">{% endif %}</p>
                                     {% endif %}
                                     {% if not registration.status == 1 and not registration.status == 2 and not registration.status == 5 and not registration.status == 6 %}
                                         <p class="mb-0 mt-3">Ping us at <a href="mailto:{{ app_email_contact }}" class="link-colour">{{ app_email_contact }}</a> if you need help.</p>

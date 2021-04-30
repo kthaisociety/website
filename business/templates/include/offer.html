@@ -7,7 +7,7 @@
         <div class="col-md-2 bg-light">
             <div class="d-flex align-items-center justify-content-center h-100">
                 <a class="link-unstyled" href="{{ offer.company.website }}">
-                    <img class="w-100 pt-3 pr-5 pb-3 pl-5 pt-md-3 pr-md-3 pb-mb-3 pl-md-3 offer-company-logo" src="{{ offer.company.logo.url }}"  alt="{{ offer.company.name }}"/>
+                    <img class="pt-3 pr-5 pb-3 pl-5 pt-md-3 pr-md-3 pb-mb-3 pl-md-3 offer-company-logo" src="{{ offer.company.logo.url }}"  alt="{{ offer.company.name }}"/>
                 </a>
             </div>
         </div>
@@ -28,8 +28,6 @@
             </div>
             {% if with_description %}
                 {% if offer.url %}
-
-
                     <a class="link-unstyled" href="{{ offer.url }}">
                         <button type="button" class="btn btn-primary">Apply here</button>
                     </a>

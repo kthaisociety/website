@@ -70,7 +70,7 @@ def event(request, code):
             elif type == "cancel":
                 messages.success(
                     request,
-                    f"Thank-you for letting us know, we hope to see you in a future event!",
+                    f"Thank-you for letting us know, we don't want to see you ever!",
                 )
                 status = RegistrationStatus.CANCELLED
             else:

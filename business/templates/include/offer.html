@@ -12,10 +12,10 @@
             </div>
         </div>
         <div class="col-md-10 p-4">
-            <a class="link-unstyled" href="{% if offer.url %}{{ offer.url }}{% elif offer.email %}{{ offer.email }}{% endif %}">
+            <a class="link-unstyled" href="{% if offer.url %}{{ offer.url }}{% elif offer.email %}mailto:{{ offer.email }}{% endif %}">
                 <h5 class="mb-2">{{ offer.title }}</h5>
             </a>
-            <a class="link-unstyled" href="{% if offer.url %}{{ offer.url }}{% elif offer.email %}{{ offer.email }}{% endif %}">
+            <a class="link-unstyled" href="{% if offer.url %}{{ offer.url }}{% elif offer.email %}mailto:{{ offer.email }}{% endif %}">
                 <p class="text-primary font-weight-bold mb-1">{% if offer.location %}🌍{% else %}🖥️{% endif %} {{ offer.company.name }}, {% if offer.location %}{{ offer.location }}{% else %}Remote{% endif %}</p>
             </a>
             {% if offer.ends_at %}

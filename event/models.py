@@ -391,6 +391,12 @@ class Speaker(models.Model):
     city = models.CharField(max_length=255, blank=True, null=True)
     country = models.CharField(max_length=255, blank=True, null=True)
 
+    description = models.TextField(max_length=5000, blank=True, null=True)
+
+    # Social networks
+    linkedin_url = models.URLField(max_length=200, blank=True, null=True)
+    twitter_url = models.URLField(max_length=200, blank=True, null=True)
+
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
 

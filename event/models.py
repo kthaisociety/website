@@ -396,6 +396,7 @@ class Speaker(models.Model):
     # Social networks
     linkedin_url = models.URLField(max_length=200, blank=True, null=True)
     twitter_url = models.URLField(max_length=200, blank=True, null=True)
+    scholar_url = models.URLField(max_length=200, blank=True, null=True)
 
     created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)

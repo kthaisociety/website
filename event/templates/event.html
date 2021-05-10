@@ -121,10 +121,21 @@
                                                         </button>
                                                     </a>
                                                 {% endif %}
+                                                {% if role.speaker.scholar_url %}
+                                                    <a href="{{ role.speaker.scholar_url }}" class="speaker-social-network link-unstyled" target="_blank">
+                                                        <button type="button" class="btn btn-scholar btn-sm mt-2">
+                                                            <p class="mb-0">
+                                                                <i class="fas fa-graduation-cap"></i>
+                                                            </p>
+                                                        </button>
+                                                    </a>
+                                                {% endif %}
                                                 {% if role.speaker %}</a>{% endif %}
                                             </div>
                                             <div class="col-12 col-md-8 col-lg-9 ml-auto mr-auto pl-3 pl-lg-0 ml-md-0 mr-md-0 mt-3 mt-md-0 mb-0 text-center text-md-left">
-                                                {{ role.speaker.description|apply_markup }}
+                                                {% if role.speaker.description %}
+                                                    {{ role.speaker.description|apply_markup }}
+                                                {% endif %}
                                             </div>
                                         </div>
                                         {% if forloop.counter < session.roles.count %}

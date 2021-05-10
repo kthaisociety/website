@@ -22,7 +22,7 @@
                     <div class="col-md-12">
                         <div class="card w-100">
                             <div class="card-body">
-                                <h3 class="card-title">🙂 Profile</h3>
+                                <h4 class="card-title">🙂 Profile</h4>
                                 <hr>
                                 <div class="row">
                                     <div class="col-md-4">
@@ -74,7 +74,7 @@
                     <div class="col-md-12">
                         <div class="card w-100">
                             <div class="card-body">
-                                <h3 class="card-title mb-0">📅 Events</h3>
+                                <h4 class="card-title mb-0">📅 Events</h4>
                                 {% if request.user.event_registrations %}
                                     <div class="row pl-2 pr-2">
                                         {% for registration in request.user.event_registrations %}
@@ -106,7 +106,7 @@
                     <div class="col-md-12">
                         <div class="card w-100">
                             <div class="card-body">
-                                <h3 class="card-title"><img alt="Slack icon" class="inline-icon-h3" src="{{ app_full_domain }}{% static "img/slack.png" %}">Slack</h3>
+                                <h4 class="card-title"><img alt="Slack icon" class="inline-icon-h4" src="{{ app_full_domain }}{% static "img/slack.png" %}">Slack</h4>
                                 {% if request.user.slack_token %}
                                     <h6 class="card-text mt-3 mb-3">✅ Connected</h6>
                                     <hr>

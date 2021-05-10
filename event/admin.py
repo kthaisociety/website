@@ -4,7 +4,15 @@ from django.forms import ModelForm
 
 import event.api.event.calendar
 from event.enums import RegistrationStatus
-from event.models import Event, Registration, Session, Attachment, Schedule
+from event.models import (
+    Event,
+    Registration,
+    Session,
+    Attachment,
+    Schedule,
+    Speaker,
+    SpeakerRole,
+)
 from event.tasks import send_url_email
 from messaging.api.slack.announcement import announce_event
 
@@ -31,6 +39,13 @@ class ScheduleInline(admin.StackedInline):
     extra = 0
 
 
+class SpeakerRoleInline(admin.StackedInline):
+    model = SpeakerRole
+    ordering = ("speaker__name",)
+    show_change_link = True
+    extra = 0
+
+
 @admin.register(Session)
 class SessionAdmin(admin.ModelAdmin):
     search_fields = ("id", "name", "event")
@@ -38,7 +53,7 @@ class SessionAdmin(admin.ModelAdmin):
     list_filter = ("starts_at", "ends_at")
     ordering = ("-created_at", "-updated_at", "name")
     readonly_fields = ("google_id",)
-    inlines = [AttachmentInline, ScheduleInline]
+    inlines = [SpeakerRoleInline, AttachmentInline, ScheduleInline]
 
 
 class SessionInline(admin.StackedInline):
@@ -118,3 +133,11 @@ class EventAdmin(admin.ModelAdmin):
         ).count()
 
     registration_count.short_description = "registrations"
+
+
+@admin.register(Speaker)
+class SpeakerAdmin(admin.ModelAdmin):
+    search_fields = ("id", "name", "surname", "email", "user")
+    list_display = ("name", "surname", "email", "user")
+    ordering = ("-created_at", "-updated_at", "name")
+    readonly_fields = ("created_at",)

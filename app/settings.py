@@ -337,53 +337,53 @@ PERMISSION_GROUPS = {
     "BRC": {
         "add": {
             "business": ["company", "contact", "offer", "sponsorship", "tier"],
-            "event": ["attachment", "event", "session"],
+            "event": ["attachment", "event", "session", "speaker", "speakerrole"],
             "news": ["article"],
         },
         "change": {
             "business": ["company", "contact", "offer", "sponsorship", "tier"],
-            "event": ["attachment", "event", "session"],
+            "event": ["attachment", "event", "session", "speaker", "speakerrole"],
             "news": ["article"],
         },
         "view": {"business": ["contact"], "event": ["registration"]},
         "delete": {
             "business": ["company", "contact", "offer", "sponsorship", "tier"],
-            "event": ["attachment", "event", "session"],
+            "event": ["attachment", "event", "session", "speaker", "speakerrole"],
             "news": ["article"],
         },
     },
     "EDU": {
         "add": {
-            "event": ["attachment", "event", "session"],
+            "event": ["attachment", "event", "session", "speaker", "speakerrole"],
             "messaging": ["slackchannel"],
             "news": ["article"],
         },
         "change": {
-            "event": ["attachment", "event", "session"],
+            "event": ["attachment", "event", "session", "speaker", "speakerrole"],
             "messaging": ["slackchannel"],
             "news": ["article"],
         },
         "view": {"event": ["registration"]},
         "delete": {
-            "event": ["attachment", "event", "session"],
+            "event": ["attachment", "event", "session", "speaker", "speakerrole"],
             "messaging": ["slackchannel"],
             "news": ["article"],
         },
     },
     "ITO": {
         "add": {
-            "event": ["attachment", "event", "session"],
+            "event": ["attachment", "event", "session", "speaker", "speakerrole"],
             "messaging": ["slackchannel"],
             "news": ["article"],
         },
         "change": {
-            "event": ["attachment", "event", "session"],
+            "event": ["attachment", "event", "session", "speaker", "speakerrole"],
             "messaging": ["slackchannel"],
             "news": ["article"],
         },
         "view": {"event": ["registration"], "user": ["user"]},
         "delete": {
-            "event": ["attachment", "event", "session"],
+            "event": ["attachment", "event", "session", "speaker", "speakerrole"],
             "messaging": ["slackchannel"],
             "news": ["article"],
         },
@@ -396,7 +396,7 @@ PERMISSIONS_COMMON = {
     "change": {"page": ["category", "page", "picture"], "user": ["history"]},
     "view": {
         "business": ["company", "offer", "sponsorship", "tier"],
-        "event": ["attachment", "event", "session"],
+        "event": ["attachment", "event", "session", "speaker", "speakerrole"],
         "messaging": ["slackchannel", "slacklog"],
         "news": ["article"],
         "page": ["category", "page", "picture"],

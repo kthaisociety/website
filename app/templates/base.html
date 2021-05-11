@@ -25,6 +25,8 @@
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200;0,400;0,500;0,700;1,200;1,400;1,500;1,700&display=swap" rel="stylesheet">
 
+        <script src="{% static 'js/plotly-latest.min.js' %}"></script>
+
         {% include "include/google.html" %}
 
         {% block head %}
@@ -54,6 +56,9 @@
                                         {% if request.user.is_authenticated %}
                                             {% if request.user.email_verified and request.user.is_admin %}
                                                 <span class="ml-2"><a class="link-main" href="{% url 'admin:index' %}">Admin</a></span>
+                                            {% endif %}
+                                            {% if request.user.email_verified and request.user.is_staff %}
+                                                <span class="ml-2"><a class="link-main" href="{% url 'app_statistics' %}">Statistics</a></span>
                                             {% endif %}
                                             <span class="ml-2"><a class="link-main" href="{% url 'user_dashboard' %}">Dashboard</a></span>
                                             <span class="ml-2"><a class="link-main" href="{% url 'user_logout' %}">Logout</a></span>

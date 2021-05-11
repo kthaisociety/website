@@ -3,10 +3,16 @@ import json
 import os
 import subprocess
 from _sha1 import sha1
+from collections import Counter
 from ipaddress import ip_address, ip_network
 
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
+from django.db.models import DateField
+from django.db.models.functions import Cast
 from django.http import StreamingHttpResponse, HttpResponseNotFound
 from django.shortcuts import render
+from django.utils import timezone
 from django.utils.encoding import force_bytes
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
@@ -16,6 +22,7 @@ import requests
 from app import settings
 from app.settings import GH_KEY, GH_BRANCH
 from app.slack import send_deploy_message
+from user.models import User
 
 
 def home(request):
@@ -132,3 +139,43 @@ def response_404(request, *args, **kwargs):
 
 def response_500(request, *args, **kwargs):
     return response(request, *args, code=404, *kwargs)
+
+
+@login_required
+@staff_member_required
+def statistics(request):
+    user_creation_dates = (
+        User.objects.filter(is_active=True)
+        .annotate(creation_date=Cast("created_at", DateField()))
+        .values_list("creation_date", flat=True)
+        .order_by("creation_date")
+    )
+    user_creation_dates_counter = Counter(user_creation_dates)
+    stats_members = []
+    stats_new_members = []
+    if user_creation_dates:
+        current_date = user_creation_dates[0]
+        while current_date <= timezone.localdate(timezone.now()):
+            stats_members.append(
+                (
+                    current_date,
+                    (stats_members[-1][1] if stats_members else 0)
+                    + user_creation_dates_counter.get(current_date, 0),
+                )
+            )
+            stats_new_members.append(
+                (current_date, user_creation_dates_counter.get(current_date, 0))
+            )
+            current_date += timezone.timedelta(days=1)
+
+    return render(
+        request,
+        "statistics.html",
+        {
+            "statistics": {"members": stats_members, "new_members": stats_new_members},
+            "zoom": [
+                timezone.localdate(timezone.now() - timezone.timedelta(days=30)),
+                timezone.localdate(timezone.now()),
+            ],
+        },
+    )

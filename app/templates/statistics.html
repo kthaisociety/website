@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load app_tags %}
+{% load static %}
+
+{% block head_title %}Statistics{% endblock %}
+
+{% block in_body %}
+    <div class="container container-body py-5">
+        <div class="row d-none d-lg-block">
+            <div class="col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent p-0 pb-2">
+                        <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'app_home' %}">Home</a></li>
+                        <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'app_statistics' %}">Statistics</a></li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="row mb-1">
+            <div class="col-md-12">
+                <h1 class="section-title text-main text-center text-md-left">Statistics</h1>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="card w-100">
+                    <div class="card-body">
+                        <h3 class="card-title">📈 Members</h3>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="plot-members" class="w-100 mb-4" style="height:400px;"></div>
+                                <div id="plot-new-members" class="w-100" style="height:400px;"></div>
+                                <script type="text/javascript">
+                                    var total_members = {
+                                      type: 'scatter',
+                                      x: [{% for day, val in statistics.members %}'{{ day|date:"Y-m-d" }}',{% endfor %}],
+                                      y: [{% for day, val in statistics.members %}{{ val }},{% endfor %}],
+                                      mode: 'lines',
+                                      name: 'Members',
+                                      line: {
+                                        color: '#00ABE7',
+                                        width: 3
+                                      }
+                                    };
+
+                                    var layout_members = {
+                                        xaxis: {
+                                            title: 'Date',
+                                            range: ['{{ zoom.0|date:"Y-m-d" }}', '{{ zoom.1|date:"Y-m-d" }}']
+                                        },
+                                        yaxis: {
+                                            title: 'Members'
+                                        },
+                                        autosize: true,
+                                        margin: {
+                                            l: 50,
+                                            r: 50,
+                                            b: 50,
+                                            t: 0,
+                                            pad: 4
+                                        }
+                                    };
+
+                                    var data_members = [total_members];
+
+                                    Plotly.newPlot('plot-members', data_members, layout_members, {responsive: true});
+
+                                    var new_members =
+                                    {
+                                        x: [{% for day, val in statistics.new_members %}'{{ day|date:"Y-m-d" }}',{% endfor %}],
+                                        y: [{% for day, val in statistics.new_members %}{{ val }},{% endfor %}],
+                                        type: 'bar',
+                                        marker: {
+                                            color: '#00ABE7',
+                                            width: 3
+                                        }
+                                    };
+
+                                    var layout_new_members = {
+                                        xaxis: {
+                                            title: 'Date',
+                                            range: ['{{ zoom.0|date:"Y-m-d" }}', '{{ zoom.1|date:"Y-m-d" }}']
+                                        },
+                                        yaxis: {
+                                            title: 'New members'
+                                        },
+                                        autosize: true,
+                                        margin: {
+                                            l: 50,
+                                            r: 50,
+                                            b: 50,
+                                            t: 0,
+                                            pad: 4
+                                        }
+                                    };
+
+                                    var data_new_members = [new_members];
+
+                                    Plotly.newPlot('plot-new-members', data_new_members, layout_new_members, {responsive: true});
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

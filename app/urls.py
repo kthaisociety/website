@@ -13,6 +13,7 @@ urlpatterns = [
     url(r"^events/", include("event.urls")),
     url(r"^business/", include("business.urls")),
     url(r"^page/", include("page.urls")),
+    url(r"^statistics/$", views.statistics, name="app_statistics"),
     url(r"^$", views.home, name="app_home"),
     url(r"^files/(?P<file_>.*)$", views.files, name="app_files"),
 ]

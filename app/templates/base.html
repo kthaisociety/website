@@ -42,16 +42,16 @@
                         <nav class="navbar-top navbar navbar-expand-lg navbar-dark bg-dark pt-2 pb-2">
                             <div class="container">
                                 {% if request.user.is_authenticated and request.user.profile_picture.crop.50x50 %}
-                                    <img class="profile-picture-nav" alt="Profile picture" src="{{ request.user.profile_picture.crop.50x50 }}">
+                                    <img class="profile-picture-nav d-none d-md-flex" alt="Profile picture" src="{{ request.user.profile_picture.crop.50x50 }}">
                                 {% endif %}
-                                <p class="navbar-nav mr-auto">
+                                <p class="navbar-nav mr-auto d-none d-md-flex">
                                     {% if request.user.is_authenticated %}
                                         Welcome, {{ request.user.name }}!
                                     {% else %}
                                         Welcome to KTH AI Society website!
                                     {% endif %}
                                 </p>
-                                <ul class="navbar-top-menu navbar-nav">
+                                <ul class="navbar-top-menu navbar-nav ml-auto mr-auto ml-md-auto mr-md-0">
                                     <li class="nav-item">
                                         {% if request.user.is_authenticated %}
                                             {% if request.user.email_verified and request.user.is_admin %}

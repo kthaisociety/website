@@ -190,13 +190,24 @@ def statistics(request):
                 )
             )
             stats_new_members.append(
-                (current_date, user_creation_dates_counter.get(current_date, 0) - user_creation_dates_finished_counter.get(current_date, 0))
+                (
+                    current_date,
+                    user_creation_dates_counter.get(current_date, 0)
+                    - user_creation_dates_finished_counter.get(current_date, 0),
+                )
             )
             stats_new_members_verified.append(
-                (current_date, user_creation_dates_verified_counter.get(current_date, 0) - user_creation_dates_finished_counter.get(current_date, 0))
+                (
+                    current_date,
+                    user_creation_dates_verified_counter.get(current_date, 0)
+                    - user_creation_dates_finished_counter.get(current_date, 0),
+                )
             )
             stats_new_members_finished.append(
-                (current_date, user_creation_dates_finished_counter.get(current_date, 0))
+                (
+                    current_date,
+                    user_creation_dates_finished_counter.get(current_date, 0),
+                )
             )
             current_date += timezone.timedelta(days=1)
 

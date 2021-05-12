@@ -36,9 +36,35 @@
                                       x: [{% for day, val in statistics.members %}'{{ day|date:"Y-m-d" }}',{% endfor %}],
                                       y: [{% for day, val in statistics.members %}{{ val }},{% endfor %}],
                                       mode: 'lines',
-                                      name: 'Members',
+                                      name: 'All registrations',
                                       line: {
                                         color: '#00ABE7',
+                                        width: 3
+                                      }
+                                    };
+
+                                    var total_members_verified = {
+                                      type: 'scatter',
+                                      x: [{% for day, val in statistics.members_verified %}'{{ day|date:"Y-m-d" }}',{% endfor %}],
+                                      y: [{% for day, val in statistics.members_verified %}{{ val }},{% endfor %}],
+                                      mode: 'lines',
+                                      name: 'Email verified',
+                                      line: {
+                                        dash: 'dashdot',
+                                        color: '#2DC7FF',
+                                        width: 3
+                                      }
+                                    };
+
+                                    var total_members_finished = {
+                                      type: 'scatter',
+                                      x: [{% for day, val in statistics.members_finished %}'{{ day|date:"Y-m-d" }}',{% endfor %}],
+                                      y: [{% for day, val in statistics.members_finished %}{{ val }},{% endfor %}],
+                                      mode: 'lines',
+                                      name: 'Registration finished',
+                                      line: {
+                                        dash: 'dot',
+                                        color: '#70D9FF',
                                         width: 3
                                       }
                                     };
@@ -64,7 +90,7 @@
                                         }
                                     };
 
-                                    var data_members = [total_members];
+                                    var data_members = [total_members, total_members_verified, total_members_finished];
 
                                     Plotly.newPlot('plot-members', data_members, layout_members, {responsive: true});
 

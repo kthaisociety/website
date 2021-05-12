@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="row mb-4">
-            <div class="col-md-12">
+            <div class="col-md-12 mb-4">
                 <div class="card w-100">
                     <div class="card-body">
                         <h3 class="card-title mb-4">📈 Members</h3>
@@ -155,6 +155,84 @@
                                     var data_new_members = [new_members, new_members_verified, new_members_finished];
 
                                     Plotly.newPlot('plot-new-members', data_new_members, layout_new_members, {responsive: true});
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="card w-100">
+                    <div class="card-body">
+                        <h3 class="card-title mb-4">🎟️ Events</h3>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div id="plot-registrations" class="w-100 mb-4" style="height:400px;"></div>
+                                <script type="text/javascript">
+                                    var new_registrations_registered =
+                                    {
+                                        x: [{% for day, val in statistics.new_registrations_registered %}'{{ day|date:"Y-m-d" }}',{% endfor %}],
+                                        y: [{% for day, val in statistics.new_registrations_registered %}{{ val }},{% endfor %}],
+                                        type: 'bar',
+                                        name: 'Registered',
+                                        marker: {
+                                            color: '#00ABE7',
+                                            width: 3
+                                        }
+                                    };
+
+                                    var new_registrations_joined =
+                                    {
+                                        x: [{% for day, val in statistics.new_registrations_joined %}'{{ day|date:"Y-m-d" }}',{% endfor %}],
+                                        y: [{% for day, val in statistics.new_registrations_joined %}{{ val }},{% endfor %}],
+                                        type: 'bar',
+                                        name: 'Joined',
+                                        marker: {
+                                            color: '#70D9FF',
+                                            width: 3
+                                        }
+                                    };
+
+                                    var layout_new_registrations = {
+                                        xaxis: {
+                                            title: 'Date',
+                                            range: ['{{ zoom.0|date:"Y-m-d" }}', '{{ zoom.1|date:"Y-m-d" }}']
+                                        },
+                                        yaxis: {
+                                            title: 'Registrations'
+                                        },
+                                        autosize: true,
+                                        margin: {
+                                            l: 50,
+                                            r: 50,
+                                            b: 50,
+                                            t: 0,
+                                            pad: 4
+                                        },
+                                        font: {
+                                            family: '"Futura", sans-serif',
+                                        },
+                                        barmode: 'stack',
+                                        annotations: [
+                                            {% for session in sessions %}
+                                                {
+                                                    y: {{ session.registrations_same_day }},
+                                                    x: '{{ session.starts_at|date:"Y-m-d" }}',
+                                                    xref: 'x',
+                                                    yref: 'y',
+                                                    text: '{{ session.name }}',
+                                                    showarrow: true,
+                                                    arrowhead: 7,
+                                                    ax: 0,
+                                                    ay: -40
+                                                },
+                                            {% endfor %}
+                                        ]
+                                    };
+
+                                    var data_new_registrations = [new_registrations_registered, new_registrations_joined];
+
+                                    Plotly.newPlot('plot-registrations', data_new_registrations, layout_new_registrations, {responsive: true});
                                 </script>
                             </div>
                         </div>

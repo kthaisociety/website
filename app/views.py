@@ -165,6 +165,8 @@ def statistics(request):
     stats_members_verified = []
     stats_members_finished = []
     stats_new_members = []
+    stats_new_members_verified = []
+    stats_new_members_finished = []
     if user_creation_dates:
         current_date = user_creation_dates[0][0]
         while current_date <= timezone.localdate(timezone.now()):
@@ -190,7 +192,24 @@ def statistics(request):
                 )
             )
             stats_new_members.append(
-                (current_date, user_creation_dates_counter.get(current_date, 0))
+                (
+                    current_date,
+                    user_creation_dates_counter.get(current_date, 0)
+                    - user_creation_dates_finished_counter.get(current_date, 0),
+                )
+            )
+            stats_new_members_verified.append(
+                (
+                    current_date,
+                    user_creation_dates_verified_counter.get(current_date, 0)
+                    - user_creation_dates_finished_counter.get(current_date, 0),
+                )
+            )
+            stats_new_members_finished.append(
+                (
+                    current_date,
+                    user_creation_dates_finished_counter.get(current_date, 0),
+                )
             )
             current_date += timezone.timedelta(days=1)
 
@@ -203,6 +222,8 @@ def statistics(request):
                 "members_verified": stats_members_verified,
                 "members_finished": stats_members_finished,
                 "new_members": stats_new_members,
+                "new_members_verified": stats_new_members_verified,
+                "new_members_finished": stats_new_members_finished,
             },
             "zoom": [
                 timezone.localdate(timezone.now() - timezone.timedelta(days=30)),

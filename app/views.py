@@ -8,7 +8,16 @@ from ipaddress import ip_address, ip_network
 
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
-from django.db.models import DateField, Count, Q, F
+from django.db.models import (
+    DateField,
+    Count,
+    Q,
+    F,
+    IntegerField,
+    Value,
+    OuterRef,
+    Subquery,
+)
 from django.db.models.functions import Cast
 from django.http import StreamingHttpResponse, HttpResponseNotFound
 from django.shortcuts import render
@@ -213,11 +222,17 @@ def statistics(request):
             )
             current_date += timezone.timedelta(days=1)
 
+    sessions = list(
+        Session.objects.filter(event__status=EventStatus.PUBLISHED).order_by(
+            "starts_at"
+        )
+    )
+
     registration_creation_dates = (
         Registration.objects.filter(
             status__in=[RegistrationStatus.REGISTERED, RegistrationStatus.JOINED]
         )
-        # .exclude(user__type=UserType.ORGANISER)
+        .exclude(user__type=UserType.ORGANISER)
         .annotate(creation_date=Cast("created_at", DateField()))
         .values_list("creation_date", "status")
         .order_by("creation_date")
@@ -234,9 +249,21 @@ def statistics(request):
     )
     stats_new_registrations_registered = []
     stats_new_registrations_joined = []
-    if registration_creation_dates:
-        current_date = registration_creation_dates[0][0]
-        while current_date <= timezone.localdate(timezone.now()):
+    if registration_creation_dates or sessions:
+        current_date = (
+            timezone.localdate(sessions[0].starts_at)
+            if sessions
+            else registration_creation_dates[0][0]
+        )
+        while current_date <= (
+            (
+                timezone.localdate(sessions[-1].starts_at)
+                if sessions[-1].starts_at > timezone.now()
+                else timezone.localdate(timezone.now())
+            )
+            if sessions
+            else timezone.localdate(timezone.now())
+        ):
             stats_new_registrations_registered.append(
                 (
                     current_date,
@@ -251,18 +278,12 @@ def statistics(request):
             )
             current_date += timezone.timedelta(days=1)
 
-    sessions = Session.objects.filter(event__status=EventStatus.PUBLISHED).annotate(
-        registrations_same_day=Count(
-            "event__registrations",
-            filter=Q(
-                event__registrations__status__in=[
-                    RegistrationStatus.REGISTERED,
-                    RegistrationStatus.JOINED,
-                ],
-                event__registrations__created_at__date=F("starts_at__date"),
-            ),
+    for session in sessions:
+        session.registrations_same_day = registration_creation_dates_counter_registered.get(
+            timezone.localdate(session.starts_at), 0
+        ) + registration_creation_dates_counter_joined.get(
+            timezone.localdate(session.starts_at), 0
         )
-    )
 
     return render(
         request,

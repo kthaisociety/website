@@ -22,6 +22,7 @@ import requests
 from app import settings
 from app.settings import GH_KEY, GH_BRANCH
 from app.slack import send_deploy_message
+from user.enums import UserType
 from user.models import User
 
 
@@ -148,21 +149,44 @@ def response_500(request, *args, **kwargs):
 def statistics(request):
     user_creation_dates = (
         User.objects.filter(is_active=True)
+        .exclude(type=UserType.ORGANISER)
         .annotate(creation_date=Cast("created_at", DateField()))
-        .values_list("creation_date", flat=True)
+        .values_list("creation_date", "email_verified", "registration_finished")
         .order_by("creation_date")
     )
-    user_creation_dates_counter = Counter(user_creation_dates)
+    user_creation_dates_counter = Counter([d for d, _, _ in user_creation_dates])
+    user_creation_dates_verified_counter = Counter(
+        [d for d, ver, _ in user_creation_dates if ver]
+    )
+    user_creation_dates_finished_counter = Counter(
+        [d for d, _, fin in user_creation_dates if fin]
+    )
     stats_members = []
+    stats_members_verified = []
+    stats_members_finished = []
     stats_new_members = []
     if user_creation_dates:
-        current_date = user_creation_dates[0]
+        current_date = user_creation_dates[0][0]
         while current_date <= timezone.localdate(timezone.now()):
             stats_members.append(
                 (
                     current_date,
                     (stats_members[-1][1] if stats_members else 0)
                     + user_creation_dates_counter.get(current_date, 0),
+                )
+            )
+            stats_members_verified.append(
+                (
+                    current_date,
+                    (stats_members_verified[-1][1] if stats_members_verified else 0)
+                    + user_creation_dates_verified_counter.get(current_date, 0),
+                )
+            )
+            stats_members_finished.append(
+                (
+                    current_date,
+                    (stats_members_finished[-1][1] if stats_members_finished else 0)
+                    + user_creation_dates_finished_counter.get(current_date, 0),
                 )
             )
             stats_new_members.append(
@@ -174,7 +198,12 @@ def statistics(request):
         request,
         "statistics.html",
         {
-            "statistics": {"members": stats_members, "new_members": stats_new_members},
+            "statistics": {
+                "members": stats_members,
+                "members_verified": stats_members_verified,
+                "members_finished": stats_members_finished,
+                "new_members": stats_new_members,
+            },
             "zoom": [
                 timezone.localdate(timezone.now() - timezone.timedelta(days=30)),
                 timezone.localdate(timezone.now()),

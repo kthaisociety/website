@@ -99,8 +99,33 @@
                                         x: [{% for day, val in statistics.new_members %}'{{ day|date:"Y-m-d" }}',{% endfor %}],
                                         y: [{% for day, val in statistics.new_members %}{{ val }},{% endfor %}],
                                         type: 'bar',
+                                        name: 'Unverified members',
                                         marker: {
                                             color: '#00ABE7',
+                                            width: 3
+                                        }
+                                    };
+
+                                    var new_members_verified =
+                                    {
+                                        x: [{% for day, val in statistics.new_members_verified %}'{{ day|date:"Y-m-d" }}',{% endfor %}],
+                                        y: [{% for day, val in statistics.new_members_verified %}{{ val }},{% endfor %}],
+                                        type: 'bar',
+                                        name: 'Email verified',
+                                        marker: {
+                                            color: '#2DC7FF',
+                                            width: 3
+                                        }
+                                    };
+
+                                    var new_members_finished =
+                                    {
+                                        x: [{% for day, val in statistics.new_members_finished %}'{{ day|date:"Y-m-d" }}',{% endfor %}],
+                                        y: [{% for day, val in statistics.new_members_finished %}{{ val }},{% endfor %}],
+                                        type: 'bar',
+                                        name: 'Registration finished',
+                                        marker: {
+                                            color: '#70D9FF',
                                             width: 3
                                         }
                                     };
@@ -123,10 +148,11 @@
                                         },
                                         font: {
                                             family: '"Futura", sans-serif',
-                                        }
+                                        },
+                                        barmode: 'stack'
                                     };
 
-                                    var data_new_members = [new_members];
+                                    var data_new_members = [new_members, new_members_verified, new_members_finished];
 
                                     Plotly.newPlot('plot-new-members', data_new_members, layout_new_members, {responsive: true});
                                 </script>

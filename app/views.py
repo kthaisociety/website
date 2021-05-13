@@ -291,16 +291,28 @@ def statistics(request):
 
     stats_members_gender = {gt: 0 for gt in GenderType}
     stats_members_year = defaultdict(int)
+    stats_members_university = defaultdict(int)
+    stats_members_programme = defaultdict(int)
     for u in users:
         stats_members_gender[u.gender] += 1
         if u.birthday:
             stats_members_year[u.birthday.year] += 1
+        if u.university:
+            stats_members_university[u.university] += 1
+        if u.degree:
+            stats_members_programme[u.degree] += 1
 
-    stats_members_year = OrderedDict(
-        sorted(
-            [(year, val) for year, val in stats_members_year.items()],
-            key=lambda smy: smy[0],
-        )
+    stats_members_year = sorted(
+        [(year, val) for year, val in stats_members_year.items()],
+        key=lambda smy: smy[0],
+    )
+    stats_members_university = sorted(
+        [(year, val) for year, val in stats_members_university.items()],
+        key=lambda smy: -smy[1],
+    )
+    stats_members_programme = sorted(
+        [(year, val) for year, val in stats_members_programme.items()],
+        key=lambda smy: -smy[1],
     )
 
     return render(
@@ -313,6 +325,8 @@ def statistics(request):
                 "members_finished": stats_members_finished,
                 "members_gender": stats_members_gender,
                 "stats_members_year": stats_members_year,
+                "stats_members_university": stats_members_university,
+                "stats_members_programme": stats_members_programme,
                 "new_members": stats_new_members,
                 "new_members_verified": stats_new_members_verified,
                 "new_members_finished": stats_new_members_finished,

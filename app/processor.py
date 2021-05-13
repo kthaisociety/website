@@ -21,6 +21,9 @@ def variables_processor(request=None):
     c["sponsorships"] = get_sponsorships()
     c["offers"] = get_offers()
 
-    c["enums"] = {"event": {"streaming_provider": StreamingProviderDict}, "user": {"gender": GenderTypeDict, "gender_colours": GenderTypeColoursDict}}
+    c["enums"] = {
+        "event": {"streaming_provider": StreamingProviderDict},
+        "user": {"gender": GenderTypeDict, "gender_colours": GenderTypeColoursDict},
+    }
 
     return c

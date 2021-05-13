@@ -32,9 +32,11 @@
                                 <div id="plot-new-members" class="w-100 mb-4" style="height:400px;"></div>
                                 <div class="row">
                                     <div class="col-12 col-md-6">
+                                        <h4 class="section-subtitle mb-3 ml-4">Gender</h4>
                                         <div id="plot-members-gender" class="w-100" style="height:400px;"></div>
                                     </div>
                                     <div class="col-12 col-md-6">
+                                        <h4 class="section-subtitle mb-3 ml-4">Birth year</h4>
                                         <div id="plot-members-year" class="w-100" style="height:400px;"></div>
                                     </div>
                                 </div>
@@ -198,7 +200,10 @@
                                         values: [{% for val in statistics.stats_members_year.values %}{{ val }},{% endfor %}],
                                         labels: [{% for year in statistics.stats_members_year.keys %}'{{ year }}',{% endfor %}],
                                         type: 'pie',
-                                        name: 'Birth year'
+                                        name: 'Birth year',
+                                        marker: {
+                                                colors: [{% for year in statistics.stats_members_year.keys %}'{{ year|colour_by_year }}',{% endfor %}]
+                                        }
                                     };
 
                                     var layout_members_year = {

@@ -344,6 +344,21 @@ nav {
     }
 }
 
+.section-subtitle-center{
+    text-align: center;
+}
+
+.section-subtitle-center::after {
+    content: "";
+    display: block;
+    width: 2.5rem;
+    height: 2px;
+    background-color: $primary;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .offer-company-logo {
     max-height: 150px;
     display: block;

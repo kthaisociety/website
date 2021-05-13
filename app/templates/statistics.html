@@ -207,7 +207,8 @@
                                         name: 'Birth year',
                                         marker: {
                                                 colors: [{% for val in statistics.stats_members_year %}'{{ val.0|colour_by_year }}',{% endfor %}]
-                                        }
+                                        },
+                                        sort: false
                                     };
 
                                     var layout_members_year = {
@@ -221,7 +222,7 @@
                                             b: 25,
                                             t: 50,
                                             pad: 4
-                                        },
+                                        }
                                     };
 
                                     var data_members_year = [members_year];
@@ -250,7 +251,7 @@
                                         margin: {
                                             l: 50,
                                             r: 50,
-                                            b: 100,
+                                            b: 150,
                                             t: 0,
                                             pad: 4
                                         },
@@ -285,7 +286,7 @@
                                         margin: {
                                             l: 50,
                                             r: 50,
-                                            b: 150,
+                                            b: 250,
                                             t: 0,
                                             pad: 4
                                         },

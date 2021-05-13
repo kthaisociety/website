@@ -5,7 +5,7 @@ $backround: #000000;
 $primary-100: #00698F;
 $primary-300: #0081AF;
 $primary-500: $primary;
-$primary-700: #2DC7FF;
+$primary-700: #2dc7ff;
 $primary-900: #70D9FF;
 
 $secondary: $primary-700;
@@ -342,6 +342,21 @@ nav {
         margin-left: auto;
         margin-right: auto;
     }
+}
+
+.section-subtitle-center{
+    text-align: center;
+}
+
+.section-subtitle-center::after {
+    content: "";
+    display: block;
+    width: 2.5rem;
+    height: 2px;
+    background-color: $primary;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .offer-company-logo {

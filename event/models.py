@@ -76,7 +76,7 @@ class Event(models.Model):
 
     @property
     def streaming_provider(self) -> Optional[StreamingProvider]:
-        if self.type == EventType.WEBINAR:
+        if self.type == EventType.WEBINAR and self.external_url:
             pre_domain = r"((http|https):\/\/)([a-zA-Z0-9\-]+\.)*"
             post_domain = r"\..*"
             if re.match(rf"^{pre_domain}meet{post_domain}$", self.external_url):

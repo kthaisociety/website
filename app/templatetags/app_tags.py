@@ -24,7 +24,7 @@ def keyvalue(dict, key):
 
 @register.filter
 def colour_by_year(year):
-    years = (1980, timezone.now().year - 10)
+    years = (1980, timezone.now().year - 16)
     init = (0, 171, 231)
     fin = (112, 217, 255)
     year = (max(min(year, years[1]), years[0]) - years[0]) / abs(years[1] - years[0])

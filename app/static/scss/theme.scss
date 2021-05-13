@@ -325,6 +325,25 @@ nav {
     }
 }
 
+.section-subtitle{
+    @media (max-width: 991px) {
+        text-align: center;
+    }
+}
+
+.section-subtitle::after {
+    content: "";
+    display: block;
+    width: 2.5rem;
+    height: 2px;
+    background-color: $primary;
+    margin-top: 10px;
+    @media (max-width: 991px) {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
 .offer-company-logo {
     max-height: 150px;
     display: block;
@@ -422,6 +441,17 @@ nav {
     color: #FFFFFF;
     background-color: #25d366;
     border-color: #25d366;
+    &:hover, &:active, &:visited {
+        color: $light-700;
+        opacity: 0.9;
+        transition: color .15s ease-in-out,opacity .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+}
+
+.btn-scholar {
+    color: #FFFFFF;
+    background-color: #777777;
+    border-color: #777777;
     &:hover, &:active, &:visited {
         color: $light-700;
         opacity: 0.9;
@@ -682,11 +712,11 @@ nav {
     padding: 0.5rem;
 }
 
-.inline-icon-h3 {
+.inline-icon-h4 {
     width: 20px;
     height: 20px;
     margin-right: 0.5rem;
-    margin-top: 0.25rem;
+    margin-top: 0.1rem;
     vertical-align: top;
 }
 
@@ -848,6 +878,32 @@ nav {
     margin: 0;
     -webkit-filter: grayscale(100%);
     filter: grayscale(100%);
+}
+
+.speaker-picture {
+    border-radius: 50%;
+    max-width: 125px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0.75rem;
+}
+
+.speaker-picture-primary {
+    border: 0.2rem solid $primary;
+}
+
+.speaker-picture img {
+    width: 100%;
+    margin: 0;
+    border-radius: 50%;
+}
+
+.speaker-social-network button {
+    padding: 0.15rem 0.25rem;
+}
+
+.speaker-social-network p {
+    font-size: 8px;
 }
 
 @media (max-width: 991px) {

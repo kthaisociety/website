@@ -64,3 +64,9 @@ StreamingProvider.labels = {
     StreamingProvider.ZOOM: "Zoom",
 }
 StreamingProviderDict = StreamingProvider.labels
+
+
+class SpeakerRoleType(enum.IntEnum):
+    SPEAKER = 0
+    MODERATOR = 1
+    SPECTATOR = 2

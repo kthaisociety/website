@@ -62,74 +62,127 @@
         </div>
     {% endif %}
     <div class="row">
-        <div class="col-md-12 mb-3">
+        <div class="col-md-12 {% if event.sessions.count > 1 %}mb-4{% else %}mb-2{% endif %}">
             {% if event.location %}
-                <h5 class="mb-3">Location: <a class="link-unstyled" href="https://maps.google.com/maps?hl=en&amp;q={{ event.location }}">{{ event.location }}</a></h5>
+                <h5 class="mb-0">Location: <a class="link-unstyled" href="https://maps.google.com/maps?hl=en&amp;q={{ event.location }}">{{ event.location }}</a></h5>
             {% else %}
                 {% if event.streaming_provider %}
-                    <h5 class="mb-3">Location: {{ enums.event.streaming_provider|keyvalue:event.streaming_provider }} <img class="location-streaming-icon" src="{% static "img/external/" %}{{ event.streaming_provider.name|lower }}.png"></h5>
+                    <h5 class="mb-0">Location: {{ enums.event.streaming_provider|keyvalue:event.streaming_provider }} <img class="location-streaming-icon" src="{% static "img/external/" %}{{ event.streaming_provider.name|lower }}.png"></h5>
                 {% else %}
-                    <h5 class="mb-3">Location: ONLINE</h5>
+                    <h5 class="mb-0">Location: ONLINE</h5>
                 {% endif %}
             {% endif %}
-            {% if event.sessions.all|length == 1 %}
-                {% with event.sessions.first as session %}
-                    <h5 class="{% if registration and session.published_attachments_with_registration or not registration and session.published_attachments %}mb-1{% else %}mb-3{% endif %}">Time: {{ event.starts_at|date:"F j, Y H:i" }}{% if event.starts_at != event.ends_at %} - {% if event.starts_at.date != event.ends_at.date %}{{ event.ends_at|date:"F j, Y H:i" }}{% else %}{{ event.ends_at|date:"H:i" }}{% endif %}{% endif %}</h5>
-                    {% if registration and session.published_attachments_with_registration or not registration and session.published_attachments %}
-                        <div class="row mb-4">
-                            {% for attachment in session.published_attachments_with_registration %}
-                                {% if registration or not attachment.registration_required %}
-                                    <div class="col-12 col-md-4 mb-0">
-                                        <a class="link-unstyled" href="{{ attachment.url }}" target="_blank">
-                                            <div class="card mt-4">
-                                                <img class="card-img-top" src="{{ attachment.preview.crop.500x300 }}">
-                                                <div class="card-body">
-                                                    {% with attachment.type|event_attachment_type as type %}
-                                                        <span class="badge badge-primary p-2 d-inline-block mb-3 mb-md-2 mt-0">{{ type.name|title }}</span>
-                                                    {% endwith %}
-                                                    <h5 class="mb-1">{{ attachment.name }}</h5>
-                                                </div>
+        </div>
+    </div>
+    {% for session in event.sessions.all %}
+        <div class="row">
+            <div class="col-md-12 mb-4">
+                {% if event.sessions.count > 1 %}
+                    <h4 class="section-subtitle mb-3">{{ session.name }}</h4>
+                {% endif %}
+                <h5 class="{% if registration and session.published_attachments_with_registration or not registration and session.published_attachments %}mb-1{% else %}mb-3{% endif %}">Time: {{ event.starts_at|date:"F j, Y H:i" }}{% if event.starts_at != event.ends_at %} - {% if event.starts_at.date != event.ends_at.date %}{{ event.ends_at|date:"F j, Y H:i" }}{% else %}{{ event.ends_at|date:"H:i" }}{% endif %}{% endif %}</h5>
+                {% if session.roles.count > 0 %}
+                    <div class="card mt-4 mb-0">
+                        <div class="card-body">
+                            {% if session.roles.count == 1 %}
+                                <h4 class="card-title mb-4">📣 Speaker</h4>
+                            {% else %}
+                                <h4 class="card-title mb-4">📣 Speakers</h4>
+                            {% endif %}
+                            <div class="row">
+                                {% for role in session.roles.all %}
+                                    <div class="col-12 mt-0 mb-0">
+                                        <div class="row">
+                                            <div class="col-12 col-md-4 col-lg-3 text-center ml-auto mr-auto ml-md-0 mr-md-0 mt-0 mb-0">
+                                                {% if role.speaker.website %}<a href="{{ role.speaker.website }}" target="_blank" class="link-unstyled">{% endif %}
+                                                {% comment %}
+                                                    <img src="{{ organiser.picture.url }}" class="ml-auto mr-auto">
+                                                {% endcomment %}
+                                                <div class="speaker-picture"><img alt="Speaker picture" src="{{ role.speaker.picture.crop.500x500 }}"></div>
+                                                <h6 class="mt-1 mb-0" {% if role.speaker.full_name|length > 15 %}style="font-size: 14px; padding-top: 1px; padding-bottom: 1px;"{% endif %}>{{ role.speaker.full_name }}</h6>
+                                                {% if role.speaker.city and role.speaker.country %}
+                                                    <p class="mt-1 mb-0" style="line-height: 1;"><small>{{ role.speaker.city }}, {{ role.speaker.country }}</small></p>
+                                                {% endif %}
+                                                {% if role.speaker.linkedin_url %}
+                                                    <a href="{{ role.speaker.linkedin_url }}" class="speaker-social-network link-unstyled" target="_blank">
+                                                        <button type="button" class="btn btn-linkedin btn-sm mt-2">
+                                                            <p class="mb-0">
+                                                                <i class="fab fa-linkedin-in"></i>
+                                                            </p>
+                                                        </button>
+                                                    </a>
+                                                {% endif %}
+                                                {% if role.speaker.twitter_url %}
+                                                    <a href="{{ role.speaker.twitter_url }}" class="speaker-social-network link-unstyled" target="_blank">
+                                                        <button type="button" class="btn btn-twitter btn-sm mt-2">
+                                                            <p class="mb-0">
+                                                                <i class="fab fa-twitter"></i>
+                                                            </p>
+                                                        </button>
+                                                    </a>
+                                                {% endif %}
+                                                {% if role.speaker.scholar_url %}
+                                                    <a href="{{ role.speaker.scholar_url }}" class="speaker-social-network link-unstyled" target="_blank">
+                                                        <button type="button" class="btn btn-scholar btn-sm mt-2">
+                                                            <p class="mb-0">
+                                                                <i class="fas fa-graduation-cap"></i>
+                                                            </p>
+                                                        </button>
+                                                    </a>
+                                                {% endif %}
+                                                {% if role.speaker %}</a>{% endif %}
                                             </div>
-                                        </a>
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                {% endwith %}
-            {% elif event.sessions.all|length > 1 %}
-                {% for session in event.sessions.all %}
-                    <p class="mb-1"><i>{{ session.name }}</i></p>
-                    <h5 class="{% if registration and session.published_attachments_with_registration or not registration and session.published_attachments %}mb-1{% else %}mb-4{% endif %}">{{ session.starts_at|date:"F j, Y H:i" }}{% if session.starts_at != session.ends_at %} - {% if session.starts_at.date != session.ends_at.date %}{{ session.ends_at|date:"F j, Y H:i" }}{% else %}{{ session.ends_at|date:"H:i" }}{% endif %}{% endif %}</h5>
-                    {% if registration and session.published_attachments_with_registration or not registration and session.published_attachments %}
-                        <div class="row mb-4">
-                            {% for attachment in session.published_attachments_with_registration %}
-                                {% if registration or not attachment.registration_required %}
-                                    <div class="col-12 col-md-4 mb-0">
-                                        <a class="link-unstyled" href="{{ attachment.url }}" target="_blank">
-                                            <div class="card mt-4">
-                                                <img class="card-img-top" src="{{ attachment.preview.crop.500x300 }}">
-                                                <div class="card-body">
-                                                    {% with attachment.type|event_attachment_type as type %}
-                                                        <span class="badge badge-primary p-2 d-inline-block mb-3 mb-md-2 mt-0">{{ type.name|title }}</span>
-                                                    {% endwith %}
-                                                    <h5 class="mb-1">{{ attachment.name }}</h5>
-                                                </div>
+                                            <div class="col-12 col-md-8 col-lg-9 ml-auto mr-auto pl-3 pl-lg-0 ml-md-0 mr-md-0 mt-3 mt-md-0 mb-0 text-center text-md-left">
+                                                {% if role.speaker.description %}
+                                                    {{ role.speaker.description|apply_markup }}
+                                                {% endif %}
                                             </div>
-                                        </a>
+                                        </div>
+                                        {% if forloop.counter < session.roles.count %}
+                                            <hr class="mb-4 mt-0 mt-md-4">
+                                        {% endif %}
                                     </div>
-                                {% endif %}
-                            {% endfor %}
+                                {% endfor %}
+                            </div>
                         </div>
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
+                    </div>
+                {% endif %}
+                {% if registration and session.published_attachments_with_registration or not registration and session.published_attachments %}
+                    <div class="card mt-4 mb-0">
+                        <div class="card-body">
+                            <h4 class="card-title">🗃️ Attachments</h4>
+                            <div class="row">
+                                {% for attachment in session.published_attachments_with_registration %}
+                                    {% if registration or not attachment.registration_required %}
+                                        <div class="col-12 col-md-4 mb-0">
+                                            <a class="link-unstyled" href="{{ attachment.url }}" target="_blank">
+                                                <div class="card mt-2">
+                                                    <img class="card-img-top" src="{{ attachment.preview.crop.500x300 }}">
+                                                    <div class="card-body">
+                                                        {% with attachment.type|event_attachment_type as type %}
+                                                            <span class="badge badge-primary p-2 d-inline-block mb-3 mb-md-2 mt-0">{{ type.name|title }}</span>
+                                                        {% endwith %}
+                                                        <h5 class="mb-1">{{ attachment.name }}</h5>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                </div>
             </div>
-        {% if event.registration_available %}
+    {% endfor %}
+
+    {% if event.registration_available %}
+        <div class="row">
             <div class="col-md-12">
                 <div class="card mb-4">
                     <div class="card-body">
-                        <h3>Registration</h3>
+                        <h4 class="card-title">📝 Registration</h4>
                         {% if event.is_signup_open or registration %}
                             {% if request.user.is_authenticated or not event.account_required %}
                                 {% if registration %}
@@ -194,11 +247,14 @@
                     </div>
                 </div>
             </div>
-        {% endif %}
-        <div class="col-md-12">
-            {% if event.location %}
-                <iframe width="100%" height="400" src="https://maps.google.com/maps?hl=en&amp;q={{ event.location }}&amp;ie=UTF8&amp;t=&amp;z=14&amp;iwloc=B&amp;output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
-            {% endif %}
         </div>
-    </div>
+    {% endif %}
+
+    {% if event.location %}
+        <div class="row">
+            <div class="col-md-12">
+                <iframe width="100%" height="400" src="https://maps.google.com/maps?hl=en&amp;q={{ event.location }}&amp;ie=UTF8&amp;t=&amp;z=14&amp;iwloc=B&amp;output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

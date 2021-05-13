@@ -9,6 +9,7 @@ from bs4 import BeautifulSoup
 
 from django.core.exceptions import ValidationError
 
+from app.storage import OverwriteStorage
 from app.variables import APP_NAME, APP_ATTENDANCE_RATIO
 
 from django.db import models, transaction
@@ -26,6 +27,7 @@ from event.enums import (
     AttachmentStatus,
     ScheduleType,
     StreamingProvider,
+    SpeakerRoleType,
 )
 from event.managers import EventManager, SessionManager
 
@@ -365,3 +367,61 @@ class Attachment(models.Model):
 
     def __str__(self):
         return f"{self.session.event.name} - {self.name}"
+
+
+class Speaker(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(verbose_name="First name", max_length=255)
+    surname = models.CharField(verbose_name="Last name", max_length=255)
+    email = models.EmailField(max_length=255, blank=True, null=True)
+    user = models.ForeignKey(
+        "user.User",
+        on_delete=models.PROTECT,
+        related_name="speakers",
+        blank=True,
+        null=True,
+    )
+    picture = VersatileImageField(
+        "Image",
+        upload_to="event/speaker/picture/",
+        default="event/speaker/picture/profile.png",
+        storage=OverwriteStorage(),
+    )
+    website = models.CharField(max_length=255, blank=True, null=True)
+    city = models.CharField(max_length=255, blank=True, null=True)
+    country = models.CharField(max_length=255, blank=True, null=True)
+
+    description = models.TextField(max_length=5000, blank=True, null=True)
+
+    # Social networks
+    linkedin_url = models.URLField(max_length=200, blank=True, null=True)
+    twitter_url = models.URLField(max_length=200, blank=True, null=True)
+    scholar_url = models.URLField(max_length=200, blank=True, null=True)
+
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def full_name(self):
+        if self.surname:
+            return self.name + " " + self.surname
+        return self.name
+
+    def __str__(self):
+        if self.email:
+            return f"{self.full_name} <{self.email}>"
+        return self.full_name
+
+
+class SpeakerRole(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    speaker = models.ForeignKey(
+        "event.Speaker", on_delete=models.PROTECT, related_name="roles"
+    )
+    session = models.ForeignKey(
+        "event.Session", on_delete=models.PROTECT, related_name="roles"
+    )
+    type = models.PositiveSmallIntegerField(
+        choices=((srt.value, srt.name) for srt in SpeakerRoleType),
+        default=SpeakerRoleType.SPEAKER,
+    )

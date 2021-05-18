@@ -18,6 +18,7 @@
             <a class="link-unstyled" href="{% if offer.url %}{{ offer.url }}{% elif offer.email %}mailto:{{ offer.email }}{% endif %}">
                 <p class="text-primary font-weight-bold mb-1">{% if offer.location %}🌍{% else %}🖥️{% endif %} {{ offer.company.name }}, {% if offer.location %}{{ offer.location }}{% else %}Remote{% endif %}</p>
             </a>
+            <p class="text-grey">{{ enums.business.offer_type|keyvalue:offer.type }}</p>
             {% if offer.ends_at %}
                 <p class="font-weight-bold mb-0">Apply before {{ offer.ends_at|date:"Y-m-d" }}</p>
             {% endif %}

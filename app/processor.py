@@ -11,6 +11,7 @@ def variables_processor(request=None):
 
     from event.enums import StreamingProviderDict
     from user.enums import GenderTypeDict, GenderTypeColoursDict
+    from business.enums import OfferTypeDict
 
     c["articles"] = get_latest_articles()
     c["events"] = get_future_events()
@@ -24,6 +25,7 @@ def variables_processor(request=None):
     c["enums"] = {
         "event": {"streaming_provider": StreamingProviderDict},
         "user": {"gender": GenderTypeDict, "gender_colours": GenderTypeColoursDict},
+        "business": {"offer_type": OfferTypeDict},
     }
 
     return c

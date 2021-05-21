@@ -22,6 +22,20 @@ def keyvalue(dict, key):
     return dict.get(key)
 
 
+@register.filter
+def colour_by_year(year):
+    years = (1980, timezone.now().year - 16)
+    init = (0, 171, 231)
+    fin = (112, 217, 255)
+    year = (max(min(year, years[1]), years[0]) - years[0]) / abs(years[1] - years[0])
+    col = (
+        int(init[0] + year * (fin[0] - init[0])),
+        int(init[1] + year * (fin[1] - init[1])),
+        int(init[2] + year * (fin[2] - init[2])),
+    )
+    return f"rgb({col[0]}, {col[1]}, {col[2]})"
+
+
 @register.simple_tag
 def settings_value(name):
     return getattr(settings, name, "")

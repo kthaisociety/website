@@ -29,7 +29,21 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div id="plot-members" class="w-100 mb-4" style="height:400px;"></div>
-                                <div id="plot-new-members" class="w-100" style="height:400px;"></div>
+                                <div id="plot-new-members" class="w-100 mb-4" style="height:400px;"></div>
+                                <div class="row mb-4">
+                                    <div class="col-12 col-md-6">
+                                        <h4 class="section-subtitle mb-3 ml-4">Gender</h4>
+                                        <div id="plot-members-gender" class="w-100" style="height:400px;"></div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <h4 class="section-subtitle mb-3 ml-4">Birth year</h4>
+                                        <div id="plot-members-year" class="w-100" style="height:400px;"></div>
+                                    </div>
+                                </div>
+                                <h4 class="section-subtitle mb-3 ml-4">University</h4>
+                                <div id="plot-members-university" class="w-100 mb-4" style="height:400px;"></div>
+                                <h4 class="section-subtitle mb-3 ml-4">Programme</h4>
+                                <div id="plot-members-programme" class="w-100" style="height:400px;"></div>
                                 <script type="text/javascript">
                                     var total_members = {
                                       type: 'scatter',
@@ -155,6 +169,135 @@
                                     var data_new_members = [new_members, new_members_verified, new_members_finished];
 
                                     Plotly.newPlot('plot-new-members', data_new_members, layout_new_members, {responsive: true});
+
+                                    var members_gender =
+                                    {
+                                        values: [{% for val in statistics.members_gender.values %}{{ val }},{% endfor %}],
+                                        labels: [{% for gender in statistics.members_gender.keys %}'{{ enums.user.gender|keyvalue:gender }}',{% endfor %}],
+                                        type: 'pie',
+                                        name: 'Gender',
+                                        marker: {
+                                                colors: [{% for gender in statistics.members_gender.keys %}'{{ enums.user.gender_colours|keyvalue:gender }}',{% endfor %}]
+                                        }
+                                    };
+
+                                    var layout_members_gender = {
+                                        autosize: true,
+                                        font: {
+                                            family: '"Futura", sans-serif',
+                                        },
+                                        margin: {
+                                            l: 25,
+                                            r: 25,
+                                            b: 25,
+                                            t: 50,
+                                            pad: 4
+                                        },
+                                    };
+
+                                    var data_members_gender = [members_gender];
+
+                                    Plotly.newPlot('plot-members-gender', data_members_gender, layout_members_gender, {responsive: true});
+
+                                    var members_year =
+                                    {
+                                        values: [{% for val in statistics.stats_members_year %}{{ val.1 }},{% endfor %}],
+                                        labels: [{% for val in statistics.stats_members_year %}'{{ val.0 }}',{% endfor %}],
+                                        type: 'pie',
+                                        name: 'Birth year',
+                                        marker: {
+                                                colors: [{% for val in statistics.stats_members_year %}'{{ val.0|colour_by_year }}',{% endfor %}]
+                                        },
+                                        sort: false
+                                    };
+
+                                    var layout_members_year = {
+                                        autosize: true,
+                                        font: {
+                                            family: '"Futura", sans-serif',
+                                        },
+                                        margin: {
+                                            l: 25,
+                                            r: 25,
+                                            b: 25,
+                                            t: 50,
+                                            pad: 4
+                                        }
+                                    };
+
+                                    var data_members_year = [members_year];
+
+                                    Plotly.newPlot('plot-members-year', data_members_year, layout_members_year, {responsive: true});
+
+                                    var members_university = {
+                                      type: 'bar',
+                                      x: [{% for val in statistics.stats_members_university %}'{{ val.0 }}',{% endfor %}],
+                                      y: [{% for val in statistics.stats_members_university %}{{ val.1 }},{% endfor %}],
+                                      name: 'Universities',
+                                      marker: {
+                                        color: '#00ABE7',
+                                        width: 3
+                                      }
+                                    };
+
+                                    var layout_members_university = {
+                                        xaxis: {
+                                            title: 'Universities'
+                                        },
+                                        yaxis: {
+                                            title: 'Members'
+                                        },
+                                        autosize: true,
+                                        margin: {
+                                            l: 50,
+                                            r: 50,
+                                            b: 150,
+                                            t: 0,
+                                            pad: 4
+                                        },
+                                        font: {
+                                            family: '"Futura", sans-serif',
+                                        }
+                                    };
+
+                                    var data_members_university = [members_university];
+
+                                    Plotly.newPlot('plot-members-university', data_members_university, layout_members_university, {responsive: true});
+
+                                    var members_programme = {
+                                      type: 'bar',
+                                      x: [{% for val in statistics.stats_members_programme %}'{{ val.0 }}',{% endfor %}],
+                                      y: [{% for val in statistics.stats_members_programme %}{{ val.1 }},{% endfor %}],
+                                      name: 'Programmes',
+                                      marker: {
+                                        color: '#00ABE7',
+                                        width: 3
+                                      }
+                                    };
+
+                                    var layout_members_programme = {
+                                        xaxis: {
+                                            title: 'Programmes'
+                                        },
+                                        yaxis: {
+                                            title: 'Members'
+                                        },
+                                        autosize: true,
+                                        margin: {
+                                            l: 50,
+                                            r: 50,
+                                            b: 250,
+                                            t: 0,
+                                            pad: 4
+                                        },
+                                        font: {
+                                            family: '"Futura", sans-serif',
+                                        }
+                                    };
+
+                                    var data_members_programme = [members_programme];
+
+                                    Plotly.newPlot('plot-members-programme', data_members_programme, layout_members_programme, {responsive: true});
                                 </script>
                             </div>
                         </div>
@@ -167,7 +310,7 @@
                         <h3 class="card-title mb-4">🎟️ Events</h3>
                         <div class="row">
                             <div class="col-md-12">
-                                <div id="plot-registrations" class="w-100 mb-4" style="height:400px;"></div>
+                                <div id="plot-registrations" class="w-100" style="height:400px;"></div>
                                 <script type="text/javascript">
                                     var new_registrations_registered =
                                     {

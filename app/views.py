@@ -3,7 +3,7 @@ import json
 import os
 import subprocess
 from _sha1 import sha1
-from collections import Counter
+from collections import Counter, defaultdict, OrderedDict
 from ipaddress import ip_address, ip_network
 
 from django.contrib.admin.views.decorators import staff_member_required
@@ -33,7 +33,7 @@ from app.settings import GH_KEY, GH_BRANCH
 from app.slack import send_deploy_message
 from event.enums import RegistrationStatus, EventStatus
 from event.models import Registration, Session
-from user.enums import UserType
+from user.enums import UserType, GenderType
 from user.models import User
 
 
@@ -287,6 +287,34 @@ def statistics(request):
             timezone.localdate(session.starts_at), 0
         )
 
+    users = list(User.objects.filter(is_active=True).exclude(type=UserType.ORGANISER))
+
+    stats_members_gender = {gt: 0 for gt in GenderType}
+    stats_members_year = defaultdict(int)
+    stats_members_university = defaultdict(int)
+    stats_members_programme = defaultdict(int)
+    for u in users:
+        stats_members_gender[u.gender] += 1
+        if u.birthday:
+            stats_members_year[u.birthday.year] += 1
+        if u.university:
+            stats_members_university[u.university] += 1
+        if u.degree:
+            stats_members_programme[u.degree] += 1
+
+    stats_members_year = sorted(
+        [(year, val) for year, val in stats_members_year.items()],
+        key=lambda smy: smy[0],
+    )
+    stats_members_university = sorted(
+        [(year, val) for year, val in stats_members_university.items()],
+        key=lambda smy: -smy[1],
+    )
+    stats_members_programme = sorted(
+        [(year, val) for year, val in stats_members_programme.items()],
+        key=lambda smy: -smy[1],
+    )
+
     return render(
         request,
         "statistics.html",
@@ -295,6 +323,10 @@ def statistics(request):
                 "members": stats_members,
                 "members_verified": stats_members_verified,
                 "members_finished": stats_members_finished,
+                "members_gender": stats_members_gender,
+                "stats_members_year": stats_members_year,
+                "stats_members_university": stats_members_university,
+                "stats_members_programme": stats_members_programme,
                 "new_members": stats_new_members,
                 "new_members_verified": stats_new_members_verified,
                 "new_members_finished": stats_new_members_finished,

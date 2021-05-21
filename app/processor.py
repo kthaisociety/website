@@ -10,6 +10,8 @@ def variables_processor(request=None):
     from business.utils import get_sponsorships, get_offers
 
     from event.enums import StreamingProviderDict
+    from user.enums import GenderTypeDict, GenderTypeColoursDict
+    from business.enums import OfferTypeDict
 
     c["articles"] = get_latest_articles()
     c["events"] = get_future_events()
@@ -20,6 +22,10 @@ def variables_processor(request=None):
     c["sponsorships"] = get_sponsorships()
     c["offers"] = get_offers()
 
-    c["enums"] = {"event": {"streaming_provider": StreamingProviderDict}}
+    c["enums"] = {
+        "event": {"streaming_provider": StreamingProviderDict},
+        "user": {"gender": GenderTypeDict, "gender_colours": GenderTypeColoursDict},
+        "business": {"offer_type": OfferTypeDict},
+    }
 
     return c

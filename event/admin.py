@@ -1,6 +1,8 @@
 from django.contrib import admin, messages
 from django.db import transaction
+from django.db.models import F
 from django.forms import ModelForm
+from django.utils import timezone
 
 import event.api.event.calendar
 from event.enums import RegistrationStatus
@@ -15,6 +17,7 @@ from event.models import (
 )
 from event.tasks import send_url_email
 from messaging.api.slack.announcement import announce_event
+from user.enums import UserType
 
 
 @admin.register(Attachment)
@@ -117,22 +120,49 @@ send_slack_announcement.short_description = "Send Slack announcement"
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     search_fields = ("id", "name", "code", "type", "status")
-    list_display = ("name", "code", "type", "status", "registration_count")
+    list_display = (
+        "name",
+        "code",
+        "type",
+        "status",
+        "new_user_count",
+        "registration_count",
+    )
     list_filter = ("type", "status")
     ordering = ("-created_at", "-updated_at", "name")
     inlines = [SessionInline, RegistrationInline]
     actions = [send_slack_announcement]
 
     def registration_count(self, obj):
-        return obj.registrations.filter(
-            status__in=[
-                RegistrationStatus.REGISTERED,
-                RegistrationStatus.JOINED,
-                RegistrationStatus.ATTENDED,
-            ]
-        ).count()
+        return (
+            obj.registrations.filter(
+                status__in=[
+                    RegistrationStatus.REGISTERED,
+                    RegistrationStatus.JOINED,
+                    RegistrationStatus.ATTENDED,
+                ]
+            )
+            .exclude(user__type=UserType.ORGANISER)
+            .count()
+        )
+
+    def new_user_count(self, obj):
+        return (
+            obj.registrations.filter(
+                status__in=[
+                    RegistrationStatus.REGISTERED,
+                    RegistrationStatus.JOINED,
+                    RegistrationStatus.ATTENDED,
+                ],
+                created_at__gte=F("user__created_at") - timezone.timedelta(minutes=1),
+                created_at__lte=F("user__created_at") + timezone.timedelta(minutes=1),
+            )
+            .exclude(user__type=UserType.ORGANISER)
+            .count()
+        )
 
     registration_count.short_description = "registrations"
+    new_user_count.short_description = "new users"
 
 
 @admin.register(Speaker)

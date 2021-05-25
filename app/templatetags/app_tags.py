@@ -119,3 +119,8 @@ def time_left(time: timezone.datetime):
 @register.filter
 def days_left(timedelta: timezone.timedelta):
     return int(timedelta.total_seconds() // (60 * 60 * 24))
+
+
+@register.filter
+def google_title(text):
+    return text.replace("#", "")

@@ -27,37 +27,25 @@
 
 {% block in_in_body %}
     <div class="row">
-        <div class="col-md-12 mb-1">
+        <div class="col-md-12 mb-0">
             <h1>{{ event.name }}</h1>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
-            <div class="jumbotron p-0 p-lg-5 text-white rounded bg-dark event-header" style="background-image: url('{{ event.picture.crop.1500x1000 }}');">
+            <div class="jumbotron p-0 p-lg-5 text-white rounded bg-dark event-header mb-3" style="background-image: url('{{ event.picture.crop.1500x1000 }}');">
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12 mb-0">
+        <div class="col-md-12 mb-0 d-flex flex-buttons">
             {% include "include/share.html" with title=event.name url=event.url %}
-            {% include "include/calendar.html" with url=event.ics_url %}
         </div>
     </div>
     {% if event.description %}
-        <div class="row mt-2">
+        <div class="row mt-1">
             <div class="col-md-12 mb-0">
                 {{ event.description|apply_markup }}
-            </div>
-        </div>
-    {% endif %}
-    {% if event.social_url %}
-        <div class="row">
-            <div class="col-md-12 mb-4">
-                <a class="mb-0" href="{{ event.social_url }}">
-                    <button type="button" class="btn btn-facebook">
-                        <i class="bi bi-facebook mr-1"></i> Facebook event
-                    </button>
-                </a>
             </div>
         </div>
     {% endif %}
@@ -80,7 +68,32 @@
                 {% if event.sessions.count > 1 %}
                     <h4 class="section-subtitle mb-3">{{ session.name }}</h4>
                 {% endif %}
-                <h5 class="{% if registration and session.published_attachments_with_registration or not registration and session.published_attachments %}mb-1{% else %}mb-3{% endif %}">Time: {{ event.starts_at|date:"F j, Y H:i" }}{% if event.starts_at != event.ends_at %} - {% if event.starts_at.date != event.ends_at.date %}{{ event.ends_at|date:"F j, Y H:i" }}{% else %}{{ event.ends_at|date:"H:i" }}{% endif %}{% endif %}</h5>
+                <h5 class="mb-3">Time: {{ event.starts_at|date:"F j, Y H:i" }}{% if event.starts_at != event.ends_at %} - {% if event.starts_at.date != event.ends_at.date %}{{ event.ends_at|date:"F j, Y H:i" }}{% else %}{{ event.ends_at|date:"H:i" }}{% endif %}{% endif %}</h5>
+                <div class="row event-calendar-buttons mb-0">
+                    <div class="col-12 {% if event.social_url %}col-md-4{% else %}col-md-6{% endif %} pr-md-1 mb-2 mb-md-0">
+                        <a class="mb-0" href="{{ event.ics_url }}">
+                            <button type="button" class="btn btn-calendar w-100">
+                                <i class="fas fa-calendar-alt mr-1"></i> Download ICS
+                            </button>
+                        </a>
+                    </div>
+                    <div class="col-12 {% if event.social_url %}col-md-4 pr-md-1{% else %}col-md-6{% endif %} pl-md-1 mb-2 mb-md-0">
+                        <a class="mb-0" target="_blank" href="https://www.google.com/calendar/render?action=TEMPLATE&text={{ event.name|escape|google_title }}&details={{ event.description_paragraph|escape }}{% if registration %}<br><br><b>Registration</b><br>Status: {% if registration.status == 1 or registration.status == 2 or registration.status == 5 or registration.status == 6 %}Registered{% else %}Cancelled{% endif %}<br>Join: <a href='{% full_url "registration_url" registration.id %}'>{% full_url "registration_url" registration.id %}</a>{% endif %}&location={{ event.location|escape }}&dates={{ session.starts_at|date:"Ymd\THiO" }}%2F{{ session.ends_at|date:"Ymd\THiO" }}">
+                            <button type="button" class="btn btn-google w-100">
+                                <i class="bi bi-google mr-1"></i> Add to Google Calendar
+                            </button>
+                        </a>
+                    </div>
+                    {% if event.social_url %}
+                        <div class="col-12 col-md-4 pl-md-1 mb-2 mb-md-0">
+                            <a class="mb-0" target="_blank" href="{{ event.social_url }}">
+                                <button type="button" class="btn btn-facebook w-100">
+                                    <i class="bi bi-facebook mr-1"></i> Facebook event
+                                </button>
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
                 {% if session.roles.count > 0 %}
                     <div class="card mt-4 mb-0">
                         <div class="card-body">

@@ -23,22 +23,22 @@
             </nav>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="jumbotron p-0 p-lg-5 text-white rounded bg-dark article-header carousel-darken" style="background-image: url('{{ event.picture.crop.1500x1000 }}');">
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block in_in_body %}
     <div class="row">
         <div class="col-md-12 mb-0">
-            <h1>{{ event.name }}</h1>
+            <h1 class="mb-3">{{ event.name }}</h1>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
-            <div class="jumbotron p-0 p-lg-5 text-white rounded bg-dark event-header mb-3" style="background-image: url('{{ event.picture.crop.1500x1000 }}');">
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12 mb-0 d-flex flex-buttons">
+        <div class="col-md-12 mb-0">
             {% include "include/share.html" with title=event.name url=event.url %}
         </div>
     </div>

@@ -168,13 +168,13 @@
                             <div class="col-md-4 d-none d-md-block pl-4">
                                 {% block sidebar %}
                                     {% with current_app=request.path|extract_app current_slug=request.path|extract_slug %}
-                                        {% if events.future %}
-                                            {% if events.future|length == 1 and current_app == "events" and events.future.0.code == current_slug %}
+                                        {% if events %}
+                                            {% if events|length == 1 and current_app == "events" and events.0.code == current_slug %}
                                             {% else %}
                                                 <div class="row mb-3">
                                                     <div class="col-md-12">
-                                                        <h4 class="section-title mb-4">Future events</h4>
-                                                        {% for event in events.future %}
+                                                        <h4 class="section-title mb-4">Latest events</h4>
+                                                        {% for event in events %}
                                                             {% if event.code != current_slug and forloop.counter0 < 3 %}
                                                                 <a class="link-unstyled" href="{{ event.url }}">
                                                                     <div class="media">

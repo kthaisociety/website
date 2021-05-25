@@ -474,6 +474,28 @@ nav {
     }
 }
 
+.btn-google {
+    color: #FFFFFF;
+    background-color: #DB4437;
+    border-color: #DB4437;
+    &:hover, &:active, &:visited {
+        color: $light-700;
+        opacity: 0.9;
+        transition: color .15s ease-in-out,opacity .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+}
+
+.btn-calendar {
+    color: #FFFFFF;
+    background-color: $dark-900;
+    border-color: $dark-900;
+    &:hover, &:active, &:visited {
+        color: $light-700;
+        opacity: 0.9;
+        transition: color .15s ease-in-out,opacity .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+}
+
 .navbar-top {
     color: rgba(255, 255, 255, 0.5);
     font-size: 12px;
@@ -949,4 +971,16 @@ nav {
     height: 15px;
     margin-top: -5px;
     margin-left: 0.1rem;
+}
+
+.event-calendar-buttons {
+    button {
+        font-size: 14px;
+    }
+}
+
+.flex-buttons {
+    button {
+        width: 100%;
+    }
 }

@@ -4,6 +4,7 @@ import enum
 class UserType(enum.IntEnum):
     ORGANISER = 0
     PARTICIPANT = 1
+    SPONSOR = 2
 
 
 class GenderType(enum.IntEnum):

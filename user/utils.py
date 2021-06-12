@@ -1,13 +1,17 @@
 import hashlib
 from collections import OrderedDict
+from io import BytesIO, StringIO
 from typing import List
 from uuid import UUID
+import csv
+import zipfile
 
 import requests
 from django.utils.crypto import get_random_string
 
 from app.settings import SL_TOKEN, SL_CHANNEL_GENERAL, APP_ROLE_CHAIRMAN
-from user.enums import GenderType
+from event.enums import RegistrationStatus
+from user.enums import GenderType, UserType
 from user.models import User, History
 from user.tasks import (
     send_verify_email,
@@ -120,3 +124,77 @@ def send_created(user: User):
     verify_key = generate_verify_key(user)
     user.update_verify(verify_key=verify_key)
     send_created_email(user_id=user.id)
+
+
+def get_user_data_zip(user_id: UUID) -> BytesIO:
+    user = User.objects.get(id=user_id)
+
+    user_csv = StringIO()
+    csvwriter = csv.writer(
+        user_csv, delimiter=";", quotechar="|", quoting=csv.QUOTE_MINIMAL
+    )
+    csvwriter.writerow(["ID", user_id])
+    csvwriter.writerow(["Created at", user.created_at])
+    csvwriter.writerow(["Updated at", user.updated_at])
+    csvwriter.writerow(["First name", user.name])
+    csvwriter.writerow(["Last name", user.surname])
+    csvwriter.writerow(["Email", user.email])
+    csvwriter.writerow(["Email verified", user.email_verified])
+    csvwriter.writerow(["Registration finished", user.registration_finished])
+    csvwriter.writerow(["Last login", user.last_login])
+    csvwriter.writerow(["Type", UserType(user.type).name.upper()])
+    csvwriter.writerow(["Gender", GenderType(user.gender).name.upper()])
+    csvwriter.writerow(["Birthday", user.birthday])
+    csvwriter.writerow(["Phone", user.phone])
+    csvwriter.writerow(["City", user.city])
+    csvwriter.writerow(["Country", user.country])
+    csvwriter.writerow(["University", user.university])
+    csvwriter.writerow(["Programme", user.degree])
+    csvwriter.writerow(["Graduation year", user.graduation_year])
+    csvwriter.writerow(["Website", user.website])
+    csvwriter.writerow(["Slack ID", user.slack_id])
+    csvwriter.writerow(["Slack name", user.slack_display_name])
+    csvwriter.writerow(
+        [
+            "Slack status",
+            (
+                f"{user.slack_status_emoji} {user.slack_status_text}"
+                if user.slack_status_text
+                else ""
+            ),
+        ]
+    )
+
+    registrations_csv = StringIO()
+    csvwriter = csv.writer(
+        registrations_csv, delimiter=";", quotechar="|", quoting=csv.QUOTE_MINIMAL
+    )
+    csvwriter.writerow(["ID", "Event", "Status", "Created at", "Updated at"])
+
+    for registration in user.registrations.all():
+        csvwriter.writerow(
+            [
+                registration.id,
+                str(registration.event),
+                RegistrationStatus(registration.status).name.upper(),
+                registration.created_at,
+                registration.updated_at,
+            ]
+        )
+
+    mf = BytesIO()
+    zf = zipfile.ZipFile(mf, mode="w", compression=zipfile.ZIP_DEFLATED)
+    zf.writestr("user/user.csv", user_csv.getvalue())
+    picture_extension = user.picture.name.split(".")[-1]
+    zf.writestr(f"user/profile.{picture_extension}", user.picture.read())
+    if user.slack_picture:
+        slack_extension = user.slack_picture.name.split(".")[-1]
+        zf.writestr(f"user/slack.{slack_extension}", user.slack_picture.read())
+    if user.resume:
+        resume_extension = user.resume.name.split(".")[-1]
+        zf.writestr(f"user/resume.{resume_extension}", user.resume.read())
+    if user.registrations.exists():
+        zf.writestr(f"registration/registration.csv", registrations_csv.getvalue())
+    zf.close()
+
+    return mf

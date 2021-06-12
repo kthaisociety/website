@@ -16,7 +16,7 @@
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="id_email">Email</label>
-                        <input type="email" name="email" maxlength="225" class="form-control" placeholder="jonny5@kthais.com" id="id_email">
+                        <input type="email" name="email" maxlength="225" class="form-control" placeholder="jonny5@kthais.com" id="id_email" {% if form.cleaned_data.email %}value="{{ form.cleaned_data.email }}"{% endif %}>
                     </div>
                     <div class="form-group">
                         <label for="id_password">Password</label>

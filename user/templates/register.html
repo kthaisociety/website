@@ -71,14 +71,7 @@
                             </div>
                             <div class="col-md-4">
                                 <label for="id_graduation">Graduation year <small>(required)</small></label>
-                                <select name="graduation" class="form-control" id="id_Graduation">
-                                    {% for i in "0123456789"|make_list %}
-                                        {% with forloop.counter0|add:"-4"|year_from_now as year %}
-                                            <option value="{{ year }}" {% if form.graduation_year == year|stringformat:"i" %}selected=""{% elif not form.graduation_year and request.user.graduation_year == year %}selected=""{% elif not form.graduation_year and not request.user.graduation_year and forloop.counter0 == 4 %}selected=""{% endif %}>{{ year }}</option>
-                                        {% endwith %}
-                                    {% endfor %}
-                                    <option value="0">Other</option>
-                                </select>
+                                <input type="number" name="graduation" class="form-control" min="1940" max="2040" placeholder="{{ year }}" id="id_Graduation" {% if form.graduation_year %}value="{{ form.graduation_year }}"{% endif %}>
                             </div>
                         </div>
                         <div class="form-row mt-3">

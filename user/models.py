@@ -1,3 +1,4 @@
+import os
 import uuid
 from typing import Optional
 
@@ -215,6 +216,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         self.country = country
         self.registration_finished = True
         self.save()
+
+    @property
+    def resume_name(self):
+        return os.path.basename(self.resume.name)
 
     def clean(self):
         messages = dict()

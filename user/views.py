@@ -4,17 +4,20 @@ from django.contrib import auth, messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
-from django.http import HttpResponseRedirect
+from django.core.files import File
+from django.http import HttpResponseRedirect, HttpResponse, StreamingHttpResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
 from geopy import Nominatim
 
+from app import settings
 from app.consts import UNIVERSITIES, PROGRAMMES
+from app.variables import APP_NAME
 from user import forms
 from user.enums import GenderType
 from user.models import User
-from user.utils import send_verify, send_password
+from user.utils import send_verify, send_password, get_user_data_zip
 
 
 def user_login(request):
@@ -31,7 +34,7 @@ def user_login(request):
             if user:
                 auth.login(request, user)
                 if next_page == "/":
-                    return HttpResponseRedirect(reverse("app_home"))
+                    return HttpResponseRedirect(reverse("user_dashboard"))
                 return HttpResponseRedirect(next_page)
             else:
                 messages.error(
@@ -291,4 +294,33 @@ def send_verification(request):
 
 @login_required
 def dashboard(request):
+    if request.method == "POST":
+        resume = request.FILES.get("resume")
+        if resume:
+            request.user.resume = resume
+            request.user.save()
+            messages.success(request, "Your resume has been correctly updated.")
+
     return render(request, "dashboard.html", {})
+
+
+@login_required
+def dashboard_resume(request):
+    response = StreamingHttpResponse(
+        open(settings.MEDIA_ROOT + "/" + request.user.resume.name, "rb")
+    )
+    response["Content-Type"] = ""
+    response[
+        "Content-Disposition"
+    ] = f'attachment; filename="{request.user.resume_name}"'
+    return response
+
+
+@login_required
+def user_data(request):
+    data = get_user_data_zip(user_id=request.user.id)
+
+    response = HttpResponse(data.getvalue(), content_type="application/zip")
+    file_name = f"{APP_NAME.replace(' ', '').lower()}_data_{str(request.user.id)}_{str(int(timezone.now().timestamp()))}.zip"
+    response["Content-Disposition"] = f'attachment; filename="{file_name}"'
+    return response

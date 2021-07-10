@@ -1,4 +1,5 @@
 import datetime
+from typing import Optional, Tuple
 
 from django.contrib import auth, messages
 from django.contrib.auth import logout
@@ -116,6 +117,29 @@ def verify_password(request, email, verification_key):
     return HttpResponseRedirect(reverse("app_home"))
 
 
+def get_city_and_country(city: str, country: str) -> Optional[Tuple[str, str]]:
+    new_country = country
+    try:
+        geolocator = Nominatim()
+        location = geolocator.geocode(
+            f"{city}, {country}", language="en", addressdetails=True
+        )
+        try:
+            city = location.raw["address"]["city"]
+        except KeyError:
+            try:
+                city = location.raw["address"]["village"]
+            except KeyError:
+                city = location.raw["address"]["suburb"]
+        new_country = location.raw["address"]["country"]
+        # Wink, wink
+        if new_country.lower() == "spain" and country.lower().strip().startswith("cat"):
+            new_country = "Catalonia"
+    except (AttributeError, KeyError):
+        return None
+    return city, new_country
+
+
 def user_register(request):
     if (
         request.user.is_authenticated
@@ -143,25 +167,15 @@ def user_register(request):
         country = request.POST.get("country", None)
         error_location = False
         if city and country:
-            try:
-                geolocator = Nominatim()
-                location = geolocator.geocode(
-                    f"{city}, {country}", language="en", addressdetails=True
-                )
-                try:
-                    city = location.raw["address"]["city"]
-                except KeyError:
-                    try:
-                        city = location.raw["address"]["village"]
-                    except KeyError:
-                        city = location.raw["address"]["suburb"]
-                country = location.raw["address"]["country"]
-            except (AttributeError, KeyError):
+            city_and_country = get_city_and_country(city=city, country=country)
+            if not city_and_country:
                 error_location = True
                 messages.error(
                     request,
                     f"We haven't been able to locate {city} ({country}), please, check this place exists!",
                 )
+            else:
+                city, country = city_and_country
         form = {
             "first_name": name,
             "last_name": surname,
@@ -294,14 +308,104 @@ def send_verification(request):
 
 @login_required
 def dashboard(request):
+    form = {}
     if request.method == "POST":
-        resume = request.FILES.get("resume")
-        if resume:
-            request.user.resume = resume
-            request.user.save()
-            messages.success(request, "Your resume has been correctly updated.")
+        name = request.POST.get("name", None)
+        surname = request.POST.get("surname", None)
+        phone = request.POST.get("phone", None)
+        university = request.POST.get("university", None)
+        other_university = request.POST.get("other_university", None)
+        degree = request.POST.get("degree", None)
+        graduation_year = request.POST.get("graduation", None)
+        birthday = request.POST.get("birthday", None)
+        gender = request.POST.get("gender", None)
+        city = request.POST.get("city", None)
+        country = request.POST.get("country", None)
+        website = request.POST.get("website", None)
+        error_location = False
+        if city and country:
+            city_and_country = get_city_and_country(city=city, country=country)
+            if not city_and_country:
+                error_location = True
+                messages.error(
+                    request,
+                    f"We haven't been able to locate {city} ({country}), please, check this place exists!",
+                )
+            else:
+                city, country = city_and_country
+        form = {
+            "first_name": name,
+            "last_name": surname,
+            "university": university,
+            "programme": degree,
+            "graduation_year": graduation_year,
+            "city": city,
+            "country": country,
+        }
+        # 2 other selections at the end of UNIVERSITIES
+        if university and int(university) >= len(UNIVERSITIES) - 2:
+            university_str = other_university
+            form["university_name"] = university_str
+        else:
+            university_str = UNIVERSITIES[int(university)]
+        missing_required = [
+            field_name for field_name, field in form.items() if not field
+        ]
+        form = {
+            **form,
+            "phone": phone,
+            "birthday": birthday,
+            "gender": gender,
+            "website": website,
+        }
+        if not missing_required and not error_location:
+            degree = PROGRAMMES[int(degree)]
+            if gender:
+                gender = GenderType(int(gender))
+            else:
+                gender = GenderType.NONE
+            request.user.name = name
+            request.user.surname = surname
+            request.user.phone = phone
+            request.user.university = university_str
+            request.user.degree = degree
+            request.user.graduation_year = graduation_year
+            request.user.city = city
+            request.user.country = country
+            if birthday:
+                request.user.birthday = datetime.datetime.strptime(
+                    birthday, "%Y-%m-%d"
+                ).date()
+            else:
+                request.user.birthday = None
+            request.user.gender = gender
+            request.user.website = website
 
-    return render(request, "dashboard.html", {})
+            resume = request.FILES.get("resume")
+            if resume:
+                request.user.resume = resume
+
+            messages.success(request, "Your profile has been correctly updated.")
+
+            request.user.save()
+        elif missing_required:
+            messages.error(
+                request,
+                ", ".join(missing_required[:-1]).replace("_", " ").capitalize()
+                + (
+                    " and " + missing_required[-1].replace("_", " ")
+                    if len(missing_required) >= 2
+                    else ""
+                )
+                + (
+                    " are required fields."
+                    if len(missing_required) > 1
+                    else missing_required[0].replace("_", " ").capitalize()
+                    + " is a required field."
+                ),
+            )
+
+    return render(request, "dashboard.html", form)
 
 
 @login_required

@@ -24,69 +24,111 @@
                             <div class="card-body">
                                 <h4 class="card-title">🙂 Profile</h4>
                                 <hr>
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <p class="card-text mb-0"><strong>First name:</strong> {{ request.user.name }}</p>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <p class="card-text mb-0"><strong>Last name:</strong> {{ request.user.surname }}</p>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <p class="card-text mb-0"><strong>Email:</strong> <a href="mailto:{{ request.user.email }}" target="_blank" class="link-unstyled">{{ request.user.email }}</a></p>
-                                    </div>
-                                </div>
-                                {% if request.user.registration_finished %}
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-md-8">
-                                            <p class="card-text mb-0"><strong>University:</strong> {{ request.user.university }}</p>
-                                            <p class="card-text mb-0"><strong>Programme:</strong> {{ request.user.degree }}</p>
-                                            <p class="card-text mb-0"><strong>Graduation year:</strong> {{ request.user.graduation_year }}</p>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <p class="card-text mb-0"><strong>City:</strong> {{ request.user.city }}</p>
-                                            <p class="card-text mb-0"><strong>Country:</strong> {{ request.user.country }}</p>
-                                        </div>
-                                    </div>
-                                {% endif %}
-                                <hr>
-                                <h6 class="card-text mt-3 mb-2">Resume</h6>
-                                {% if request.user.resume %}
-                                    <p class="mt-0 mb-2">✅ Uploaded <a href="{% url "user_dashboard_resume" %}">{{ request.user.resume_name }}</a></p>
-                                {% else %}
-                                    <p>❌ Not uploaded</p>
-                                {% endif %}
                                 <form action="" method="post" class="form" enctype="multipart/form-data">
-                                    {% csrf_token %}
-                                    <div class="form-group custom-file">
-                                        <input type="file" class="custom-file-input" style="cursor: pointer;" id="id_resume" name="resume" accept="application/pdf">
-                                        <label class="custom-file-label" for="id_resume">Select a new file</label>
-                                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-                                        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-                                        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-                                        <script>
-                                            $(".custom-file-input").on("change", function() {
-                                              var fileName = $(this).val().split("\\").pop();
-                                              console.log(fileName);
-                                              $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-                                            });
-                                        </script>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="id_name">First name <small>(required)</small></label>
+                                            <input type="text" name="name" maxlength="225" class="form-control" placeholder="Daniel" id="id_name" {% if request.user.first_name %}value="{{ request.user.first_name }}"{% elif request.user.name %}value="{{ request.user.name }}"{% endif %}>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="id_surname">Last name <small>(required)</small></label>
+                                            <input type="text" name="surname" maxlength="225" class="form-control" placeholder="Stenberg" id="id_surname" {% if form.last_name %}value="{{ form.last_name }}"{% elif request.user.surname %}value="{{ request.user.surname }}"{% endif %}>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="id_email">Email <small>(required)</small></label>
+                                            <input type="email" name="email" maxlength="225" class="form-control" placeholder="curl@kthais.com" disabled="disabled" id="id_email" value="{{ request.user.email }}">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="id_phone">Phone</label>
+                                            <input type="text" name="phone" maxlength="225" class="form-control" placeholder="070-000 00 00" id="id_phone" {% if form.phone %}value="{{ form.phone }}"{% elif request.user.phone %}value="{{ request.user.phone }}"{% endif %}>
+                                        </div>
                                     </div>
-                                    <div class="form-group mt-3">
-                                        <button class="btn btn-primary" type="submit">Update</button>
-                                    </div>
+                                    {% if request.user.registration_finished %}
+                                        <div class="row">
+                                            <div class="col-md-12 mb-3">
+                                                <label for="id_university">University <small>(required)</small></label>
+                                                <select name="university" class="form-control" id="id_university">
+                                                    {% for university in const_universities %}
+                                                        <option value="{{ forloop.counter0 }}" {% if form.university == forloop.counter0|stringformat:"i" %}selected=""{% elif request.user.university == forloop.counter0|stringformat:"i" %}selected=""{% elif not form.university and university == "KTH Royal Institute of Technology" %}selected=""{% endif %}>{{ university }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label class="other_university">University name <small>(required)</small></label>
+                                                <input type="text" name="other_university" maxlength="225" class="form-control other_university mb-3" placeholder="Polytechnic University of Catalonia" id="id_other_university" {% if form.other_university %}value="{{ form.other_university }}"{% elif request.user.other_university %}value="{{ request.user.other_university }}"{% endif %}>
+                                            </div>
+                                            <div class="col-md-8 mb-3">
+                                                <label for="id_degree">Programme <small>(required)</small></label>
+                                                <select name="degree" class="form-control" id="id_degree">
+                                                    {% for programme in const_programmes %}
+                                                        <option value="{{ forloop.counter0 }}" {% if form.programme == forloop.counter0|stringformat:"i" %}selected=""{% elif request.user.programme == forloop.counter0|stringformat:"i" %}selected=""{% elif not form.programme and request.user.degree == programme %}selected=""{% elif not form.programme and not request.user.degree and programme == "Machine Learning" %}selected=""{% endif %}>{{ programme }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <label for="id_graduation">Graduation year <small>(required)</small></label>
+                                                <input type="number" name="graduation" class="form-control" min="1940" max="2040" placeholder="{{ year }}" id="id_Graduation" {% if form.graduation_year %}value="{{ form.graduation_year }}"{% elif request.user.graduation_year %}value="{{ request.user.graduation_year }}"{% endif %}>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="id_resume">Resume</label>
+                                                {% csrf_token %}
+                                                <div class="form-group custom-file">
+                                                    <input type="file" class="custom-file-input" style="cursor: pointer;" id="id_resume" name="resume" accept="application/pdf">
+                                                    <label class="custom-file-label" for="id_resume">Select a new file</label>
+                                                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+                                                    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+                                                    <script>
+                                                        $(".custom-file-input").on("change", function() {
+                                                          var fileName = $(this).val().split("\\").pop();
+                                                          console.log(fileName);
+                                                          $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                                                        });
+                                                    </script>
+                                                </div>
+                                                {% if request.user.resume %}
+                                                    <p class="mt-2 mb-0">✅ Uploaded <a href="{% url "user_dashboard_resume" %}">{{ request.user.resume_name }}</a></p>
+                                                {% else %}
+                                                    <p class="mt-2 mb-0">❌ Not uploaded</p>
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="id_website">Website</label>
+                                                <input type="url" name="website" maxlength="225" class="form-control" placeholder="https://curl.se" id="id_website" {% if form.website %}value="{{ form.website }}"{% elif request.user.website %}value="{{ request.user.website }}"{% endif %}>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 mb-2">
+                                                <p class="mb-0">Please note the following information is only used for demographical purposes.</p>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="id_birthday">Date of birth</label>
+                                                <input type="date" name="birthday" class="form-control" placeholder="1986-09-17" id="id_birthday" {% if form.birthday %}value="{{ form.birthday }}"{% elif request.user.birthday %}value="{{ request.user.birthday|date:'Y-m-d' }}"{% endif %}>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="id_gender">Gender</label>
+                                                <select name="gender" class="form-control" id="id_gender">
+                                                    <option  {% if not form.gender and not request.user.gender %}selected=""{% endif %} disabled>―</option>
+                                                    <option  {% if form.gender == "0" %}selected=""{% elif request.user.gender == 0 %}selected=""{% endif %} value="0">Prefer not to say</option>
+                                                    <option {% if form.gender == "1" %}selected=""{% elif request.user.gender == 1 %}selected=""{% endif %} value="1">Female</option>
+                                                    <option {% if form.gender == "2" %}selected=""{% elif request.user.gender == 2 %}selected=""{% endif %} value="2">Male</option>
+                                                    <option {% if form.gender == "3" %}selected=""{% elif request.user.gender == 3 %}selected=""{% endif %} value="3">Non-binary</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="id_city">City <small>(required)</small></label>
+                                                <input type="text" name="city" maxlength="225" class="form-control" placeholder="Stockholm" id="id_city" {% if form.city %}value="{{ form.city }}"{% elif request.user.city %}value="{{ request.user.city }}"{% endif %}>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="id_country">Country <small>(required)</small></label>
+                                                <input type="text" name="country" maxlength="225" class="form-control" placeholder="Sweden" id="id_country" {% if form.country %}value="{{ form.country }}"{% elif request.user.country %}value="{{ request.user.country }}"{% endif %}>
+                                            </div>
+                                        </div>
+                                        <div class="form-group mt-1 mb-0">
+                                            <button class="btn btn-primary" type="submit">Update</button>
+                                        </div>
+                                    {% endif %}
                                 </form>
-                                <hr>
-                                {% if request.user.email_verified %}
-                                    <h6 class="card-text mt-3 mb-3">✅ Email verified</h6>
-                                {% else %}
-                                    <h6 class="card-text mt-3 mb-3">❌ Email not verified</h6>
-                                {% endif %}
-                                {% if request.user.registration_finished %}
-                                    <h6 class="card-text mt-3 mb-0">✅ Registration finished</h6>
-                                {% else %}
-                                    <h6 class="card-text mt-3 mb-0">❌ Registration not finished</h6>
-                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -105,9 +147,9 @@
                                                         <img class="card-img-top rounded-0" src="{{ registration.event.picture.crop.500x300 }}">
                                                         <div class="card-body">
                                                             {% if registration.event.is_event_future %}
-                                                                <span class="badge badge-primary p-2 mb-3 d-table d-md-inline-block mt-0">Upcoming event</span>
+                                                                <span class="badge badge-primary p-2 mb-2 d-table d-md-inline-block mt-0">Upcoming event</span>
                                                             {% else %}
-                                                                <span class="badge badge-dark p-2 mb-3 d-table d-md-inline-block mt-0">Past event</span>
+                                                                <span class="badge badge-dark p-2 mb-2 d-table d-md-inline-block mt-0">Past event</span>
                                                             {% endif %}
                                                             <h5 class="mb-0">{{ registration.event.name }}</h5>
                                                         </div>
@@ -164,4 +206,24 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script>
+        // Each change of university field, show/hide other uni name depending on selection
+        $("select").filter("#id_university").on('change', toggleOtherUniversity);
+
+        function toggleOtherUniversity() {
+            var selected_uni = $("#id_university")[0].options[$("#id_university")[0].selectedIndex].text;
+            if (selected_uni.includes("Other university")) {
+                $('.other_university').show()
+            } else {
+                $('.other_university').hide();
+            }
+        }
+
+        // Hide by default if not filled (when pressing back we want it to show.)
+        window.onload(toggleOtherUniversity());
+    </script>
 {% endblock %}

@@ -8,6 +8,7 @@ from django import template
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.safestring import mark_safe
+from django.utils.text import Truncator
 
 from app import settings
 from app.settings import STATICFILES_DIRS, STATIC_URL, DEBUG, APP_DOMAIN
@@ -124,3 +125,12 @@ def days_left(timedelta: timezone.timedelta):
 @register.filter
 def google_title(text):
     return text.replace("#", "")
+
+
+@register.filter(is_safe=True)
+def shorten(value, arg):
+    try:
+        length = int(arg)
+    except ValueError:
+        return value
+    return Truncator(value).words(length, truncate="...")

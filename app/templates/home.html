@@ -14,15 +14,27 @@
                         <div>
                             <h1 class="main-title text-white">
                                 <a href="{{ articles.0.url }}">
-                                    {{ articles.0.title }}
+                                    {% if articles.0.type == 1 %}<i class="fab fa-medium mr-1"></i> {% endif %}{{ articles.0.title }}
                                 </a>
                             </h1>
-                            {% if articles.0.subtitle %}
-                                <h5 class="main-subtitle card-subtitle mb-0 text-grey font-weight-light">
-                                    <a href="{{ articles.0.url }}">
+                            <h5 class="main-subtitle card-subtitle {% if articles.0.authors %}mb-3{% else %}mb-0{% endif %} text-grey font-weight-light">
+                                <a href="{{ articles.0.url }}">
+                                    {% if articles.0.subtitle %}
                                         {{ articles.0.subtitle }}
-                                    </a>
-                                </h5>
+                                    {% else %}
+                                        {{ articles.0.body_plaintext|shorten:50 }}
+                                    {% endif %}
+                                </a>
+                            </h5>
+                            {% if articles.0.authors %}
+                                <div class="card-authors mb-0 text-center text-md-left">
+                                    {% for author in articles.0.authors.all %}
+                                        <div class="d-inline-block mt-2 mr-2">
+                                            <img class="author-picture-nav d-inline-block" alt="{{ author.user.full_name }} picture" src="{{ author.user.profile_picture.crop.50x50 }}">
+                                            <p class="navbar-nav d-inline-block text-grey">{% if author.user.website %}<a href="{{ author.user.website }}" target="_blank" class="link-unstyled">{{ author.user.full_name }}</a>{% else %}{{ author.user.full_name }}{% endif %}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
                             {% endif %}
                         </div>
                     </div>
@@ -50,7 +62,7 @@
                                     </a>
                                     <h4 class="text-white mb-2">
                                         <a href="{{ article.url }}">
-                                            {{ article.title }}
+                                            {% if article.type == 1 %}<i class="fab fa-medium mr-1"></i> {% endif %}{{ article.title }}
                                         </a>
                                     </h4>
                                     {% if article.subtitle %}
@@ -94,7 +106,7 @@
                 <div class="col-12">
                     <h4 class="text-center mb-2">
                         <a href="{{ articles.1.url }}">
-                            {{ articles.1.title }}
+                            {% if articles.1.type == 1 %}<i class="fab fa-medium mr-1"></i> {% endif %}{{ articles.1.title }}
                         </a>
                     </h4>
                     <h6 class="text-center text-grey mb-0">

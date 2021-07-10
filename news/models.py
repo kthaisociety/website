@@ -6,11 +6,10 @@ import markdown
 from bs4 import BeautifulSoup
 from django.db import models
 from django.urls import reverse
-from django.utils.html import strip_tags
 from django.utils.text import slugify
 from versatileimagefield.fields import VersatileImageField
 
-from news.enums import ArticleStatus
+from news.enums import ArticleStatus, ArticleType
 from news.managers import ArticleManager
 
 
@@ -21,10 +20,15 @@ class Article(models.Model):
     slug = models.CharField(max_length=255, blank=True, unique=True)
     picture = VersatileImageField("Image", upload_to="news/article/")
     body = models.TextField()
+    type = models.PositiveSmallIntegerField(
+        choices=((s.value, s.name) for s in ArticleType),
+        default=ArticleType.REGULAR.value,
+    )
     status = models.PositiveSmallIntegerField(
         choices=((s.value, s.name) for s in ArticleStatus),
         default=ArticleStatus.DRAFT.value,
     )
+    external_url = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -50,6 +54,8 @@ class Article(models.Model):
 
     @property
     def url(self):
+        if self.type == ArticleType.MEDIUM and self.external_url:
+            return self.external_url
         return reverse(
             "news_article",
             kwargs=dict(
@@ -72,3 +78,12 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Author(models.Model):
+    article = models.ForeignKey(
+        "news.Article", on_delete=models.PROTECT, related_name="authors"
+    )
+    user = models.ForeignKey(
+        "user.User", on_delete=models.PROTECT, related_name="authorships"
+    )

@@ -31,14 +31,24 @@
 {% endblock %}
 
 {% block in_in_body %}
-    <div class="row">
+    <div class="row mb-1">
         <div class="col-md-12">
-            <h1 class="mb-3 mb-md-1">{{ article.title }}</h1>
+            <h1 class="mb-3 mb-md-1">{% if article.type == 1 %}<i class="fab fa-medium mr-1"></i> {% endif %}{{ article.title }}</h1>
             {% if article.subtitle %}
                 <h4 class="mb-1">{{ article.subtitle }}</h4>
             {% endif %}
-            <p class="lead">{{ article.created_at|date:"F j, Y" }}</p>
+            <p class="lead mb-2">{{ article.created_at|date:"F j, Y" }}</p>
         </div>
+        {% if article.authors %}
+            <div class="col-md-12 mb-2">
+                {% for author in article.authors.all %}
+                    <div class="d-inline-block mr-2">
+                        <img class="author-picture-nav d-inline-block" alt="{{ author.user.full_name }} picture" src="{{ author.user.profile_picture.crop.50x50 }}">
+                        <p class="navbar-nav d-inline-block">{% if author.user.website %}<a href="{{ author.user.website }}" target="_blank" class="link-unstyled">{{ author.user.full_name }}</a>{% else %}{{ author.user.full_name }}{% endif %}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
     <div class="row">
         <div class="col-md-12 mb-0 d-flex flex-buttons">
@@ -49,5 +59,14 @@
         <div class="col-md-12">
             {{ article.body|apply_markup }}
         </div>
+        {%  if article.type == 1 %}
+            <div class="col-12">
+                <a class="mb-0" href="{{ article.external_url }}">
+                    <button type="button" class="btn btn-calendar pl-4 pr-4">
+                        <i class="fab fa-medium mr-1"></i> Check it on Medium
+                    </button>
+                </a>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

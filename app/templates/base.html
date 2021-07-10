@@ -203,8 +203,18 @@
                                                                     <div class="card mt-4">
                                                                         <img class="card-img-top rounded-0" src="{{ article.picture.crop.500x300 }}">
                                                                         <div class="card-body">
-                                                                            <h5 class="mb-2">{{ article.title }}</h5>
-                                                                            <p class="card-text">{{ article.body_plaintext|truncatewords:10 }}</p>
+                                                                            <h5 class="mb-2" style="line-height: 1.5rem !important;">{% if article.type == 1 %}<i class="fab fa-medium mr-1"></i> {% endif %}{{ article.title }}</h5>
+                                                                            {% if article.authors %}
+                                                                                <div class="mb-2">
+                                                                                    {% for author in article.authors.all %}
+                                                                                        <div class="d-inline-block mr-2">
+                                                                                            <img class="author-picture-nav d-inline-block" alt="{{ author.user.full_name }} picture" src="{{ author.user.profile_picture.crop.50x50 }}">
+                                                                                            <p class="navbar-nav d-inline-block">{% if author.user.website %}<a href="{{ author.user.website }}" target="_blank" class="link-unstyled">{{ author.user.full_name }}</a>{% else %}{{ author.user.full_name }}{% endif %}</p>
+                                                                                        </div>
+                                                                                    {% endfor %}
+                                                                                </div>
+                                                                            {% endif %}
+                                                                            <p class="card-text">{{ article.body_plaintext|shorten:10 }}</p>
                                                                         </div>
                                                                     </div>
                                                                 </a>

@@ -40,6 +40,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    is_author = models.BooleanField(default=False)
 
     # Personal information
     picture = VersatileImageField(

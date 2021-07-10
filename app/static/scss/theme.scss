@@ -984,3 +984,19 @@ nav {
         width: 100%;
     }
 }
+
+.container figure img {
+    max-width: 100%;
+    margin-bottom: 2rem;
+}
+
+.author-picture-nav {
+    width: 18px;
+    border-radius: 50%;
+    margin-top: -4px;
+    margin-right: 2px;
+}
+
+.card-authors {
+    margin-top: -0.75rem;
+}

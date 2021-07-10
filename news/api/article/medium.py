@@ -97,7 +97,7 @@ def import_medium_articles() -> Tuple[bool, int, int]:
             )
             new_articles.append(article)
 
-            body_lower = medium_article.get("body")
+            body_lower = medium_article.get("body").lower()
             for possible_author in possible_authors:
                 if possible_author.full_name.lower() in body_lower:
                     new_authors.append(Author(article=article, user=possible_author))

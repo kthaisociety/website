@@ -4,12 +4,13 @@ from news.models import Article
 
 
 def get_latest_articles() -> List[Article]:
+    articles = Article.objects.published()
+
     featured_article = get_featured_article()
-    return (
-        Article.objects.published()
-        .exclude(id=featured_article.id)
-        .order_by("-created_at")[:5]
-    )
+    if featured_article:
+        articles.exclude(id=featured_article.id)
+
+    return articles.order_by("-created_at")[:5]
 
 
 def get_featured_article() -> Article:

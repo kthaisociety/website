@@ -8,34 +8,36 @@
 
     {% block body %}
         {% if articles %}
-            <div class="jumbotron jumbotron-fluid jumbotron-home d-flex mb-0" style="margin-top: -102px; height: 100vh; background-image: linear-gradient(45deg, rgba(20, 20, 20, 0.95) 0%, rgba(20, 20, 20, 0.85) 100%), url('{{ articles.0.picture.url }}'); background-size: cover; background-position: center center;">
+            <div class="jumbotron jumbotron-fluid jumbotron-home d-flex mb-0" style="margin-top: -102px; height: 100vh; background-image: linear-gradient(45deg, rgba(20, 20, 20, 0.95) 0%, rgba(20, 20, 20, 0.85) 100%), url('{{ featured.picture.url }}'); background-size: cover; background-position: center center;">
                 <div class="container-home position-relative">
                     <div class="container-home-middle align-self-center d-flex align-items-center justify-content-center">
                         <div>
                             <h1 class="main-title text-white">
-                                <a href="{{ articles.0.url }}">
-                                    {% if articles.0.type == 1 %}<i class="fab fa-medium mr-1"></i> {% endif %}{{ articles.0.title }}
+                                <a href="{{ featured.url }}">
+                                    {% if featured.type == 1 %}<i class="fab fa-medium mr-1"></i> {% endif %}{{ featured.title }}
                                 </a>
                             </h1>
-                            <h5 class="main-subtitle card-subtitle {% if articles.0.authors %}mb-3{% else %}mb-0{% endif %} text-grey font-weight-light">
-                                <a href="{{ articles.0.url }}">
-                                    {% if articles.0.subtitle %}
-                                        {{ articles.0.subtitle }}
+                            <h5 class="main-subtitle card-subtitle {% if featured.authors %}mb-3{% else %}mb-0{% endif %} text-grey font-weight-light">
+                                <a href="{{ featured.url }}">
+                                    {% if featured.subtitle %}
+                                        {{ featured.subtitle }}
                                     {% else %}
-                                        {{ articles.0.body_plaintext|shorten:50 }}
+                                        {{ featured.body_plaintext|shorten:25 }}
                                     {% endif %}
                                 </a>
                             </h5>
-                            {% if articles.0.authors %}
-                                <div class="card-authors mb-0 text-center text-md-left">
-                                    {% for author in articles.0.authors.all %}
-                                        <div class="d-inline-block mt-2 mr-2">
-                                            <img class="author-picture-nav d-inline-block" alt="{{ author.user.full_name }} picture" src="{{ author.user.profile_picture.crop.50x50 }}">
-                                            <p class="navbar-nav d-inline-block text-grey">{% if author.user.website %}<a href="{{ author.user.website }}" target="_blank" class="link-unstyled">{{ author.user.full_name }}</a>{% else %}{{ author.user.full_name }}{% endif %}</p>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
+                            {% comment %}
+                                {% if featured.authors %}
+                                    <div class="card-authors mb-0 text-center text-md-left">
+                                        {% for author in featured.authors.all %}
+                                            <div class="d-inline-block mt-2 mr-2">
+                                                <img class="author-picture-nav d-inline-block" alt="{{ author.user.full_name }} picture" src="{{ author.user.profile_picture.crop.50x50 }}">
+                                                <p class="navbar-nav d-inline-block text-grey">{% if author.user.website %}<a href="{{ author.user.website }}" target="_blank" class="link-unstyled">{{ author.user.full_name }}</a>{% else %}{{ author.user.full_name }}{% endif %}</p>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            {% endcomment %}
                         </div>
                     </div>
                     <div class="row d-none d-md-flex container-home-bottom position-absolute">
@@ -54,7 +56,7 @@
                                 {% endif %}
                             </div>
                         {% endfor %}
-                        {% for article in articles|slice:"1:4" %}
+                        {% for article in articles|slice:":3" %}
                             {% if events|length == 0 or events|length == 1 and forloop.counter0 < 2 or events|length >= 2 and forloop.counter0 < 1 %}
                                 <div class="{% if events|length > 0 and forloop.counter0 == 1 or events|length > 1 and forloop.counter0 == 0 or forloop.counter0 > 1 %}d-none d-lg-block col-4{% else %}col-6 col-lg-4{% endif %}">
                                     <a href="{{ article.url }}">

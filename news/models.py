@@ -28,6 +28,7 @@ class Article(models.Model):
         choices=((s.value, s.name) for s in ArticleStatus),
         default=ArticleStatus.DRAFT.value,
     )
+    is_featured = models.BooleanField(default=False)
     external_url = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

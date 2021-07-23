@@ -1,3 +1,4 @@
+from urllib.parse import urlparse
 from uuid import UUID
 
 from django.utils import timezone
@@ -8,6 +9,7 @@ from app.settings import (
     SL_CHANNEL_EVENTS,
     SL_CHANNEL_ARTICLES,
 )
+from app.utils import get_full_url
 from event.models import Event
 from messaging.api.slack import log
 from messaging.api.slack.channel import send_message
@@ -80,7 +82,7 @@ def announce_article(article: Article, creator_id: UUID):
             "text": {
                 "type": "mrkdwn",
                 "text": article.description_paragraph
-                + f"\n\n:computer: Check it out in *<{APP_FULL_DOMAIN}{article.url}|our website>*",
+                + f"\n\n:computer: Check it out in *<{get_full_url(article.url)}|our website>*",
             },
             "accessory": {
                 "type": "image",

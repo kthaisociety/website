@@ -267,12 +267,18 @@ class Team(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     starts_at = models.DateTimeField()
     ends_at = models.DateTimeField(blank=True, null=True)
+    code = models.CharField(max_length=255, blank=True, unique=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"Team {self.starts_at.strftime('%Y')}"
+
+    def save(self, *args, **kwargs):
+        if not self.code:
+            self.code = str(self.starts_at.year)
+        super().save(*args, **kwargs)
 
 
 class Division(models.Model):
@@ -291,6 +297,9 @@ class Division(models.Model):
 
     def __str__(self):
         return f"{self.display_name} <{str(self.team)}>"
+
+    class Meta:
+        ordering = ["display_name"]
 
 
 class Role(models.Model):
@@ -315,6 +324,9 @@ class Role(models.Model):
 
     def __str__(self):
         return f"{self.user} <{str(self.division.name)}>"
+
+    class Meta:
+        ordering = ["user"]
 
 
 class History(models.Model):

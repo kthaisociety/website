@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load app_tags %}
+{% load social_share %}
+{% load static %}
+
+{% block head_title %}Team {{ team.code }}{% endblock %}
+
+{% block in_body %}
+    <div class="container container-body py-4 py-md-5">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="section-title">Team {{ team.code }}</h1>
+                <form action="" method="post" class="form" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-11 mb-3">
+                            <select name="team" class="form-control" id="id_team">
+                                {% for available_team in teams %}
+                                    <option value="{{ available_team.code }}" {% if available_team.code == team.code %}selected=""{% endif %}>Team {{ available_team.code }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-1 mb-3 ml-auto mr-auto text-center">
+                            <button class="btn btn-primary" type="submit">Update</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-12 mt-3">
+                {% for division in team.division_set.all %}
+                    <h4 class="mb-3 text-center text-md-left">{{ division.display_name }}</h4>
+                    <div class="row team-picture">
+                        {% for role in division.role_set.all %}
+                            <div class="col-6 col-md-2 ml-md-0 mr-md-0 mt-1 mb-2">
+                                {% if role.user.website %}<a href="{{ role.user.website }}" target="_blank" class="link-unstyled">{% endif %}
+                                    <div class="{% if role.is_head %}team-picture-user-head {% endif %}team-picture-user"><img alt="Role picture" src="{{ role.picture.crop.200x200 }}"></div>
+                                    <h6 class="mt-1 mb-0 text-center" {% if role.user.full_name|length > 15 %}style="font-size: 14px; padding-top: 1px; padding-bottom: 1px;"{% endif %}>{{ role.user.full_name }}</h6>
+                                {% if role.user.website %}</a>{% endif %}
+                                <div class="text-center">
+                                    {% if role.user.email %}
+                                        <a href="mailto:{{ role.user.email }}" class="speaker-social-network link-unstyled" target="_blank">
+                                            <button type="button" class="btn btn-email btn-sm mt-2">
+                                                <p class="mb-0">
+                                                    <i class="fas fa-at"></i>
+                                                </p>
+                                            </button>
+                                        </a>
+                                    {% endif %}
+                                    {% if role.user.website %}
+                                        <a href="{{ role.user.website }}" class="speaker-social-network link-unstyled" target="_blank">
+                                            <button type="button" class="btn btn-website btn-sm mt-2">
+                                                <p class="mb-0">
+                                                    <i class="fas fa-globe-europe"></i>
+                                                </p>
+                                            </button>
+                                        </a>
+                                    {% endif %}
+                                    {% if role.user.linkedin_url %}
+                                        <a href="{{ role.user.linkedin_url }}" class="speaker-social-network link-unstyled" target="_blank">
+                                            <button type="button" class="btn btn-linkedin btn-sm mt-2">
+                                                <p class="mb-0">
+                                                    <i class="fab fa-linkedin-in"></i>
+                                                </p>
+                                            </button>
+                                        </a>
+                                    {% endif %}
+                                    {% if role.user.twitter_url %}
+                                        <a href="{{ role.user.twitter_url }}" class="speaker-social-network link-unstyled" target="_blank">
+                                            <button type="button" class="btn btn-twitter btn-sm mt-2">
+                                                <p class="mb-0">
+                                                    <i class="fab fa-twitter"></i>
+                                                </p>
+                                            </button>
+                                        </a>
+                                    {% endif %}
+                                    {% if role.user.orcid %}
+                                        <a href="https://orcid.org/{{ role.user.orcid }}" class="speaker-social-network link-unstyled" target="_blank">
+                                            <button type="button" class="btn btn-orcid btn-sm mt-2">
+                                                <p class="mb-0">
+                                                    <i class="fab fa-orcid"></i>
+                                                </p>
+                                            </button>
+                                        </a>
+                                    {% endif %}
+                                    {% if role.user.scholar_url %}
+                                        <a href="{{ role.user.scholar_url }}" class="speaker-social-network link-unstyled" target="_blank">
+                                            <button type="button" class="btn btn-scholar btn-sm mt-2">
+                                                <p class="mb-0">
+                                                    <i class="fas fa-graduation-cap"></i>
+                                                </p>
+                                            </button>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

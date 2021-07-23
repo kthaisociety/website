@@ -1040,3 +1040,30 @@ nav {
 .card-authors {
     margin-top: -0.75rem;
 }
+
+.team-picture {
+    border-radius: 50%;
+    margin-bottom: 0.75rem;
+    border: 0.2rem solid $white;
+}
+
+.team-picture img {
+    width: 100%;
+    margin: 0;
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+    border-radius: 50%;
+}
+
+.team-picture-user {
+    border-radius: 50%;
+    width: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0.75rem;
+    border: 0.2rem solid $light-900;
+}
+
+.team-picture-user-head {
+    border: 0.2rem solid $primary-900;
+}

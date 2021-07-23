@@ -107,6 +107,14 @@
                                     <li class="nav-item {% if request.resolver_match.url_name == "business_jobs" %}active{% endif %}">
                                         <a class="nav-link" href="{% url 'business_jobs' %}">Job board</a>
                                     </li>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle" href="#" id="dropdown-about" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            About
+                                        </a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdown-about">
+                                            <a class="dropdown-item" href="{% url 'app_about_team' %}">Team</a>
+                                        </div>
+                                    </li>
                                     <li class="nav-item d-inline-block d-md-none {% if request.resolver_match.url_name == "business_sponsor" %}active{% endif %}">
                                         <a class="nav-link" href="{% url 'business_sponsor' %}">Sponsor</a>
                                     </li>

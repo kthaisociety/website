@@ -3,24 +3,17 @@ import json
 import os
 import subprocess
 from _sha1 import sha1
-from collections import Counter, defaultdict, OrderedDict
+from collections import Counter, defaultdict
 from ipaddress import ip_address, ip_network
+from typing import Optional
 
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
-from django.db.models import (
-    DateField,
-    Count,
-    Q,
-    F,
-    IntegerField,
-    Value,
-    OuterRef,
-    Subquery,
-)
+from django.db.models import DateField
 from django.db.models.functions import Cast
 from django.http import StreamingHttpResponse, HttpResponseNotFound
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.encoding import force_bytes
 from django.views.decorators.csrf import csrf_exempt
@@ -35,6 +28,7 @@ from event.enums import RegistrationStatus, EventStatus
 from event.models import Registration, Session
 from user.enums import UserType, GenderType
 from user.models import User
+import user.api.team
 
 
 def home(request):
@@ -340,3 +334,15 @@ def statistics(request):
             ],
         },
     )
+
+
+def about_team(request, code: Optional[str] = None):
+    if request.method == "POST":
+        team_code = request.POST.get("team")
+        return redirect(reverse("app_about_team", args=(team_code,)))
+
+    teams = user.api.team.get_teams()
+    team = user.api.team.get_team(code=code)
+    if team:
+        return render(request, "about_team.html", {"team": team, "teams": teams})
+    return HttpResponseNotFound()

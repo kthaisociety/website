@@ -77,9 +77,11 @@ def import_medium_articles() -> Tuple[bool, int, int]:
         )
 
         body = medium_article.get("body")
-        pos = re.search(r"<p>\s*Authors\s*(:)?\s*<\/p>", body).start()
-        if pos:
-            body = body[:pos].strip()
+        authors_search = re.search(r"<p>\s*Authors\s*(:)?\s*<\/p>", body)
+        if authors_search:
+            pos = authors_search.start()
+            if pos:
+                body = body[:pos].strip()
 
         if medium_article.get("external_url") in articles.keys():
             article = articles[medium_article.get("external_url")]

@@ -2,6 +2,7 @@ import json
 import re
 from json import JSONEncoder
 from typing import Optional, Dict
+from urllib.parse import urlparse
 
 import html2text
 from django.conf import settings
@@ -13,6 +14,7 @@ from pygments.formatters import HtmlFormatter
 from pygments.lexers import JsonLexer
 
 from app.consts import UNIVERSITIES, PROGRAMMES
+from app.settings import APP_FULL_DOMAIN
 from app.variables import (
     APP_ORGANISER_EMAIL_REGEX,
     APP_NAME,
@@ -142,3 +144,9 @@ def pretty_json(data: Dict, return_as_tuple=False):
 
     style = "<style>" + html_formatter.get_style_defs() + "</style><br>"
     return "{}{}".format(style, response)
+
+
+def get_full_url(url: str) -> str:
+    if urlparse(url).netloc:
+        return url
+    return f"{APP_FULL_DOMAIN}{url}"

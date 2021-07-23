@@ -1,4 +1,5 @@
 import os
+import re
 import uuid
 from typing import Optional
 
@@ -15,6 +16,11 @@ from app.utils import is_email_organiser
 from user.consts import EMOJIS
 from user.enums import UserType, GenderType
 from user.managers import UserManager
+
+
+def validate_orcid(value):
+    if value and not re.match(r"^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$", value):
+        raise ValidationError(f"{value} is not a valid ORCID.")
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -67,6 +73,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     # Details
     website = models.CharField(max_length=255, blank=True, null=True)
     resume = models.FileField(upload_to="user/resume/", blank=True, null=True)
+
+    # Social networks
+    linkedin_url = models.URLField(max_length=200, blank=True, null=True)
+    twitter_url = models.URLField(max_length=200, blank=True, null=True)
+    scholar_url = models.URLField(max_length=200, blank=True, null=True)
+    orcid = models.CharField(
+        max_length=255, validators=[validate_orcid], blank=True, null=True
+    )
 
     # Slack
     # TODO: Should somehow be unique if not null
@@ -264,13 +278,19 @@ class Team(models.Model):
 class Division(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
+    display_name = models.CharField(max_length=255, blank=True)
     team = models.ForeignKey("Team", on_delete=models.PROTECT)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def save(self, *args, **kwargs):
+        if not self.display_name:
+            self.display_name = self.name
+        super().save(*args, **kwargs)
+
     def __str__(self):
-        return f"{self.name} <{str(self.team)}>"
+        return f"{self.display_name} <{str(self.team)}>"
 
 
 class Role(models.Model):

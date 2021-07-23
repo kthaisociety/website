@@ -98,6 +98,24 @@
                                             </div>
                                         </div>
                                         <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="id_linkedin">LinkedIn</label>
+                                                <input type="url" name="linkedin_url" maxlength="225" class="form-control" placeholder="https://linkedin.com/in/curl" id="id_linkedin" {% if form.linkedin_url %}value="{{ form.linkedin_url }}"{% elif request.user.linkedin_url %}value="{{ request.user.linkedin_url }}"{% endif %}>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="id_twitter">Twitter</label>
+                                                <input type="url" name="twitter_url" maxlength="225" class="form-control" placeholder="https://twitter.com/curl" id="id_twitter" {% if form.twitter_url %}value="{{ form.twitter_url }}"{% elif request.user.twitter_url %}value="{{ request.user.twitter_url }}"{% endif %}>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="id_scholar">Google Scholar</label>
+                                                <input type="url" name="scholar_url" maxlength="225" class="form-control" placeholder="https://scholar.google.com/citations?user=REbc02cAAAAJ" id="id_scholar" {% if form.scholar_url %}value="{{ form.scholar_url }}"{% elif request.user.scholar_url %}value="{{ request.user.scholar_url }}"{% endif %}>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="id_orcid">ORCID</label>
+                                                <input type="text" name="orcid" maxlength="225" class="form-control" placeholder="0000-0002-1827-1877" id="id_orcid" {% if form.orcid %}value="{{ form.orcid }}"{% elif request.user.orcid %}value="{{ request.user.orcid }}"{% endif %}>
+                                            </div>
+                                        </div>
+                                        <div class="row">
                                             <div class="col-md-12 mb-2">
                                                 <p class="mb-0">Please note the following information is only used for demographical purposes.</p>
                                             </div>

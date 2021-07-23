@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.humanize",
     "versatileimagefield",
+    "fontawesome-free",
     "django_crontab",
     "django_extensions",
     "compressor",

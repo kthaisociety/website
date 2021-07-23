@@ -17,7 +17,7 @@ from app.consts import UNIVERSITIES, PROGRAMMES
 from app.variables import APP_NAME
 from user import forms
 from user.enums import GenderType
-from user.models import User
+from user.models import User, validate_orcid
 from user.utils import send_verify, send_password, get_user_data_zip
 
 
@@ -322,6 +322,10 @@ def dashboard(request):
         city = request.POST.get("city", None)
         country = request.POST.get("country", None)
         website = request.POST.get("website", None)
+        linkedin_url = request.POST.get("linkedin_url", None)
+        twitter_url = request.POST.get("twitter_url", None)
+        scholar_url = request.POST.get("scholar_url", None)
+        orcid = request.POST.get("orcid", None)
         error_location = False
         if city and country:
             city_and_country = get_city_and_country(city=city, country=country)
@@ -357,6 +361,10 @@ def dashboard(request):
             "birthday": birthday,
             "gender": gender,
             "website": website,
+            "linkedin_url": linkedin_url,
+            "twitter_url": twitter_url,
+            "scholar_url": scholar_url,
+            "orcid": orcid,
         }
         if not missing_required and not error_location:
             degree = PROGRAMMES[int(degree)]
@@ -380,6 +388,15 @@ def dashboard(request):
                 request.user.birthday = None
             request.user.gender = gender
             request.user.website = website
+            request.user.linkedin_url = linkedin_url
+            request.user.twitter_url = twitter_url
+            request.user.scholar_url = scholar_url
+
+            try:
+                validate_orcid(orcid)
+                request.user.orcid = orcid
+            except ValidationError as e:
+                messages.error(request, e.message)
 
             resume = request.FILES.get("resume")
             if resume:

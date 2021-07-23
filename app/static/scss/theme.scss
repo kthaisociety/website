@@ -19,6 +19,9 @@ $light-900: #d6d6d6;
 $dark: $backround;
 $dark-700: #141414;
 $dark-900: #292929;
+$grey-100: #3c3c3c;
+$grey-300: #505050;
+$grey: #646464;
 
 
 @import './bootstrap/bootstrap';
@@ -489,6 +492,43 @@ nav {
     color: #FFFFFF;
     background-color: $dark-900;
     border-color: $dark-900;
+    &:hover, &:active, &:visited {
+        color: $light-700;
+        opacity: 0.9;
+        transition: color .15s ease-in-out,opacity .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+}
+
+.btn-email {
+    color: #FFFFFF;
+    background-color: $grey-100;
+    border-color: $grey-100;
+    &:hover, &:active, &:visited {
+        color: $grey;
+        background-color: $light;
+        border-color: $light;
+        opacity: 0.9;
+        transition: color .15s ease-in-out,opacity .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+}
+
+.btn-website {
+    color: #FFFFFF;
+    background-color: $grey-100;
+    border-color: $grey-100;
+    &:hover, &:active, &:visited {
+        color: $grey;
+        background-color: $light;
+        border-color: $light;
+        opacity: 0.9;
+        transition: color .15s ease-in-out,opacity .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+}
+
+.btn-orcid {
+    color: #FFFFFF;
+    background-color: #a6ce39;
+    border-color: #a6ce39;
     &:hover, &:active, &:visited {
         color: $light-700;
         opacity: 0.9;

@@ -232,6 +232,15 @@
                                         </button>
                                     </a>
                                 {% endif %}
+                                {% if organiser.github_url %}
+                                    <a href="{{ organiser.github_url }}" class="speaker-social-network link-unstyled" target="_blank">
+                                        <button type="button" class="btn btn-github btn-sm mt-2">
+                                            <p class="mb-0">
+                                                <i class="fab fa-github"></i>
+                                            </p>
+                                        </button>
+                                    </a>
+                                {% endif %}
                                 {% if organiser.linkedin_url %}
                                     <a href="{{ organiser.linkedin_url }}" class="speaker-social-network link-unstyled" target="_blank">
                                         <button type="button" class="btn btn-linkedin btn-sm mt-2">
@@ -246,6 +255,15 @@
                                         <button type="button" class="btn btn-twitter btn-sm mt-2">
                                             <p class="mb-0">
                                                 <i class="fab fa-twitter"></i>
+                                            </p>
+                                        </button>
+                                    </a>
+                                {% endif %}
+                                {% if organiser.researchgate_url %}
+                                    <a href="{{ organiser.researchgate_url }}" class="speaker-social-network link-unstyled" target="_blank">
+                                        <button type="button" class="btn btn-researchgate btn-sm mt-2">
+                                            <p class="mb-0">
+                                                <i class="fab fa-researchgate"></i>
                                             </p>
                                         </button>
                                     </a>

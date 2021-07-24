@@ -15,7 +15,7 @@ def get_team(code: Optional[str] = None) -> Team:
         Division.objects.prefetch_related(
             Prefetch(
                 "role_set",
-                Role.objects.select_related("user").order_by("-is_head", "user"),
+                Role.objects.select_related("user").order_by("-is_head", "-user"),
                 to_attr="roles",
             )
         ).order_by("display_name"),

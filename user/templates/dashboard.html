@@ -107,8 +107,16 @@
                                                 <input type="url" name="twitter_url" maxlength="225" class="form-control" placeholder="https://twitter.com/curl" id="id_twitter" {% if form.twitter_url %}value="{{ form.twitter_url }}"{% elif request.user.twitter_url %}value="{{ request.user.twitter_url }}"{% endif %}>
                                             </div>
                                             <div class="col-md-6 mb-3">
+                                                <label for="id_github">GitHub</label>
+                                                <input type="url" name="github_url" maxlength="225" class="form-control" placeholder="https://github.com/kthaisociety" id="id_github" {% if form.github_url %}value="{{ form.github_url }}"{% elif request.user.github_url %}value="{{ request.user.github_url }}"{% endif %}>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
                                                 <label for="id_scholar">Google Scholar</label>
                                                 <input type="url" name="scholar_url" maxlength="225" class="form-control" placeholder="https://scholar.google.com/citations?user=REbc02cAAAAJ" id="id_scholar" {% if form.scholar_url %}value="{{ form.scholar_url }}"{% elif request.user.scholar_url %}value="{{ request.user.scholar_url }}"{% endif %}>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="id_researchgate">ResearchGate</label>
+                                                <input type="url" name="researchgate_url" maxlength="225" class="form-control" placeholder="https://www.researchgate.net/profile/Josephine-Sullivan" id="id_researchgate" {% if form.researchgate_url %}value="{{ form.researchgate_url }}"{% elif request.user.researchgate_url %}value="{{ request.user.researchgate_url }}"{% endif %}>
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label for="id_orcid">ORCID</label>

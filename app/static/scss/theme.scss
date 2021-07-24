@@ -536,6 +536,28 @@ nav {
     }
 }
 
+.btn-github {
+    color: #FFFFFF;
+    background-color: #24292e;
+    border-color: #24292e;
+    &:hover, &:active, &:visited {
+        color: $light-700;
+        opacity: 0.9;
+        transition: color .15s ease-in-out,opacity .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+}
+
+.btn-researchgate {
+    color: #FFFFFF;
+    background-color: #0cb0cb;
+    border-color: #0cb0cb;
+    &:hover, &:active, &:visited {
+        color: $light-700;
+        opacity: 0.9;
+        transition: color .15s ease-in-out,opacity .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+}
+
 .navbar-top {
     color: rgba(255, 255, 255, 0.5);
     font-size: 12px;

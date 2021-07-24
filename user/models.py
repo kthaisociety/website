@@ -77,7 +77,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     # Social networks
     linkedin_url = models.URLField(max_length=200, blank=True, null=True)
     twitter_url = models.URLField(max_length=200, blank=True, null=True)
+    github_url = models.URLField(max_length=200, blank=True, null=True)
     scholar_url = models.URLField(max_length=200, blank=True, null=True)
+    researchgate_url = models.URLField(max_length=200, blank=True, null=True)
     orcid = models.CharField(
         max_length=255, validators=[validate_orcid], blank=True, null=True
     )

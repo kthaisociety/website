@@ -30,10 +30,10 @@
         <hr>
         <div class="row">
             <div class="col-md-12 mt-3">
-                {% for division in team.division_set.all %}
+                {% for division in team.divisions %}
                     <h4 class="mb-3 text-center text-md-left">{{ division.display_name }}</h4>
                     <div class="row team-picture">
-                        {% for role in division.role_set.all %}
+                        {% for role in division.roles %}
                             <div class="col-6 col-md-2 ml-md-0 mr-md-0 mt-1 mb-2">
                                 {% if role.user.website %}<a href="{{ role.user.website }}" target="_blank" class="link-unstyled">{% endif %}
                                     <div class="{% if role.is_head %}team-picture-user-head {% endif %}team-picture-user"><img alt="Role picture" src="{{ role.picture.crop.200x200 }}"></div>
@@ -58,6 +58,15 @@
                                             </button>
                                         </a>
                                     {% endif %}
+                                    {% if role.user.github_url %}
+                                        <a href="{{ role.user.github_url }}" class="speaker-social-network link-unstyled" target="_blank">
+                                            <button type="button" class="btn btn-github btn-sm mt-2">
+                                                <p class="mb-0">
+                                                    <i class="fab fa-github"></i>
+                                                </p>
+                                            </button>
+                                        </a>
+                                    {% endif %}
                                     {% if role.user.linkedin_url %}
                                         <a href="{{ role.user.linkedin_url }}" class="speaker-social-network link-unstyled" target="_blank">
                                             <button type="button" class="btn btn-linkedin btn-sm mt-2">
@@ -72,6 +81,15 @@
                                             <button type="button" class="btn btn-twitter btn-sm mt-2">
                                                 <p class="mb-0">
                                                     <i class="fab fa-twitter"></i>
+                                                </p>
+                                            </button>
+                                        </a>
+                                    {% endif %}
+                                    {% if role.user.researchgate_url %}
+                                        <a href="{{ role.user.researchgate_url }}" class="speaker-social-network link-unstyled" target="_blank">
+                                            <button type="button" class="btn btn-researchgate btn-sm mt-2">
+                                                <p class="mb-0">
+                                                    <i class="fab fa-researchgate"></i>
                                                 </p>
                                             </button>
                                         </a>

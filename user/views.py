@@ -324,7 +324,9 @@ def dashboard(request):
         website = request.POST.get("website", None)
         linkedin_url = request.POST.get("linkedin_url", None)
         twitter_url = request.POST.get("twitter_url", None)
+        github_url = request.POST.get("github_url", None)
         scholar_url = request.POST.get("scholar_url", None)
+        researchgate_url = request.POST.get("researchgate_url", None)
         orcid = request.POST.get("orcid", None)
         error_location = False
         if city and country:
@@ -390,7 +392,9 @@ def dashboard(request):
             request.user.website = website
             request.user.linkedin_url = linkedin_url
             request.user.twitter_url = twitter_url
+            request.user.github_url = github_url
             request.user.scholar_url = scholar_url
+            request.user.researchgate_url = researchgate_url
 
             try:
                 validate_orcid(orcid)

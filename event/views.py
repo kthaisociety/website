@@ -102,7 +102,17 @@ def event(request, code):
 
 def live(request, code):
     # TODO: Get current instead of first
-    session = Session.objects.published().filter(event__code=code).first()
+    session = (
+        Session.objects.published()
+        .filter(
+            event__code=code,
+            ends_at__gte=timezone.now() - timezone.timedelta(minutes=30),
+        )
+        .order_by("ends_at")
+        .first()
+    )
+    if not session:
+        session = Session.objects.published().filter(event__code=code).first()
     schedules = session.schedules.order_by("starts_at", "ends_at").all()
     starts_at = session.starts_at
     ends_at = session.ends_at

@@ -338,53 +338,53 @@ PERMISSION_GROUPS = {
     "BRC": {
         "add": {
             "business": ["company", "contact", "offer", "sponsorship", "tier"],
-            "event": ["attachment", "event", "session", "speaker", "speakerrole"],
+            "event": ["attachment", "event", "schedule", "session", "speaker", "speakerrole"],
             "news": ["article", "author"],
         },
         "change": {
             "business": ["company", "contact", "offer", "sponsorship", "tier"],
-            "event": ["attachment", "event", "session", "speaker", "speakerrole"],
+            "event": ["attachment", "event", "schedule", "session", "speaker", "speakerrole"],
             "news": ["article", "author"],
         },
         "view": {"business": ["contact"], "event": ["registration"]},
         "delete": {
             "business": ["company", "contact", "offer", "sponsorship", "tier"],
-            "event": ["attachment", "event", "session", "speaker", "speakerrole"],
+            "event": ["attachment", "event", "schedule", "session", "speaker", "speakerrole"],
             "news": ["article", "author"],
         },
     },
     "EDU": {
         "add": {
-            "event": ["attachment", "event", "session", "speaker", "speakerrole"],
+            "event": ["attachment", "event", "schedule", "session", "speaker", "speakerrole"],
             "messaging": ["slackchannel"],
             "news": ["article", "author"],
         },
         "change": {
-            "event": ["attachment", "event", "session", "speaker", "speakerrole"],
+            "event": ["attachment", "event", "schedule", "session", "speaker", "speakerrole"],
             "messaging": ["slackchannel"],
             "news": ["article", "author"],
         },
         "view": {"event": ["registration"]},
         "delete": {
-            "event": ["attachment", "event", "session", "speaker", "speakerrole"],
+            "event": ["attachment", "event", "schedule", "session", "speaker", "speakerrole"],
             "messaging": ["slackchannel"],
             "news": ["article", "author"],
         },
     },
     "ITO": {
         "add": {
-            "event": ["attachment", "event", "session", "speaker", "speakerrole"],
+            "event": ["attachment", "event", "schedule", "session", "speaker", "speakerrole"],
             "messaging": ["slackchannel"],
             "news": ["article", "author"],
         },
         "change": {
-            "event": ["attachment", "event", "session", "speaker", "speakerrole"],
+            "event": ["attachment", "event", "schedule", "session", "speaker", "speakerrole"],
             "messaging": ["slackchannel"],
             "news": ["article", "author"],
         },
         "view": {"event": ["registration"], "user": ["user"]},
         "delete": {
-            "event": ["attachment", "event", "session", "speaker", "speakerrole"],
+            "event": ["attachment", "event", "schedule", "session", "speaker", "speakerrole"],
             "messaging": ["slackchannel"],
             "news": ["article", "author"],
         },

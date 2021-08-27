@@ -4,12 +4,12 @@
 {% load static %}
 
 {% block og %}
-    <meta property="og:title" content="{{ session.0.event.name }} | {{ app_name }}" />
-    <meta property="og:url" content="https://{{ app_domain }}{{ session.0.event.url }}/live" />
-    <meta property="og:image" content="https://{{ app_domain }}{{ session.0.event.picture.url }}" />
+    <meta property="og:title" content="{{ sessions.0.event.name }} | {{ app_name }}" />
+    <meta property="og:url" content="https://{{ app_domain }}{{ sessions.0.event.url }}/live" />
+    <meta property="og:image" content="https://{{ app_domain }}{{ sessions.0.event.picture.url }}" />
 {% endblock %}
 
-{% block head_title %}{{ session.0.event.name }} live{% endblock %}
+{% block head_title %}{{ sessions.0.event.name }} live{% endblock %}
 
 {% block body_pre_in %}
     <div class="row">
@@ -18,8 +18,8 @@
                 <ol class="breadcrumb bg-transparent p-0 pb-2">
                     <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'app_home' %}">Home</a></li>
                     <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'events_events' %}">Events</a></li>
-                    <li class="breadcrumb-item"><a class="link-unstyled" href="{{ session.0.event.url }}">{{ session.0.event.name }}</a></li>
-                    <li class="breadcrumb-item" aria-current="page"><a class="link-unstyled" href="{% url "events_live" session.0.event.code %}">Live</a></li>
+                    <li class="breadcrumb-item"><a class="link-unstyled" href="{{ sessions.0.event.url }}">{{ sessions.0.event.name }}</a></li>
+                    <li class="breadcrumb-item" aria-current="page"><a class="link-unstyled" href="{% url "events_live" sessions.0.event.code %}">Live</a></li>
                 </ol>
             </nav>
         </div>
@@ -70,7 +70,7 @@
      <script>
         var dateTo = new Date("{{ ends_at | date:"Y-m-d H:i:s" }}").getTime();
         var dateFrom = new Date("{{ starts_at | date:"Y-m-d H:i:s" }}").getTime();
-        var eventDateFrom = new Date("{{ session.0.starts_at | date:"Y-m-d H:i:s" }}").getTime();
+        var eventDateFrom = new Date("{{ sessions.0.starts_at | date:"Y-m-d H:i:s" }}").getTime();
         var x = setInterval(function() {
             var today = new Date();
             var dd = String(today.getDate()).padStart(2, '0');

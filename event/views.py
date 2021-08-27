@@ -8,7 +8,7 @@ from django.utils import timezone
 import user.utils
 
 from event.enums import RegistrationStatus, ScheduleType
-from event.models import Event, Registration, Session
+from event.models import Event, Registration, Session, Schedule
 from event.tasks import send_registration_email
 
 
@@ -102,20 +102,22 @@ def event(request, code):
 
 def live(request, code):
     # TODO: Get current instead of first
-    session = (
+    sessions = list(
         Session.objects.published()
         .filter(
             event__code=code,
             ends_at__gte=timezone.now() - timezone.timedelta(minutes=30),
         )
         .order_by("ends_at")
-        .first()
+        .all()
     )
-    if not session:
-        session = Session.objects.published().filter(event__code=code).first()
-    schedules = session.schedules.order_by("starts_at", "ends_at").all()
-    starts_at = session.starts_at
-    ends_at = session.ends_at
+    schedules = list(
+        Schedule.objects.filter(session__in=sessions)
+        .order_by("starts_at", "ends_at")
+        .all()
+    )
+    starts_at = sessions[0].starts_at
+    ends_at = sessions[-1].ends_at
     schedule_dict = {}
     start_time = starts_at.replace(minute=0, second=0)
     while start_time <= ends_at:
@@ -144,7 +146,7 @@ def live(request, code):
         request,
         "live.html",
         {
-            "session": session,
+            "sessions": sessions,
             "now": timezone.now(),
             "schedules": schedules,
             "starts_at": starts_at,

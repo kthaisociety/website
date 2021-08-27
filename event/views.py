@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from django.contrib import messages
 from django.db import IntegrityError
 from django.http import HttpResponseNotFound, HttpResponse, HttpResponseRedirect
@@ -118,16 +120,17 @@ def live(request, code):
     )
     starts_at = sessions[0].starts_at
     ends_at = sessions[-1].ends_at
-    schedule_dict = {}
+    schedule_dict = defaultdict(list)
     start_time = starts_at.replace(minute=0, second=0)
     while start_time <= ends_at:
         schedule_dict[start_time] = []
         start_time += timezone.timedelta(hours=1)
     for schedule in schedules:
-        if schedule.type == ScheduleType.EVENT_START:
-            starts_at = schedule.starts_at
-        elif schedule.type == ScheduleType.EVENT_END:
-            ends_at = schedule.starts_at
+        if timezone.now() - timezone.timedelta(minutes=30) <= schedule.session.ends_at:
+            if schedule.type == ScheduleType.EVENT_START:
+                starts_at = schedule.starts_at
+            elif schedule.type == ScheduleType.EVENT_END:
+                ends_at = schedule.starts_at
         schedule_starts_at = schedule.starts_at.replace(minute=0, second=0)
         schedule_dict[schedule_starts_at].append(schedule)
     duration = ends_at - starts_at

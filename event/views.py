@@ -122,11 +122,18 @@ def live(request, code):
     ends_at = sessions[-1].ends_at
     schedule_dict = defaultdict(list)
     start_time = starts_at.replace(minute=0, second=0)
+    first_session_id = None
     while start_time <= ends_at:
         schedule_dict[start_time] = []
         start_time += timezone.timedelta(hours=1)
     for schedule in schedules:
-        if timezone.now() - timezone.timedelta(minutes=30) <= schedule.session.ends_at:
+        current_session_id = schedule.session_id
+        if (
+            (not first_session_id or first_session_id == current_session_id)
+            and timezone.now() - timezone.timedelta(minutes=30)
+            <= schedule.session.ends_at
+        ):
+            first_session_id = current_session_id
             if schedule.type == ScheduleType.EVENT_START:
                 starts_at = schedule.starts_at
             elif schedule.type == ScheduleType.EVENT_END:

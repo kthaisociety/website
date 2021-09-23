@@ -7,7 +7,7 @@ from business.models import Company, Contact, Tier, Sponsorship, Offer
 class CompanyAdmin(admin.ModelAdmin):
     search_fields = ("id", "name", "code")
     list_display = ("name", "code", "website")
-    ordering = ("-created_at", "-updated_at")
+    ordering = ("name",)
 
 
 @admin.register(Contact)
@@ -15,7 +15,7 @@ class ContactAdmin(admin.ModelAdmin):
     search_fields = ("id", "name", "surname", "email", "company", "user")
     list_display = ("name", "surname", "email", "company")
     list_filter = ("company",)
-    ordering = ("-created_at", "-updated_at")
+    ordering = ("name", "surname")
 
 
 @admin.register(Tier)

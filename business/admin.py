@@ -3,11 +3,19 @@ from django.contrib import admin
 from business.models import Company, Contact, Tier, Sponsorship, Offer
 
 
+class OfferInline(admin.StackedInline):
+    model = Offer
+    ordering = ("-starts_at",)
+    show_change_link = True
+    extra = 0
+
+
 @admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):
     search_fields = ("id", "name", "code")
     list_display = ("name", "code", "website")
     ordering = ("name",)
+    inlines = [OfferInline]
 
 
 @admin.register(Contact)

@@ -18,7 +18,7 @@ from app.variables import APP_NAME
 from user import forms
 from user.enums import GenderType
 from user.models import User, validate_orcid
-from user.utils import send_verify, send_password, get_user_data_zip
+from user.utils import send_verify, send_password, get_user_data_zip, delete_user_account
 
 
 def user_login(request):
@@ -449,3 +449,9 @@ def user_data(request):
     file_name = f"{APP_NAME.replace(' ', '').lower()}_data_{str(request.user.id)}_{str(int(timezone.now().timestamp()))}.zip"
     response["Content-Disposition"] = f'attachment; filename="{file_name}"'
     return response
+
+@login_required
+def user_delete(request):
+    delete_user_account(user_id=request.user.id)
+
+    return redirect('/')

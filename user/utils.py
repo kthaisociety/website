@@ -198,3 +198,6 @@ def get_user_data_zip(user_id: UUID) -> BytesIO:
     zf.close()
 
     return mf
+
+def delete_user_account(user_id:str) -> None:
+    User.object.filter(id=user_id).delete()

@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.core.files import File
 from django.http import HttpResponseRedirect, HttpResponse, StreamingHttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils import timezone
 from geopy import Nominatim
@@ -453,5 +453,6 @@ def user_data(request):
 @login_required
 def user_delete(request):
     delete_user_account(user_id=request.user.id)
-
+    
+    messages.success(request, "User successfully deleted")
     return redirect('/')

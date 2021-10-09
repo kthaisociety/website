@@ -452,6 +452,10 @@ def user_data(request):
 
 @login_required
 def user_delete(request):
+    return render(request, "delete_account.html")
+
+@login_required
+def user_confirm_delete(request):
     delete_user_account(user_id=request.user.id)
     
     messages.success(request, "User successfully deleted")

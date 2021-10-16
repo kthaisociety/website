@@ -275,7 +275,7 @@ class Team(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Team {self.starts_at.strftime('%Y')}"
+        return f"Team {self.code.upper() or self.starts_at.strftime('%Y')}"
 
     def save(self, *args, **kwargs):
         if not self.code:

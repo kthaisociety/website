@@ -1,3 +1,4 @@
+import hashlib
 import os
 import re
 import uuid
@@ -6,7 +7,7 @@ from typing import Optional
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.core.exceptions import ValidationError
-from django.db import models
+from django.db import models, transaction
 from django.utils import timezone
 from django.utils.functional import cached_property
 from versatileimagefield.fields import VersatileImageField
@@ -47,6 +48,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_author = models.BooleanField(default=False)
+    is_subscriber = models.BooleanField(default=True)
 
     # Personal information
     picture = VersatileImageField(
@@ -154,6 +156,10 @@ class User(AbstractBaseUser, PermissionsMixin):
             return self.name + " " + self.surname
         return self.name
 
+    @property
+    def subscriber_id(self):
+        return hashlib.md5(self.email.lower().encode("utf-8")).hexdigest()
+
     def __str__(self):
         if self.full_name:
             return f"{self.full_name} <{self.email}>"
@@ -252,6 +258,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         self.clean()
         if is_email_organiser(self.email):
             self.type = UserType.ORGANISER.value
+
+        import user.api.newsletter
+        transaction.on_commit(lambda: user.api.newsletter.update_newsletter_list(user_id=self.id))
+
         return super().save(*args, **kwargs)
 
 

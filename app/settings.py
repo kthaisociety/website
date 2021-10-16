@@ -414,3 +414,9 @@ GROUP_BY_DIVISION_NAME = {
     "IT": "ITO",
     "Operations": "ITO",
 }
+
+# Mailchimp integration
+
+MAILCHIMP_KEY = os.environ.get("MAILCHIMP_KEY", None)
+MAILCHIMP_PREFIX = os.environ.get("MAILCHIMP_PREFIX", None)
+MAILCHIMP_LIST = os.environ.get("MAILCHIMP_LIST", None)

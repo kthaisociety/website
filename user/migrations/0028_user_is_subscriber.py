@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('user', '0027_user_social_networks_2'),
+        ("user", "0027_user_social_networks_2"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='is_subscriber',
+            model_name="user",
+            name="is_subscriber",
             field=models.BooleanField(default=True),
         ),
     ]

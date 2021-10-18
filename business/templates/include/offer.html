@@ -2,9 +2,14 @@
 {% load social_share %}
 {% load static %}
 
-<div class="card mb-4 w-100">
+<div class="card mb-4 w-100" id="{{ offer.id }}">
     <div class="row no-gutters h-100">
-        <div class="col-md-2 bg-light">
+        <div class="col-md-2 bg-light offer-company">
+            {% if offer.is_new %}
+                <div class="offer-company-corner">
+                    <span>New</span>
+                </div>
+            {% endif %}
             <div class="d-flex align-items-center justify-content-center h-100">
                 <a class="link-unstyled" href="{{ offer.company.website }}">
                     <img class="pt-3 pr-5 pb-3 pl-5 pt-md-3 pr-md-3 pb-mb-3 pl-md-3 offer-company-logo" src="{{ offer.company.logo.url }}"  alt="{{ offer.company.name }}"/>
@@ -12,10 +17,10 @@
             </div>
         </div>
         <div class="col-md-10 p-4">
-            <a class="link-unstyled" href="{% if offer.url %}{{ offer.url }}{% elif offer.email %}mailto:{{ offer.email }}{% endif %}">
+            <a class="link-unstyled" href="{% if with_description %}{% if offer.url %}{{ offer.url }}{% elif offer.email %}mailto:{{ offer.email }}{% endif %}{% else %}{% url "business_jobs" %}#{{ offer.id }}{% endif %}">
                 <h5 class="mb-2">{{ offer.title }}</h5>
             </a>
-            <a class="link-unstyled" href="{% if offer.url %}{{ offer.url }}{% elif offer.email %}mailto:{{ offer.email }}{% endif %}">
+            <a class="link-unstyled" href="{% if with_description %}{% if offer.url %}{{ offer.url }}{% elif offer.email %}mailto:{{ offer.email }}{% endif %}{% else %}{% url "business_jobs" %}#{{ offer.id }}{% endif %}">
                 <p class="text-primary font-weight-bold mb-1">{% if offer.location %}🌍{% else %}🖥️{% endif %} {{ offer.company.name }}, {% if offer.location %}{{ offer.location }}{% else %}Remote{% endif %}</p>
             </a>
             <p class="text-grey">{{ enums.business.offer_type|keyvalue:offer.type }}</p>
@@ -38,7 +43,7 @@
                     </a>
                 {% endif %}
             {% else %}
-                <a class="link-unstyled mt-3 mb-0 d-block text-left" href="{% url "business_jobs" %}"><p class="text-main mb-0">Read more <i class="fas fa-arrow-right ml-1"></i></p></a>
+                <a class="link-unstyled mt-3 mb-0 d-block text-left" href="{% url "business_jobs" %}#{{ offer.id }}"><p class="text-main mb-0">Read more <i class="fas fa-arrow-right ml-1"></i></p></a>
             {% endif %}
         </div>
     </div>

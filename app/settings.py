@@ -325,8 +325,10 @@ if os.environ.get("GO_CALENDAR_CREDS", None):
     GOOGLE_CALENDAR_CREDS_FILE = (
         BASE_DIR + "/" + os.environ.get("GO_CALENDAR_CREDS", None)
     )
-    GOOGLE_CALENDAR_CREDS_SERVICE = service_account.Credentials.from_service_account_file(
-        GOOGLE_CALENDAR_CREDS_FILE, scopes=GOOGLE_CALENDAR_SCOPES
+    GOOGLE_CALENDAR_CREDS_SERVICE = (
+        service_account.Credentials.from_service_account_file(
+            GOOGLE_CALENDAR_CREDS_FILE, scopes=GOOGLE_CALENDAR_SCOPES
+        )
     )
     if GOOGLE_CALENDAR_ADMIN_EMAIL:
         GOOGLE_CALENDAR_CREDS = GOOGLE_CALENDAR_CREDS_SERVICE.with_subject(
@@ -338,53 +340,116 @@ PERMISSION_GROUPS = {
     "BRC": {
         "add": {
             "business": ["company", "contact", "offer", "sponsorship", "tier"],
-            "event": ["attachment", "event", "schedule", "session", "speaker", "speakerrole"],
+            "event": [
+                "attachment",
+                "event",
+                "schedule",
+                "session",
+                "speaker",
+                "speakerrole",
+            ],
             "news": ["article", "author"],
         },
         "change": {
             "business": ["company", "contact", "offer", "sponsorship", "tier"],
-            "event": ["attachment", "event", "schedule", "session", "speaker", "speakerrole"],
+            "event": [
+                "attachment",
+                "event",
+                "schedule",
+                "session",
+                "speaker",
+                "speakerrole",
+            ],
             "news": ["article", "author"],
         },
         "view": {"business": ["contact"], "event": ["registration"]},
         "delete": {
             "business": ["company", "contact", "offer", "sponsorship", "tier"],
-            "event": ["attachment", "event", "schedule", "session", "speaker", "speakerrole"],
+            "event": [
+                "attachment",
+                "event",
+                "schedule",
+                "session",
+                "speaker",
+                "speakerrole",
+            ],
             "news": ["article", "author"],
         },
     },
     "EDU": {
         "add": {
-            "event": ["attachment", "event", "schedule", "session", "speaker", "speakerrole"],
+            "event": [
+                "attachment",
+                "event",
+                "schedule",
+                "session",
+                "speaker",
+                "speakerrole",
+            ],
             "messaging": ["slackchannel"],
             "news": ["article", "author"],
         },
         "change": {
-            "event": ["attachment", "event", "schedule", "session", "speaker", "speakerrole"],
+            "event": [
+                "attachment",
+                "event",
+                "schedule",
+                "session",
+                "speaker",
+                "speakerrole",
+            ],
             "messaging": ["slackchannel"],
             "news": ["article", "author"],
         },
         "view": {"event": ["registration"]},
         "delete": {
-            "event": ["attachment", "event", "schedule", "session", "speaker", "speakerrole"],
+            "event": [
+                "attachment",
+                "event",
+                "schedule",
+                "session",
+                "speaker",
+                "speakerrole",
+            ],
             "messaging": ["slackchannel"],
             "news": ["article", "author"],
         },
     },
     "ITO": {
         "add": {
-            "event": ["attachment", "event", "schedule", "session", "speaker", "speakerrole"],
+            "event": [
+                "attachment",
+                "event",
+                "schedule",
+                "session",
+                "speaker",
+                "speakerrole",
+            ],
             "messaging": ["slackchannel"],
             "news": ["article", "author"],
         },
         "change": {
-            "event": ["attachment", "event", "schedule", "session", "speaker", "speakerrole"],
+            "event": [
+                "attachment",
+                "event",
+                "schedule",
+                "session",
+                "speaker",
+                "speakerrole",
+            ],
             "messaging": ["slackchannel"],
             "news": ["article", "author"],
         },
         "view": {"event": ["registration"], "user": ["user"]},
         "delete": {
-            "event": ["attachment", "event", "schedule", "session", "speaker", "speakerrole"],
+            "event": [
+                "attachment",
+                "event",
+                "schedule",
+                "session",
+                "speaker",
+                "speakerrole",
+            ],
             "messaging": ["slackchannel"],
             "news": ["article", "author"],
         },

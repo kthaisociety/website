@@ -260,7 +260,10 @@ class User(AbstractBaseUser, PermissionsMixin):
             self.type = UserType.ORGANISER.value
 
         import user.api.newsletter
-        transaction.on_commit(lambda: user.api.newsletter.update_newsletter_list(user_id=self.id))
+
+        transaction.on_commit(
+            lambda: user.api.newsletter.update_newsletter_list(user_id=self.id)
+        )
 
         return super().save(*args, **kwargs)
 

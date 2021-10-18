@@ -129,10 +129,10 @@ def live(request, code):
     for schedule in schedules:
         current_session_id = schedule.session_id
         if (
-            (not first_session_id or first_session_id == current_session_id)
-            and timezone.now() - timezone.timedelta(minutes=30)
-            <= schedule.session.ends_at
-        ):
+            not first_session_id or first_session_id == current_session_id
+        ) and timezone.now() - timezone.timedelta(
+            minutes=30
+        ) <= schedule.session.ends_at:
             first_session_id = current_session_id
             if schedule.type == ScheduleType.EVENT_START:
                 starts_at = schedule.starts_at

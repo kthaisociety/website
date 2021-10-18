@@ -4,7 +4,12 @@
 
 <div class="card mb-4 w-100">
     <div class="row no-gutters h-100">
-        <div class="col-md-2 bg-light">
+        <div class="col-md-2 bg-light offer-company">
+            {% if offer.is_new %}
+                <div class="offer-company-corner">
+                    <span>New</span>
+                </div>
+            {% endif %}
             <div class="d-flex align-items-center justify-content-center h-100">
                 <a class="link-unstyled" href="{{ offer.company.website }}">
                     <img class="pt-3 pr-5 pb-3 pl-5 pt-md-3 pr-md-3 pb-mb-3 pl-md-3 offer-company-logo" src="{{ offer.company.logo.url }}"  alt="{{ offer.company.name }}"/>

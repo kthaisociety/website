@@ -131,6 +131,10 @@ class Offer(models.Model):
             not self.ends_at or timezone.now() < self.ends_at
         )
 
+    @property
+    def is_new(self):
+        return self.starts_at >= timezone.now() - timezone.timedelta(days=7)
+
     def __str__(self):
         return f"{self.title} <{str(self.company)}>"
 

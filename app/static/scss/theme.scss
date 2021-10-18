@@ -1089,3 +1089,29 @@ nav {
 .team-picture-user-head {
     border: 0.2rem solid $primary-900;
 }
+
+.offer-company {
+    overflow: hidden;
+    position: relative;
+}
+
+.offer-company-corner{
+    background-color: $primary;
+    height: 95px;
+    left: -50px;
+    position: absolute;
+    top: -50px;
+    width: 95px;
+    -webkit-transform: rotate(-45deg);
+}
+
+.offer-company-corner span {
+    color: #f5f5f5;
+    font-family: "Futura", sans-serif;
+    font-weight: 700;
+    font-size: 0.85em;
+    left: 32px;
+    top: 72px;
+    position: absolute;
+    width: 80px;
+}

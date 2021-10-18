@@ -23,7 +23,9 @@ def update_newsletter_list(user_id: UUID):
             subscriber_hash=user.subscriber_id,
             body={
                 "email_address": user.email,
-                "status_if_new": ("subscribed" if user.is_subscriber else "unsubscribed"),
+                "status_if_new": (
+                    "subscribed" if user.is_subscriber else "unsubscribed"
+                ),
                 "email_type": "html",
                 "merge_fields": {
                     "FNAME": user.name,
@@ -34,7 +36,7 @@ def update_newsletter_list(user_id: UUID):
                     "MMERGE3": user.degree,
                     "YEAR": user.graduation_year,
                 },
-                "tags": ["Member", "KTHAIS.com"]
+                "tags": ["Member", "KTHAIS.com"],
             },
         )
     except ApiClientError:

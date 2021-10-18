@@ -80,15 +80,17 @@ def update(user_data: Dict) -> bool:
 
         user.save()
 
-        if profile_picture_updated and user.slack_token:
-            picture_success, picture_hash = set_picture(
-                token=user.slack_token, file=BytesIO(user.slack_picture.file.read())
-            )
-            if picture_success:
-                user.slack_picture_hash = picture_hash
-                user.save()
-            else:
-                success = False
+        # TODO: Temporarily disabled
+        # https://github.com/kthaisociety/website/issues/198
+        # if profile_picture_updated and user.slack_token:
+        #     picture_success, picture_hash = set_picture(
+        #         token=user.slack_token, file=BytesIO(user.slack_picture.file.read())
+        #     )
+        #     if picture_success:
+        #         user.slack_picture_hash = picture_hash
+        #         user.save()
+        #     else:
+        #         success = False
 
         return success
     return False

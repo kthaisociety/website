@@ -35,6 +35,7 @@
         <title>{% block title_plain %}{% block title %}{% block head_title %}{% endblock %} | {% endblock %}{{ app_name }}{% endblock %}</title>
     </head>
     <body>
+        {% include "include/google_body.html" %}
         {% block page %}
             {% block header %}
                 {% block in_pre_header %}

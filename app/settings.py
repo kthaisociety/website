@@ -198,9 +198,10 @@ if SE_URL:
 
 SIGNUP_DISABLED = os.environ.get("SIGNUP_DISABLED", "false").lower() == "true"
 
-# Google Analytics
+# Google
 
 GO_ID = os.environ.get("GO_ID", None)
+GO_TGM_ID = os.environ.get("GO_TGM_ID", None)
 
 # GitHub webhook endpoint availability
 

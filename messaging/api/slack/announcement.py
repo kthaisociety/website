@@ -1,5 +1,4 @@
 from typing import List
-from urllib.parse import urlparse
 from uuid import UUID
 
 from django.urls import reverse
@@ -136,7 +135,7 @@ def announce_job_offers(job_offers: List[Offer]):
                 },
                 "accessory": {
                     "type": "image",
-                    "image_url": f"{APP_FULL_DOMAIN}{job_offer.company.logo.our_url}",
+                    "image_url": f"{APP_FULL_DOMAIN}{job_offer.company.logo.url}",
                     "alt_text": job_offer.company.name,
                 },
             }

@@ -127,29 +127,33 @@ def announce_job_offers(job_offers: List[Offer]):
         offer_location = f"🖥️ {job_offer.company.name}, Remote"
         if job_offer.location:
             offer_location = f"🌍 {job_offer.company.name}, {job_offer.location}"
-        blocks += {
-            "type": "section",
-            "text": {
-                "type": "mrkdwn",
-                "text": f"*{job_offer.title}*\n🌍 <{job_offer.url}*{offer_location}*>\n{job_offer.description_short}",
-            },
-            "accessory": {
-                "type": "image",
-                "image_url": job_offer.company.logo.url,
-                "alt_text": job_offer.company.name,
-            },
-        }
-
-    blocks += {
-        "type": "actions",
-        "elements": [
+        blocks += [
             {
-                "type": "button",
-                "text": {"type": "plain_text", "text": "Read more", "emoji": True},
-                "url": reverse("business_jobs"),
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": f"*{job_offer.title}*\n<{APP_FULL_DOMAIN}{job_offer.our_url}|*{offer_location}*>\n{job_offer.description_short}",
+                },
+                "accessory": {
+                    "type": "image",
+                    "image_url": f"{APP_FULL_DOMAIN}{job_offer.company.logo.our_url}",
+                    "alt_text": job_offer.company.name,
+                },
             }
-        ],
-    }
+        ]
+
+    blocks += [
+        {
+            "type": "actions",
+            "elements": [
+                {
+                    "type": "button",
+                    "text": {"type": "plain_text", "text": "Read more", "emoji": True},
+                    "url": f"{APP_FULL_DOMAIN}{reverse('business_jobs')}",
+                }
+            ],
+        }
+    ]
 
     channel = SlackChannel.objects.get(
         external_id=SL_CHANNEL_JOBS or SL_CHANNEL_GENERAL

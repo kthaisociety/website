@@ -157,7 +157,7 @@ class Offer(models.Model):
         )
 
     @property
-    def url(self):
+    def our_url(self):
         return reverse("business_jobs") + f"#{self.id}"
 
     def __str__(self):

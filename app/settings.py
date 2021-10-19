@@ -221,6 +221,7 @@ SL_INURL = os.environ.get("SL_INURL", None)
 SL_CHANNEL_GENERAL = os.environ.get("SL_CHANNEL_GENERAL", None)
 SL_CHANNEL_EVENTS = os.environ.get("SL_CHANNEL_EVENTS", None)
 SL_CHANNEL_ARTICLES = os.environ.get("SL_CHANNEL_ARTICLES", None)
+SL_CHANNEL_JOBS = os.environ.get("SL_CHANNEL_JOBS", None)
 SL_CHANNEL_WEBDEV = os.environ.get("SL_CHANNEL_WEBDEV", None)
 SL_EMOJI_BOT = os.environ.get("SL_EMOJI_BOT", "mascot")
 SL_ANSWER_BOT = os.environ.get(
@@ -307,6 +308,7 @@ NOTIFY_TEMPLATES = dict(
 CRONJOBS = [
     ("0 20 * * *", "app.cron.slack_check_users"),
     ("5 * * * *", "messaging.cron.slack_retrieve_channels"),
+    ("0 11 * * *", "business.cron.announce_latest_job_offers"),
 ]
 
 CRONTAB_COMMAND_PREFIX = f". {BASE_DIR}/environment.sh;"

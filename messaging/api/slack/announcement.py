@@ -1,6 +1,8 @@
+from typing import List
 from urllib.parse import urlparse
 from uuid import UUID
 
+from django.urls import reverse
 from django.utils import timezone
 
 from app.settings import (
@@ -8,8 +10,10 @@ from app.settings import (
     APP_FULL_DOMAIN,
     SL_CHANNEL_EVENTS,
     SL_CHANNEL_ARTICLES,
+    SL_CHANNEL_JOBS,
 )
 from app.utils import get_full_url
+from business.models import Offer
 from event.models import Event
 from messaging.api.slack import log
 from messaging.api.slack.channel import send_message
@@ -109,3 +113,58 @@ def announce_article(article: Article, creator_id: UUID):
         creator_id=creator_id,
         data=response.data,
     )
+
+
+def announce_job_offers(job_offers: List[Offer]):
+    blocks = [
+        {
+            "type": "header",
+            "text": {"type": "plain_text", "emoji": True, "text": "New job offers"},
+        },
+    ]
+
+    for job_offer in job_offers:
+        offer_location = f"🖥️ {job_offer.company.name}, Remote"
+        if job_offer.location:
+            offer_location = f"🌍 {job_offer.company.name}, {job_offer.location}"
+        blocks += {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": f"*{job_offer.title}*\n🌍 <{job_offer.url}*{offer_location}*>\n{job_offer.description_short}",
+            },
+            "accessory": {
+                "type": "image",
+                "image_url": job_offer.company.logo.url,
+                "alt_text": job_offer.company.name,
+            },
+        }
+
+    blocks += {
+        "type": "actions",
+        "elements": [
+            {
+                "type": "button",
+                "text": {"type": "plain_text", "text": "Read more", "emoji": True},
+                "url": reverse("business_jobs"),
+            }
+        ],
+    }
+
+    channel = SlackChannel.objects.get(
+        external_id=SL_CHANNEL_JOBS or SL_CHANNEL_GENERAL
+    )
+    response = send_message(
+        external_id=channel.external_id,
+        blocks=blocks,
+        unfurl_links=False,
+        unfurl_media=False,
+    )
+
+    for job_offer in job_offers:
+        log.create(
+            type=LogType.JOB,
+            target=job_offer,
+            channel_id=channel.id,
+            data=response.data,
+        )

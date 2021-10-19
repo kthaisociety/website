@@ -6,7 +6,9 @@ from messaging.api.slack.announcement import announce_job_offers
 
 def announce_latest_job_offers():
     job_offers = Offer.objects.filter(
-        starts_at__gte=timezone.now() - timezone.timedelta(days=1),
+        is_visible=True,
+        starts_at__gte=timezone.now() - timezone.timedelta(days=7),
         starts_at__lt=timezone.now(),
     )
-    announce_job_offers(job_offers=job_offers)
+    if job_offers:
+        announce_job_offers(job_offers=job_offers)

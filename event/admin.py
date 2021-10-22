@@ -99,9 +99,11 @@ class RegistrationInline(admin.StackedInline):
     exclude = ("diet", "diet_other")
 
     def dietary_restrictions(self, obj):
-        return format_html(
-            "<br>".join([DietType.labels[dt] for dt in obj.dietary_restrictions])
-        )
+        if obj.dietary_restrictions:
+            return format_html(
+                "<br>".join([DietType.labels[dt] for dt in obj.dietary_restrictions])
+            )
+        return "-"
 
     def has_add_permission(self, request, obj=None):
         return False
@@ -183,9 +185,10 @@ class EventAdmin(admin.ModelAdmin):
         for dt, ct in diet_count.items():
             diet_html += f"<li>{DietType.labels[dt]}: {ct}</li>"
         diet_html += "</ul>"
-        diet_html += "Other restrictions"
-        for do in diet_other:
-            diet_html += f"<br><span style='padding-left: 2em;'>- {do}</span>"
+        if diet_other:
+            diet_html += "Other restrictions"
+            for do in diet_other:
+                diet_html += f"<br><span style='padding-left: 2em;'>- {do}</span>"
         return format_html(diet_html)
 
     registration_count.short_description = "registrations"

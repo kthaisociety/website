@@ -47,6 +47,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_author = models.BooleanField(default=False)
+    is_forgotten = models.BooleanField(default=False)
 
     # Personal information
     picture = VersatileImageField(
@@ -233,6 +234,42 @@ class User(AbstractBaseUser, PermissionsMixin):
         self.country = country
         self.registration_finished = True
         self.save()
+    
+    def forget():
+        self.is_forgotten = True
+        self.is_admin = False
+        
+        self.email = "forgoten_"+self.id+"@member.kthais.com"
+
+        self.name = "Forgotten"
+        self.username = "User"
+        self.gender = GenderType.NONE
+        self.birthday = None
+        self.phone = None
+        self.city = None
+        self.country = None
+        self.university = None
+        self.dgree = None
+        self.graduation_year = None
+        self.website = None
+        self.resume = None #TODO Delete file
+        self.linkedin_url = None
+        self.twitter_url = None
+        self.github_url = None
+        self.scholar_url = None
+        self.researchgate_url = None
+        self.orcid = None
+        self.slack_id = None
+        self.slack_token = None
+        self.slack_scopes = None
+        self.slack_status_text = None
+        self.slack_status_emoji = None
+        self.slack_display_name = None
+        self.slack_picture = None
+        self.slack_picture_hash = None #TODO Delete file
+
+        self.save()
+
 
     @property
     def resume_name(self):

@@ -219,14 +219,31 @@
                                         </form>
                                     {% endif %}
                                 {% elif request.user.is_authenticated %}
-                                    <p class="mb-2">Do you want to register for this event?</p>
+                                    <p class="mb-2">Do you want to register for this event?{% if event.signup_ends_at %} — <strong>Registration closes {{ event.signup_ends_at|date:"Y-m-d H:i e" }}!</strong>{% endif %}</p>
                                     <form action="" method="post" class="form">
                                         {% csrf_token %}
+                                        {% if event.has_food %}
+                                            <div class="form-group mt-3 mb-2">
+                                                <h6 class="mb-2">Dietary restrictions</h6>
+                                                <p class="mb-2" style="line-height: 1em;"><small>This event will provide food and that's why we need to know if you have any restrictions. If you leave this section empty we understand you don't have any.</small></p>
+                                                {% for d_t, d in enums.user.diet.items %}
+                                                    <div class="form-check">
+                                                        <input type="checkbox" value="{{ d_t.value }}" name="diet_{{ d_t.name.lower }}" id="id_diet_{{ d_t.name.lower }}" {% if d_t in request.user.dietary_restrictions %}checked{% endif %}>
+                                                        <label for="id_diet_{{ d_t.name.lower }}">{{ d }}</label>
+                                                    </div>
+                                                {% endfor %}
+                                                <div class="form-row">
+                                                    <div class="col-md-12 pl-4">
+                                                        <input type="text" name="diet_other_custom" maxlength="225" class="form-control diet_other mb-2" placeholder="Please specify your restrictions" id="id_diet_other_custom" {% if request.user.diet_other %}value="{{ request.user.diet_other }}"{% endif %}>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
                                         <button class="btn btn-primary" type="submit" name="submit" value="register">Register</button>
                                         <!-- <button class="btn btn-dark ml-2" type="submit" name="submit" value="interest">I can't attend</button> -->
                                     </form>
                                 {% else %}
-                                    <p class="mb-2">Do you want to register for this event?</p>
+                                    <p class="mb-2">Do you want to register for this event?{% if event.signup_ends_at %} — <strong>Registration closes {{ event.signup_ends_at|date:"Y-m-d H:i e" }}!</strong>{% endif %}</p>
                                     <form action="" method="post" class="form">
                                         {% csrf_token %}
                                          <div class="form-group">
@@ -241,9 +258,26 @@
                                             <label for="id_email">Email <small>(required)</small></label>
                                             <input type="email" name="email" maxlength="225" class="form-control" placeholder="curl@kthais.com" id="id_email" {% if form.email %}value="{{ form.email }}"{% endif %}>
                                         </div>
-                                        <div class="form-group mt-3">
-                                            <input type="checkbox" name="terms" class="mr-1 form-check-inline" id="id_terms" required="">
-                                            <label for="id_terms">I've read, understand and accept the <a href="{% url 'page_page' 'legal' 'terms-and-conditions' %}" class="link-colour" target="_blank">Terms & Conditions</a> and the <a href="{% url 'page_page' 'legal' 'privacy-and-cookies' %}" class="link-colour" target="_blank">Privacy and Cookies Policy</a>.</label>
+                                        {% if event.has_food %}
+                                            <div class="form-group mb-2">
+                                                <h6 class="mb-2">Dietary restrictions</h6>
+                                                <p class="mb-2" style="line-height: 1em;"><small>This event will provide food and that's why we need to know if you have any restrictions. If you leave this section empty we understand you don't have any.</small></p>
+                                                {% for d_t, d in enums.user.diet.items %}
+                                                    <div class="form-check">
+                                                        <input type="checkbox" value="{{ d_t.value }}" name="diet_{{ d_t.name.lower }}" id="id_diet_{{ d_t.name.lower }}">
+                                                        <label for="id_diet_{{ d_t.name.lower }}">{{ d }}</label>
+                                                    </div>
+                                                {% endfor %}
+                                                <div class="form-row">
+                                                    <div class="col-md-12 pl-4">
+                                                        <input type="text" name="diet_other_custom" maxlength="225" class="form-control diet_other mb-2" placeholder="Please specify your restrictions" id="id_diet_other_custom">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                        <div class="form-group">
+                                            <input type="checkbox" style="display: inline;" name="terms" class="mr-1 form-check-inline" id="id_terms" required="">
+                                            <label for="id_terms" style="display: inline;">I've read, understand and accept the <a href="{% url 'page_page' 'legal' 'terms-and-conditions' %}" class="link-colour" target="_blank">Terms & Conditions</a> and the <a href="{% url 'page_page' 'legal' 'privacy-and-cookies' %}" class="link-colour" target="_blank">Privacy and Cookies Policy</a>.</label>
                                         </div>
                                         <button class="btn btn-primary" type="submit" name="submit" value="register">Register</button>
                                     </form>
@@ -270,4 +304,23 @@
             </div>
         </div>
     {% endif %}
+{% endblock %}
+
+
+{% block scripts %}
+    {{ block.super }}
+    <script>
+        $("#id_diet_other").on('change', toggleOtherDiet);
+
+        function toggleOtherDiet() {
+            console.log("STUFF");
+            if (document.getElementById('id_diet_other').checked) {
+                $('.diet_other').show()
+            } else {
+                $('.diet_other').hide();
+            }
+        }
+
+        window.addEventListener("load", toggleOtherDiet());
+    </script>
 {% endblock %}

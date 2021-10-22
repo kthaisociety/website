@@ -95,7 +95,7 @@
                         </h4>
                     </div>
                     {% if event.is_event_future %}
-                        <span class="badge badge-primary p-2 ml-auto mr-auto d-table mt-2 d-md-inline-block mt-md-0">Register {% if event.ends_at|naturalday != "today" %}before {% endif %}{{ event.ends_at|naturalday }}</span>
+                        <span class="badge badge-primary p-2 ml-auto mr-auto d-table mt-2 d-md-inline-block mt-md-0">Register {% if event.registration_ends_at|naturalday != "today" %}before {% endif %}{{ event.registration_ends_at|naturalday }}</span>
                     {% endif %}
                 </div>
             {% endfor %}

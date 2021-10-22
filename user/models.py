@@ -15,7 +15,7 @@ from versatileimagefield.fields import VersatileImageField
 from app.storage import OverwriteStorage
 from app.utils import is_email_organiser
 from user.consts import EMOJIS
-from user.enums import UserType, GenderType
+from user.enums import UserType, GenderType, DietType
 from user.managers import UserManager
 
 
@@ -103,11 +103,26 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     slack_picture_hash = models.CharField(max_length=255, blank=True, null=True)
 
+    # Dietary restrictions
+    diet = models.CharField(max_length=255, blank=True, null=True)
+    diet_other = models.CharField(max_length=255, blank=True, null=True)
+
     objects = UserManager()
 
     USERNAME_FIELD = "email"
     EMAIL_FIELD = "email"
     REQUIRED_FIELDS = ["name", "surname"]
+
+    @property
+    def dietary_restrictions(self):
+        if not self.diet:
+            return []
+        diets = re.sub(r"[^0-9,]", "", self.diet).split(",")
+        diet_types = set()
+        for diet in diets:
+            if diet != "":
+                diet_types.add(DietType(int(diet)))
+        return diet_types
 
     @property
     def profile_picture(self):
@@ -259,11 +274,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         if is_email_organiser(self.email):
             self.type = UserType.ORGANISER.value
 
-        import user.api.newsletter
+        if self.email_verified and self.registration_finished:
+            import user.api.newsletter
 
-        transaction.on_commit(
-            lambda: user.api.newsletter.update_newsletter_list(user_id=self.id)
-        )
+            transaction.on_commit(
+                lambda: user.api.newsletter.update_newsletter_list(user_id=self.id)
+            )
 
         return super().save(*args, **kwargs)
 

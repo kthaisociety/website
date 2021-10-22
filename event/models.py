@@ -77,6 +77,10 @@ class Event(models.Model):
         return None
 
     @property
+    def registration_ends_at(self):
+        return self.signup_ends_at or self.ends_at
+
+    @property
     def streaming_provider(self) -> Optional[StreamingProvider]:
         if self.type == EventType.WEBINAR and self.external_url:
             pre_domain = r"((http|https):\/\/)([a-zA-Z0-9\-]+\.)*"

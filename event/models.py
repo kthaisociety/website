@@ -30,6 +30,7 @@ from event.enums import (
     SpeakerRoleType,
 )
 from event.managers import EventManager, SessionManager
+from user.enums import DietType
 
 
 class Event(models.Model):
@@ -56,6 +57,9 @@ class Event(models.Model):
     registration_available = models.BooleanField(default=True)
     attendance_target = models.IntegerField(blank=True, null=True)
     attendance_limit = models.IntegerField(blank=True, null=True)
+
+    # Dietary restrictions
+    has_food = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -331,8 +335,23 @@ class Registration(models.Model):
         default=RegistrationStatus.REQUESTED,
     )
 
+    # Dietary restrictions
+    diet = models.CharField(max_length=255, blank=True, null=True)
+    diet_other = models.CharField(max_length=255, blank=True, null=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def dietary_restrictions(self):
+        if not self.diet:
+            return []
+        diets = re.sub(r"[^0-9,]", "", self.diet).split(",")
+        diet_types = set()
+        for diet in diets:
+            if diet != "":
+                diet_types.add(DietType(int(diet)))
+        return diet_types
 
     def __str__(self):
         return f"{self.event.name} - {self.user}"

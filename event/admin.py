@@ -3,6 +3,7 @@ from django.db import transaction
 from django.db.models import F
 from django.forms import ModelForm
 from django.utils import timezone
+from django.utils.html import format_html
 
 import event.api.event.calendar
 from event.enums import RegistrationStatus
@@ -17,7 +18,7 @@ from event.models import (
 )
 from event.tasks import send_url_email
 from messaging.api.slack.announcement import announce_event
-from user.enums import UserType
+from user.enums import UserType, DietType
 
 
 @admin.register(Attachment)
@@ -94,7 +95,13 @@ class RegistrationInline(admin.StackedInline):
     show_change_link = False
     can_delete = False
     extra = 0
-    readonly_fields = ("user", "status", "created_at")
+    readonly_fields = ("dietary_restrictions", "user", "status", "created_at")
+    exclude = ("diet", "diet_other")
+
+    def dietary_restrictions(self, obj):
+        return format_html(
+            "<br>".join([DietType.labels[dt] for dt in obj.dietary_restrictions])
+        )
 
     def has_add_permission(self, request, obj=None):
         return False
@@ -130,6 +137,7 @@ class EventAdmin(admin.ModelAdmin):
     )
     list_filter = ("type", "status")
     ordering = ("-created_at", "-updated_at", "name")
+    readonly_fields = ("diet_restrictions",)
     inlines = [SessionInline, RegistrationInline]
     actions = [send_slack_announcement]
 
@@ -161,8 +169,28 @@ class EventAdmin(admin.ModelAdmin):
             .count()
         )
 
+    def diet_restrictions(self, obj):
+        registrations = obj.registrations.all()
+        diet_count = {dt: 0 for dt in DietType}
+        diet_other = []
+        for registration in registrations:
+            for dt in registration.dietary_restrictions:
+                print(dt)
+                diet_count[dt] += 1
+            if registration.diet_other:
+                diet_other.append(registration.diet_other)
+        diet_html = "<ul style='margin-left: 0; padding-left: 0;'>"
+        for dt, ct in diet_count.items():
+            diet_html += f"<li>{DietType.labels[dt]}: {ct}</li>"
+        diet_html += "</ul>"
+        diet_html += "Other restrictions"
+        for do in diet_other:
+            diet_html += f"<br><span style='padding-left: 2em;'>- {do}</span>"
+        return format_html(diet_html)
+
     registration_count.short_description = "registrations"
     new_user_count.short_description = "new users"
+    diet_restrictions.short_description = "dietary restrictions"
 
 
 @admin.register(Speaker)

@@ -38,6 +38,8 @@ def event(request, code):
             diet = ""
             diet_other = ""
 
+            resume = request.FILES.get("resume")
+
             if type == "register":
                 diet_types = set()
                 for dt in DietType:
@@ -50,6 +52,16 @@ def event(request, code):
                     messages.error(
                         request,
                         "You must specify your other diet restrictions if you have any.",
+                    )
+                    status = None
+                elif (
+                    event.collect_resume
+                    and not resume
+                    and not (user_obj.is_authenticated and user_obj.resume)
+                ):
+                    messages.error(
+                        request,
+                        "You must provide a resume in order to register for this event.",
                     )
                     status = None
                 else:
@@ -97,9 +109,15 @@ def event(request, code):
                 status = None
 
             if user_obj.is_authenticated:
+                has_updated = False
                 if diet != user_obj.diet or diet_other != user_obj.diet_other:
                     user_obj.diet = diet
                     user_obj.diet_other = diet_other
+                    has_updated = True
+                if resume:
+                    user_obj.resume = resume
+                    has_updated = True
+                if has_updated:
                     user_obj.save()
 
             if status is not None:

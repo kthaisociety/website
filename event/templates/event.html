@@ -220,7 +220,7 @@
                                     {% endif %}
                                 {% elif request.user.is_authenticated %}
                                     <p class="mb-2">Do you want to register for this event?{% if event.signup_ends_at %} — <strong>Registration closes {{ event.signup_ends_at|date:"Y-m-d H:i e" }}!</strong>{% endif %}</p>
-                                    <form action="" method="post" class="form">
+                                    <form action="" method="post" class="form" enctype="multipart/form-data">
                                         {% csrf_token %}
                                         {% if event.has_food %}
                                             <div class="form-group mt-3 mb-2">
@@ -239,12 +239,34 @@
                                                 </div>
                                             </div>
                                         {% endif %}
+                                        {% if event.collect_resume %}
+                                            <div class="form-group mb-3">
+                                                <label for="id_resume">Resume <small>(required)</small></label>
+                                                <div class="form-group custom-file">
+                                                    <input type="file" class="custom-file-input" style="cursor: pointer;" id="id_resume" name="resume" accept="application/pdf">
+                                                    <label class="custom-file-label" for="id_resume">Select a new file</label>
+                                                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+                                                    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+                                                    <script>
+                                                        $(".custom-file-input").on("change", function() {
+                                                          var fileName = $(this).val().split("\\").pop();
+                                                          console.log(fileName);
+                                                          $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                                                        });
+                                                    </script>
+                                                </div>
+                                                {% if request.user.resume %}
+                                                    <p class="mt-2 mb-0">✅ Uploaded <a href="{% url "user_dashboard_resume" %}">{{ request.user.resume_name }}</a></p>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
                                         <button class="btn btn-primary" type="submit" name="submit" value="register">Register</button>
                                         <!-- <button class="btn btn-dark ml-2" type="submit" name="submit" value="interest">I can't attend</button> -->
                                     </form>
                                 {% else %}
                                     <p class="mb-2">Do you want to register for this event?{% if event.signup_ends_at %} — <strong>Registration closes {{ event.signup_ends_at|date:"Y-m-d H:i e" }}!</strong>{% endif %}</p>
-                                    <form action="" method="post" class="form">
+                                    <form action="" method="post" class="form" enctype="multipart/form-data">
                                         {% csrf_token %}
                                          <div class="form-group">
                                             <label for="id_name">First name <small>(required)</small></label>
@@ -259,7 +281,7 @@
                                             <input type="email" name="email" maxlength="225" class="form-control" placeholder="curl@kthais.com" id="id_email" {% if form.email %}value="{{ form.email }}"{% endif %}>
                                         </div>
                                         {% if event.has_food %}
-                                            <div class="form-group mb-2">
+                                            <div class="form-group mb-3">
                                                 <h6 class="mb-2">Dietary restrictions</h6>
                                                 <p class="mb-2" style="line-height: 1em;"><small>This event will provide food and that's why we need to know if you have any restrictions. If you leave this section empty we understand you don't have any.</small></p>
                                                 {% for d_t, d in enums.user.diet.items %}
@@ -272,6 +294,25 @@
                                                     <div class="col-md-12 pl-4">
                                                         <input type="text" name="diet_other_custom" maxlength="225" class="form-control diet_other mb-2" placeholder="Please specify your restrictions" id="id_diet_other_custom">
                                                     </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                        {% if event.collect_resume %}
+                                            <div class="form-group mb-3">
+                                                <label for="id_resume">Resume <small>(required)</small></label>
+                                                <div class="form-group custom-file">
+                                                    <input type="file" class="custom-file-input" style="cursor: pointer;" id="id_resume" name="resume" accept="application/pdf">
+                                                    <label class="custom-file-label" for="id_resume">Select a new file</label>
+                                                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+                                                    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+                                                    <script>
+                                                        $(".custom-file-input").on("change", function() {
+                                                          var fileName = $(this).val().split("\\").pop();
+                                                          console.log(fileName);
+                                                          $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                                                        });
+                                                    </script>
                                                 </div>
                                             </div>
                                         {% endif %}

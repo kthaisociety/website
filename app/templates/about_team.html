@@ -9,14 +9,14 @@
     <div class="container container-body py-4 py-md-5">
         <div class="row">
             <div class="col-md-12">
-                <h1 class="section-title">Team {{ team.code }}</h1>
+                <h1 class="section-title">Team {{ team.code|upper }}</h1>
                 <form action="" method="post" class="form" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-md-11 mb-3">
                             <select name="team" class="form-control" id="id_team">
                                 {% for available_team in teams %}
-                                    <option value="{{ available_team.code }}" {% if available_team.code == team.code %}selected=""{% endif %}>Team {{ available_team.code }}</option>
+                                    <option value="{{ available_team.code }}" {% if available_team.code == team.code %}selected=""{% endif %}>Team {{ available_team.code|upper }} ({{ available_team.starts_at|date:"F Y" }} - {% if available_team.ends_at %}{{ available_team.ends_at|date:"F Y" }}{% else %}now{% endif %})</option>
                                 {% endfor %}
                             </select>
                         </div>

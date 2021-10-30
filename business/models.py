@@ -1,7 +1,11 @@
+import textwrap
 import uuid
 
+import markdown
+from bs4 import BeautifulSoup
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.text import slugify
 from versatileimagefield.fields import VersatileImageField
@@ -130,6 +134,31 @@ class Offer(models.Model):
         return timezone.now() >= self.starts_at and (
             not self.ends_at or timezone.now() < self.ends_at
         )
+
+    @property
+    def is_new(self):
+        return self.starts_at >= timezone.now() - timezone.timedelta(days=7)
+
+    @property
+    def description_plaintext(self):
+        html = markdown.markdown(self.description)
+        return "".join(BeautifulSoup(html, "html.parser").findAll(text=True))
+
+    @property
+    def description_extra_short(self):
+        return textwrap.shorten(
+            self.description_plaintext, width=125, placeholder="..."
+        )
+
+    @property
+    def description_short(self):
+        return textwrap.shorten(
+            self.description_plaintext, width=250, placeholder="..."
+        )
+
+    @property
+    def our_url(self):
+        return reverse("business_jobs") + f"#{self.id}"
 
     def __str__(self):
         return f"{self.title} <{str(self.company)}>"

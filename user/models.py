@@ -1,3 +1,4 @@
+import hashlib
 import os
 import re
 import uuid
@@ -6,7 +7,7 @@ from typing import Optional
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.core.exceptions import ValidationError
-from django.db import models
+from django.db import models, transaction
 from django.utils import timezone
 from django.utils.functional import cached_property
 from versatileimagefield.fields import VersatileImageField
@@ -14,7 +15,7 @@ from versatileimagefield.fields import VersatileImageField
 from app.storage import OverwriteStorage
 from app.utils import is_email_organiser
 from user.consts import EMOJIS
-from user.enums import UserType, GenderType
+from user.enums import UserType, GenderType, DietType
 from user.managers import UserManager
 
 
@@ -48,6 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_author = models.BooleanField(default=False)
     is_forgotten = models.BooleanField(default=False)
+    is_subscriber = models.BooleanField(default=True)
 
     # Personal information
     picture = VersatileImageField(
@@ -102,11 +104,26 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     slack_picture_hash = models.CharField(max_length=255, blank=True, null=True)
 
+    # Dietary restrictions
+    diet = models.CharField(max_length=255, blank=True, null=True)
+    diet_other = models.CharField(max_length=255, blank=True, null=True)
+
     objects = UserManager()
 
     USERNAME_FIELD = "email"
     EMAIL_FIELD = "email"
     REQUIRED_FIELDS = ["name", "surname"]
+
+    @property
+    def dietary_restrictions(self):
+        if not self.diet:
+            return []
+        diets = re.sub(r"[^0-9,]", "", self.diet).split(",")
+        diet_types = set()
+        for diet in diets:
+            if diet != "":
+                diet_types.add(DietType(int(diet)))
+        return diet_types
 
     @property
     def profile_picture(self):
@@ -154,6 +171,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         if self.surname:
             return self.name + " " + self.surname
         return self.name
+
+    @property
+    def subscriber_id(self):
+        return hashlib.md5(self.email.lower().encode("utf-8")).hexdigest()
 
     def __str__(self):
         if self.full_name:
@@ -289,6 +310,14 @@ class User(AbstractBaseUser, PermissionsMixin):
         self.clean()
         if is_email_organiser(self.email):
             self.type = UserType.ORGANISER.value
+
+        if self.email_verified and self.registration_finished:
+            import user.api.newsletter
+
+            transaction.on_commit(
+                lambda: user.api.newsletter.update_newsletter_list(user_id=self.id)
+            )
+
         return super().save(*args, **kwargs)
 
 
@@ -312,7 +341,7 @@ class Team(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Team {self.starts_at.strftime('%Y')}"
+        return f"Team {self.code.upper() or self.starts_at.strftime('%Y')}"
 
     def save(self, *args, **kwargs):
         if not self.code:

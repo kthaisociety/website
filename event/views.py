@@ -12,6 +12,7 @@ import user.utils
 from event.enums import RegistrationStatus, ScheduleType
 from event.models import Event, Registration, Session, Schedule
 from event.tasks import send_registration_email
+from user.enums import DietType
 
 
 def event(request, code):
@@ -34,35 +35,64 @@ def event(request, code):
 
             user_obj = request.user
 
+            diet = ""
+            diet_other = ""
+
+            resume = request.FILES.get("resume")
+
             if type == "register":
-                if not user_obj.is_authenticated:
-                    name = request.POST.get("name", None)
-                    surname = request.POST.get("surname", None)
-                    email = request.POST.get("email", None)
-                    form = {"name": name, "surname": surname, "email": email}
+                diet_types = set()
+                for dt in DietType:
+                    if request.POST.get(f"diet_{dt.name.lower()}", False):
+                        diet_types.add(dt)
+                diet = ",".join([str(dt.value) for dt in diet_types])
+                diet_other = request.POST.get("diet_other_custom", None)
 
-                    if not name or not surname or not email:
-                        messages.error(
-                            request,
-                            "All fields are required, if you are already have an account you can login first.",
-                        )
+                if DietType.OTHER in diet_types and not diet_other:
+                    messages.error(
+                        request,
+                        "You must specify your other diet restrictions if you have any.",
+                    )
+                    status = None
+                elif (
+                    event.collect_resume
+                    and not resume
+                    and not (user_obj.is_authenticated and user_obj.resume)
+                ):
+                    messages.error(
+                        request,
+                        "You must provide a resume in order to register for this event.",
+                    )
+                    status = None
+                else:
+                    if not user_obj.is_authenticated:
+                        name = request.POST.get("name", None)
+                        surname = request.POST.get("surname", None)
+                        email = request.POST.get("email", None)
+                        form = {"name": name, "surname": surname, "email": email}
 
-                    user_obj = user.utils.get_user_by_email(email=email)
-                    if not user_obj:
-                        user_obj = user.utils.create_user(
-                            name=name, surname=surname, email=email
-                        )
-                        user.utils.send_imported(user=user_obj)
-                    if not user_obj.name or not user_obj.surname:
-                        user_obj.name = name
-                        user_obj.surname = surname
-                        user_obj.save()
-                messages.success(
-                    request,
-                    f"You've been registered! Remember the event will take place on {event.starts_at.strftime('%B %-d, %Y')}.",
-                )
-                # TODO: Temporal set to REGISTERED instead before organiser check is implemented
-                status = RegistrationStatus.REGISTERED
+                        if not name or not surname or not email:
+                            messages.error(
+                                request,
+                                "All fields are required, if you are already have an account you can login first.",
+                            )
+
+                        user_obj = user.utils.get_user_by_email(email=email)
+                        if not user_obj:
+                            user_obj = user.utils.create_user(
+                                name=name, surname=surname, email=email
+                            )
+                            user.utils.send_imported(user=user_obj)
+                        if not user_obj.name or not user_obj.surname:
+                            user_obj.name = name
+                            user_obj.surname = surname
+                            user_obj.save()
+                    messages.success(
+                        request,
+                        f"You've been registered! Remember the event will take place on {event.starts_at.strftime('%B %-d, %Y')}.",
+                    )
+                    # TODO: Temporal set to REGISTERED instead before organiser check is implemented
+                    status = RegistrationStatus.REGISTERED
             elif type == "interest":
                 messages.success(
                     request,
@@ -78,14 +108,32 @@ def event(request, code):
             else:
                 status = None
 
+            if user_obj.is_authenticated:
+                has_updated = False
+                if diet != user_obj.diet or diet_other != user_obj.diet_other:
+                    user_obj.diet = diet
+                    user_obj.diet_other = diet_other
+                    has_updated = True
+                if resume:
+                    user_obj.resume = resume
+                    has_updated = True
+                if has_updated:
+                    user_obj.save()
+
             if status is not None:
                 if registration:
                     registration.status = status
+                    registration.diet = diet
+                    registration.diet_other = diet_other
                     registration.save()
                 else:
                     try:
                         registration = Registration.objects.create(
-                            event=event, user=user_obj, status=status
+                            event=event,
+                            user=user_obj,
+                            status=status,
+                            diet=diet,
+                            diet_other=diet_other,
                         )
                     except IntegrityError:
                         registration = Registration.objects.filter(
@@ -129,10 +177,10 @@ def live(request, code):
     for schedule in schedules:
         current_session_id = schedule.session_id
         if (
-            (not first_session_id or first_session_id == current_session_id)
-            and timezone.now() - timezone.timedelta(minutes=30)
-            <= schedule.session.ends_at
-        ):
+            not first_session_id or first_session_id == current_session_id
+        ) and timezone.now() - timezone.timedelta(
+            minutes=30
+        ) <= schedule.session.ends_at:
             first_session_id = current_session_id
             if schedule.type == ScheduleType.EVENT_START:
                 starts_at = schedule.starts_at

@@ -275,10 +275,13 @@ def statistics(request):
             current_date += timezone.timedelta(days=1)
 
     for session in sessions:
-        session.registrations_same_day = registration_creation_dates_counter_registered.get(
-            timezone.localdate(session.starts_at), 0
-        ) + registration_creation_dates_counter_joined.get(
-            timezone.localdate(session.starts_at), 0
+        session.registrations_same_day = (
+            registration_creation_dates_counter_registered.get(
+                timezone.localdate(session.starts_at), 0
+            )
+            + registration_creation_dates_counter_joined.get(
+                timezone.localdate(session.starts_at), 0
+            )
         )
 
     users = list(User.objects.filter(is_active=True).exclude(type=UserType.ORGANISER))

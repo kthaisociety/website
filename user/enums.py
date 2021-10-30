@@ -30,3 +30,21 @@ GenderType.colours = {
     GenderType.NON_BINARY: "#00abe7",
 }
 GenderTypeColoursDict = GenderType.colours
+
+
+class DietType(enum.IntEnum):
+    LACTOSE = 0
+    GLUTEN = 1
+    VEGETARIAN = 2
+    VEGAN = 3
+    OTHER = 4
+
+
+DietType.labels = {
+    DietType.LACTOSE: "Lactose intolerant",
+    DietType.GLUTEN: "Gluten intolerant",
+    DietType.VEGETARIAN: "Vegetarian",
+    DietType.VEGAN: "Vegan",
+    DietType.OTHER: "Other",
+}
+DietTypeDict = DietType.labels

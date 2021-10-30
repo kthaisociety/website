@@ -457,6 +457,8 @@ def user_delete(request):
 @login_required
 def user_confirm_delete(request):
     delete_user_account(user_id=request.user.id)
+    logout(request)
     
     messages.success(request, "User successfully deleted")
-    return redirect('/')
+    
+    return HttpResponseRedirect(reverse("app_home"))

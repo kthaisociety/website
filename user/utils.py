@@ -200,4 +200,4 @@ def get_user_data_zip(user_id: UUID) -> BytesIO:
     return mf
 
 def delete_user_account(user_id:str) -> None:
-    usr = User.objects.filter(id=user_id).forget()
+    usr = User.objects.filter(id=user_id).first().forget()

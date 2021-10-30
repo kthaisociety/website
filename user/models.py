@@ -235,11 +235,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         self.registration_finished = True
         self.save()
     
-    def forget():
+    def forget(self):
         self.is_forgotten = True
         self.is_admin = False
         
-        self.email = "forgoten_"+self.id+"@member.kthais.com"
+        self.email = "forgoten_"+str(self.id)+"@member.kthais.com"
 
         self.name = "Forgotten"
         self.username = "User"

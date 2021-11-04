@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.core.files import File
 from django.http import HttpResponseRedirect, HttpResponse, StreamingHttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils import timezone
 from geopy import Nominatim
@@ -18,7 +18,12 @@ from app.variables import APP_NAME
 from user import forms
 from user.enums import GenderType
 from user.models import User, validate_orcid
-from user.utils import send_verify, send_password, get_user_data_zip
+from user.utils import (
+    send_verify,
+    send_password,
+    get_user_data_zip,
+    delete_user_account,
+)
 
 
 def user_login(request):
@@ -449,3 +454,17 @@ def user_data(request):
     file_name = f"{APP_NAME.replace(' ', '').lower()}_data_{str(request.user.id)}_{str(int(timezone.now().timestamp()))}.zip"
     response["Content-Disposition"] = f'attachment; filename="{file_name}"'
     return response
+
+
+@login_required
+def user_delete(request):
+    return render(request, "delete_account.html")
+
+
+@login_required
+def user_confirm_delete(request):
+    if delete_user_account(user_id=request.user.id):
+        logout(request)
+        messages.success(request, "Your account has been deleted successfully.")
+
+    return HttpResponseRedirect(reverse("app_home"))

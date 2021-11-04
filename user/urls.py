@@ -18,5 +18,7 @@ urlpatterns = [
     url(r"^dashboard/$", views.dashboard, name="user_dashboard"),
     url(r"^dashboard/resume/$", views.dashboard_resume, name="user_dashboard_resume"),
     url(r"^data/$", views.user_data, name="user_data"),
+    url(r"^delete/confirm$", views.user_confirm_delete, name="user_confirm_delete"),
+    url(r"^delete/$", views.user_delete, name="user_delete"),
     url("", include("social_django.urls", namespace="social")),
 ]

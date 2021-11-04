@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block head_title %}Delete account{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1>Be careful!</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h5 class="mb-3">You are about to delete your account 🙁.</h5>
+                <p class="mb-4">Once you have done it, it can not be undone. You will loose all your benefits and you will no longer be part of KTH AI Society.</p>
+                <p>
+                    <a class="btn btn-warning btn-large mr-2" href="{% url "user_confirm_delete" %}">DELETE ACCOUNT</a>
+                    <a class="btn btn-primary btn-large" href="{% url "user_dashboard" %}">I WANT TO STAY 💖</a>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

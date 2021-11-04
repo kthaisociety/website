@@ -48,6 +48,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_author = models.BooleanField(default=False)
+    is_forgotten = models.BooleanField(default=False)
     is_subscriber = models.BooleanField(default=True)
 
     # Personal information
@@ -254,6 +255,60 @@ class User(AbstractBaseUser, PermissionsMixin):
         self.country = country
         self.registration_finished = True
         self.save()
+
+    def forget(self) -> Optional["User"]:
+        if self.type != UserType.PARTICIPANT:
+            return
+
+        if not self.email_verified:
+            return
+
+        self.email = "forgoten_" + str(self.id) + "@member.kthais.com"
+        self.name = "Forgotten"
+        self.username = "User"
+
+        if self.picture and self.picture.path.split("/")[-1] != "profile.png":
+            self.picture.delete_all_created_images()
+            self.picture.delete(save=False)
+
+        self.gender = GenderType.NONE
+        self.birthday = None
+        self.phone = None
+        self.city = None
+        self.country = None
+
+        self.university = None
+        self.degree = None
+        self.graduation_year = None
+
+        self.website = None
+        if self.resume:
+            self.resume.delete(save=False)
+        self.linkedin_url = None
+        self.twitter_url = None
+        self.github_url = None
+        self.scholar_url = None
+        self.researchgate_url = None
+        self.orcid = None
+
+        self.slack_id = None
+        self.slack_token = None
+        self.slack_scopes = None
+        self.slack_status_text = None
+        self.slack_status_emoji = None
+        self.slack_display_name = None
+        if self.slack_picture:
+            self.slack_picture.delete_all_created_images()
+            self.slack_picture.delete(save=False)
+        self.slack_picture_hash = None
+
+        self.is_active = False
+        self.is_forgotten = True
+
+        self.diet = None
+        self.diet_other = None
+
+        return self.save()
 
     @property
     def resume_name(self):

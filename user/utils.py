@@ -1,7 +1,7 @@
 import hashlib
 from collections import OrderedDict
 from io import BytesIO, StringIO
-from typing import List
+from typing import List, Optional
 from uuid import UUID
 import csv
 import zipfile
@@ -199,5 +199,6 @@ def get_user_data_zip(user_id: UUID) -> BytesIO:
 
     return mf
 
-def delete_user_account(user_id:str) -> None:
-    usr = User.objects.filter(id=user_id).first().forget()
+
+def delete_user_account(user_id: int) -> Optional[User]:
+    return User.objects.filter(id=user_id).first().forget()

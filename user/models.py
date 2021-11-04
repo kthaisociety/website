@@ -300,7 +300,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         if self.slack_picture:
             self.slack_picture.delete_all_created_images()
             self.slack_picture.delete(save=False)
-        self.slack_picture_hash = None  # TODO Delete file
+        self.slack_picture_hash = None
 
         self.is_active = False
         self.is_forgotten = True

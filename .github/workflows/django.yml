@@ -33,3 +33,4 @@ jobs:
         pytest --cov=app --cov=user --cov-report xml
       env:
         DJANGO_SETTINGS_MODULE: app
+        SECRET_KEY: whydowehavetosuffersomuch

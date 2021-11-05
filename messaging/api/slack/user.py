@@ -1,5 +1,6 @@
 import copy
 import os
+import time
 from io import BytesIO
 from typing import Dict, Tuple, Optional
 from uuid import UUID
@@ -8,6 +9,7 @@ import requests
 import slack
 from PIL import Image, ImageChops
 from django.core.files import File
+from django.db import transaction
 from django.urls import reverse
 from django.utils import timezone
 
@@ -60,19 +62,29 @@ def same_image(file_1, file_2):
     else:
         has_equal_alphas = True
 
-    has_equal_content = not ImageChops.difference(
-        image_1.convert("RGB"), image_2.convert("RGB")
-    ).getbbox()
+    content = list(
+        ImageChops.difference(image_1.convert("RGB"), image_2.convert("RGB")).getdata()
+    )
+    content_avg = (
+        sum(
+            [
+                sum([c[0] for c in content]) / len(content),
+                sum([c[1] for c in content]) / len(content),
+                sum([c[2] for c in content]) / len(content),
+            ]
+        )
+        / 3.0
+    )
 
-    return has_equal_alphas and has_equal_content
+    return has_equal_alphas and content_avg <= 0.5
 
 
+@transaction.atomic
 def update(user_data: Dict) -> bool:
     user_slack_profile = user_data.get("profile")
     user_slack_email = user_slack_profile.get("email")
     user = User.objects.filter(email=user_slack_email).first()
     profile_picture_updated = False
-    success = True
     if user:
         user.slack_id = user_data.get("id")
         user.slack_status_text = user_slack_profile.get("status_text")
@@ -80,7 +92,6 @@ def update(user_data: Dict) -> bool:
         user.slack_display_name = user_slack_profile.get("display_name")
 
         user_slack_image_original = user_slack_profile.get("image_original")
-        user_slack_image_hash = user_slack_profile.get("avatar_hash")
 
         # Update the profile picture only if it changed
         response = requests.get(user_slack_image_original)
@@ -102,21 +113,19 @@ def update(user_data: Dict) -> bool:
                 user.slack_picture.save(
                     f"{user.id}.jpg", File(profile_picture_file), save=False
                 )
-        user.slack_picture_hash = user_slack_image_hash
 
         user.save()
+
+        # Yes, this will keep the worker completely stuck here, no other solution
+        # for now due to Slack sending a ton of events too close to each other
+        time.sleep(2)
 
         if profile_picture_updated and user.slack_token:
             picture_success, picture_hash = set_picture(
                 token=user.slack_token, file=BytesIO(user.slack_picture.file.read())
             )
-            if picture_success:
-                user.slack_picture_hash = picture_hash
-                user.save()
-            else:
-                success = False
-
-        return success
+            return picture_success
+        return True
     return False
 
 

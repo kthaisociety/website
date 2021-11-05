@@ -1,0 +1,9 @@
+{% extends 'admin/submit_line.html' %}
+{% load i18n %}
+
+{% block submit-row %}
+    {% if has_change_permission and original.collect_resume %}
+      <a class="button" style="padding: 8px 15px; color: #fff;" href="{% url 'admin:event_event_export_resumes' original.pk %}">{% trans "Download resumes" %}</a>
+    {% endif %}
+    {{ block.super }}
+{% endblock %}

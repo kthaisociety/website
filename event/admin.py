@@ -1,11 +1,16 @@
+from django.conf.urls import url
 from django.contrib import admin, messages
+from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.db.models import F
 from django.forms import ModelForm
+from django.http import StreamingHttpResponse, HttpResponse
+from django.urls import path
 from django.utils import timezone
 from django.utils.html import format_html
 
 import event.api.event.calendar
+from event.api.event.event import get_event_resumes_zip
 from event.enums import RegistrationStatus
 from event.models import (
     Event,
@@ -143,6 +148,27 @@ class EventAdmin(admin.ModelAdmin):
     inlines = [SessionInline, RegistrationInline]
     actions = [send_slack_announcement]
 
+    def get_urls(self):
+        urls = super().get_urls()
+
+        return [
+            url(
+                "export/resume/(?P<event_id>.*)",
+                self.export_resumes,
+                name="event_event_export_resumes",
+            )
+        ] + urls
+
+    # TODO: Actually add a decorator to avoid people without permissions to access this
+    def export_resumes(self, request, event_id):
+        if request.user.is_authenticated and request.user.is_admin:
+            resumes = get_event_resumes_zip(event_id=event_id)
+            response = HttpResponse(resumes.getvalue(), content_type="application/zip")
+            response[
+                "Content-Disposition"
+            ] = f'attachment; filename="event-{event_id}-resumes.zip"'
+            return response
+
     def registration_count(self, obj):
         return (
             obj.registrations.filter(
@@ -177,7 +203,6 @@ class EventAdmin(admin.ModelAdmin):
         diet_other = []
         for registration in registrations:
             for dt in registration.dietary_restrictions:
-                print(dt)
                 diet_count[dt] += 1
             if registration.diet_other:
                 diet_other.append(registration.diet_other)

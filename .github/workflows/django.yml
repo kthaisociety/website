@@ -31,3 +31,5 @@ jobs:
     - name: Run tests
       run: |
         pytest --cov=app --cov=user --cov-report xml
+      env:
+        DJANGO_SETTINGS_MODULE: app

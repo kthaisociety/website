@@ -27,7 +27,9 @@ def get_profile_picture(file: BytesIO) -> BytesIO:
     original_picture = Image.open(file).resize(size=(1024, 1024))
     picture = Image.new("RGBA", original_picture.size)
     picture.paste(original_picture)
-    mask = Image.open(os.path.join(STATIC_ROOT, "img/mask.png")).resize(size=(1024, 1024))
+    mask = Image.open(os.path.join(STATIC_ROOT, "img/mask.png")).resize(
+        size=(1024, 1024)
+    )
     picture.paste(mask, (0, 0), mask=mask)
     final_picture = Image.new("RGB", picture.size)
     final_picture.paste(picture)

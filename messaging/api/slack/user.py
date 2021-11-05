@@ -94,25 +94,26 @@ def update(user_data: Dict) -> bool:
         user_slack_image_original = user_slack_profile.get("image_original")
 
         # Update the profile picture only if it changed
-        response = requests.get(user_slack_image_original)
-        if response.status_code == 200:
-            profile_picture_file = BytesIO(response.content)
-            # If it differs with the Slack picture we have saved
-            # Need to build it again on ByesIO as it will be read later
-            if not same_image(
-                file_1=BytesIO(response.content), file_2=user.slack_picture
-            ):
-                user.picture.save(
-                    f"{user.id}.jpg", File(profile_picture_file), save=False
-                )
-                if user.is_organiser:
-                    profile_picture_file = get_profile_picture(
-                        file=profile_picture_file
+        if user.updated_at < timezone.now() - timezone.timedelta(seconds=10):
+            response = requests.get(user_slack_image_original)
+            if response.status_code == 200:
+                profile_picture_file = BytesIO(response.content)
+                # If it differs with the Slack picture we have saved
+                # Need to build it again on ByesIO as it will be read later
+                if not same_image(
+                    file_1=BytesIO(response.content), file_2=user.slack_picture
+                ):
+                    user.picture.save(
+                        f"{user.id}.jpg", File(profile_picture_file), save=False
                     )
-                    profile_picture_updated = True
-                user.slack_picture.save(
-                    f"{user.id}.jpg", File(profile_picture_file), save=False
-                )
+                    if user.is_organiser:
+                        profile_picture_file = get_profile_picture(
+                            file=profile_picture_file
+                        )
+                        profile_picture_updated = True
+                    user.slack_picture.save(
+                        f"{user.id}.jpg", File(profile_picture_file), save=False
+                    )
 
         user.save()
 

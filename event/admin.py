@@ -1,15 +1,10 @@
 from django.conf.urls import url
 from django.contrib import admin, messages
-from django.contrib.auth.decorators import login_required
-from django.db import transaction
 from django.db.models import F
-from django.forms import ModelForm
-from django.http import StreamingHttpResponse, HttpResponse
-from django.urls import path
+from django.http import HttpResponse
 from django.utils import timezone
 from django.utils.html import format_html
 
-import event.api.event.calendar
 from event.api.event.event import get_event_resumes_zip
 from event.enums import RegistrationStatus
 from event.models import (

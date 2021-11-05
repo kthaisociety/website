@@ -5,7 +5,7 @@ from uuid import UUID
 
 import requests
 import slack
-from PIL import Image
+from PIL import Image, ImageChops
 from django.core.files import File
 from django.urls import reverse
 from django.utils import timezone
@@ -43,6 +43,27 @@ def set_picture(token: str, file: BytesIO) -> Tuple[bool, Optional[str]]:
     return True, response.data.get("profile", {}).get("avatar_hash")
 
 
+def same_image(file_1, file_2):
+    image_1 = Image.open(file_1)
+    image_2 = Image.open(file_2)
+
+    if image_1.height != image_2.height or image_1.width != image_2.width:
+        return False
+
+    if image_1.mode == image_2.mode == "RGBA":
+        img1_alphas = [pixel[3] for pixel in image_1.getdata()]
+        img2_alphas = [pixel[3] for pixel in image_2.getdata()]
+        has_equal_alphas = img1_alphas == img2_alphas
+    else:
+        has_equal_alphas = True
+
+    has_equal_content = not ImageChops.difference(
+        image_1.convert("RGB"), image_2.convert("RGB")
+    ).getbbox()
+
+    return has_equal_alphas and has_equal_content
+
+
 def update(user_data: Dict) -> bool:
     user_slack_profile = user_data.get("profile")
     user_slack_email = user_slack_profile.get("email")
@@ -57,14 +78,13 @@ def update(user_data: Dict) -> bool:
 
         user_slack_image_original = user_slack_profile.get("image_original")
         user_slack_image_hash = user_slack_profile.get("avatar_hash")
+
         # Update the profile picture only if it changed
-        if (
-            user_slack_image_hash != user.slack_picture_hash
-            and user_slack_image_original
-        ):
-            response = requests.get(user_slack_image_original)
-            if response.status_code == 200:
-                profile_picture_file = BytesIO(response.content)
+        response = requests.get(user_slack_image_original)
+        if response.status_code == 200:
+            profile_picture_file = BytesIO(response.content)
+            # If it differs with the Slack picture we have saved
+            if not same_image(file_1=profile_picture_file, file_2=user.slack_picture):
                 user.picture.save(
                     f"{user.id}.jpg", File(profile_picture_file), save=False
                 )
@@ -80,17 +100,15 @@ def update(user_data: Dict) -> bool:
 
         user.save()
 
-        # TODO: Temporarily disabled
-        # https://github.com/kthaisociety/website/issues/198
-        # if profile_picture_updated and user.slack_token:
-        #     picture_success, picture_hash = set_picture(
-        #         token=user.slack_token, file=BytesIO(user.slack_picture.file.read())
-        #     )
-        #     if picture_success:
-        #         user.slack_picture_hash = picture_hash
-        #         user.save()
-        #     else:
-        #         success = False
+        if profile_picture_updated and user.slack_token:
+            picture_success, picture_hash = set_picture(
+                token=user.slack_token, file=BytesIO(user.slack_picture.file.read())
+            )
+            if picture_success:
+                user.slack_picture_hash = picture_hash
+                user.save()
+            else:
+                success = False
 
         return success
     return False

@@ -1,3 +1,4 @@
+import copy
 import os
 from io import BytesIO
 from typing import Dict, Tuple, Optional
@@ -26,7 +27,9 @@ def get_profile_picture(file: BytesIO) -> BytesIO:
     original_picture = Image.open(file).resize(size=(1024, 1024))
     picture = Image.new("RGBA", original_picture.size)
     picture.paste(original_picture)
-    mask = Image.open(os.path.join(STATIC_ROOT, "img/mask.png"))
+    mask = Image.open(os.path.join(STATIC_ROOT, "img/mask.png")).resize(
+        size=(1024, 1024)
+    )
     picture.paste(mask, (0, 0), mask=mask)
     final_picture = Image.new("RGB", picture.size)
     final_picture.paste(picture)
@@ -39,7 +42,7 @@ def set_picture(token: str, file: BytesIO) -> Tuple[bool, Optional[str]]:
     client = slack.WebClient(token)
     response = client.users_setPhoto(image=file.read())
     if not response.status_code == 200 or not response.data.get("ok", False):
-        return app.slack.send_error_message(error=SlackError.RETRIEVE_CHANNELS), None
+        return app.slack.send_error_message(error=SlackError.SET_USER_PICTURE), None
     return True, response.data.get("profile", {}).get("avatar_hash")
 
 
@@ -84,7 +87,10 @@ def update(user_data: Dict) -> bool:
         if response.status_code == 200:
             profile_picture_file = BytesIO(response.content)
             # If it differs with the Slack picture we have saved
-            if not same_image(file_1=profile_picture_file, file_2=user.slack_picture):
+            # Need to build it again on ByesIO as it will be read later
+            if not same_image(
+                file_1=BytesIO(response.content), file_2=user.slack_picture
+            ):
                 user.picture.save(
                     f"{user.id}.jpg", File(profile_picture_file), save=False
                 )

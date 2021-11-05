@@ -50,14 +50,14 @@
                         {% endif %}
                         <div class="form-group">
                             <label for="id_phone">Phone</label>
-                            <input type="text" name="phone" maxlength="225" class="form-control" placeholder="070-000 00 00" id="id_phone" {% if form.phone %}value="{{ form.phone }}"{% endif %}>
+							<input type="text" name="phone" maxlength="225" class="form-control" placeholder="070-000 00 00" id="id_phone" {% if form.phone %}value="{{ form.phone }}"{% elif request.user.phone %}value="{{request.user.phone}}"{% endif %}>
                         </div>
                         <div class="form-row mt-3">
                             <div class="col-md-4">
                                 <label for="id_university">University <small>(required)</small></label>
                                 <select name="university" class="form-control" id="id_university">
                                     {% for university in const_universities %}
-                                        <option value="{{ forloop.counter0 }}" {% if form.university == forloop.counter0|stringformat:"i" %}selected=""{% elif not form.university and university == "KTH Royal Institute of Technology" %}selected=""{% endif %}>{{ university }}</option>
+									<option value="{{ forloop.counter0 }}" {% if form.university == forloop.counter0|stringformat:"i" %}selected=""{% elif not form.university and request.user.university == university %}selected=""{% elif not form.university and not request.user.university and university == "KTH Royal Institute of Technology" %}selected=""{% endif %}>{{ university }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -71,20 +71,20 @@
                             </div>
                             <div class="col-md-4">
                                 <label for="id_graduation">Graduation year <small>(required)</small></label>
-                                <input type="number" name="graduation" class="form-control" min="1940" max="2040" placeholder="{{ year }}" id="id_Graduation" {% if form.graduation_year %}value="{{ form.graduation_year }}"{% endif %}>
+								<input type="number" name="graduation" class="form-control" min="1940" max="2040" placeholder="{{ year }}" id="id_Graduation" {% if form.graduation_year %}value="{{ form.graduation_year }}"{% elif request.user.graduation_year %}value="{{ request.user.graduation_year }}"{% endif %}>
                             </div>
                         </div>
                         <div class="form-row mt-3">
                             <div class="col-md-12">
                                 <label class="other_university">University name <small>(required)</small></label>
-                                <input type="text" name="other_university" maxlength="225" class="form-control other_university" placeholder="Polytechnic University of Catalonia" id="id_other_university" {% if form.other_university %}value="{{ form.other_university }}"{% endif %}>
+								<input type="text" name="other_university" maxlength="225" class="form-control other_university" placeholder="Polytechnic University of Catalonia" id="id_other_university" {% if form.other_university %}value="{{ form.other_university }}"{% elif request.user.other_university %}value="{{ request.user.other_university }}" {% endif %}>
                             </div>
                         </div>
                         <p class="mt-3">Please note the following information is only used for demographical purposes.</p> 
                         <div class="form-row">
                             <div class="col-md-6">
                                 <label for="id_birthday">Date of birth</label>
-                                <input type="date" name="birthday" class="form-control" placeholder="1986-09-17" id="id_birthday" {% if form.birthday %}value="{{ form.birthday }}"{% endif %}>
+								<input type="date" name="birthday" class="form-control" placeholder="1986-09-17" id="id_birthday" {% if form.birthday %}value="{{ form.birthday }}"{%elif request.user.birthday %}value="{{ request.user.birthday}}"{% endif %}>
                             </div>
                             <div class="col-md-6">
                                 <label for="id_gender">Gender</label>

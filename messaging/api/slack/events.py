@@ -1,6 +1,6 @@
 from user.models import User
-from event.models import Event
-from event.enums import RegistrationStatus, Registration
+from event.models import Event, Registration
+from event.enums import RegistrationStatus
 
 
 def join_event(user_id: str, event_ts: str):

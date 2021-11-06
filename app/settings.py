@@ -228,6 +228,7 @@ SL_ANSWER_BOT = os.environ.get(
     "SL_ANSWER_BOT",
     "Did someone mention me? I can't do much at the moment but maybe that will change soon!",
 )
+SL_JOIN_EVENT = os.environ.get("SL_JOIN_EVENT", "join_event")
 
 # Set CORS allowed hosts
 

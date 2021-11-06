@@ -2,11 +2,11 @@ from typing import Dict
 
 from app.settings import (
     SL_ID,
-    SL_EMOJI_BOT, 
-    SL_ANSWER_BOT, 
-    SL_CHANNEL_EVENTS, 
+    SL_EMOJI_BOT,
+    SL_ANSWER_BOT,
+    SL_CHANNEL_EVENTS,
     SL_CHANNEL_GENERAL,
-    SL_JOIN_EVENT
+    SL_JOIN_EVENT,
 )
 from messaging.api.slack import reaction, channel, chat, user, events
 
@@ -38,15 +38,23 @@ def run(body: Dict) -> bool:
         channel_id = body.get("item").get("channel")
         reaction_id = body.get("reaction")
         user_id = body.get("user")
-         
-        if reaction_id == SL_JOIN_EVENT and body.get("item_user") == SL_ID and channel_id in [SL_CHANNEL_EVENTS, SL_CHANNEL_GENERAL]:
-            events.join_event(user_id = user_id, event_ts = body.get("item").get("ts"))
-    
+
+        if (
+            reaction_id == SL_JOIN_EVENT
+            and body.get("item_user") == SL_ID
+            and channel_id in [SL_CHANNEL_EVENTS, SL_CHANNEL_GENERAL]
+        ):
+            events.join_event(user_id=user_id, event_ts=body.get("item").get("ts"))
+
     elif event_type == "reaction_removed":
         channel_id = body.get("item").get("channel")
         reaction_id = body.get("reaction")
         user_id = body.get("user")
-         
-        if reaction_id == SL_JOIN_EVENT and body.get("item_user") == SL_ID and channel_id in [SL_CHANNEL_EVENTS, SL_CHANNEL_GENERAL]:
-            events.leave_event(user_id = user_id, event_ts = body.get("item").get("ts"))
+
+        if (
+            reaction_id == SL_JOIN_EVENT
+            and body.get("item_user") == SL_ID
+            and channel_id in [SL_CHANNEL_EVENTS, SL_CHANNEL_GENERAL]
+        ):
+            events.leave_event(user_id=user_id, event_ts=body.get("item").get("ts"))
     return success

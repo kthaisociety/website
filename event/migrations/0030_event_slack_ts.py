@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('event', '0029_event_collect_resume'),
+        ("event", "0029_event_collect_resume"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='event',
-            name='slack_ts',
+            model_name="event",
+            name="slack_ts",
             field=models.CharField(blank=True, max_length=255, null=True),
         ),
     ]

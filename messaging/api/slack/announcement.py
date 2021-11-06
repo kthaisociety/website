@@ -64,7 +64,7 @@ def announce_event(event: Event, creator_id: UUID):
         unfurl_links=False,
         unfurl_media=False,
     )
-        
+
     event.set_slack_ts(ts=response.get("message").get("ts"), save=True)
 
     log.create(

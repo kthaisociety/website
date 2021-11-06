@@ -66,7 +66,7 @@ class Event(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
     # Slack Timestamp
     # The size is not explained in the original docs:
     # https://api.slack.com/apis/connections/events-api#the-events-api__receiving-events__event-type-structure
@@ -206,7 +206,7 @@ class Event(models.Model):
 
     def set_slack_ts(self, ts, save=True):
         self.slack_ts = ts
-        
+
         if save:
             self.save()
 

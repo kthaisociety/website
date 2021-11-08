@@ -8,7 +8,7 @@ from app.settings import (
     SL_CHANNEL_GENERAL,
     SL_JOIN_EVENT,
 )
-from messaging.api.slack import reaction, channel, chat, user, events
+from messaging.api.slack import reaction, channel, chat, user, register
 
 
 def run(body: Dict) -> bool:
@@ -44,7 +44,7 @@ def run(body: Dict) -> bool:
             and body.get("item_user") == SL_ID
             and channel_id in [SL_CHANNEL_EVENTS, SL_CHANNEL_GENERAL]
         ):
-            events.join_event(user_id=user_id, event_ts=body.get("item").get("ts"))
+            register.join_event(user_id=user_id, event_ts=body.get("item").get("ts"))
 
     elif event_type == "reaction_removed":
         channel_id = body.get("item").get("channel")
@@ -56,5 +56,5 @@ def run(body: Dict) -> bool:
             and body.get("item_user") == SL_ID
             and channel_id in [SL_CHANNEL_EVENTS, SL_CHANNEL_GENERAL]
         ):
-            events.leave_event(user_id=user_id, event_ts=body.get("item").get("ts"))
+            register.leave_event(user_id=user_id, event_ts=body.get("item").get("ts"))
     return success

@@ -10,6 +10,7 @@ from app.settings import (
     SL_CHANNEL_EVENTS,
     SL_CHANNEL_ARTICLES,
     SL_CHANNEL_JOBS,
+    SL_JOIN_EVENT,
 )
 from app.utils import get_full_url
 from business.models import Offer
@@ -29,7 +30,7 @@ def announce_event(event: Event, creator_id: UUID):
         event_extra += f"\n:round_pushpin: {event.location}"
     if event.is_signup_open:
         event_extra += (
-            f"\n:pencil: Make sure to *<{APP_FULL_DOMAIN}{event.url}|signup here>*"
+            f"\n:pencil: Make sure to *<{APP_FULL_DOMAIN}{event.url}|signup here>*{' or reacting to this message with :'+SL_JOIN_EVENT+':' if !event.collect_resume }"
         )
     if event.social_url:
         event_extra += (

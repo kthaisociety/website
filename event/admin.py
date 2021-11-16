@@ -1,6 +1,8 @@
+from django import forms
 from django.conf.urls import url
 from django.contrib import admin, messages
 from django.db.models import F
+from django.forms import BaseInlineFormSet
 from django.http import HttpResponse
 from django.utils import timezone
 from django.utils.html import format_html
@@ -60,12 +62,22 @@ class SessionAdmin(admin.ModelAdmin):
     inlines = [SpeakerRoleInline, AttachmentInline, ScheduleInline]
 
 
+class SessionInlineFormSet(BaseInlineFormSet):
+    def clean(self):
+        super().clean()
+        if any(self.errors):
+            return
+        if not any([cd and not cd.get("DELETE", False) for cd in self.cleaned_data]):
+            raise forms.ValidationError("An event must have at least one session.")
+
+
 class SessionInline(admin.StackedInline):
     model = Session
     ordering = ("starts_at", "ends_at", "name")
     exclude = ("google_id",)
     show_change_link = True
     extra = 0
+    formset = SessionInlineFormSet
 
 
 def send_url(modeladmin, request, registrations):

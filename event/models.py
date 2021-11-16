@@ -158,14 +158,20 @@ class Event(models.Model):
 
     @property
     def is_event_running(self):
+        if not self.starts_at or not self.ends_at:
+            return False
         return self.starts_at <= timezone.now() < self.ends_at
 
     @property
     def is_event_future(self):
+        if not self.ends_at:
+            return False
         return timezone.now() < self.ends_at
 
     @property
     def is_signup_open(self):
+        if not self.ends_at:
+            return False
         if timezone.now() > self.ends_at:
             return False
         elif self.is_signup_full:
@@ -206,6 +212,14 @@ class Event(models.Model):
                 messages[
                     "location"
                 ] = "The location is mandatory for non-WEBINAR events."
+        if not self.sessions.all():
+            print("HERE")
+            print(self.sessions.all())
+            messages[
+                "sessions-TOTAL_FORMS"
+            ] = "All the events has to have at least one session"
+        else:
+            print(self.sessions.all())
         if messages:
             raise ValidationError(messages)
 

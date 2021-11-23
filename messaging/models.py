@@ -77,3 +77,11 @@ class SlackLog(models.Model):
     def __str__(self):
         owner = self.creator if self.creator else "System"
         return f"{LogType(self.type).name} - {self.created_at.strftime('%Y-%m-%d %H:%M:%S')} <{str(owner)}>"
+
+
+class InteractiveMessage(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    slack_ts = models.CharField(max_length=255, db_index=True, null=False, blank=False)
+    event = models.CharField(max_length=255, db_index=True, null=False, blank=False)
+    diet = models.CharField(max_length=255, blank=True, null=True)
+    diet_other = models.CharField(max_length=255, blank=True, null=True)

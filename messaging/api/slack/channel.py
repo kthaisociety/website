@@ -188,3 +188,25 @@ def send_message(
         if not response.status_code == 200 or not response.data.get("ok", False):
             send_error_message(error=SlackError.SET_CHANNEL_TOPIC)
         return response
+
+
+@transaction.atomic
+def update_message(
+    external_id: str,
+    message_ts: str,
+    blocks: List,
+    unfurl_links: bool = True,
+    unfurl_media: bool = True,
+) -> SlackResponse:
+    if SL_TOKEN and SL_CHANNEL_WEBDEV:
+        client = slack.WebClient(SL_TOKEN)
+        response = client.chat_update(
+            channel=external_id,
+            ts=message_ts,
+            blocks=blocks,
+            unfurl_links=unfurl_links,
+            unfurl_media=unfurl_media,
+        )
+        if not response.status_code == 200 or not response.data.get("ok", False):
+            send_error_message(error=SlackError.SET_CHANNEL_TOPIC)
+        return response

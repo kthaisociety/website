@@ -29,9 +29,7 @@ def announce_event(event: Event, creator_id: UUID):
     if event.location:
         event_extra += f"\n:round_pushpin: {event.location}"
     if event.is_signup_open:
-        event_extra += (
-            f"\n:pencil: Make sure to *<{APP_FULL_DOMAIN}{event.url}|signup here>*{' or reacting to this message with :'+SL_JOIN_EVENT+':' if !event.collect_resume }"
-        )
+        event_extra += f"\n:pencil: Make sure to *<{APP_FULL_DOMAIN}{event.url}|signup here>*{' or reacting to this message with :'+SL_JOIN_EVENT+':' if not event.collect_resume else '.' }"
     if event.social_url:
         event_extra += (
             f"\n:facebook: Check out our *<{event.social_url}|Facebook event>*"

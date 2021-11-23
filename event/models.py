@@ -75,21 +75,21 @@ class Event(models.Model):
     objects = EventManager()
 
     @property
-    def starts_at(self):
+    def starts_at(self) -> Optional[timezone.datetime]:
         session = self.sessions.all().order_by("starts_at").first()
         if session:
             return session.starts_at
         return None
 
     @property
-    def ends_at(self):
+    def ends_at(self) -> Optional[timezone.datetime]:
         session = self.sessions.all().order_by("-ends_at").first()
         if session:
             return session.ends_at
         return None
 
     @property
-    def registration_ends_at(self):
+    def registration_ends_at(self) -> Optional[timezone.datetime]:
         return self.signup_ends_at or self.ends_at
 
     @property
@@ -145,33 +145,38 @@ class Event(models.Model):
             icsfile.write("VERSION:2.0\n")
             icsfile.write(f"PRODID:-//{reverse('app_home')}//{APP_NAME}\n")
             icsfile.write("CALSCALE:GREGORIAN\n")
-            icsfile.write("BEGIN:VEVENT\n")
-            icsfile.write(f"SUMMARY:{self.name}\n")
-            icsfile.write(f"DTSTART:{self.starts_at.strftime('%Y%m%dT%H%M%SZ')}\n")
-            icsfile.write(f"DTEND:{self.ends_at.strftime('%Y%m%dT%H%M%SZ')}\n")
-            icsfile.write(
-                f"UID:kthais-{self.starts_at.strftime('%Y%m%d')}-{self.code}\n"
-            )
-            icsfile.write(f"DTSTAMP:{timezone.now().strftime('%Y%m%dT%H%M%SZ')}\n")
-            icsfile.write(f"LOCATION:{self.location}\n")
-            icsfile.write(f"DESCRIPTION:{description_text}\n")
-            # icsfile.write("STATUS:CONFIRMED\n")
-            icsfile.write("SEQUENCE:3\n")
-            icsfile.write("END:VEVENT\n")
+            if self.starts_at and self.ends_at:
+                icsfile.write("BEGIN:VEVENT\n")
+                icsfile.write(f"SUMMARY:{self.name}\n")
+                icsfile.write(f"DTSTART:{self.starts_at.strftime('%Y%m%dT%H%M%SZ')}\n")
+                icsfile.write(f"DTEND:{self.ends_at.strftime('%Y%m%dT%H%M%SZ')}\n")
+                icsfile.write(
+                    f"UID:kthais-{self.starts_at.strftime('%Y%m%d')}-{self.code}\n"
+                )
+                icsfile.write(f"DTSTAMP:{timezone.now().strftime('%Y%m%dT%H%M%SZ')}\n")
+                icsfile.write(f"LOCATION:{self.location}\n")
+                icsfile.write(f"DESCRIPTION:{description_text}\n")
+                # icsfile.write("STATUS:CONFIRMED\n")
+                icsfile.write("SEQUENCE:3\n")
+                icsfile.write("END:VEVENT\n")
             icsfile.write("END:VCALENDAR\n")
             return icsfile.getvalue()
 
     @property
-    def is_event_running(self):
-        return self.starts_at <= timezone.now() < self.ends_at
+    def is_event_running(self) -> bool:
+        return (
+            self.starts_at
+            and self.ends_at
+            and self.starts_at <= timezone.now() < self.ends_at
+        )
 
     @property
-    def is_event_future(self):
-        return timezone.now() < self.ends_at
+    def is_event_future(self) -> bool:
+        return self.ends_at and timezone.now() < self.ends_at
 
     @property
-    def is_signup_open(self):
-        if timezone.now() > self.ends_at:
+    def is_signup_open(self) -> bool:
+        if self.ends_at and timezone.now() > self.ends_at:
             return False
         elif self.is_signup_full:
             return False

@@ -2,10 +2,6 @@
 
 ![Website preview](app/static/img/preview.png)
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/3aa72b7e0ee6977abfd2/maintainability)](https://codeclimate.com/github/kthaisociety/website/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/3aa72b7e0ee6977abfd2/test_coverage)](https://codeclimate.com/github/kthaisociety/website/test_coverage)
-[![Build Status](https://travis-ci.com/kthaisociety/website.svg?branch=master)](https://travis-ci.com/kthais/website)
-
 :computer: Website and management system for KTHAIS
 
 :raising_hand: Current maintainer: [@oriolclosa](https://github.com/oriolclosa)

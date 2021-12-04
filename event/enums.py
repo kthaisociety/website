@@ -26,6 +26,18 @@ class RegistrationStatus(enum.IntEnum):
     ATTENDED = 6
 
 
+RegistrationStatus.labels = {
+    RegistrationStatus.INTERESTED: "Interested",
+    RegistrationStatus.REQUESTED: "Requested",
+    RegistrationStatus.REGISTERED: "Registered",
+    RegistrationStatus.WAIT_LISTED: "Wait-listed",
+    RegistrationStatus.CANCELLED: "Cancelled",
+    RegistrationStatus.JOINED: "Joined",
+    RegistrationStatus.ATTENDED: "Attended",
+}
+RegistrationStatusDict = RegistrationStatus.labels
+
+
 class AttachmentType(enum.IntEnum):
     SLIDES = 0
     FILE = 1

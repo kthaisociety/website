@@ -1,8 +1,17 @@
 from collections import defaultdict
 
 from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
-from django.http import HttpResponseNotFound, HttpResponse, HttpResponseRedirect
+from django.db.models import Subquery, OuterRef, Count, Value, Prefetch
+from django.db.models.functions import Coalesce, Lower
+from django.http import (
+    HttpResponseNotFound,
+    HttpResponse,
+    HttpResponseRedirect,
+    JsonResponse,
+)
 from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
@@ -12,7 +21,7 @@ import user.utils
 from event.enums import RegistrationStatus, ScheduleType
 from event.models import Event, Registration, Session, Schedule
 from event.tasks import send_registration_email
-from user.enums import DietType
+from user.enums import DietType, UserType
 
 
 def event(request, code):
@@ -235,3 +244,109 @@ def registration_url(request, registration_id):
         registration.save()
         return HttpResponseRedirect(registration.event.external_url)
     return HttpResponseNotFound()
+
+
+@login_required
+@staff_member_required
+def checkin_events(request):
+    event_objs = (
+        Event.objects.published()
+        .prefetch_related("registrations")
+        .annotate(
+            registrations_pending=Coalesce(
+                Subquery(
+                    Registration.objects.filter(
+                        event_id=OuterRef("id"),
+                        status__in=[
+                            RegistrationStatus.REGISTERED,
+                        ],
+                    )
+                    .exclude(user__type=UserType.ORGANISER)
+                    .values("event_id")
+                    .annotate(count=Count("id"))
+                    .values_list("count", flat="True")[:1]
+                ),
+                Value(0),
+            ),
+            registrations_pending_all=Coalesce(
+                Subquery(
+                    Registration.objects.filter(
+                        event_id=OuterRef("id"),
+                        status__in=[
+                            RegistrationStatus.REGISTERED,
+                        ],
+                    )
+                    .values("event_id")
+                    .annotate(count=Count("id"))
+                    .values_list("count", flat="True")[:1]
+                ),
+                Value(0),
+            ),
+            registrations_joined_all=Coalesce(
+                Subquery(
+                    Registration.objects.filter(
+                        event_id=OuterRef("id"),
+                        status__in=[
+                            RegistrationStatus.JOINED,
+                            RegistrationStatus.ATTENDED,
+                        ],
+                    )
+                    .values("event_id")
+                    .annotate(count=Count("id"))
+                    .values_list("count", flat="True")[:1]
+                ),
+                Value(0),
+            ),
+            registrations_cancelled_all=Coalesce(
+                Subquery(
+                    Registration.objects.filter(
+                        event_id=OuterRef("id"),
+                        status__in=[
+                            RegistrationStatus.CANCELLED,
+                        ],
+                    )
+                    .values("event_id")
+                    .annotate(count=Count("id"))
+                    .values_list("count", flat="True")[:1]
+                ),
+                Value(0),
+            ),
+        )
+        .order_by("-created_at")
+    )
+    return render(request, "checkin_events.html", {"events": event_objs})
+
+
+@login_required
+@staff_member_required
+def checkin_event(request, code):
+    event_obj = (
+        Event.objects.filter(code=code)
+        .prefetch_related(
+            Prefetch(
+                "registrations",
+                Registration.objects.select_related("user").order_by(
+                    "status", Lower("user__name"), Lower("user__surname")
+                ),
+                to_attr="all_registrations",
+            ),
+        )
+        .first()
+    )
+    if event_obj:
+        return render(request, "checkin_event.html", {"event": event_obj})
+    return HttpResponseNotFound()
+
+
+@login_required
+@staff_member_required
+def checkin_event_attend(request, registration_id):
+    registration_obj = Registration.objects.filter(id=registration_id).first()
+    if not registration_obj:
+        return JsonResponse({"error": True})
+    if registration_obj.status == RegistrationStatus.ATTENDED:
+        registration_obj.status = RegistrationStatus.REGISTERED
+    else:
+        registration_obj.status = RegistrationStatus.ATTENDED
+    registration_obj.save()
+    return JsonResponse({"error": False, "status": registration_obj.status.value})

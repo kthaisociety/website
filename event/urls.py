@@ -12,4 +12,11 @@ urlpatterns = [
         name="registration_url",
     ),
     url(r"^$", views.events, name="events_events"),
+    url(r"^checkin$", views.checkin_events, name="events_checkin_events"),
+    url(
+        r"^checkin/attend/(?P<registration_id>.*)$",
+        views.checkin_event_attend,
+        name="events_checkin_event_attend",
+    ),
+    url(r"^checkin/(?P<code>.*)$", views.checkin_event, name="events_checkin_event"),
 ]

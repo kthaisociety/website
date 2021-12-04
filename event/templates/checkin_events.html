@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load app_tags %}
+{% load static %}
+
+{% block head_title %}Events check-in{% endblock %}
+
+{% block in_body %}
+    <div class="container py-5">
+        <div class="row d-none d-lg-block">
+            <div class="col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent p-0 pb-2">
+                        <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'app_home' %}">Home</a></li>
+                        <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'events_events' %}">Events</a></li>
+                        <li class="breadcrumb-item active" aria-current="page"><a class="link-unstyled"
+                                                                                  href="{% url 'events_checkin_events' %}">Check-in</a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="section-title">Check-in</h1>
+                <div class="row pl-4 pr-4 mb-3">
+                    <div class="col-6 d-flex">
+                        <h6 class="mb-1 align-self-end">Event</h6>
+                    </div>
+                    <div class="col-2 text-right">
+                        <h6 class="mb-0 ml-auto">Pending</h6>
+                        <small class="mb-0 ml-auto">Students + Team</small>
+                    </div>
+                    <div class="col-1 text-right d-flex">
+                        <h6 class="mb-1 ml-auto align-self-end">Cancelled</h6>
+                    </div>
+                    <div class="col-1 text-right d-flex">
+                        <h6 class="mb-1 ml-auto align-self-end">Attended</h6>
+                    </div>
+                    <div class="col-2 text-right d-flex">
+                        <h6 class="mb-1 ml-auto align-self-end">Actions</h6>
+                    </div>
+                </div>
+                {% for event in events %}
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <div class="card w-100 {% if not event.is_event_future %}bg-light-700{% endif %}">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <h5 class="mb-0">{{ event.name }}</h5>
+                                        </div>
+                                        <div class="col-2 text-right">
+                                            <span>{{ event.registrations_pending_all }} + {{ event.registrations_pending }} / {% if event.attendance_limit %}{{ event.attendance_limit }}{% else %}∞{% endif %}</span>
+                                        </div>
+                                        <div class="col-1 text-right">
+                                            <span>{{ event.registrations_cancelled_all }}</span>
+                                        </div>
+                                        <div class="col-1 text-right">
+                                            <span>{{ event.registrations_joined_all }}</span>
+                                        </div>
+                                        <div class="col-2 text-right">
+                                            <a class="mb-0" href="{% url 'events_checkin_event' event.code %}">
+                                                <button type="button" style="margin-top: -1em; margin-bottom: -1em;" class="btn {% if event.is_event_future %}btn-primary{% else %}btn-dark{% endif %} pl-3 pr-3">
+                                                    <small>Check-in</small>
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+        </div>
+    </div>
+{% endblock %}

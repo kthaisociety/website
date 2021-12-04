@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% load app_tags %}
+{% load static %}
+
+{% block head_title %}Events check-in{% endblock %}
+
+{% block in_body %}
+    <div class="container py-5">
+        <div class="row d-none d-lg-block">
+            <div class="col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent p-0 pb-2">
+                        <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'app_home' %}">Home</a></li>
+                        <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'events_events' %}">Events</a></li>
+                        <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'events_checkin_events' %}">Check-in</a></li>
+                        <li class="breadcrumb-item active" aria-current="page"><a class="link-unstyled" href="{{ event.url }}">{{ event.name }}</a></li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="section-title">{{ event.name }}</h1>
+                <div class="row pl-4 pr-4 mb-3">
+                    <div class="col-3 d-flex">
+                        <h6 class="mb-1 align-self-end">Full name</h6>
+                    </div>
+                    <div class="col-3 d-flex">
+                        <h6 class="mb-1 align-self-end">Email</h6>
+                    </div>
+                    <div class="col-2 text-right d-flex">
+                        <h6 class="mb-1 ml-auto align-self-end">Diet</h6>
+                    </div>
+                    <div class="col-2 text-right d-flex">
+                        <h6 class="mb-1 ml-auto align-self-end">Status</h6>
+                    </div>
+                    <div class="col-2 text-right d-flex">
+                        <h6 class="mb-1 ml-auto align-self-end">Actions</h6>
+                    </div>
+                </div>
+                {% for registration in event.all_registrations %}
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <div id="registration-{{ registration.id }}" class="card w-100 {% if registration.status >= 5 %}bg-light{% endif %}">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <h5 class="mb-0">{{ registration.user.full_name }}</h5>
+                                        </div>
+                                        <div class="col-3">
+                                            <span class="mb-0">{{ registration.user.email }}</span>
+                                        </div>
+                                        <div class="col-2 text-right">
+                                            {% if not registration.diet %}
+                                                <span class="mb-0">-</span>
+                                            {% else %}
+                                                {% for d in registration.diet|split:"," %}
+                                                    {% if d == "4" %}
+                                                        <span class="mb-0"><u>{{ registration.diet_other }}</u></span>
+                                                    {% else %}
+                                                        {% with d|to_int as d_int %}
+                                                            <span class="mb-0">{{ enums.user.diet|keyvalue:d_int }}</span>
+                                                        {% endwith %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endif %}
+                                        </div>
+                                        <div class="col-2 text-right">
+                                            <span id="registration-status-{{ registration.id }}">{{ enums.event.registration_status|keyvalue:registration.status }}</span>
+                                        </div>
+                                        <div class="col-2 text-right">
+                                            <button id="registration-button-{{ registration.id }}" type="button" onclick="checkin_registration('{{ csrf_token }}', '{{ registration.id }}')" style="margin-top: -1em; margin-bottom: -1em;" class="btn {% if registration.status == 2 or registration.status == 5 %}btn-primary{% else %}btn-dark{% endif %} pl-3 pr-3">
+                                                <small>Check-in</small>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        /* Requires jQuery */
+        function checkin_registration(csrf_token, registration_id){
+          $.ajax({
+              type: "POST",
+              url: "/events/checkin/attend/" + registration_id,
+              data: {
+                csrfmiddlewaretoken: csrf_token,
+                format: "json",
+              },
+              success: function(data) {
+                if (!data.error){
+                  if(data.status === 6) {
+                      $("#registration-" + registration_id).addClass("bg-light");
+                      $("#registration-status-" + registration_id).text("Attended");
+                      const btn = $("#registration-button-" + registration_id);
+                      btn.removeClass("btn-primary");
+                      btn.addClass("btn-dark");
+                  }
+                  else{
+                      $("#registration-" + registration_id).removeClass("bg-light");
+                      $("#registration-status-" + registration_id).text("Registered");
+                      const btn = $("#registration-button-" + registration_id);
+                      btn.removeClass("btn-dark");
+                      btn.addClass("btn-primary");
+                  }
+                }
+              },
+              error: function(data) {}
+            });
+        }
+    </script>
+{% endblock %}

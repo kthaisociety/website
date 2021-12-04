@@ -60,6 +60,7 @@
                                             {% endif %}
                                             {% if request.user.email_verified and request.user.is_staff %}
                                                 <span class="ml-2"><a class="link-main" href="{% url 'app_statistics' %}">Statistics</a></span>
+                                                <span class="ml-2"><a class="link-main" href="{% url 'events_checkin_events' %}">Check-in</a></span>
                                             {% endif %}
                                             <span class="ml-2"><a class="link-main" href="{% url 'user_dashboard' %}">Dashboard</a></span>
                                             <span class="ml-2"><a class="link-main" href="{% url 'user_logout' %}">Logout</a></span>

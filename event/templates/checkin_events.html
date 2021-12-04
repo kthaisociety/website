@@ -27,8 +27,8 @@
                         <h6 class="mb-1 align-self-end">Event</h6>
                     </div>
                     <div class="col-4 col-md-2">
-                        <h6 class="d-none d-lg-flex mb-0 ml-auto align-self-end">Pending</h6>
-                        <small class="d-none d-lg-flex mb-0 ml-auto align-self-end">Students + Team</small>
+                        <h6 class="d-none d-lg-block mb-0 ml-auto text-lg-right">Pending</h6>
+                        <small class="d-none d-lg-block mb-0 ml-auto text-lg-right">Students + Team</small>
                         <h6 class="d-block d-lg-none mb-0 text-center">Pend.</h6>
                     </div>
                     <div class="col-2 col-md-1 d-lg-flex">
@@ -65,7 +65,8 @@
                                         <div class="col-4 col-md-3 col-lg-2 text-center text-md-right">
                                             <a class="mb-0" href="{% url 'events_checkin_event' event.code %}">
                                                 <button type="button" style="margin-top: -1em; margin-bottom: -1em;" class="btn {% if event.is_event_future %}btn-primary{% else %}btn-dark{% endif %} pl-3 pr-3">
-                                                    <small>Check-in</small>
+                                                    <small class="d-none d-md-block">Check-in</small>
+                                                    <small class="d-block d-md-none">Check</small>
                                                 </button>
                                             </a>
                                         </div>

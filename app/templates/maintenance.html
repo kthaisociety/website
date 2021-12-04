@@ -2,12 +2,12 @@
 {% load social_share %}
 {% load static %}
 
-{% block head_title %}Coming soon{% endblock %}
+{% block head_title %}Under maintenance{% endblock %}
 
 {% block page %}
     <style>
         body {
-            background-color: #3d5875;
+            background-color: #141414;
             padding: 0;
             height: 100%;
             width: 100%;
@@ -55,16 +55,16 @@
                 <div class="col-sm-3">
                 </div>
                 <div class="col-sm-6">
-                    <p class="white paragraph text-center">COMING SOON</p>
+                    <p class="white paragraph text-center">UNDER MAINTENANCE</p>
                     <a href="mailto:{{ app_email_contact }}" class="link-main text-center d-block">{{ app_email_contact }}</a>
                 </div>
             </div>
         </div>
     </header>
     {% block footer %}
-        <nav class="footer navbar navbar-expand-lg navbar-dark bg-main pt-3 pb-3">
+        <nav class="footer navbar navbar-expand-lg navbar-dark bg-dark pt-3 pb-3">
             <!-- Desktop -->
-            <div class="container-fluid text-white d-none d-lg-flex">
+            <div class="container text-white d-none d-lg-flex">
                 <ul class="navbar-nav mr-auto mb-2">
                     <li class="nav-item">
                         <small class="mb-0">Need help? Ping us at <a href="mailto:{{ app_email_contact }}" class="link-main">{{ app_email_contact }}</a>.</small>

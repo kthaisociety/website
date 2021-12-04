@@ -1,5 +1,6 @@
 from django.conf.urls import url
 from django.urls import include
+from django.conf import settings
 
 from user import views
 
@@ -20,5 +21,9 @@ urlpatterns = [
     url(r"^data/$", views.user_data, name="user_data"),
     url(r"^delete/confirm$", views.user_confirm_delete, name="user_confirm_delete"),
     url(r"^delete/$", views.user_delete, name="user_delete"),
-    url("", include("social_django.urls", namespace="social")),
 ]
+
+if "social_django" in settings.INSTALLED_APPS:
+    urlpatterns += [
+        url("", include("social_django.urls", namespace="social")),
+    ]

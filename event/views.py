@@ -86,6 +86,9 @@ def event(request, code):
                                 "All fields are required, if you are already have an account you can login first.",
                             )
 
+                        if email:
+                            email = email.lower()
+
                         user_obj = user.utils.get_user_by_email(email=email)
                         if not user_obj:
                             user_obj = user.utils.create_user(
@@ -253,7 +256,7 @@ def checkin_events(request):
         Event.objects.published()
         .prefetch_related("registrations")
         .annotate(
-            registrations_pending=Coalesce(
+            registrations_pending_students=Coalesce(
                 Subquery(
                     Registration.objects.filter(
                         event_id=OuterRef("id"),
@@ -268,13 +271,14 @@ def checkin_events(request):
                 ),
                 Value(0),
             ),
-            registrations_pending_all=Coalesce(
+            registrations_pending_us=Coalesce(
                 Subquery(
                     Registration.objects.filter(
                         event_id=OuterRef("id"),
                         status__in=[
                             RegistrationStatus.REGISTERED,
                         ],
+                        user__type=UserType.ORGANISER,
                     )
                     .values("event_id")
                     .annotate(count=Count("id"))

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load app_tags %}
+{% load static %}
+
+{% block head_title %}Contact{% endblock %}
+
+{% block in_body %}
+    <div class="container py-5">
+        <div class="row d-none d-lg-block">
+            <div class="col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent p-0 pb-2">
+                        <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'app_home' %}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page"><a class="link-unstyled"
+                                                                                  href="{% url 'app_about_contact' %}">Contact</a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="section-title">Contact</h1>
+                <div class="card mb-4 w-100 bg-light p-5">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3>Address</h3>
+                            <p class="mb-0 font-weight-bold">KTH AI Society (Box E5)</p>
+                            <p class="mb-0 font-weight-bold">C/O: Tekniska Högskolans Studentkår</p>
+                            <p class="mb-0">Drottning Kristinas Väg 15-19</p>
+                            <p class="mb-0">100 44 Stockholm</p>
+                            <p class="mb-0">SVERIGE</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h3>Invoice details</h3>
+                            <p>Org-nummer: 802518-7249</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <iframe width="100%" height="400"
+                                src="https://maps.google.com/maps?hl=en&amp;q=Nymble, Drottning Kristinas Väg 15-19, 100 44 Stockholm&amp;ie=UTF8&amp;t=&amp;z=14&amp;iwloc=B&amp;output=embed"
+                                frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="w-100"
+                             style="height: 400px; background-image: url('{% static "img/contact.jpg" %}'); background-position: center center; background-size: cover;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

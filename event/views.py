@@ -1,4 +1,8 @@
 from collections import defaultdict
+from io import BytesIO
+
+import qrcode
+import qrcode.image.svg
 
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
@@ -16,6 +20,8 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
 
+from django.conf import settings
+
 import user.utils
 
 from event.enums import RegistrationStatus, ScheduleType
@@ -24,7 +30,7 @@ from event.tasks import send_registration_email
 from user.enums import DietType, UserType
 
 
-def event(request, code):
+def event(request, code, is_late: bool = False):
     event = Event.objects.published().filter(code=code).first()
     if request.user.is_authenticated:
         registration = Registration.objects.filter(
@@ -36,7 +42,9 @@ def event(request, code):
     form = {}
 
     if event:
-        if request.method == "POST" and event.registration_available:
+        if request.method == "POST" and (
+            (not is_late and event.registration_available) or is_late
+        ):
             type = request.POST.get("submit", None)
 
             if type != "register" and not request.user.is_authenticated:
@@ -354,3 +362,47 @@ def checkin_event_attend(request, registration_id):
         registration_obj.status = RegistrationStatus.ATTENDED
     registration_obj.save()
     return JsonResponse({"error": False, "status": registration_obj.status.value})
+
+
+@login_required
+@staff_member_required
+def checkin_event_qr(request, code):
+    event_obj = Event.objects.published().filter(code=code).first()
+    if event_obj:
+        factory = qrcode.image.svg.SvgImage
+        img = qrcode.make(
+            settings.APP_FULL_DOMAIN
+            + reverse("events_checkin_event_register", args=(event_obj.id,)),
+            image_factory=factory,
+            box_size=20,
+        )
+        stream = BytesIO()
+        img.save(stream)
+        return render(
+            request,
+            "checkin_event_qr.html",
+            context={"event": event_obj, "qr": stream.getvalue().decode()},
+        )
+    return HttpResponseNotFound()
+
+
+def checkin_event_register(request, event_id):
+    event_obj = Event.objects.published().filter(id=event_id).first()
+    if (
+        event_obj
+        and event_obj.starts_at <= timezone.now() + timezone.timedelta(hours=6)
+        and event_obj.ends_at >= timezone.now() - timezone.timedelta(hours=6)
+    ):
+        if request.method == "POST":
+            return event(request=request, code=event_obj.code, is_late=True)
+        registration_obj = None
+        if request.user.is_authenticated:
+            registration_obj = Registration.objects.filter(
+                event=event_obj, user=request.user
+            ).first()
+        return render(
+            request,
+            "checkin_event_register.html",
+            context={"event": event_obj, "registration": registration_obj},
+        )
+    return HttpResponseNotFound()

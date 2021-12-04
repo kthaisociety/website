@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load app_tags %}
+{% load static %}
+
+{% block head_title %}Late registration for {{ event.name }}{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+        <div class="row d-none d-lg-block">
+            <div class="col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent p-0 pb-2">
+                        <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'app_home' %}">Home</a></li>
+                        <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'events_events' %}">Events</a></li>
+                        <li class="breadcrumb-item"><a class="link-unstyled" href="{{ event.url }}">{{ event.name }}</a></li></li>
+                        <li class="breadcrumb-item active" aria-current="page">Late registration</li></li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="main-title">{{ event.name }}</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                {% include "include/registration.html" with late_registration=True %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

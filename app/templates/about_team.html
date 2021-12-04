@@ -3,10 +3,20 @@
 {% load social_share %}
 {% load static %}
 
-{% block head_title %}Team {{ team.code }}{% endblock %}
+{% block head_title %}Team {{ team.code|upper }}{% endblock %}
 
 {% block in_body %}
     <div class="container container-body py-4 py-md-5">
+        <div class="row d-none d-lg-block">
+            <div class="col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent p-0 pb-2">
+                        <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'app_home' %}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page"><a class="link-unstyled" href="{% url 'app_about_team' %}">Team</a></li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <h1 class="section-title">Team {{ team.code|upper }}</h1>

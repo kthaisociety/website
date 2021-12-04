@@ -349,3 +349,7 @@ def about_team(request, code: Optional[str] = None):
     if team:
         return render(request, "about_team.html", {"team": team, "teams": teams})
     return HttpResponseNotFound()
+
+
+def about_contact(request):
+    return render(request, "about_contact.html")

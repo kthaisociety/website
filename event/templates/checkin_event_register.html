@@ -25,7 +25,11 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                {% include "include/registration.html" with late_registration=True %}
+                <div class="card mb-4">
+                    <div class="card-body">
+                        {% include "include/registration.html" with late_registration=True %}
+                    </div>
+                </div>
             </div>
         </div>
     </div>

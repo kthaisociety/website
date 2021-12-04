@@ -36,6 +36,8 @@ def user_login(request):
         if form.is_valid():
             email = form.cleaned_data["email"]
             password = form.cleaned_data["password"]
+            if email:
+                email = email.lower()
             user = auth.authenticate(email=email, password=password)
             if user:
                 auth.login(request, user)
@@ -78,6 +80,7 @@ def user_password(request):
         if not email:
             messages.error(request, "Email is a required field.")
         else:
+            email = email.lower()
             user = User.objects.filter(email=email).first()
             if user:
                 send_password(user)
@@ -181,6 +184,8 @@ def user_register(request):
                 )
             else:
                 city, country = city_and_country
+        if email:
+            email = email.lower()
         form = {
             "first_name": name,
             "last_name": surname,

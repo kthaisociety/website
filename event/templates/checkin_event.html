@@ -21,20 +21,20 @@
         <div class="row">
             <div class="col-md-12">
                 <h1 class="section-title">{{ event.name }}</h1>
-                <div class="row pl-4 pr-4 mb-3">
-                    <div class="col-3 d-flex">
-                        <h6 class="mb-1 align-self-end">Full name</h6>
+                <div class="row pl-4 pr-4 mb-3 d-none d-md-flex">
+                    <div class="col-6 col-md-3 d-flex">
+                        <h6 class="mb-1 align-self-end">Name</h6>
                     </div>
-                    <div class="col-3 d-flex">
+                    <div class="d-none d-md-flex col-3">
                         <h6 class="mb-1 align-self-end">Email</h6>
                     </div>
-                    <div class="col-2 text-right d-flex">
+                    <div class="col-6 col-md-2 text-right d-flex">
                         <h6 class="mb-1 ml-auto align-self-end">Diet</h6>
                     </div>
-                    <div class="col-2 text-right d-flex">
+                    <div class="col-6 col-md-2 text-right d-flex">
                         <h6 class="mb-1 ml-auto align-self-end">Status</h6>
                     </div>
-                    <div class="col-2 text-right d-flex">
+                    <div class="col-6 col-md-2 text-right d-flex">
                         <h6 class="mb-1 ml-auto align-self-end">Actions</h6>
                     </div>
                 </div>
@@ -44,33 +44,35 @@
                             <div id="registration-{{ registration.id }}" class="card w-100 {% if registration.status >= 5 %}bg-light{% endif %}">
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-3">
+                                        <div class="col-6 col-md-3 text-center text-md-left">
                                             <h5 class="mb-0">{{ registration.user.full_name }}</h5>
                                         </div>
-                                        <div class="col-3">
+                                        <div class="d-none d-md-flex col-3">
                                             <span class="mb-0">{{ registration.user.email }}</span>
                                         </div>
-                                        <div class="col-2 text-right">
+                                        <div class="col-6 col-md-2 text-center text-md-right">
                                             {% if not registration.diet %}
                                                 <span class="mb-0">-</span>
                                             {% else %}
                                                 {% for d in registration.diet|split:"," %}
                                                     {% if d == "4" %}
-                                                        <span class="mb-0"><u>{{ registration.diet_other }}</u></span>
+                                                        <span class="mb-0 d-block"><u>{{ registration.diet_other }}</u></span>
                                                     {% else %}
                                                         {% with d|to_int as d_int %}
-                                                            <span class="mb-0">{{ enums.user.diet|keyvalue:d_int }}</span>
+                                                            <span class="mb-0 d-block">{{ enums.user.diet|keyvalue:d_int }}</span>
                                                         {% endwith %}
                                                     {% endif %}
                                                 {% endfor %}
                                             {% endif %}
                                         </div>
-                                        <div class="col-2 text-right">
+                                        <hr class="w-100 d-md-none">
+                                        <div class="col-6 col-md-2 text-center text-md-right">
                                             <span id="registration-status-{{ registration.id }}">{{ enums.event.registration_status|keyvalue:registration.status }}</span>
                                         </div>
-                                        <div class="col-2 text-right">
+                                        <div class="col-6 col-md-2 text-center text-md-right">
                                             <button id="registration-button-{{ registration.id }}" type="button" onclick="checkin_registration('{{ csrf_token }}', '{{ registration.id }}')" style="margin-top: -1em; margin-bottom: -1em;" class="btn {% if registration.status == 2 or registration.status == 5 %}btn-primary{% else %}btn-dark{% endif %} pl-3 pr-3">
-                                                <small>Check-in</small>
+                                                <small class="d-block d-md-none d-lg-block">Check-in</small>
+                                                <small class="d-none d-md-block d-lg-none">Check</small>
                                             </button>
                                         </div>
                                     </div>

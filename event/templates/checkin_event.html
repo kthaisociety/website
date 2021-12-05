@@ -29,6 +29,14 @@
                     </a>
                 </div>
                 {% if event.all_registrations %}
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="id_name">Search</label>
+                                <input type="text" oninput="filterRegistrations()" name="search" maxlength="225" class="form-control" placeholder="Name or email" id="id_search">
+                            </div>
+                        </div>
+                    </div>
                     <div class="row pl-4 pr-4 mb-3 d-none d-md-flex">
                         <div class="col-6 col-md-3 d-flex">
                             <h6 class="mb-1 align-self-end">Name</h6>
@@ -53,10 +61,10 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-6 col-md-3 text-center text-md-left">
-                                                <h5 class="mb-0">{{ registration.user.full_name }}</h5>
+                                                <h5 class="mb-0 registration-name">{{ registration.user.full_name }}</h5>
                                             </div>
                                             <div class="d-none d-md-flex col-3">
-                                                <span class="mb-0">{{ registration.user.email }}</span>
+                                                <span class="mb-0 registration-email">{{ registration.user.email }}</span>
                                             </div>
                                             <div class="col-6 col-md-2 text-center text-md-right">
                                                 {% if not registration.diet %}
@@ -99,6 +107,21 @@
 
 {% block scripts %}
     <script>
+        function filterRegistrations(){
+            const searched = document.getElementById("id_search").value.toLowerCase();
+            const registrations = document.getElementsByClassName("registration-name");
+            const registrationEmails = document.getElementsByClassName("registration-email");
+            for (let i = 0; i < registrations.length; i++) {
+                const parent = registrations[i].parentElement.parentElement.parentElement.parentElement.parentElement;
+                if(searched === "" || registrations[i].textContent.toLowerCase().includes(searched) || registrationEmails[i].textContent.toLowerCase().includes(searched)){
+                    parent.style.display = "block";
+                }
+                else{
+                    parent.style.display = "none";
+                }
+            }
+        }
+
         /* Requires jQuery */
         function checkin_registration(csrf_token, registration_id){
           $.ajax({

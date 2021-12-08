@@ -416,7 +416,7 @@ def checkin_event_download(request, event_id):
     if event_obj:
         data = get_event_data_csv(event_id=event_id)
         response = HttpResponse(data.getvalue(), content_type="text/csv")
-        file_name = f"{settings.APP_NAME.replace(' ', '').lower()}_data_{str(event_id)}_{str(int(timezone.now().timestamp()))}.csv"
+        file_name = f"{settings.APP_NAME.replace(' ', '').lower()}_registrations_{str(event_id)}_{str(int(timezone.now().timestamp()))}.csv"
         response["Content-Disposition"] = f'attachment; filename="{file_name}"'
         return response
     return HttpResponseNotFound()

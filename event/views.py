@@ -23,6 +23,7 @@ from django.utils import timezone
 from django.conf import settings
 
 import user.utils
+from event.api.event.registration import get_event_data_csv
 
 from event.enums import RegistrationStatus, ScheduleType
 from event.models import Event, Registration, Session, Schedule
@@ -405,4 +406,17 @@ def checkin_event_register(request, event_id):
             "checkin_event_register.html",
             context={"event": event_obj, "registration": registration_obj},
         )
+    return HttpResponseNotFound()
+
+
+@login_required
+@staff_member_required
+def checkin_event_download(request, event_id):
+    event_obj = Event.objects.published().filter(id=event_id).first()
+    if event_obj:
+        data = get_event_data_csv(event_id=event_id)
+        response = HttpResponse(data.getvalue(), content_type="text/csv")
+        file_name = f"{settings.APP_NAME.replace(' ', '').lower()}_data_{str(event_id)}_{str(int(timezone.now().timestamp()))}.csv"
+        response["Content-Disposition"] = f'attachment; filename="{file_name}"'
+        return response
     return HttpResponseNotFound()

@@ -23,7 +23,7 @@
             <div class="col-md-12">
                 <h1 class="section-title">Check-in</h1>
                 <div class="row pl-4 pr-4 mb-3">
-                    <div class="d-none d-md-flex col-md-5 col-lg-6">
+                    <div class="d-none d-md-flex col-md-5">
                         <h6 class="mb-1 align-self-end">Event</h6>
                     </div>
                     <div class="col-4 col-md-2">
@@ -39,7 +39,7 @@
                         <h6 class="d-none d-lg-flex mb-1 ml-auto align-self-end">Attended</h6>
                         <h6 class="d-block d-lg-none mb-0 text-center">Att.</h6>
                     </div>
-                    <div class="col-4 col-md-3 col-lg-2 d-lg-flex">
+                    <div class="col-4 col-md-3 d-lg-flex">
                         <h6 class="d-none d-lg-flex mb-1 ml-auto align-self-end">Actions</h6>
                         <h6 class="d-block d-lg-none mb-0 text-center text-md-right">Act.</h6>
                     </div>
@@ -50,7 +50,7 @@
                             <div class="card w-100 {% if not event.is_event_future %}bg-light-700{% endif %}">
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-12 col-md-5 col-lg-6">
+                                        <div class="col-12 col-md-5">
                                             <h5 class="mb-3 mb-md-0 text-center text-md-left">{{ event.name }}</h5>
                                         </div>
                                         <div class="col-4 col-md-2 text-center text-lg-right">
@@ -62,11 +62,16 @@
                                         <div class="col-2 col-md-1 text-center text-lg-right">
                                             <span>{{ event.registrations_joined_all }}</span>
                                         </div>
-                                        <div class="col-4 col-md-3 col-lg-2 text-center text-md-right">
+                                        <div class="col-4 col-md-3 text-center text-md-right">
                                             <a class="mb-0" href="{% url 'events_checkin_event' event.code %}">
                                                 <button type="button" style="margin-top: -1em; margin-bottom: -1em;" class="btn {% if event.is_event_future %}btn-primary{% else %}btn-dark{% endif %} pl-3 pr-3">
-                                                    <small class="d-none d-md-block">Check-in</small>
-                                                    <small class="d-block d-md-none">Check</small>
+                                                    <small class="d-none d-lg-block">Check-in</small>
+                                                    <small class="d-block d-lg-none">Check</small>
+                                                </button>
+                                            </a>
+                                            <a class="mb-0 d-none d-md-inline-block" href="{% url 'events_checkin_event_download' event.id %}">
+                                                <button type="button" style="margin-top: -1em; margin-bottom: -1em; padding-top: 0.1em; padding-bottom: 0.1em;" class="btn {% if event.is_event_future %}btn-primary{% else %}btn-dark{% endif %} pl-3 pr-3">
+                                                    <small style="font-size: 10px;"><i class="fas fa-file-excel"></i></small>
                                                 </button>
                                             </a>
                                         </div>
@@ -76,6 +81,7 @@
                         </div>
                     </div>
                 {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}

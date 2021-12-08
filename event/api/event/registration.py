@@ -3,12 +3,10 @@ from uuid import UUID
 import csv
 
 from event.enums import RegistrationStatus
-from event.models import Event
+from event.models import Registration
 
 
 def get_event_data_csv(event_id: UUID) -> StringIO:
-    event = Event.objects.get(id=event_id)
-
     registrations_csv = StringIO()
     csvwriter = csv.writer(
         registrations_csv, delimiter=";", quotechar="|", quoting=csv.QUOTE_MINIMAL
@@ -27,7 +25,14 @@ def get_event_data_csv(event_id: UUID) -> StringIO:
         ]
     )
 
-    for registration in event.registrations.active():
+    for registration in Registration.objects.filter(
+        event_id=event_id,
+        status__in=[
+            RegistrationStatus.REGISTERED,
+            RegistrationStatus.JOINED,
+            RegistrationStatus.ATTENDED,
+        ],
+    ):
         csvwriter.writerow(
             [
                 registration.id,

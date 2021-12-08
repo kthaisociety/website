@@ -113,7 +113,7 @@
             const registrationEmails = document.getElementsByClassName("registration-email");
             for (let i = 0; i < registrations.length; i++) {
                 const parent = registrations[i].parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
-                if(searched === "" || registrations[i].textContent.toLowerCase().includes(searched) || registrationEmails[i].textContent.toLowerCase().includes(searched)){
+                if(searched === "" || registrations[i].textContent.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(searched) || registrationEmails[i].textContent.toLowerCase().includes(searched)){
                     parent.style.display = "block";
                 }
                 else{

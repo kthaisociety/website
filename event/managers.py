@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 
-from event.enums import EventStatus
+from event.enums import EventStatus, RegistrationStatus
 
 
 class EventManager(models.Manager):
@@ -36,3 +36,18 @@ class EventManager(models.Manager):
 class SessionManager(models.Manager):
     def published(self):
         return super().get_queryset().filter(event__status=EventStatus.PUBLISHED)
+
+
+class RegistrationManager(models.Manager):
+    def active(self):
+        return (
+            super()
+            .get_queryset()
+            .filter(
+                status__in=[
+                    RegistrationStatus.REGISTERED,
+                    RegistrationStatus.JOINED,
+                    RegistrationStatus.ATTENDED,
+                ]
+            )
+        )

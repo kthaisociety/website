@@ -29,7 +29,7 @@ from event.enums import (
     StreamingProvider,
     SpeakerRoleType,
 )
-from event.managers import EventManager, SessionManager
+from event.managers import EventManager, SessionManager, RegistrationManager
 from user.enums import DietType
 
 
@@ -349,6 +349,8 @@ class Registration(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    objects = RegistrationManager()
 
     @property
     def dietary_restrictions(self):

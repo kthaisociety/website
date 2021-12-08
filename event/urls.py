@@ -10,6 +10,11 @@ urlpatterns = [
         views.checkin_event_register,
         name="events_checkin_event_register",
     ),
+    url(
+        r"^event/(?P<event_id>.*)/download$",
+        views.checkin_event_download,
+        name="events_checkin_event_download",
+    ),
     url(r"^event/(?P<code>.*)$", views.event, name="events_event"),
     url(
         r"^registration/(?P<registration_id>.*)/url$",

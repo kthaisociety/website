@@ -53,7 +53,6 @@ def retrieve_all() -> List[SlackChannel]:
                 and not slack_channel.get("is_private", True)
                 and not slack_channel.get("is_archived", True)
             ):
-                print(slack_channel)
                 slack_channels.append(create_slack_channel(slack_channel=slack_channel))
                 client.conversations_join(channel=slack_channel.get("id"))
 

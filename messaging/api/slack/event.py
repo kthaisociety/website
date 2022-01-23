@@ -41,7 +41,7 @@ def run(body: Dict) -> bool:
 
         if (
             reaction_id == SL_JOIN_EVENT
-            and body.get("item_user") == SL_ID
+            and body.get("item_user") == SL_BOT_ID
             and channel_id in [SL_CHANNEL_EVENTS, SL_CHANNEL_GENERAL]
         ):
             register.join_event(user_id=user_id, event_ts=body.get("item").get("ts"))

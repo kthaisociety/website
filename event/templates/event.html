@@ -59,7 +59,18 @@
                         {% if event.is_signup_open or registration %}
                             {% include "include/registration.html" with late_registration=False %}
                         {% else %}
-                            <p class="mb-0">Sorry, registration closed! Ping us at <a href="mailto:{{ app_email_contact }}" class="link-colour">{{ app_email_contact }}</a> if you need help.</p>
+                            <p class="mb-1">
+                                {% if event.signup_status == 1 %}
+                                    Sorry, the event has already taken place!
+                                {% elif event.signup_status == 2 %}
+                                    Sorry, the event is full as we have reached the attendance limit!
+                                {% elif event.signup_status == 4 %}
+                                    Sorry, the signup hasn't open yet. Make sure to check out this page soon!
+                                {% else %}
+                                    Sorry, registration closed!
+                                {% endif %}
+                            </p>
+                            <p class="mb-0">Ping us at <a href="mailto:{{ app_email_contact }}" class="link-colour">{{ app_email_contact }}</a> if you need help.</p>
                         {% endif %}
                     </div>
                 </div>

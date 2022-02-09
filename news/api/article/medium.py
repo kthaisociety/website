@@ -1,17 +1,14 @@
 import re
 from typing import Optional, Dict, List, Tuple
-import urllib
 
 import requests
-from django.core.files import File
 from django.core.files.base import ContentFile
-from django.core.files.temp import NamedTemporaryFile
 from django.db import transaction
 from django.db.models import Q
 from django.utils import timezone
 from django.utils.text import slugify
 
-from app.variables import APP_SN_MEDIUM
+from app.variables import APP_BLOG_MEDIUM
 from news.enums import ArticleType, ArticleStatus
 from news.models import Article, Author
 from user.enums import UserType
@@ -20,7 +17,7 @@ from user.models import User
 
 def get_medium_articles() -> Optional[List[Dict]]:
     response = requests.get(
-        f"https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@{APP_SN_MEDIUM}"
+        f"https://api.rss2json.com/v1/api.json?rss_url=https://{APP_BLOG_MEDIUM}/feed"
     )
 
     if response.status_code != 200:
@@ -39,6 +36,7 @@ def get_medium_articles() -> Optional[List[Dict]]:
         articles.append(
             {
                 "title": article.get("title").strip(),
+                "author": article.get("author").strip(),
                 "external_url": article.get("guid"),
                 "image": article.get("thumbnail"),
                 "body": body,
@@ -82,6 +80,14 @@ def import_medium_articles() -> Tuple[bool, int, int]:
             pos = authors_search.start()
             if pos:
                 body = body[:pos].strip()
+        else:
+            authors_search = re.search(
+                r"<h[1-6]>\s*Author(s)?\s*(:)?\s*<\/h[1-6]>", body
+            )
+            if authors_search:
+                pos = authors_search.start()
+                if pos:
+                    body = body[:pos].strip()
 
         if medium_article.get("external_url") in articles.keys():
             article = articles[medium_article.get("external_url")]

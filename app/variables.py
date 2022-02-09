@@ -16,6 +16,8 @@ APP_SN_LINKEDIN = "kth-ai-society"
 APP_SN_MEDIUM = "kthaisociety"
 APP_SN_GITHUB = "kthaisociety"
 
+APP_BLOG_MEDIUM = "blog.kthais.com"
+
 APP_EMAIL_PREFIX = "[" + APP_NAME + "] "
 
 APP_LEGAL_NAME = "KTH AI Society"

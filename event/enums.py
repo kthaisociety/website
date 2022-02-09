@@ -38,6 +38,26 @@ RegistrationStatus.labels = {
 RegistrationStatusDict = RegistrationStatus.labels
 
 
+class SignupStatus(enum.IntEnum):
+    OPEN = 0
+    PAST = 1
+    FULL = 2
+    CLOSED = 3
+    FUTURE = 4
+    OTHER = 5
+
+
+SignupStatus.labels = {
+    SignupStatus.OPEN: "Open",
+    SignupStatus.PAST: "Past event",
+    SignupStatus.FULL: "Attendance limit reached",
+    SignupStatus.CLOSED: "Closed",
+    SignupStatus.FUTURE: "Opens soon",
+    SignupStatus.OTHER: "Other",
+}
+SignupStatusDict = SignupStatus.labels
+
+
 class AttachmentType(enum.IntEnum):
     SLIDES = 0
     FILE = 1

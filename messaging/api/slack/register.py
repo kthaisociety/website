@@ -191,7 +191,7 @@ def join_event(user_id: str, event_ts: str) -> bool:
             "options": [
                 {
                     "text": {"type": "mrkdwn", "text": DietTypeDict[diet]},
-                    "value": str(diet),
+                    "value": str(diet.value),
                 }
                 for diet in DietType if diet != DietType.OTHER
             ],
@@ -402,11 +402,11 @@ def action_handler(payload):
                     diet = registration_obj.diet or user_obj.diet
                     if diet_other:
                         if diet:
-                            diet = f"{diet},{str(DietType.OTHER)}"
+                            diet = f"{diet},{str(DietType.OTHER.value)}"
                         else:
-                            diet = str(DietType.OTHER)
+                            diet = str(DietType.OTHER.OTHER.value)
                     elif diet:
-                        diet = ",".join([d for d in diet.split(",") if d != str(DietType.OTHER)])
+                        diet = ",".join([d for d in diet.split(",") if d != str(DietType.OTHER.value)])
 
                     registration_obj.diet = diet
                     registration_obj.diet_other = diet_other

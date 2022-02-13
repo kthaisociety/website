@@ -73,14 +73,12 @@ def announce_event(event: Event, creator_id: UUID):
         unfurl_media=False,
     )
 
-    slack_ts = response.get("message")
-
-    # TODO: Remove this update for model save
-    # https://sentry.io/organizations/kth-ai-society/issues/3011067224
-    Event.objects.filter(id=event.id).update(slack_ts=slack_ts)
+    slack_ts = response.get("message", {}).get("ts")
+    event.slack_ts = slack_ts
+    event.save()
 
     reaction.add(
-        channel_id=channel.external_id, message_id=event.slack_ts, emoji=SL_JOIN_EVENT
+        channel_id=channel.external_id, message_id=slack_ts, emoji=SL_JOIN_EVENT
     )
 
     log.create(

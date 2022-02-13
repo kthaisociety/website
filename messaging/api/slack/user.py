@@ -45,7 +45,12 @@ def set_picture(token: str, file: BytesIO) -> Tuple[bool, Optional[str]]:
     client = slack.WebClient(token)
     response = client.users_setPhoto(image=file.read())
     if not response.status_code == 200 or not response.data.get("ok", False):
-        return messaging.api.slack.message.send_error_message(error=SlackError.SET_USER_PICTURE), None
+        return (
+            messaging.api.slack.message.send_error_message(
+                error=SlackError.SET_USER_PICTURE
+            ),
+            None,
+        )
     return True, response.data.get("profile", {}).get("avatar_hash")
 
 

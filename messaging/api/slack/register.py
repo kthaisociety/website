@@ -183,15 +183,29 @@ def join_event(user_id: str, event_ts: str) -> bool:
     if event_obj.has_food:
         # The event has food and it will be collected
         user_diet = user_obj.diet or ""
-        initial_options = [
-            {"text": {"type": "mrkdwn", "text": DietTypeDict[int(t)]}, "value": t}
-            for t in (user_diet.split(",") if user_diet else [])
-        ]
-        other_restriction = user_obj.diet_other
-        diet_options = [
-            {"text": {"type": "mrkdwn", "text": value}, "value": str(key)}
-            for key, value in DietTypeDict.items()
-        ]
+        other_restriction = user_obj.diet_other or ""
+
+        diet_checkboxes = {
+            "action_id": f"event-registration-diet-{registration_obj.id}",
+            "type": "checkboxes",
+            "options": [
+                {
+                    "text": {"type": "mrkdwn", "text": DietTypeDict[diet]},
+                    "value": str(diet),
+                }
+                for diet in DietType
+            ],
+        }
+
+        if user_diet:
+            diet_checkboxes["initial_options"] = [
+                {
+                    "text": {"type": "mrkdwn", "text": DietTypeDict[int(diet)]},
+                    "value": diet,
+                }
+                for diet in user_diet.split(",")
+            ]
+
         block = [
             {
                 "type": "header",
@@ -208,32 +222,26 @@ def join_event(user_id: str, event_ts: str) -> bool:
             {
                 "type": "actions",
                 "block_id": "diet",
-                "elements": [
-                    {
-                        "action_id": f"event-registration-diet-{registration_obj.id}",
-                        "type": "checkboxes",
-                        "initial_options": initial_options,
-                        "options": diet_options,
-                    }
-                ],
+                "elements": [diet_checkboxes],
+            },
+            {
+                "type": "input",
+                "block_id": "diet_other",
+                "element": {
+                    "action_id": f"event-registration-diet-{registration_obj.id}",
+                    "type": "plain_text_input",
+                    "initial_value": other_restriction,
+                    "dispatch_action_config": {
+                        "trigger_actions_on": ["on_character_entered"]
+                    },
+                },
+                "label": {
+                    "type": "plain_text",
+                    "text": "Other restrictions",
+                    "emoji": True,
+                },
             },
         ]
-        if str(DietType.OTHER) in user_diet:
-            block += [
-                {
-                    "type": "input",
-                    "block_id": "diet_other",
-                    "element": {
-                        "action_id": f"event-registration-diet-{registration_obj.id}",
-                        "type": "plain_text_input",
-                        "initial_value": other_restriction,
-                        "dispatch_action_config": {
-                            "trigger_actions_on": ["on_character_entered"]
-                        },
-                    },
-                    "label": {"type": "plain_text", "text": "OTHER", "emoji": True},
-                },
-            ]
         channel.send_message(
             external_id=user_id,
             blocks=block,
@@ -374,21 +382,18 @@ def action_handler(payload):
         if action_id.startswith("event-registration-diet"):
             try:
                 _, registration_id = re.search(
-                    r"^(event-registration-diet)-(\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b)$", action_id
+                    r"^(event-registration-diet)-(\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b)$",
+                    action_id,
                 ).groups()
-                registration_obj = Registration.objects.filter(id=registration_id).first()
+                registration_obj = Registration.objects.filter(
+                    id=registration_id
+                ).first()
                 user_obj = registration_obj.user
-                event_obj = registration_obj.event
-
-                salutation = "Hey there :wave:!"
-                if user_obj:
-                    salutation = f"Hey there {user_obj.name} :wave:!"
 
                 if payload.actions.block_id == "diet":
                     diet = ""
                     for option in payload.actions[0].selected_options:
                         diet += option[0].value + ","
-                    has_other = str(DietType.OTHER) in diet
                     diet = diet[:-1]
 
                     registration_obj.diet = diet
@@ -396,111 +401,6 @@ def action_handler(payload):
 
                     user_obj.diet = diet
                     user_obj.save()
-
-                    if has_other and not str(DietType.OTHER) in registration_obj.diet:
-                        initial_options = [
-                            {"text": {"type": "mrkdwn", "text": DietTypeDict[int(t)]}, "value": t}
-                            for t in user_obj.diet.split(",")
-                        ]
-                        other_restriction = user_obj.diet_other
-                        diet_options = [
-                            {
-                                "text": {"type": "mrkdwn", "text": DietTypeDict[key]},
-                                "value": str(key),
-                            }
-                            for key in DietTypeDict
-                        ]
-                        block = [
-                            {
-                                "type": "header",
-                                "text": {"type": "plain_text", "text": "Dietary restrictions"},
-                            },
-                            {"type": "divider"},
-                            {
-                                "type": "section",
-                                "text": {
-                                    "type": "mrkdwn",
-                                    "text": f"{salutation}!\n\nYou are now registered to *{event_obj.name}*! This event will provide free food and that's why we need to know if you have any restrictions.",
-                                },
-                            },
-                            {
-                                "type": "actions",
-                                "block_id": "diet",
-                                "elements": [
-                                    {
-                                        "action_id": f"event-registration-diet-{registration_obj.id}",
-                                        "type": "checkboxes",
-                                        "initial_options": initial_options,
-                                        "options": diet_options,
-                                    }
-                                ],
-                            },
-                            {
-                                "type": "input",
-                                "block_id": "diet_other",
-                                "element": {
-                                    "action_id": f"event-registration-diet-{registration_obj.id}",
-                                    "type": "plain_text_input",
-                                    "initial_value": other_restriction,
-                                    "dispatch_action_config": {
-                                        "trigger_actions_on": ["on_character_entered"]
-                                    },
-                                },
-                                "label": {"type": "plain_text", "text": "OTHER", "emoji": True},
-                            },
-                        ]
-                        channel.update_message(
-                            external_id=user_obj.slack_id,
-                            message_ts=payload.message.ts,
-                            blocks=block,
-                            unfurl_links=False,
-                            unfurl_media=False,
-                        )
-                    elif not has_other and str(DietType.OTHER) in registration_obj.diet:
-                        initial_options = [
-                            {"text": {"type": "mrkdwn", "text": DietTypeDict[int(t)]}, "value": t}
-                            for t in user_obj.diet.split(",")
-                        ]
-                        diet_options = [
-                            {
-                                "text": {"type": "mrkdwn", "text": DietTypeDict[key]},
-                                "value": str(key),
-                            }
-                            for key in DietTypeDict
-                        ]
-                        block = [
-                            {
-                                "type": "header",
-                                "text": {"type": "plain_text", "text": "Dietary restrictions"},
-                            },
-                            {"type": "divider"},
-                            {
-                                "type": "section",
-                                "text": {
-                                    "type": "mrkdwn",
-                                    "text": f"{salutation}!\n\nYou are now registered to *{event_obj.name}*! This event will provide free food and that's why we need to know if you have any restrictions.",
-                                },
-                            },
-                            {
-                                "type": "actions",
-                                "block_id": "diet",
-                                "elements": [
-                                    {
-                                        "action_id": f"event-registration-diet-{registration_obj.id}",
-                                        "type": "checkboxes",
-                                        "initial_options": initial_options,
-                                        "options": diet_options,
-                                    }
-                                ],
-                            },
-                        ]
-                        channel.update_message(
-                            external_id=user_obj.slack_id,
-                            message_ts=payload.message.ts,
-                            blocks=block,
-                            unfurl_links=False,
-                            unfurl_media=False,
-                        )
                 elif payload.actions.block_id == "diet_other":
                     registration_obj.diet_other = payload.actions[0].value
                     registration_obj.save()

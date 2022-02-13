@@ -7,6 +7,7 @@ from app.settings import (
     SL_CHANNEL_EVENTS,
     SL_CHANNEL_GENERAL,
     SL_JOIN_EVENT,
+    SL_BOT_ID,
 )
 from messaging.api.slack import reaction, channel, chat, user, register
 

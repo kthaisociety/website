@@ -16,7 +16,7 @@ from app.settings import (
 from app.utils import get_full_url
 from business.models import Offer
 from event.models import Event
-from messaging.api.slack import log, reaction
+from messaging.api.slack import log
 from messaging.api.slack.channel import send_message
 from messaging.enums import LogType
 from messaging.models import SlackChannel
@@ -76,7 +76,9 @@ def announce_event(event: Event, creator_id: UUID):
     event.slack_ts = response.get("message")
     event.save()
 
-    reaction.add(
+    # TODO: Fix circular dependencies
+    import messaging.api.slack.reaction
+    messaging.api.slack.reaction.add(
         channel_id=channel.external_id, message_id=event.slack_ts, emoji=SL_JOIN_EVENT
     )
 

@@ -363,6 +363,15 @@ class Registration(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     @property
+    def is_active(self):
+        return self.status not in [
+            RegistrationStatus.REQUESTED,
+            RegistrationStatus.INTERESTED,
+            RegistrationStatus.WAIT_LISTED,
+            RegistrationStatus.CANCELLED,
+        ]
+
+    @property
     def dietary_restrictions(self):
         if not self.diet:
             return []

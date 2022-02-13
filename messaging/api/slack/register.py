@@ -29,15 +29,26 @@ def join_event(user_id: str, event_ts: str) -> bool:
         ).first()
         if registration_obj:
             # User has already registered to the event
-            block = [
-                {
-                    "type": "section",
-                    "text": {
-                        "type": "mrkdwn",
-                        "text": f"{salutation}\n\nWe know that you really want to attend *{event_obj.name}* but you are already registered! Make sure to check your email inbox :incoming_envelope:, we have sent you the registration email again :blush:.",
+            if registration_obj.is_active:
+                block = [
+                    {
+                        "type": "section",
+                        "text": {
+                            "type": "mrkdwn",
+                            "text": f"{salutation}\n\nWe know that you really want to attend *{event_obj.name}* but you are already registered! Make sure to check your email inbox :incoming_envelope:, we have sent you the registration email again :blush:.",
+                        },
                     },
-                },
-            ]
+                ]
+            else:
+                block = [
+                    {
+                        "type": "section",
+                        "text": {
+                            "type": "mrkdwn",
+                            "text": f"{salutation}\n\nWe know that you really want to attend *{event_obj.name}* but you cancelled your registration! If you need assistance please let us know here on Slack :slack: and we'll be glad to help you out.",
+                        },
+                    },
+                ]
 
             channel.send_message(
                 external_id=user_id,

@@ -193,7 +193,7 @@ def join_event(user_id: str, event_ts: str) -> bool:
                     "text": {"type": "mrkdwn", "text": DietTypeDict[diet]},
                     "value": str(diet),
                 }
-                for diet in DietType
+                for diet in DietType if diet != DietType.OTHER
             ],
         }
 
@@ -203,20 +203,15 @@ def join_event(user_id: str, event_ts: str) -> bool:
                     "text": {"type": "mrkdwn", "text": DietTypeDict[int(diet)]},
                     "value": diet,
                 }
-                for diet in user_diet.split(",")
+                for diet in user_diet.split(",") if int(diet) != DietType.OTHER
             ]
 
         block = [
             {
-                "type": "header",
-                "text": {"type": "plain_text", "text": "Dietary restrictions"},
-            },
-            {"type": "divider"},
-            {
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": f"{salutation}!\n\nYou are now registered to *{event_obj.name}*! This event will provide free food and that's why we need to know if you have any restrictions.",
+                    "text": f"{salutation}!\n\nYou are now registered to *{event_obj.name}*! This event will provide free food :sandwich: and that's why we need to know if you have any restrictions :dizzy_face:.",
                 },
             },
             {
@@ -402,7 +397,23 @@ def action_handler(payload):
                     user_obj.diet = diet
                     user_obj.save()
                 elif payload.actions.block_id == "diet_other":
-                    registration_obj.diet_other = payload.actions[0].value
+                    diet_other = payload.actions[0].value
+
+                    diet = registration_obj.diet or user_obj.diet
+                    if diet_other:
+                        if diet:
+                            diet = f"{diet},{str(DietType.OTHER)}"
+                        else:
+                            diet = str(DietType.OTHER)
+                    elif diet:
+                        diet = ",".join([d for d in diet.split(",") if d != str(DietType.OTHER)])
+
+                    registration_obj.diet = diet
+                    registration_obj.diet_other = diet_other
                     registration_obj.save()
+
+                    user_obj.diet = diet
+                    user_obj.diet_other = diet_other
+                    user_obj.save()
             except AttributeError:
                 pass

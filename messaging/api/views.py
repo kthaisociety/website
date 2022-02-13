@@ -14,7 +14,7 @@ from messaging.api.slack.register import action_handler
 @csrf_exempt
 @require_http_methods(["POST"])
 def slack_event(request):
-    body = json.loads(request.body)
+    body = request.json()
     run(body=body.get("event"))
     challenge = body.get("challenge")
     if challenge:
@@ -25,7 +25,7 @@ def slack_event(request):
 @csrf_exempt
 @require_http_methods(["POST"])
 def slack_action(request):
-    body = json.loads(request.body)
+    body = request.json()
     action_handler(payload=body)
     challenge = body.get("challenge")
     if challenge:

@@ -227,7 +227,7 @@ def join_event(user_id: str, event_ts: str) -> bool:
                     "type": "plain_text_input",
                     "initial_value": other_restriction,
                     "dispatch_action_config": {
-                        "trigger_actions_on": ["on_character_entered"]
+                        "trigger_actions_on": ["on_enter_pressed"]
                     },
                 },
                 "label": {

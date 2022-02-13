@@ -372,8 +372,9 @@ def leave_event(user_id: str, event_ts: str) -> bool:
 
 
 def action_handler(payload):
-    for action in payload.actions:
-        action_id = action.action_id
+    for action in payload["actions"]:
+        action_id = action["action_id"]
+        block_id = action["block_id"]
         if action_id.startswith("event-registration-diet"):
             try:
                 _, registration_id = re.search(
@@ -385,9 +386,9 @@ def action_handler(payload):
                 ).first()
                 user_obj = registration_obj.user
 
-                if payload.actions.block_id == "diet":
+                if block_id == "diet":
                     diet = ""
-                    for option in payload.actions[0].selected_options:
+                    for option in action["selected_options"]:
                         diet += option[0].value + ","
                     diet = diet[:-1]
 
@@ -396,8 +397,8 @@ def action_handler(payload):
 
                     user_obj.diet = diet
                     user_obj.save()
-                elif payload.actions.block_id == "diet_other":
-                    diet_other = payload.actions[0].value
+                elif block_id == "diet_other":
+                    diet_other = action["value"]
 
                     diet = registration_obj.diet or user_obj.diet
                     if diet_other:

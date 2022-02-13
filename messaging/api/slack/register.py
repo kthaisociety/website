@@ -33,7 +33,7 @@ def join_event(user_id: str, event_ts: str) -> bool:
                 {
                     "type": "section",
                     "text": {
-                        "type": "markdown",
+                        "type": "mrkdwn",
                         "text": f"{salutation}\n\nWe know that you really want to attend *{event_obj.name}* but you are already registered! Make sure to check your email inbox :incoming_envelope:, we have sent you the registration email again :blush:.",
                     },
                 },
@@ -66,7 +66,7 @@ def join_event(user_id: str, event_ts: str) -> bool:
             {
                 "type": "section",
                 "text": {
-                    "type": "markdown",
+                    "type": "mrkdwn",
                     "text": f"{salutation}\n\n{message}",
                 },
             },
@@ -130,7 +130,7 @@ def join_event(user_id: str, event_ts: str) -> bool:
             {
                 "type": "section",
                 "text": {
-                    "type": "markdown",
+                    "type": "mrkdwn",
                     "text": f"{salutation}\n\nThe event *{event_obj.name}* requires a resumé :page_facing_up: but you have never uploaded one!",
                 },
             },
@@ -356,7 +356,7 @@ def leave_event(user_id: str, event_ts: str) -> bool:
             {
                 "type": "section",
                 "text": {
-                    "type": "markdown",
+                    "type": "mrkdwn",
                     "text": f"{salutation}!\n\nWe have tried to remove your registration to *{event_obj.name}* but we couldn't find it!",
                 },
             },
@@ -391,7 +391,7 @@ def leave_event(user_id: str, event_ts: str) -> bool:
             {
                 "type": "section",
                 "text": {
-                    "type": "markdown",
+                    "type": "mrkdwn",
                     "text": f"{salutation}!\n\nThe event *{event_obj.name}* has already happened :date: and therefore we can't cancel your registration!",
                 },
             },
@@ -412,7 +412,7 @@ def leave_event(user_id: str, event_ts: str) -> bool:
         {
             "type": "section",
             "text": {
-                "type": "markdown",
+                "type": "mrkdwn",
                 "text": f"{salutation}!\n\nYou are now unregistered for *{event_obj.name}*, we hope to see you in future events!",
             },
         },

@@ -216,12 +216,6 @@ class Event(models.Model):
             return self.social_picture
         return self.picture
 
-    def set_slack_ts(self, ts, save=True):
-        self.slack_ts = ts
-
-        if save:
-            self.save()
-
     def clean(self):
         messages = {}
         if self.type != EventType.WEBINAR:

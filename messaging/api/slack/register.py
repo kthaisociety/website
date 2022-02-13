@@ -389,7 +389,7 @@ def action_handler(payload):
                 if block_id == "diet":
                     diet = ""
                     for option in action["selected_options"]:
-                        diet += option[0].value + ","
+                        diet += option["value"] + ","
                     diet = diet[:-1]
 
                     registration_obj.diet = diet

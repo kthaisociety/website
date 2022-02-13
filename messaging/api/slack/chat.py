@@ -4,7 +4,7 @@ import slack
 
 from app.enums import SlackError
 from app.settings import SL_TOKEN, SL_CHANNEL_WEBDEV
-from app.slack import send_error_message
+from messaging.api.slack.message import send_error_message
 
 
 def post(channel_id: str, text: str, message_id: Optional[str] = None) -> bool:

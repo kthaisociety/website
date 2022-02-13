@@ -9,7 +9,7 @@ from slack.web.slack_response import SlackResponse
 
 from app.enums import SlackError
 from app.settings import SL_TOKEN, SL_CHANNEL_WEBDEV, SL_USER_TOKEN
-from app.slack import send_error_message
+from messaging.api.slack.message import send_error_message
 from messaging.models import SlackChannel
 from user.models import User
 

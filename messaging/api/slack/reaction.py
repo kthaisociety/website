@@ -3,7 +3,7 @@ from slack.errors import SlackApiError
 
 from app.enums import SlackError
 from app.settings import SL_TOKEN, SL_CHANNEL_WEBDEV
-from app.slack import send_error_message
+from messaging.api.slack.message import send_error_message
 
 
 def add(channel_id: str, message_id: str, emoji: str) -> bool:

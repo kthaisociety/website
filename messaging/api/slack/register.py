@@ -182,9 +182,10 @@ def join_event(user_id: str, event_ts: str) -> bool:
 
     if event_obj.has_food:
         # The event has food and it will be collected
+        user_diet = user_obj.diet or ""
         initial_options = [
             {"text": {"type": "mrkdwn", "text": DietTypeDict[int(t)]}, "value": t}
-            for t in (user_obj.diet.split(",") if user_obj.diet else [])
+            for t in (user_diet.split(",") if user_diet else [])
         ]
         other_restriction = user_obj.diet_other
         diet_options = [
@@ -217,7 +218,7 @@ def join_event(user_id: str, event_ts: str) -> bool:
                 ],
             },
         ]
-        if str(DietType.OTHER) in user_obj.diet:
+        if str(DietType.OTHER) in user_diet:
             block += [
                 {
                     "type": "input",
@@ -393,6 +394,9 @@ def action_handler(payload):
                     registration_obj.diet = diet
                     registration_obj.save()
 
+                    user_obj.diet = diet
+                    user_obj.save()
+
                     if has_other and not str(DietType.OTHER) in registration_obj.diet:
                         initial_options = [
                             {"text": {"type": "mrkdwn", "text": DietTypeDict[int(t)]}, "value": t}
@@ -457,7 +461,6 @@ def action_handler(payload):
                             {"text": {"type": "mrkdwn", "text": DietTypeDict[int(t)]}, "value": t}
                             for t in user_obj.diet.split(",")
                         ]
-                        other_restriction = user_obj.diet_other
                         diet_options = [
                             {
                                 "text": {"type": "mrkdwn", "text": DietTypeDict[key]},

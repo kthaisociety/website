@@ -184,12 +184,12 @@ def join_event(user_id: str, event_ts: str) -> bool:
         # The event has food and it will be collected
         initial_options = [
             {"text": {"type": "mrkdwn", "text": DietTypeDict[int(t)]}, "value": t}
-            for t in user_obj.diet.split(",")
+            for t in (user_obj.diet.split(",") if user_obj.diet else [])
         ]
         other_restriction = user_obj.diet_other
         diet_options = [
-            {"text": {"type": "mrkdwn", "text": DietTypeDict[key]}, "value": str(key)}
-            for key in DietTypeDict
+            {"text": {"type": "mrkdwn", "text": value}, "value": str(key)}
+            for key, value in DietTypeDict.items()
         ]
         block = [
             {

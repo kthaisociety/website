@@ -219,22 +219,37 @@ def join_event(user_id: str, event_ts: str) -> bool:
                 "block_id": "diet",
                 "elements": [diet_checkboxes],
             },
+            # {
+            #     "type": "input",
+            #     "block_id": "diet_other",
+            #     "element": {
+            #         "action_id": f"event-registration-diet-{registration_obj.id}",
+            #         "type": "plain_text_input",
+            #         "initial_value": other_restriction,
+            #         "dispatch_action_config": {
+            #             "trigger_actions_on": ["on_character_entered"]
+            #         },
+            #     },
+            #     "label": {
+            #         "type": "plain_text",
+            #         "text": "Other restrictions",
+            #         "emoji": True,
+            #     },
+            # },
             {
-                "type": "input",
-                "block_id": "diet_other",
-                "element": {
-                    "action_id": f"event-registration-diet-{registration_obj.id}",
-                    "type": "plain_text_input",
-                    "initial_value": other_restriction,
-                    "dispatch_action_config": {
-                        "trigger_actions_on": ["on_enter_pressed"]
+                "type": "actions",
+                "elements": [
+                    {
+                        "type": "button",
+                        "text": {
+                            "type": "plain_text",
+                            "emoji": True,
+                            "text": ":heavy_plus_sign: Other restrictions",
+                        },
+                        "style": "primary",
+                        "url": f"{APP_FULL_DOMAIN}{reverse('events_event', args=(event_obj.id,))}",
                     },
-                },
-                "label": {
-                    "type": "plain_text",
-                    "text": "Other restrictions",
-                    "emoji": True,
-                },
+                ],
             },
         ]
         channel.send_message(

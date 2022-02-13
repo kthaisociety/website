@@ -193,7 +193,8 @@ def join_event(user_id: str, event_ts: str) -> bool:
                     "text": {"type": "mrkdwn", "text": DietTypeDict[diet]},
                     "value": str(diet.value),
                 }
-                for diet in DietType if diet != DietType.OTHER
+                for diet in DietType
+                if diet != DietType.OTHER
             ],
         }
 
@@ -203,7 +204,8 @@ def join_event(user_id: str, event_ts: str) -> bool:
                     "text": {"type": "mrkdwn", "text": DietTypeDict[int(diet)]},
                     "value": diet,
                 }
-                for diet in user_diet.split(",") if int(diet) != DietType.OTHER
+                for diet in user_diet.split(",")
+                if int(diet) != DietType.OTHER
             ]
 
         block = [
@@ -422,7 +424,13 @@ def action_handler(payload):
                         else:
                             diet = str(DietType.OTHER.OTHER.value)
                     elif diet:
-                        diet = ",".join([d for d in diet.split(",") if d != str(DietType.OTHER.value)])
+                        diet = ",".join(
+                            [
+                                d
+                                for d in diet.split(",")
+                                if d != str(DietType.OTHER.value)
+                            ]
+                        )
 
                     registration_obj.diet = diet
                     registration_obj.diet_other = diet_other

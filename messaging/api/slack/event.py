@@ -1,13 +1,6 @@
 from typing import Dict
 
-from app.settings import (
-    SL_ID,
-    SL_EMOJI_BOT,
-    SL_ANSWER_BOT,
-    SL_CHANNEL_EVENTS,
-    SL_CHANNEL_GENERAL,
-    SL_JOIN_EVENT,
-)
+from django.conf import settings
 from messaging.api.slack import reaction, channel, chat, user, register
 
 
@@ -17,8 +10,8 @@ def run(body: Dict) -> bool:
     if event_type == "app_mention":
         channel_id = body.get("channel")
         message_id = body.get("ts")
-        emoji = SL_EMOJI_BOT
-        text = SL_ANSWER_BOT
+        emoji = settings.SL_EMOJI_BOT
+        text = settings.SL_ANSWER_BOT
         if channel_id and message_id and emoji and text:
             if not reaction.add(
                 channel_id=channel_id, message_id=message_id, emoji=emoji
@@ -40,9 +33,9 @@ def run(body: Dict) -> bool:
         user_id = body.get("user")
 
         if (
-            reaction_id == SL_JOIN_EVENT
-            and body.get("item_user") == SL_BOT_ID
-            and channel_id in [SL_CHANNEL_EVENTS, SL_CHANNEL_GENERAL]
+            reaction_id == settings.SL_JOIN_EVENT
+            and body.get("item_user") == settings.SL_BOT_ID
+            and channel_id in [settings.SL_CHANNEL_EVENTS, settings.SL_CHANNEL_GENERAL]
         ):
             register.join_event(user_id=user_id, event_ts=body.get("item").get("ts"))
 
@@ -52,9 +45,9 @@ def run(body: Dict) -> bool:
         user_id = body.get("user")
 
         if (
-            reaction_id == SL_JOIN_EVENT
-            and body.get("item_user") == SL_ID
-            and channel_id in [SL_CHANNEL_EVENTS, SL_CHANNEL_GENERAL]
+            reaction_id == settings.SL_JOIN_EVENT
+            and body.get("item_user") == settings.SL_ID
+            and channel_id in [settings.SL_CHANNEL_EVENTS, settings.SL_CHANNEL_GENERAL]
         ):
             register.leave_event(user_id=user_id, event_ts=body.get("item").get("ts"))
     return success

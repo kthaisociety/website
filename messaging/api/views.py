@@ -28,7 +28,7 @@ def slack_event(request):
 @require_http_methods(["POST"])
 def slack_action(request):
     body = json.loads(request.body)
-    event_type = body.get("type")
+    # event_type = body.get("type")
     action_handler(payload=body)
     challenge = body.get("challenge")
     if challenge:

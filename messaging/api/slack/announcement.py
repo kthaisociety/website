@@ -1,6 +1,7 @@
 from typing import List
 from uuid import UUID
 
+from django.db import transaction
 from django.urls import reverse
 from django.utils import timezone
 
@@ -10,17 +11,19 @@ from app.settings import (
     SL_CHANNEL_EVENTS,
     SL_CHANNEL_ARTICLES,
     SL_CHANNEL_JOBS,
+    SL_JOIN_EVENT,
 )
 from app.utils import get_full_url
 from business.models import Offer
 from event.models import Event
-from messaging.api.slack import log
+from messaging.api.slack import log, reaction
 from messaging.api.slack.channel import send_message
 from messaging.enums import LogType
 from messaging.models import SlackChannel
 from news.models import Article
 
 
+@transaction.atomic
 def announce_event(event: Event, creator_id: UUID):
     event_extra = (
         f":clock3: {timezone.localtime(event.starts_at).strftime('%B %-d, %Y %H:%M')}"
@@ -28,9 +31,7 @@ def announce_event(event: Event, creator_id: UUID):
     if event.location:
         event_extra += f"\n:round_pushpin: {event.location}"
     if event.is_signup_open:
-        event_extra += (
-            f"\n:pencil: Make sure to *<{APP_FULL_DOMAIN}{event.url}|signup here>*"
-        )
+        event_extra += f"\n:pencil: *<{APP_FULL_DOMAIN}{event.url}|Signup here>*{' or react with :' + SL_JOIN_EVENT + ':' if not event.collect_resume else '' }"
     if event.social_url:
         event_extra += (
             f"\n:facebook: Check out our *<{event.social_url}|Facebook event>*"
@@ -45,13 +46,20 @@ def announce_event(event: Event, creator_id: UUID):
             "type": "section",
             "text": {
                 "type": "mrkdwn",
-                "text": event.description_paragraph + "\n\n" + event_extra,
+                "text": event_extra,
             },
-            "accessory": {
-                "type": "image",
-                "image_url": f"{APP_FULL_DOMAIN}{event.picture.url}",
-                "alt_text": "Event picture",
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": event.description_paragraph,
             },
+        },
+        {
+            "type": "image",
+            "image_url": f"{APP_FULL_DOMAIN}{event.picture.url}",
+            "alt_text": "Event picture",
         },
     ]
 
@@ -63,6 +71,14 @@ def announce_event(event: Event, creator_id: UUID):
         blocks=blocks,
         unfurl_links=False,
         unfurl_media=False,
+    )
+
+    slack_ts = response.get("message", {}).get("ts")
+    event.slack_ts = slack_ts
+    event.save()
+
+    reaction.add(
+        channel_id=channel.external_id, message_id=slack_ts, emoji=SL_JOIN_EVENT
     )
 
     log.create(

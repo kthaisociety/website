@@ -3,7 +3,7 @@ from django.urls import reverse
 
 from app.enums import SlackError
 from app.settings import SL_ID, SL_SECRET, APP_FULL_DOMAIN
-from app.slack import send_error_message
+from messaging.api.slack.message import send_error_message
 from user.models import User
 
 

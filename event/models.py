@@ -68,6 +68,11 @@ class Event(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    # Slack Timestamp
+    # The size is not explained in the original docs:
+    # https://api.slack.com/apis/connections/events-api#the-events-api__receiving-events__event-type-structure
+    slack_ts = models.CharField(max_length=255, blank=True, null=True)
+
     objects = EventManager()
 
     @property
@@ -356,6 +361,15 @@ class Registration(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def is_active(self):
+        return self.status not in [
+            RegistrationStatus.REQUESTED,
+            RegistrationStatus.INTERESTED,
+            RegistrationStatus.WAIT_LISTED,
+            RegistrationStatus.CANCELLED,
+        ]
 
     @property
     def dietary_restrictions(self):

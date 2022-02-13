@@ -8,15 +8,25 @@ from django.views.decorators.http import require_http_methods
 
 from messaging.api.slack import auth
 from messaging.api.slack.event import run
+from messaging.api.slack.register import action_handler
 
 
 @csrf_exempt
 @require_http_methods(["POST"])
 def slack_event(request):
     body = json.loads(request.body)
-    event_type = body.get("type")
-    if event_type == "event_callback":
-        run(body=body.get("event"))
+    run(body=body.get("event"))
+    challenge = body.get("challenge")
+    if challenge:
+        return JsonResponse({"challenge": body.get("challenge")})
+    return HttpResponse()
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def slack_action(request):
+    body = json.loads(request.POST["payload"])
+    action_handler(payload=body)
     challenge = body.get("challenge")
     if challenge:
         return JsonResponse({"challenge": body.get("challenge")})

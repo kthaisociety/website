@@ -134,3 +134,13 @@ def shorten(value, arg):
     except ValueError:
         return value
     return Truncator(value).words(length, truncate="...")
+
+
+@register.filter(name="split")
+def split(value, key):
+    return value.split(key)
+
+
+@register.filter()
+def to_int(value):
+    return int(value)

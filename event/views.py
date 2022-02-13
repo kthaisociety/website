@@ -1,21 +1,37 @@
 from collections import defaultdict
+from io import BytesIO
+
+import qrcode
+import qrcode.image.svg
 
 from django.contrib import messages
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
-from django.http import HttpResponseNotFound, HttpResponse, HttpResponseRedirect
+from django.db.models import Subquery, OuterRef, Count, Value, Prefetch
+from django.db.models.functions import Coalesce, Lower
+from django.http import (
+    HttpResponseNotFound,
+    HttpResponse,
+    HttpResponseRedirect,
+    JsonResponse,
+)
 from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
 
+from django.conf import settings
+
 import user.utils
+from event.api.event.registration import get_event_data_csv
 
 from event.enums import RegistrationStatus, ScheduleType
 from event.models import Event, Registration, Session, Schedule
 from event.tasks import send_registration_email
-from user.enums import DietType
+from user.enums import DietType, UserType
 
 
-def event(request, code):
+def event(request, code, is_late: bool = False):
     event = Event.objects.published().filter(code=code).first()
     if request.user.is_authenticated:
         registration = Registration.objects.filter(
@@ -27,7 +43,9 @@ def event(request, code):
     form = {}
 
     if event:
-        if request.method == "POST" and event.registration_available:
+        if request.method == "POST" and (
+            (not is_late and event.registration_available) or is_late
+        ):
             type = request.POST.get("submit", None)
 
             if type != "register" and not request.user.is_authenticated:
@@ -76,6 +94,9 @@ def event(request, code):
                                 request,
                                 "All fields are required, if you are already have an account you can login first.",
                             )
+
+                        if email:
+                            email = email.lower()
 
                         user_obj = user.utils.get_user_by_email(email=email)
                         if not user_obj:
@@ -234,4 +255,168 @@ def registration_url(request, registration_id):
         registration.status = RegistrationStatus.JOINED
         registration.save()
         return HttpResponseRedirect(registration.event.external_url)
+    return HttpResponseNotFound()
+
+
+@login_required
+@staff_member_required
+def checkin_events(request):
+    event_objs = (
+        Event.objects.published()
+        .prefetch_related("registrations")
+        .annotate(
+            registrations_pending_students=Coalesce(
+                Subquery(
+                    Registration.objects.filter(
+                        event_id=OuterRef("id"),
+                        status__in=[
+                            RegistrationStatus.REGISTERED,
+                        ],
+                    )
+                    .exclude(user__type=UserType.ORGANISER)
+                    .values("event_id")
+                    .annotate(count=Count("id"))
+                    .values_list("count", flat="True")[:1]
+                ),
+                Value(0),
+            ),
+            registrations_pending_us=Coalesce(
+                Subquery(
+                    Registration.objects.filter(
+                        event_id=OuterRef("id"),
+                        status__in=[
+                            RegistrationStatus.REGISTERED,
+                        ],
+                        user__type=UserType.ORGANISER,
+                    )
+                    .values("event_id")
+                    .annotate(count=Count("id"))
+                    .values_list("count", flat="True")[:1]
+                ),
+                Value(0),
+            ),
+            registrations_joined_all=Coalesce(
+                Subquery(
+                    Registration.objects.filter(
+                        event_id=OuterRef("id"),
+                        status__in=[
+                            RegistrationStatus.JOINED,
+                            RegistrationStatus.ATTENDED,
+                        ],
+                    )
+                    .values("event_id")
+                    .annotate(count=Count("id"))
+                    .values_list("count", flat="True")[:1]
+                ),
+                Value(0),
+            ),
+            registrations_cancelled_all=Coalesce(
+                Subquery(
+                    Registration.objects.filter(
+                        event_id=OuterRef("id"),
+                        status__in=[
+                            RegistrationStatus.CANCELLED,
+                        ],
+                    )
+                    .values("event_id")
+                    .annotate(count=Count("id"))
+                    .values_list("count", flat="True")[:1]
+                ),
+                Value(0),
+            ),
+        )
+        .order_by("-created_at")
+    )
+    return render(request, "checkin_events.html", {"events": event_objs})
+
+
+@login_required
+@staff_member_required
+def checkin_event(request, code):
+    event_obj = (
+        Event.objects.filter(code=code)
+        .prefetch_related(
+            Prefetch(
+                "registrations",
+                Registration.objects.select_related("user").order_by(
+                    "status", Lower("user__name"), Lower("user__surname")
+                ),
+                to_attr="all_registrations",
+            ),
+        )
+        .first()
+    )
+    if event_obj:
+        return render(request, "checkin_event.html", {"event": event_obj})
+    return HttpResponseNotFound()
+
+
+@login_required
+@staff_member_required
+def checkin_event_attend(request, registration_id):
+    registration_obj = Registration.objects.filter(id=registration_id).first()
+    if not registration_obj:
+        return JsonResponse({"error": True})
+    if registration_obj.status == RegistrationStatus.ATTENDED:
+        registration_obj.status = RegistrationStatus.REGISTERED
+    else:
+        registration_obj.status = RegistrationStatus.ATTENDED
+    registration_obj.save()
+    return JsonResponse({"error": False, "status": registration_obj.status.value})
+
+
+@login_required
+@staff_member_required
+def checkin_event_qr(request, code):
+    event_obj = Event.objects.published().filter(code=code).first()
+    if event_obj:
+        factory = qrcode.image.svg.SvgImage
+        img = qrcode.make(
+            settings.APP_FULL_DOMAIN
+            + reverse("events_checkin_event_register", args=(event_obj.id,)),
+            image_factory=factory,
+            box_size=20,
+        )
+        stream = BytesIO()
+        img.save(stream)
+        return render(
+            request,
+            "checkin_event_qr.html",
+            context={"event": event_obj, "qr": stream.getvalue().decode()},
+        )
+    return HttpResponseNotFound()
+
+
+def checkin_event_register(request, event_id):
+    event_obj = Event.objects.published().filter(id=event_id).first()
+    if (
+        event_obj
+        and event_obj.starts_at <= timezone.now() + timezone.timedelta(hours=6)
+        and event_obj.ends_at >= timezone.now() - timezone.timedelta(hours=6)
+    ):
+        if request.method == "POST":
+            return event(request=request, code=event_obj.code, is_late=True)
+        registration_obj = None
+        if request.user.is_authenticated:
+            registration_obj = Registration.objects.filter(
+                event=event_obj, user=request.user
+            ).first()
+        return render(
+            request,
+            "checkin_event_register.html",
+            context={"event": event_obj, "registration": registration_obj},
+        )
+    return HttpResponseNotFound()
+
+
+@login_required
+@staff_member_required
+def checkin_event_download(request, event_id):
+    event_obj = Event.objects.published().filter(id=event_id).first()
+    if event_obj:
+        data = get_event_data_csv(event_id=event_id)
+        response = HttpResponse(data.getvalue(), content_type="text/csv")
+        file_name = f"{settings.APP_NAME.replace(' ', '').lower()}_registrations_{str(event_id)}_{str(int(timezone.now().timestamp()))}.csv"
+        response["Content-Disposition"] = f'attachment; filename="{file_name}"'
+        return response
     return HttpResponseNotFound()

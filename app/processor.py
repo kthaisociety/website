@@ -1,4 +1,5 @@
 from app.utils import get_substitutions_templates
+from event.enums import RegistrationStatusDict
 
 
 def variables_processor(request=None):
@@ -26,7 +27,10 @@ def variables_processor(request=None):
     c["offers"] = get_offers()
 
     c["enums"] = {
-        "event": {"streaming_provider": StreamingProviderDict},
+        "event": {
+            "streaming_provider": StreamingProviderDict,
+            "registration_status": RegistrationStatusDict,
+        },
         "user": {
             "gender": GenderTypeDict,
             "gender_colours": GenderTypeColoursDict,

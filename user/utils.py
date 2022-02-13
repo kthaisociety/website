@@ -126,7 +126,7 @@ def send_created(user: User):
     send_created_email(user_id=user.id)
 
 
-def get_user_data_zip(user_id: UUID) -> BytesIO:
+def get_user_data_zip(user_id: int) -> BytesIO:
     user = User.objects.get(id=user_id)
 
     user_csv = StringIO()

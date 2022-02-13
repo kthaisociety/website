@@ -117,15 +117,16 @@ def update(user_data: Dict) -> bool:
 
         user.save()
 
+        # TODO: Don't create a update look, needs to be checked
         # Yes, this will keep the worker completely stuck here, no other solution
         # for now due to Slack sending a ton of events too close to each other
-        time.sleep(2)
-
-        if profile_picture_updated and user.slack_token:
-            picture_success, picture_hash = set_picture(
-                token=user.slack_token, file=BytesIO(user.slack_picture.file.read())
-            )
-            return picture_success
+        # time.sleep(2)
+        #
+        # if profile_picture_updated and user.slack_token:
+        #     picture_success, picture_hash = set_picture(
+        #         token=user.slack_token, file=BytesIO(user.slack_picture.file.read())
+        #     )
+        #     return picture_success
         return True
     return False
 

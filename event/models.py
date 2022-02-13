@@ -28,6 +28,7 @@ from event.enums import (
     ScheduleType,
     StreamingProvider,
     SpeakerRoleType,
+    SignupStatus,
 )
 from event.managers import EventManager, SessionManager
 from user.enums import DietType
@@ -176,21 +177,27 @@ class Event(models.Model):
 
     @property
     def is_signup_open(self) -> bool:
+        return self.signup_status == SignupStatus.OPEN
+
+    @property
+    def signup_status(self) -> SignupStatus:
         if self.ends_at and timezone.now() > self.ends_at:
-            return False
+            return SignupStatus.PAST
         elif self.is_signup_full:
-            return False
+            return SignupStatus.FULL
         elif not self.signup_ends_at:
-            return True
+            return SignupStatus.OPEN
         elif timezone.now() > self.signup_ends_at:
-            return False
+            return SignupStatus.PAST
         elif self.signup_starts_at:
-            return timezone.now() >= self.signup_starts_at
-        return False
+            if timezone.now() >= self.signup_starts_at:
+                return SignupStatus.OPEN
+            return SignupStatus.FUTURE
+        return SignupStatus.CLOSED
 
     @property
     def is_signup_full(self):
-        if self.attendance_limit:
+        if self.attendance_limit is not None:
             return (
                 Registration.objects.filter(
                     event_id=self.id,

@@ -60,6 +60,7 @@
                                             {% endif %}
                                             {% if request.user.email_verified and request.user.is_staff %}
                                                 <span class="ml-2"><a class="link-main" href="{% url 'app_statistics' %}">Statistics</a></span>
+                                                <span class="ml-2"><a class="link-main" href="{% url 'events_checkin_events' %}">Check-in</a></span>
                                             {% endif %}
                                             <span class="ml-2"><a class="link-main" href="{% url 'user_dashboard' %}">Dashboard</a></span>
                                             <span class="ml-2"><a class="link-main" href="{% url 'user_logout' %}">Logout</a></span>
@@ -113,6 +114,7 @@
                                             About
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="dropdown-about">
+                                            <a class="dropdown-item" href="{% url 'app_about_contact' %}">Contact</a>
                                             <a class="dropdown-item" href="{% url 'app_about_team' %}">Team</a>
                                         </div>
                                     </li>
@@ -252,7 +254,8 @@
                             <li class="nav-item">
                                 <small class="mb-0">Need help? Ping us at <a href="mailto:{{ app_email_contact }}" class="link-main">{{ app_email_contact }}</a>.</small>
                                 <br>
-                                <small><a href="{% url 'page_page' 'legal' 'legal-notice' %}" class="link-main">Legal notice</a></small>
+                                <small><a href="{% url 'app_about_contact' %}" class="link-main">Contact</a></small>
+                                <small class="ml-2"><a href="{% url 'page_page' 'legal' 'legal-notice' %}" class="link-main">Legal notice</a></small>
                                 <small class="ml-2"><a href="{% url 'page_page' 'legal' 'terms-and-conditions' %}" class="link-main">Terms and Conditions</a></small>
                                 <small class="ml-2"><a href="{% url 'page_page' 'legal' 'privacy-and-cookies' %}" class="link-main">Privacy and Cookies</a></small>
                             </li>
@@ -267,7 +270,8 @@
                             <li class="nav-item">
                                 <small class="mb-0">Need help? Ping us at <a href="mailto:{{ app_email_contact }}" class="link-main">{{ app_email_contact }}</a>.</small>
                                 <br>
-                                <small><a href="{% url 'page_page' 'legal' 'legal-notice' %}" class="link-main">Legal notice</a></small>
+                                <small><a href="{% url 'app_about_contact' %}" class="link-main">Contact</a></small>
+                                <small class="ml-2"><a href="{% url 'page_page' 'legal' 'legal-notice' %}" class="link-main">Legal notice</a></small>
                                 <small class="ml-2"><a href="{% url 'page_page' 'legal' 'terms-and-conditions' %}" class="link-main">Terms and Conditions</a></small>
                                 <small class="ml-2"><a href="{% url 'page_page' 'legal' 'privacy-and-cookies' %}" class="link-main">Privacy and Cookies</a></small>
                             </li>

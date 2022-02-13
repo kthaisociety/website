@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils import timezone
 
-from event.enums import EventStatus
+from event.enums import EventStatus, RegistrationStatus
 
 
 class EventManager(models.Manager):

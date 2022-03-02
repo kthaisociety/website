@@ -32,7 +32,14 @@ from user.enums import DietType, UserType
 
 
 def event(request, code, is_late: bool = False):
-    event = Event.objects.published().filter(code=code).first()
+    event = (
+        Event.objects.published()
+        .filter(code=code)
+        .prefetch_related(
+            Prefetch("sessions", Session.objects.all().order_by("starts_at"))
+        )
+        .first()
+    )
     if request.user.is_authenticated:
         registration = Registration.objects.filter(
             event=event, user=request.user

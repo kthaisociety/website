@@ -23,6 +23,9 @@
                 <button class="btn btn-dark" type="submit" name="submit" value="cancel">Cancel</button>
             </form>
         {% endif %}
+    {% elif event.signup_url %}
+        <p class="mb-2">This event has an external site to register, click the link below to access the page!{% if event.signup_ends_at %} — <strong>Registration closes {{ event.signup_ends_at|date:"Y-m-d H:i e" }}!</strong>{% endif %}</p>
+        <a class="btn btn-primary text-white" target="_blank" href="{{ event.signup_url }}">External registration</a>
     {% elif request.user.is_authenticated %}
         {% if not late_registration %}
             <p class="mb-2">Do you want to register for this event?{% if event.signup_ends_at %} — <strong>Registration closes {{ event.signup_ends_at|date:"Y-m-d H:i e" }}!</strong>{% endif %}</p>

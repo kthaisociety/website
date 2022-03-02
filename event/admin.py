@@ -151,7 +151,7 @@ class EventAdmin(admin.ModelAdmin):
     )
     list_filter = ("type", "status")
     ordering = ("-created_at", "-updated_at", "name")
-    readonly_fields = ("diet_restrictions",)
+    readonly_fields = ("diet_restrictions", "slack_ts")
     inlines = [SessionInline, RegistrationInline]
     actions = [send_slack_announcement]
 

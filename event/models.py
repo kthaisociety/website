@@ -54,6 +54,7 @@ class Event(models.Model):
     location = models.CharField(max_length=255, blank=True, null=True)
     signup_starts_at = models.DateTimeField(blank=True, null=True)
     signup_ends_at = models.DateTimeField(blank=True, null=True)
+    signup_url = models.URLField(max_length=200, blank=True, null=True)
     account_required = models.BooleanField(default=False)
     registration_available = models.BooleanField(default=True)
     attendance_target = models.IntegerField(blank=True, null=True)

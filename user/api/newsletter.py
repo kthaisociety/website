@@ -12,7 +12,7 @@ def update_newsletter_list(user_id: UUID):
         return
 
     user = User.objects.get(id=user_id)
-    if not user.registration_finished:
+    if not user.registration_finished or user.is_forgotten:
         return
 
     try:

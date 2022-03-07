@@ -7,13 +7,17 @@ from user.models import User
 from event.models import Event, Registration
 from event.enums import RegistrationStatus, SignupStatus
 from user.enums import DietType, DietTypeDict
-from app.settings import APP_FULL_DOMAIN
+from app.settings import APP_FULL_DOMAIN, SL_JOIN_EVENT
 
 from messaging.api.slack import channel
 
 
 def join_event(user_id: str, event_ts: str) -> bool:
-    event_obj = Event.objects.published().filter(slack_ts=event_ts).first()
+    event_obj = (
+        Event.objects.published()
+        .filter(slack_ts=event_ts, signup_url__isnull=True)
+        .first()
+    )
 
     if not event_obj:
         # User has reacted to a message with the emoji but it is not an event announcement
@@ -267,7 +271,7 @@ def join_event(user_id: str, event_ts: str) -> bool:
             "type": "section",
             "text": {
                 "type": "mrkdwn",
-                "text": f"{salutation}!\n\nYou are now registered for *{event_obj.name}*! You should have received an email :incoming_envelope: with your registration confirmation, you will be notified closer to the event :date: with extra details if that is required.",
+                "text": f"{salutation}!\n\nYou are now registered for *{event_obj.name}*! You should have received an email :incoming_envelope: with your registration confirmation, you will be notified closer to the event :date: with extra details if that is required. If you want to cancel your registration you just need to remove the reaction :{SL_JOIN_EVENT}:.",
             },
         },
     ]

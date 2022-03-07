@@ -60,7 +60,7 @@ def announce_event(event: Event, creator_id: UUID):
         },
         {
             "type": "image",
-            "image_url": f"{APP_FULL_DOMAIN}{event.picture.url}",
+            "image_url": f"{APP_FULL_DOMAIN}{event.picture.crop['1500x1000'].url}",
             "alt_text": "Event picture",
         },
     ]

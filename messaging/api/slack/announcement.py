@@ -25,13 +25,15 @@ from news.models import Article
 
 @transaction.atomic
 def announce_event(event: Event, creator_id: UUID):
+    can_slack_signup = not event.collect_resume and not event.signup_url
+
     event_extra = (
         f":clock3: {timezone.localtime(event.starts_at).strftime('%B %-d, %Y %H:%M')}"
     )
     if event.location:
         event_extra += f"\n:round_pushpin: {event.location}"
     if event.is_signup_open:
-        event_extra += f"\n:pencil: *<{event.signup_url if event.signup_url else APP_FULL_DOMAIN + event.url}|Signup here>*{' or react with :' + SL_JOIN_EVENT + ':' if not event.collect_resume and not event.signup_url else '' }"
+        event_extra += f"\n:pencil: *<{event.signup_url if event.signup_url else APP_FULL_DOMAIN + event.url}|Signup here>*{' or react with :' + SL_JOIN_EVENT + ':' if can_slack_signup else '' }"
     if event.social_url:
         event_extra += (
             f"\n:facebook: Check out our *<{event.social_url}|Facebook event>*"
@@ -77,9 +79,10 @@ def announce_event(event: Event, creator_id: UUID):
     event.slack_ts = slack_ts
     event.save()
 
-    reaction.add(
-        channel_id=channel.external_id, message_id=slack_ts, emoji=SL_JOIN_EVENT
-    )
+    if can_slack_signup:
+        reaction.add(
+            channel_id=channel.external_id, message_id=slack_ts, emoji=SL_JOIN_EVENT
+        )
 
     log.create(
         type=LogType.EVENT,

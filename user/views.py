@@ -185,7 +185,7 @@ def user_register(request):
             else:
                 city, country = city_and_country
         if email:
-            email = email.lower()
+            email = email.lower().strip()
             if email.endswith("@kthais.com"):
                 messages.error(
                     request,

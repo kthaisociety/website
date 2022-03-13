@@ -52,8 +52,7 @@ def delete_user_newsletter(user_id: UUID):
         client = mailchimp_marketing.Client()
         client.set_config({"api_key": MAILCHIMP_KEY, "server": MAILCHIMP_PREFIX})
         client.lists.delete_list_member_permanent(
-            list_id=MAILCHIMP_LIST,
-            subscriber_hash=user.subscriber_id
+            list_id=MAILCHIMP_LIST, subscriber_hash=user.subscriber_id
         )
     except ApiClientError:
         pass

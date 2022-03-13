@@ -264,9 +264,10 @@ class User(AbstractBaseUser, PermissionsMixin):
             return
 
         import user.api.newsletter
+
         transaction.on_commit(
             lambda: user.api.newsletter.delete_user_newsletter(self.id)
-        );
+        )
 
         self.email = "forgoten_" + str(self.id) + "@member.kthais.com"
         self.name = "Forgotten"

@@ -87,7 +87,7 @@ def files(request, file_):
 @require_POST
 @csrf_exempt
 def deploy(request):
-    forwarded_for = u"{}".format(request.META.get("HTTP_X_FORWARDED_FOR"))
+    forwarded_for = "{}".format(request.META.get("HTTP_X_FORWARDED_FOR"))
     client_ip_address = ip_address(forwarded_for)
     whitelist = requests.get("https://api.github.com/meta").json()["hooks"]
 

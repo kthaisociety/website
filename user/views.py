@@ -185,7 +185,12 @@ def user_register(request):
             else:
                 city, country = city_and_country
         if email:
-            email = email.lower()
+            email = email.lower().strip()
+            if email.endswith("@kthais.com"):
+                messages.error(
+                    request,
+                    "You can not register with KTH AI Society email, use the login with Google instead.",
+                )
         form = {
             "first_name": name,
             "last_name": surname,

@@ -323,6 +323,7 @@ CRONJOBS = [
     ("0 20 * * *", "app.cron.slack_check_users"),
     ("5 * * * *", "messaging.cron.slack_retrieve_channels"),
     ("0 11 * * *", "business.cron.announce_latest_job_offers"),
+    ("0 18 * * *", "news.cron.post_random_fact"),
 ]
 
 CRONTAB_COMMAND_PREFIX = f". {BASE_DIR}/environment.sh;"
@@ -502,3 +503,8 @@ GROUP_BY_DIVISION_NAME = {
 MAILCHIMP_KEY = os.environ.get("MAILCHIMP_KEY", None)
 MAILCHIMP_PREFIX = os.environ.get("MAILCHIMP_PREFIX", None)
 MAILCHIMP_LIST = os.environ.get("MAILCHIMP_LIST", None)
+
+TWITTER_API_KEY = os.environ.get("TWITTER_API_KEY", None)
+TWITTER_API_KEY_SECRET = os.environ.get("TWITTER_API_KEY_SECRET", None)
+TWITTER_ACCESS_TOKEN = os.environ.get("TWITTER_ACCESS_TOKEN", None)
+TWITTER_ACCESS_TOKEN_SECRET = os.environ.get("TWITTER_ACCESS_TOKEN_SECRET", None)

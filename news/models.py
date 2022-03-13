@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.utils.text import slugify
 from versatileimagefield.fields import VersatileImageField
 
-from news.enums import ArticleStatus, ArticleType
+from news.enums import ArticleStatus, ArticleType, PostType, FactStatus
 from news.managers import ArticleManager
 
 
@@ -88,3 +88,31 @@ class Author(models.Model):
     user = models.ForeignKey(
         "user.User", on_delete=models.PROTECT, related_name="authorships"
     )
+
+
+class Fact(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    content = models.TextField(max_length=280)
+    picture = VersatileImageField(
+        "Image", upload_to="news/fact/", null=True, blank=True
+    )
+    status = models.PositiveSmallIntegerField(
+        choices=((s.value, s.name) for s in FactStatus),
+        default=FactStatus.DRAFT.value,
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+class FactPost(models.Model):
+    fact = models.ForeignKey(
+        "news.Fact", on_delete=models.PROTECT, related_name="posts"
+    )
+    type = models.PositiveSmallIntegerField(
+        choices=((s.value, s.name) for s in PostType),
+    )
+    external_id = models.CharField(null=True, blank=True, max_length=255)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

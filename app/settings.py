@@ -366,7 +366,7 @@ PERMISSION_GROUPS = {
                 "speaker",
                 "speakerrole",
             ],
-            "news": ["article", "author"],
+            "news": ["article", "author", "fact"],
         },
         "change": {
             "business": ["company", "contact", "offer", "sponsorship", "tier"],
@@ -378,9 +378,13 @@ PERMISSION_GROUPS = {
                 "speaker",
                 "speakerrole",
             ],
-            "news": ["article", "author"],
+            "news": ["article", "author", "fact"],
         },
-        "view": {"business": ["contact"], "event": ["registration"]},
+        "view": {
+            "business": ["contact"],
+            "event": ["registration"],
+            "news": ["factpost"],
+        },
         "delete": {
             "business": ["company", "contact", "offer", "sponsorship", "tier"],
             "event": [
@@ -417,9 +421,9 @@ PERMISSION_GROUPS = {
                 "speakerrole",
             ],
             "messaging": ["slackchannel"],
-            "news": ["article", "author"],
+            "news": ["article", "author", "fact"],
         },
-        "view": {"event": ["registration"]},
+        "view": {"event": ["registration"], "news": ["factpost"]},
         "delete": {
             "event": [
                 "attachment",
@@ -444,7 +448,7 @@ PERMISSION_GROUPS = {
                 "speakerrole",
             ],
             "messaging": ["slackchannel"],
-            "news": ["article", "author"],
+            "news": ["article", "author", "fact"],
         },
         "change": {
             "event": [
@@ -458,7 +462,7 @@ PERMISSION_GROUPS = {
             "messaging": ["slackchannel"],
             "news": ["article", "author"],
         },
-        "view": {"event": ["registration"], "user": ["user"]},
+        "view": {"event": ["registration"], "user": ["user"], "news": ["factpost"]},
         "delete": {
             "event": [
                 "attachment",

@@ -9,7 +9,7 @@ APP_EMAIL_BUSINESS = "business@kthais.com"
 APP_EMAIL_NOREPLY = "noreply@kthais.com"
 
 APP_SN_FACEBOOK = "KTHAISociety"
-APP_SN_TWITTER = None
+APP_SN_TWITTER = "KTHAISociety"
 APP_SN_INSTAGRAM = "kthaisociety"
 APP_SN_YOUTUBE = "UCi4Ybn19Fvq4NaeR7aTCwtg"
 APP_SN_LINKEDIN = "kth-ai-society"

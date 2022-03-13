@@ -323,7 +323,7 @@ CRONJOBS = [
     ("0 20 * * *", "app.cron.slack_check_users"),
     ("5 * * * *", "messaging.cron.slack_retrieve_channels"),
     ("0 11 * * *", "business.cron.announce_latest_job_offers"),
-    ("0 19 * * *", "news.cron.post_random_fact"),
+    ("0 18 * * *", "news.cron.post_random_fact"),
 ]
 
 CRONTAB_COMMAND_PREFIX = f". {BASE_DIR}/environment.sh;"

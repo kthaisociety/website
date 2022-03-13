@@ -41,3 +41,19 @@ def update_newsletter_list(user_id: UUID):
         )
     except ApiClientError:
         pass
+
+
+def delete_user_newsletter(user_id: UUID):
+    if not MAILCHIMP_KEY or not MAILCHIMP_PREFIX or not MAILCHIMP_LIST:
+        return
+
+    user = User.objects.get(id=user_id)
+    try:
+        client = mailchimp_marketing.Client()
+        client.set_config({"api_key": MAILCHIMP_KEY, "server": MAILCHIMP_PREFIX})
+        client.lists.delete_list_member_permanent(
+            list_id=MAILCHIMP_LIST,
+            subscriber_hash=user.subscriber_id
+        )
+    except ApiClientError:
+        pass

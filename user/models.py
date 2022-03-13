@@ -263,6 +263,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         if not self.email_verified:
             return
 
+        import user.api.newsletter
+        transaction.on_commit(
+            lambda: user.api.newsletter.delete_user_newsletter(self.id)
+        );
+
         self.email = "forgoten_" + str(self.id) + "@member.kthais.com"
         self.name = "Forgotten"
         self.username = "User"

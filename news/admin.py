@@ -1,13 +1,12 @@
 from django import forms
 from django.contrib import admin, messages
-from django.contrib.auth.decorators import permission_required
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.urls import path, reverse
 
 from messaging.api.slack.announcement import announce_article
 from news.api.article.medium import import_medium_articles
-from news.models import Article, Author
+from news.models import Article, Author, Fact, FactPost
 from user.enums import UserType
 
 
@@ -73,3 +72,28 @@ class ArticleAdmin(admin.ModelAdmin):
         else:
             messages.error(request, f"Could not import any Medium posts.")
         return HttpResponseRedirect(reverse("admin:news_article_changelist"))
+
+
+class FactPostInline(admin.StackedInline):
+    model = FactPost
+    display = ("type", "external_id", "created_at")
+    ordering = ("-created_at",)
+    show_change_link = False
+    extra = 0
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+
+@admin.register(Fact)
+class FactAdmin(admin.ModelAdmin):
+    search_fields = ("id", "content")
+    list_display = ("id", "content", "status", "picture", "created_at")
+    ordering = ("-created_at",)
+    inlines = [FactPostInline]

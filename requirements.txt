@@ -27,3 +27,4 @@ beautifulsoup4~=4.9.3
 django-compressor~=2.4
 django-libsass~=0.8
 mailchimp-marketing~=3.0.70
+tweepy~=4.6.0

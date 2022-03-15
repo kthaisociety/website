@@ -1,6 +1,7 @@
 from uuid import UUID
 
 import mailchimp_marketing
+import logging
 from mailchimp_marketing.api_client import ApiClientError
 
 from app.settings import MAILCHIMP_KEY, MAILCHIMP_PREFIX, MAILCHIMP_LIST
@@ -44,6 +45,7 @@ def update_newsletter_list(user_id: UUID):
 
 
 def delete_user_newsletter(user_id: UUID):
+    _log = logging.getLogger(__name__)
     if not MAILCHIMP_KEY or not MAILCHIMP_PREFIX or not MAILCHIMP_LIST:
         return
 
@@ -54,5 +56,5 @@ def delete_user_newsletter(user_id: UUID):
         client.lists.delete_list_member_permanent(
             list_id=MAILCHIMP_LIST, subscriber_hash=user.subscriber_id
         )
-    except ApiClientError:
-        pass
+    except ApiClientError as error:
+        _log.error(f"Error while deleting user {user.email} from newsletter: {error}")

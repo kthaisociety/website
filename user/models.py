@@ -17,6 +17,7 @@ from app.utils import is_email_organiser
 from user.consts import EMOJIS
 from user.enums import UserType, GenderType, DietType
 from user.managers import UserManager
+import user.api.newsletter
 
 
 def validate_orcid(value):
@@ -263,11 +264,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         if not self.email_verified:
             return
 
-        import user.api.newsletter
-
-        transaction.on_commit(
-            lambda: user.api.newsletter.delete_user_newsletter(self.id)
-        )
+        user.api.newsletter.delete_user_newsletter(self.id)
 
         self.email = "forgoten_" + str(self.id) + "@member.kthais.com"
         self.name = "Forgotten"
@@ -336,7 +333,6 @@ class User(AbstractBaseUser, PermissionsMixin):
             self.type = UserType.ORGANISER.value
 
         if self.email_verified and self.registration_finished:
-            import user.api.newsletter
 
             transaction.on_commit(
                 lambda: user.api.newsletter.update_newsletter_list(user_id=self.id)

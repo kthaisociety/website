@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  web:
+    # Path to dockerfile.
+    # '.' represents the current directory in which
+    # docker-compose.yml is present.
+    build: ..
+
+    # Overrides the default command declared by the container image
+    # It will run the webserver
+    command: python manage.py runserver 0.0.0.0:80
+
+    # Mount volumes from the host system into the container.
+    volumes:
+      - ..:/website
+
+    # Mapping of container port to host
+    ports:
+      - 80:80
+
+    # File with environment variables
+    env_file:
+      - .env.web
+    depends_on:
+      - db
+  db:
+    image: postgres:14.2
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - .env.db
+
+volumes:
+  postgres_data:

@@ -14,10 +14,12 @@ ENV PYTHONUNBUFFERED 1
 
 # install dependencies
 RUN pip install --upgrade pip
-COPY ./requirements.txt .
+
+# Copy repository to the work directory
+RUN git clone https://github.com/kthaisociety/website.git .
+
+# Install requirements
 RUN pip install -r requirements.txt
 
-# copy project
-COPY . .
-
+# Run entrypoint
 ENTRYPOINT ["/website/Docker/entrypoint.sh"]

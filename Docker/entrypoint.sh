@@ -1,5 +1,12 @@
 #!/bin/sh
 
+echo "Updating repository..."
+if [ "$TYPE" = "beta" ]; then
+  git checkout beta
+fi
+git pull --rebase
+
+
 if [ "$DATABASE" = "postgres" ]
 then
     echo "Waiting for postgres..."

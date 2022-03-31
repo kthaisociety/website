@@ -7,6 +7,7 @@ APP_ORGANISER_EMAIL_REGEX = "^.*@kthais\.com$"
 APP_EMAIL_WEBDEV = "webdev@kthais.com"
 APP_EMAIL_BUSINESS = "business@kthais.com"
 APP_EMAIL_NOREPLY = "noreply@kthais.com"
+APP_EMAIL_JOBS = "jobs@kthais.com"
 
 APP_SN_FACEBOOK = "KTHAISociety"
 APP_SN_TWITTER = "KTHAISociety"

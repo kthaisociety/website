@@ -14,6 +14,7 @@ class OfferType(enum.IntEnum):
     FULL_TIME = 3
     VOLUNTEER = 4
     OTHER = 5
+    MASTER_THESIS = 6
 
 
 OfferType.labels = {
@@ -22,6 +23,8 @@ OfferType.labels = {
     OfferType.PART_TIME: "Part-time job",
     OfferType.FULL_TIME: "Full-time job",
     OfferType.VOLUNTEER: "Volunteering",
+    OfferType.MASTER_THESIS: "Master Thesis",
     OfferType.OTHER: "Other",
+
 }
 OfferTypeDict = OfferType.labels

@@ -3,6 +3,7 @@
 {% load social_share %}
 {% load static %}
 
+
 {% block head_title %}Job board{% endblock %}
 
 {% block in_body %}
@@ -26,10 +27,20 @@
                 <a class="link-unstyled mt-3 d-block" href="{% url 'business_jobs_faq' %}"><p class="mb-0"><strong>Any questions? Check out our FAQ <i class="fas fa-arrow-right ml-1"></i></strong></p></a>
             </div>
         </div>
+
+        <div>
+            {% for k,v in types.items %}
+                <a class="link-unstyled" href="?type={{ k.value }}">
+                    <button type="button" class="btn btn-secondary"> {{ v }}</button>
+                </a>
+            {% endfor %}
+        </div>
         {% if not offers %}
             <hr>
             <p class="mt-4">There's no offers at the moment but make sure to check this page soon again!</p>
         {% endif %}
+
+
         {% for offer in offers %}
             {% include "include/offer.html" with offer=offer with_description=True %}
         {% endfor %}

@@ -26,7 +26,7 @@ def jobs(request):
             starts_at__lte=timezone.now(),
             type=type
         ).order_by("-created_at")
-    return render(request, "jobs.html", {"offers": offers_objs, "types": OfferTypeDict})
+    return render(request, "jobs.html", {"offers": offers_objs, "types": OfferTypeDict, "type": type})
 
 
 def jobs_faq(request):

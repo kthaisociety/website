@@ -179,6 +179,16 @@
                             <div class="col-md-4 d-none d-md-block pl-4">
                                 {% block sidebar %}
                                     {% with current_app=request.path|extract_app current_slug=request.path|extract_slug %}
+                                        {% if not request.user.is_authenticated %}
+                                             <div class="row mb-3">
+                                                    <div class="col-md-12">
+                                                        <a href="{% url "user_register" %}" class="link-unstyle">
+                                                        <button type="button" class="btn btn-secondary rounded mt-1 w-100 h-100 btn-lg"> Become a member! </button>
+                                                        </a>
+                                                    </div>
+                                                </div>
+
+                                        {% endif %}
                                         {% if events %}
                                             {% if events|length == 1 and current_app == "events" and events.0.code == current_slug %}
                                             {% else %}

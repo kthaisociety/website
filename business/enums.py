@@ -25,6 +25,5 @@ OfferType.labels = {
     OfferType.VOLUNTEER: "Volunteering",
     OfferType.MASTER_THESIS: "Master Thesis",
     OfferType.OTHER: "Other",
-
 }
 OfferTypeDict = OfferType.labels

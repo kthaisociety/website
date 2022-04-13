@@ -12,8 +12,8 @@ def sponsor(request):
 
 
 def jobs(request):
-    type = request.GET.get("type", '')
-    if type == '':
+    type = request.GET.get("type", "")
+    if type == "":
         offers_objs = Offer.objects.filter(
             Q(ends_at__isnull=True) | Q(ends_at__gt=timezone.now()),
             is_visible=True,
@@ -24,9 +24,13 @@ def jobs(request):
             Q(ends_at__isnull=True) | Q(ends_at__gt=timezone.now()),
             is_visible=True,
             starts_at__lte=timezone.now(),
-            type=type
+            type=type,
         ).order_by("-created_at")
-    return render(request, "jobs.html", {"offers": offers_objs, "types": OfferTypeDict, "type": type})
+    return render(
+        request,
+        "jobs.html",
+        {"offers": offers_objs, "types": OfferTypeDict, "type": type},
+    )
 
 
 def jobs_faq(request):

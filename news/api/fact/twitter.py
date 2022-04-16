@@ -6,6 +6,8 @@ from news.models import Fact
 
 from django.conf import settings
 
+import os
+
 
 def post_fact_to_twitter(fact_obj: Fact) -> Optional[str]:
     if (
@@ -29,7 +31,10 @@ def post_fact_to_twitter(fact_obj: Fact) -> Optional[str]:
 
     media_ids = []
     if fact_obj.picture:
-        res = api.media_upload("files/" + fact_obj.picture.crop["1200x675"].name)
+        img_path = os.path.join(
+            settings.BASE_DIR, "/files", fact_obj.picture.crop["1200x675"].name
+        )
+        res = api.media_upload(img_path)
         media_ids.append(res.media_id)
 
     tweet = api.update_status(status=fact_obj.content, media_ids=media_ids)

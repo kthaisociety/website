@@ -19,6 +19,9 @@ from user.enums import UserType, GenderType, DietType
 from user.managers import UserManager
 
 
+SOCIAL_URLS = ["linkedin_url", "twitter_url", "github_url", "scholar_url", "researchgate_url", "orcid"]
+
+
 def validate_orcid(value):
     if value and not re.match(r"^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$", value):
         raise ValidationError(f"{value} is not a valid ORCID.")
@@ -145,6 +148,10 @@ class User(AbstractBaseUser, PermissionsMixin):
                 return f"{self.slack_status_text}"
         else:
             return ""
+
+    @property
+    def social_urls_count(self):
+        return sum([(1 if getattr(self, social_url) else 0) for social_url in SOCIAL_URLS])
 
     @property
     def is_organiser(self):

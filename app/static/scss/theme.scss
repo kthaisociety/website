@@ -811,12 +811,29 @@ nav {
     padding: 0.5rem;
 }
 
+.inline-icon {
+    width: 14px;
+    height: 14px;
+    margin: -0.1rem 0.1rem 0 0;
+}
+
 .inline-icon-h4 {
     width: 20px;
     height: 20px;
     margin-right: 0.5rem;
     margin-top: 0.1rem;
     vertical-align: top;
+}
+
+.inline-icon-h5 {
+    width: 20px;
+    height: 20px;
+    margin-right: 0.1rem;
+    vertical-align: top;
+}
+
+.icon-white {
+    filter: brightness(0) invert(1);
 }
 
 .timeline {

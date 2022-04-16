@@ -179,15 +179,39 @@
                             <div class="col-md-4 d-none d-md-block pl-4">
                                 {% block sidebar %}
                                     {% with current_app=request.path|extract_app current_slug=request.path|extract_slug %}
-                                        {% if not request.user.is_authenticated %}
-                                             <div class="row mb-3">
-                                                    <div class="col-md-12">
-                                                        <a href="{% url "user_register" %}" class="link-unstyle">
-                                                        <button type="button" class="btn btn-secondary rounded mt-1 w-100 h-100 btn-lg"> Become a member! </button>
-                                                        </a>
+                                        {% if request.user.is_authenticated %}
+                                            {% if request.user.social_urls_count <= 2 %}
+                                                <div class="card text-white bg-primary mb-4">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title text-white icon-white">Missing social media 🔗?</h5>
+                                                        <p class="card-text">Do you have LinkedIn, GitHub or even Google Scholar? Go to dashboard and make sure you have added all your links!</p>
                                                     </div>
+                                                    <a href="{% url "user_dashboard" %}#social" class="link-unstyle">
+                                                        <div class="card-footer text-white">Add them here <i class="fas fa-arrow-right ml-1"></i></div>
+                                                    </a>
                                                 </div>
-
+                                            {% endif %}
+                                            {% if not request.user.slack_token %}
+                                                <div class="card text-white bg-primary mb-4">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title text-white icon-white">Authorize Slack <img alt="Slack icon" class="inline-icon-h5 icon-white" src="{{ app_full_domain }}{% static "img/slack.png" %}">?</h5>
+                                                        <p class="card-text">If you want to get the most out of KTH AI Society you can authorise Slack!</p>
+                                                    </div>
+                                                    <a href="{% url "user_dashboard" %}#social" class="link-unstyle">
+                                                        <div class="card-footer text-white">Connect now <i class="fas fa-arrow-right ml-1"></i></div>
+                                                    </a>
+                                                </div>
+                                            {% endif %}
+                                        {% else %}
+                                            <div class="card text-white bg-primary mb-4">
+                                                <div class="card-body">
+                                                    <h5 class="card-title text-white">Become a member</h5>
+                                                    <p class="card-text">Join the KTH AI Society and gain access to Slack <img alt="Slack icon" class="inline-icon icon-white" src="{{ app_full_domain }}{% static "img/slack.png" %}"> where you can communicate with others interested in the same field as you and get a quick insight on the organization!</p>
+                                                </div>
+                                                <a href="{% url "user_register" %}" class="link-unstyle">
+                                                    <div class="card-footer text-white">Register here <i class="fas fa-arrow-right ml-1"></i></div>
+                                                </a>
+                                            </div>
                                         {% endif %}
                                         {% if events %}
                                             {% if events|length == 1 and current_app == "events" and events.0.code == current_slug %}

@@ -6,7 +6,7 @@ from django.urls import path, reverse
 
 from messaging.api.slack.announcement import announce_article
 from news.api.article.medium import import_medium_articles
-from news.models import Article, Author, Fact, FactPost
+from news.models import Article, Author, Fact, FactPost, Pin
 from user.enums import UserType
 
 
@@ -97,3 +97,10 @@ class FactAdmin(admin.ModelAdmin):
     list_display = ("id", "content", "status", "picture", "created_at")
     ordering = ("-created_at",)
     inlines = [FactPostInline]
+
+
+@admin.register(Pin)
+class PinAdmin(admin.ModelAdmin):
+    search_fields = ("id", "title", "subtitle", "body")
+    list_display = ("id", "title", "subtitle", "picture", "created_at")
+    ordering = ("-created_at",)

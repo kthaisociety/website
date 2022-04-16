@@ -58,6 +58,10 @@ def files(request, file_):
     if path in [
         "news/article",
         "__sized__/news/article",
+        "news/pin",
+        "__sized__/news/pin",
+        "news/fact",
+        "__sized__/news/fact",
         "event/picture",
         "__sized__/event/picture",
         "event/attachment/file",

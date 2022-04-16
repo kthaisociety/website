@@ -13,6 +13,42 @@ from news.enums import ArticleStatus, ArticleType, PostType, FactStatus
 from news.managers import ArticleManager
 
 
+class Pin(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.CharField(max_length=255)
+    subtitle = models.CharField(max_length=255, blank=True, null=True)
+    picture = VersatileImageField("Image", upload_to="news/pin/")
+    body = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def description_extra_short(self):
+        return textwrap.shorten(self.body_plaintext, width=125, placeholder="...")
+
+    @property
+    def description_short(self):
+        return textwrap.shorten(self.body_plaintext, width=250, placeholder="...")
+
+    @property
+    def description_paragraph(self):
+        return self.body_plaintext.partition("\n")[0]
+
+    @property
+    def lead(self):
+        if self.subtitle:
+            return self.subtitle
+        return self.description_extra_short
+
+    @property
+    def body_plaintext(self):
+        html = markdown.markdown(self.body)
+        return "".join(BeautifulSoup(html, "html.parser").findAll(text=True))
+
+    def __str__(self):
+        return self.title
+
+
 class Article(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=255)

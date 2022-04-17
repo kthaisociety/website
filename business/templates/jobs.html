@@ -3,7 +3,6 @@
 {% load social_share %}
 {% load static %}
 
-
 {% block head_title %}Job board{% endblock %}
 
 {% block in_body %}
@@ -30,27 +29,25 @@
 
         <div class='col-xs-3'>
             <a href="{% url 'business_jobs' %}" class="link-unstyle">
-                <button type="button" class="btn btn-secondary rounded mt-1 {% if type == '' %}active{% endif %}"> Show all </button>
+                <button type="button" class="btn btn-secondary rounded mt-1 {% if not type %}active{% endif %}">Show all</button>
             </a>
 
             {% for k,v in types.items %}
                 <a class="link-unstyled" href="?type={{ k.value }}">
-                    <button type="button" class="btn btn-secondary rounded mt-1 {% if type == k.value|stringformat:"i" %}active{% endif %}"> {{ v }}</button>
+                    <button type="button" class="btn btn-secondary rounded mt-1 {% if type == k.value|stringformat:"i" %}active{% endif %}">{{ v }}</button>
                 </a>
             {% endfor %}
         </div>
 
-        {% if type == ''  and not offers %}
+        {% if not type and not offers %}
                 <hr>
                 <p class="mt-4">There's no offers at the moment but make sure to check this page soon again!</p>
         {% elif not offers %}
                 <hr>
-                <p class="mt-4">For the selected category there are no offers at the moment, try and check out the others using the filters above. </p>
+                <p class="mt-4">For the selected category there are no offers at the moment, try and check out the others using the filters above.</p>
         {% endif %}
 
-
         {% for offer in offers %}
-            <br>
             {% include "include/offer.html" with offer=offer with_description=True %}
         {% endfor %}
     </div>

@@ -23,7 +23,7 @@ OfferType.labels = {
     OfferType.PART_TIME: "Part-time job",
     OfferType.FULL_TIME: "Full-time job",
     OfferType.VOLUNTEER: "Volunteering",
-    OfferType.MASTER_THESIS: "Master Thesis",
+    OfferType.MASTER_THESIS: "Master thesis",
     OfferType.OTHER: "Other",
 }
 OfferTypeDict = OfferType.labels

@@ -16,7 +16,7 @@ def jobs(request):
     offer_filters = Q(
         Q(ends_at__isnull=True) | Q(ends_at__gt=timezone.now()),
         is_visible=True,
-        starts_at__lte=timezone.now()
+        starts_at__lte=timezone.now(),
     )
     if type is not None:
         offer_filters &= Q(type=type)

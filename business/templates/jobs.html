@@ -17,7 +17,7 @@
                 </nav>
             </div>
         </div>
-        <div class="row mb-4">
+        <div class="row mb-3">
             <div class="col-md-12">
                 <h1 class="section-title">Job board</h1>
                 <p>We at KTH AI Society strive to bridge the gap between our members and the industry. It’s quite simple, companies working for the solutions of tomorrow need the talent of today. So below we listed all relevant work opportunities for you to take on new challenges.</p>
@@ -26,10 +26,28 @@
                 <a class="link-unstyled mt-3 d-block" href="{% url 'business_jobs_faq' %}"><p class="mb-0"><strong>Any questions? Check out our FAQ <i class="fas fa-arrow-right ml-1"></i></strong></p></a>
             </div>
         </div>
-        {% if not offers %}
-            <hr>
-            <p class="mt-4">There's no offers at the moment but make sure to check this page soon again!</p>
+
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <a href="{% url 'business_jobs' %}" class="link-unstyle">
+                    <button type="button" class="btn btn-primary {% if type == None %}active{% endif %}">Show all</button>
+                </a>
+                {% for k,v in types.items %}
+                    <a class="link-unstyled" href="?type={{ k.value }}">
+                        <button type="button" class="btn btn-primary {% if type == k.value|stringformat:"i" %}active{% endif %}">{{ v }}</button>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        {% if type == None and not offers %}
+                <hr>
+                <p class="mt-4">There's no offers at the moment but make sure to check this page soon again!</p>
+        {% elif not offers %}
+                <hr>
+                <p class="mt-4">For the selected category there are no offers at the moment, try and check out the others using the filters above.</p>
         {% endif %}
+
         {% for offer in offers %}
             {% include "include/offer.html" with offer=offer with_description=True %}
         {% endfor %}

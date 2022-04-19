@@ -2,7 +2,7 @@
 {% load social_share %}
 {% load static %}
 
-<div class="card mb-4 w-100 mt-3" id="{{ offer.id }}">
+<div class="card mb-4 w-100 mt-3 {% if not offer.is_active %}offer-inactive{% endif %}" id="{{ offer.id }}">
     <div class="row no-gutters h-100">
         <div class="col-md-2 bg-light offer-company">
             {% if offer.is_new %}
@@ -11,20 +11,29 @@
                 </div>
             {% endif %}
             <div class="d-flex align-items-center justify-content-center h-100">
-                <a class="link-unstyled" href="{{ offer.company.website }}">
+                {% if offer.is_active %}
+                    <a class="link-unstyled" href="{{ offer.company.website }}">
+                        <img class="pt-3 pr-5 pb-3 pl-5 pt-md-3 pr-md-3 pb-mb-3 pl-md-3 offer-company-logo" src="{{ offer.company.logo.url }}"  alt="{{ offer.company.name }}"/>
+                    </a>
+                {% else %}
                     <img class="pt-3 pr-5 pb-3 pl-5 pt-md-3 pr-md-3 pb-mb-3 pl-md-3 offer-company-logo" src="{{ offer.company.logo.url }}"  alt="{{ offer.company.name }}"/>
-                </a>
+                {% endif %}
             </div>
         </div>
         <div class="col-md-10 p-4">
-            <a class="link-unstyled" href="{% if with_description %}{% if offer.url %}{{ offer.url }}{% elif offer.email %}mailto:{{ offer.email }}{% endif %}{% else %}{{ offer.our_url }}{% endif %}">
+            {% if offer.is_active %}
+                <a class="link-unstyled" href="{% if with_description %}{% if offer.url %}{{ offer.url }}{% elif offer.email %}mailto:{{ offer.email }}{% endif %}{% else %}{{ offer.our_url }}{% endif %}">
+                    <h5 class="mb-2">{{ offer.title }}</h5>
+                </a>
+                <a class="link-unstyled" href="{% if with_description %}{% if offer.url %}{{ offer.url }}{% elif offer.email %}mailto:{{ offer.email }}{% endif %}{% else %}{{ offer.our_url }}{% endif %}">
+                    <p class="text-primary font-weight-bold mb-1">{% if offer.location %}🌍{% else %}🖥️{% endif %} {{ offer.company.name }}, {% if offer.location %}{{ offer.location }}{% else %}Remote{% endif %}</p>
+                </a>
+            {% else %}
                 <h5 class="mb-2">{{ offer.title }}</h5>
-            </a>
-            <a class="link-unstyled" href="{% if with_description %}{% if offer.url %}{{ offer.url }}{% elif offer.email %}mailto:{{ offer.email }}{% endif %}{% else %}{{ offer.our_url }}{% endif %}">
                 <p class="text-primary font-weight-bold mb-1">{% if offer.location %}🌍{% else %}🖥️{% endif %} {{ offer.company.name }}, {% if offer.location %}{{ offer.location }}{% else %}Remote{% endif %}</p>
-            </a>
+            {% endif %}
             <p class="text-grey">{{ enums.business.offer_type|keyvalue:offer.type }}</p>
-            {% if offer.ends_at %}
+            {% if offer.ends_at and offer.is_active %}
                 <p class="font-weight-bold mb-0">Apply before {{ offer.ends_at|date:"Y-m-d" }}</p>
             {% endif %}
             <div class="mt-3 mb-3">
@@ -32,18 +41,20 @@
                     {{ offer.description|apply_markup }}
                 {% endif %}
             </div>
-            {% if with_description %}
-                {% if offer.url %}
-                    <a class="link-unstyled" href="{{ offer.url }}">
-                        <button type="button" class="btn btn-primary">Apply here</button>
-                    </a>
-                {% elif offer.email %}
-                    <a class="link-unstyled" href="mailto:{{ offer.email }}">
-                        <button type="button" class="btn btn-primary">Contact {{ offer.email }}</button>
-                    </a>
+            {% if offer.is_active %}
+                {% if with_description %}
+                    {% if offer.url %}
+                        <a class="link-unstyled" href="{{ offer.url }}">
+                            <button type="button" class="btn btn-primary">Apply here</button>
+                        </a>
+                    {% elif offer.email %}
+                        <a class="link-unstyled" href="mailto:{{ offer.email }}">
+                            <button type="button" class="btn btn-primary">Contact {{ offer.email }}</button>
+                        </a>
+                    {% endif %}
+                {% else %}
+                    <a class="link-unstyled mt-3 mb-0 d-block text-left" href="{{ offer.our_url }}"><p class="text-main mb-0">Read more <i class="fas fa-arrow-right ml-1"></i></p></a>
                 {% endif %}
-            {% else %}
-                <a class="link-unstyled mt-3 mb-0 d-block text-left" href="{{ offer.our_url }}"><p class="text-main mb-0">Read more <i class="fas fa-arrow-right ml-1"></i></p></a>
             {% endif %}
         </div>
     </div>

@@ -136,6 +136,10 @@ class Offer(models.Model):
         )
 
     @property
+    def is_active(self):
+        return not self.ends_at or self.ends_at > timezone.now()
+
+    @property
     def is_new(self):
         return self.starts_at >= timezone.now() - timezone.timedelta(days=7)
 

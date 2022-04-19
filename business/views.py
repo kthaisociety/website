@@ -14,13 +14,21 @@ def sponsor(request):
 def jobs(request):
     type = request.GET.get("type")
     offer_filters = Q(
-        Q(ends_at__isnull=True) | Q(ends_at__gt=timezone.now()),
         is_visible=True,
         starts_at__lte=timezone.now(),
     )
     if type is not None:
         offer_filters &= Q(type=type)
-    offers_objs = Offer.objects.filter(offer_filters).order_by("-created_at")
+    offer_active_filter = Q(ends_at__isnull=True) | Q(ends_at__gt=timezone.now())
+    offers_objs = list(
+        Offer.objects.filter(offer_filters & offer_active_filter).order_by(
+            "-created_at"
+        )
+    ) + list(
+        Offer.objects.filter(offer_filters)
+        .exclude(offer_active_filter)
+        .order_by("-created_at")
+    )
     return render(
         request,
         "jobs.html",

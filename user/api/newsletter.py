@@ -57,4 +57,4 @@ def delete_user_newsletter(user_id: UUID):
             list_id=MAILCHIMP_LIST, subscriber_hash=user.subscriber_id
         )
     except ApiClientError as error:
-        _log.error(f"Error while deleting user {user.email} from newsletter: {error}")
+        _log.error(f"{error}")

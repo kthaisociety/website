@@ -5,14 +5,13 @@ metadata:
   labels:
     app: rep
 spec:
-  clusterIP: None
   selector:
-    app: www
+    app: server
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 8080
       name: server-port
+  type: LoadBalancer
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -79,7 +78,7 @@ kind: Deployment
 metadata:
   name: kthais-server
   labels:
-    app: rep
+    app: server
 spec:
   replicas: 3
   selector:
@@ -95,7 +94,7 @@ spec:
           image: ghcr.io/kthaisociety/website:latest
           imagePullPolicy: "Always"
           ports:
-            - containerPort: 8080
+            - containerPort: 80
           volumeMounts:
             - name: staticfiles
               mountPath: /website/staticfile

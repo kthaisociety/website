@@ -21,5 +21,8 @@ RUN git clone https://github.com/kthaisociety/website.git .
 # Install requirements
 RUN pip install -r requirements.txt
 
+RUN mkdir -p Docker
+COPY ./entrypoint.sh ./Docker/entrypoint.sh
+
 # Run entrypoint
-ENTRYPOINT ["/website/Docker/entrypoint.sh"]
+ENTRYPOINT ["/website/Docker/entrypoint.sh", "python3", "manage.py", "runserver", "0.0.0.0:80"]

@@ -4,7 +4,7 @@ echo "Updating repository..."
 git checkout -f "$TYPE"
 git pull --rebase
 
-if [ -z "$PG_HOST" ]
+if [ ! -z "$PG_HOST" ]
 then
     echo "Waiting for postgres..."
 

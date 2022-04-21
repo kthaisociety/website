@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo "Updating repository..."
-git checkout "$TYPE"
+git checkout -f "$TYPE"
 git pull --rebase
 
 

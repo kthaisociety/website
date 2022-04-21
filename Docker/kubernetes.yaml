@@ -115,7 +115,7 @@ spec:
             - name: TYPE
               value: "feature/docker"
             - name: PROD_MODE
-              value: "True"
+              value: "False"
             - name: PG_HOST
               value: postgres.default.svc.cluster.local
             - name: PG_PORT
@@ -130,7 +130,7 @@ spec:
                 secretKeyRef:
                   name: db-secrets
                   key: POSTGRES_PASSWORD
-            - name: PG_DB
+            - name: PG_NAME
               valueFrom:
                 secretKeyRef:
                   name: db-secrets

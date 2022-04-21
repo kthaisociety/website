@@ -1,9 +1,7 @@
 #!/bin/sh
 
 echo "Updating repository..."
-if [ "$TYPE" = "beta" ]; then
-  git checkout beta
-fi
+git checkout "$TYPE"
 git pull --rebase
 
 

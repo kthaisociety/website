@@ -25,4 +25,4 @@ RUN mkdir -p Docker
 COPY ./entrypoint.sh ./Docker/entrypoint.sh
 
 # Run entrypoint
-ENTRYPOINT ["/website/Docker/entrypoint.sh", "gunicorn", "--bind=0.0.0.0:80", "app.wsgi"]
+ENTRYPOINT ["/website/Docker/entrypoint.sh", "gunicorn", "--bind=0.0.0.0:80", "--log-file","logs.txt","app.wsgi"]

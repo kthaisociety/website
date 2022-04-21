@@ -25,7 +25,7 @@ SECRET_KEY = os.environ.get(
 PROD_MODE = os.environ.get("PROD_MODE", "false").lower() == "true"
 DEBUG = not PROD_MODE
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0"]
+ALLOWED_HOSTS = ["*"]
 
 # MAINTENANCE MODE
 MAINTENANCE_MODE = os.environ.get("MAINTENANCE_MODE", "false").lower() == "true"

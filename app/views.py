@@ -28,6 +28,7 @@ from event.enums import RegistrationStatus, EventStatus
 from event.models import Registration, Session
 from user.enums import UserType, GenderType
 from user.models import User
+from news.models import Article
 import user.api.team
 
 
@@ -357,3 +358,7 @@ def about_team(request, code: Optional[str] = None):
 
 def about_contact(request):
     return render(request, "about_contact.html")
+
+def about_social(request):
+    article_objs = Article.objects.published().order_by("-created_at")
+    return render(request, "about_social.html", {"articles": article_objs})

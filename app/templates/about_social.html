@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load app_tags %}
+{% load static %}
+
+{% block head_title %}Social{% endblock %}
+
+{% block in_body %}
+    <div class="container py-5">
+        <div class="row d-none d-lg-block">
+            <div class="col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent p-0 pb-2">
+                        <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'app_home' %}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page"><a class="link-unstyled"
+                                                                                  href="{% url 'app_about_social' %}">Social</a>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+                <div class="row">
+            <div class="col-md-12">
+                <h1 class="section-title">Social</h1>
+                {% for article in articles %}
+                    <p>Hello</p>
+                    <a class="link-unstyled" href="{{ article.url }}">
+                        <h2 class="text-center text-md-left text-main mb-4">{{ article.title }}</h2>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,5 +1,8 @@
 #!/bin/sh
-lu
+
+echo "Updating repository..."
+git checkout -f "$TYPE"
+git pull --rebase
 
 if [ -z "$PG_HOST" ]
 then

@@ -59,6 +59,36 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
+  name: files
+  labels:
+    type: local
+    app: files
+spec:
+  storageClassName: website-files
+  capacity:
+    storage: 8Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/files"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: website-files-pv
+  labels:
+    app: files
+spec:
+  storageClassName: website-files
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 8Gi
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
   name: database
   labels:
     type: local
@@ -110,7 +140,9 @@ spec:
             - containerPort: 80
           volumeMounts:
             - name: staticfiles
-              mountPath: /website/staticfile
+              mountPath: /website/staticfiles
+            - name: files
+              mountPath: /website/files
           env:
             - name: TYPE
               value: "feature/docker"
@@ -125,7 +157,7 @@ spec:
                 secretKeyRef:
                   name: db-secrets
                   key: POSTGRES_USER
-            - name: PG_PASSWORD
+            - name: PG_PWD
               valueFrom:
                 secretKeyRef:
                   name: db-secrets
@@ -139,6 +171,9 @@ spec:
         - name: staticfiles
           persistentVolumeClaim:
             claimName: website-staticfiles-pv
+        - name: files
+          persistentVolumeClaim:
+            claimName: website-files-pv
 ---
 apiVersion: apps/v1
 kind: Deployment

@@ -4,9 +4,9 @@ echo "Updating repository..."
 git checkout -f "$TYPE"
 git pull --rebase
 
-if [ ! -z "$PG_HOST" ]
+if [ -n "$PG_HOST" ]
 then
-    echo "Waiting for postgres..."
+    echo -n "Waiting for postgres..."
 
     while ! netcat -z $PG_HOST $PG_PORT; do
       sleep 0.1

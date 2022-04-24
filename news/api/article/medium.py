@@ -1,5 +1,5 @@
 import re
-from typing import Optional, Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 
 import requests
 from django.core.files.base import ContentFile
@@ -9,7 +9,7 @@ from django.utils import timezone
 from django.utils.text import slugify
 
 from app.variables import APP_BLOG_MEDIUM
-from news.enums import ArticleType, ArticleStatus
+from news.enums import ArticleStatus, ArticleType
 from news.models import Article, Author
 from user.enums import UserType
 from user.models import User

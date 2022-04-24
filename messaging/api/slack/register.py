@@ -2,14 +2,13 @@ import re
 
 from django.urls import reverse
 
-from event.tasks import send_registration_email
-from user.models import User
-from event.models import Event, Registration
-from event.enums import RegistrationStatus, SignupStatus
-from user.enums import DietType, DietTypeDict
 from app.settings import APP_FULL_DOMAIN, SL_JOIN_EVENT
-
+from event.enums import RegistrationStatus, SignupStatus
+from event.models import Event, Registration
+from event.tasks import send_registration_email
 from messaging.api.slack import channel
+from user.enums import DietType, DietTypeDict
+from user.models import User
 
 
 def join_event(user_id: str, event_ts: str) -> bool:

@@ -1,10 +1,10 @@
 from collections import defaultdict
-from typing import List, Dict
+from typing import Dict, List
 
 from django.db.models import Q
 from django.utils import timezone
 
-from business.models import Sponsorship, Tier, Offer
+from business.models import Offer, Sponsorship, Tier
 
 
 def get_sponsorships() -> Dict[Tier, List[Sponsorship]]:

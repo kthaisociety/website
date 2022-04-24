@@ -1,6 +1,5 @@
-from django.http import HttpResponseNotFound, HttpResponseRedirect
+from django.http import HttpResponseNotFound
 from django.shortcuts import render
-from django.urls import reverse
 
 from news.models import Article
 

@@ -1,7 +1,7 @@
 import json
 
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods

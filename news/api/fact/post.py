@@ -4,8 +4,8 @@ from uuid import UUID
 from django.db import transaction
 
 from news.api.fact.twitter import post_fact_to_twitter
-from news.enums import PostType, FactStatus
-from news.models import FactPost, Fact
+from news.enums import FactStatus, PostType
+from news.models import Fact, FactPost
 
 
 @transaction.atomic

@@ -1,5 +1,5 @@
 import zipfile
-from io import BytesIO, StringIO
+from io import BytesIO
 from uuid import UUID
 
 from event.models import Event

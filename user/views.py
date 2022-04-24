@@ -5,24 +5,23 @@ from django.contrib import auth, messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
-from django.core.files import File
-from django.http import HttpResponseRedirect, HttpResponse, StreamingHttpResponse
-from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpResponseRedirect, StreamingHttpResponse
+from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
 from geopy import Nominatim
 
 from app import settings
-from app.consts import UNIVERSITIES, PROGRAMMES
+from app.consts import PROGRAMMES, UNIVERSITIES
 from app.variables import APP_NAME
 from user import forms
 from user.enums import GenderType
 from user.models import User, validate_orcid
 from user.utils import (
-    send_verify,
-    send_password,
-    get_user_data_zip,
     delete_user_account,
+    get_user_data_zip,
+    send_password,
+    send_verify,
 )
 
 

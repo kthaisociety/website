@@ -4,15 +4,14 @@ from event.enums import RegistrationStatusDict
 
 def variables_processor(request=None):
     c = get_substitutions_templates(request=request)
-    from news.utils import get_latest_articles, get_latest_pin
-    from event.utils import get_future_events, get_events
-    from user.utils import get_organisers, get_board, get_histories
-    from page.utils import get_menu_pages
-    from business.utils import get_sponsorships, get_offers
-
-    from event.enums import StreamingProviderDict
-    from user.enums import GenderTypeDict, GenderTypeColoursDict, DietTypeDict
     from business.enums import OfferTypeDict
+    from business.utils import get_offers, get_sponsorships
+    from event.enums import StreamingProviderDict
+    from event.utils import get_events, get_future_events
+    from news.utils import get_latest_articles, get_latest_pin
+    from page.utils import get_menu_pages
+    from user.enums import DietTypeDict, GenderTypeColoursDict, GenderTypeDict
+    from user.utils import get_board, get_histories, get_organisers
 
     c["pin"] = get_latest_pin()
     c["articles"] = get_latest_articles()

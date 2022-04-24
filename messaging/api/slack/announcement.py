@@ -6,10 +6,10 @@ from django.urls import reverse
 from django.utils import timezone
 
 from app.settings import (
-    SL_CHANNEL_GENERAL,
     APP_FULL_DOMAIN,
-    SL_CHANNEL_EVENTS,
     SL_CHANNEL_ARTICLES,
+    SL_CHANNEL_EVENTS,
+    SL_CHANNEL_GENERAL,
     SL_CHANNEL_JOBS,
     SL_JOIN_EVENT,
 )

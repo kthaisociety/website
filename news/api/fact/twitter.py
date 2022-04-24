@@ -1,12 +1,10 @@
+import os
 from typing import Optional
 
 import tweepy
-
-from news.models import Fact
-
 from django.conf import settings
 
-import os
+from news.models import Fact
 
 
 def post_fact_to_twitter(fact_obj: Fact) -> Optional[str]:

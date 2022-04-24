@@ -54,14 +54,6 @@ repos:
     hooks:
       - id: check-github-workflows
         require_serial: true
-  - repo: https://github.com/PyCQA/bandit
-    rev: 1.7.0
-    hooks:
-      - id: bandit
-        exclude: '/tests/'
-        args:
-          - --recursive
-          - --skip=B101,B608,B308,B703,B106
 
 exclude: |
   (?x)(

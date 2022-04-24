@@ -1,8 +1,7 @@
 import copy
 import os
-import time
 from io import BytesIO
-from typing import Dict, Tuple, Optional
+from typing import Dict, Optional
 from uuid import UUID
 
 import requests
@@ -13,10 +12,9 @@ from django.db import transaction
 from django.urls import reverse
 from django.utils import timezone
 
-import app.slack
 import messaging.api.slack.message
 from app.enums import SlackError
-from app.settings import STATIC_ROOT, APP_FULL_DOMAIN, SL_TOKEN
+from app.settings import STATIC_ROOT, APP_FULL_DOMAIN
 from messaging.api.slack import log
 import messaging.api.slack.channel
 from messaging.consts import WARNING_TIME_DAYS
@@ -52,11 +50,9 @@ def set_picture(token: str, file: BytesIO) -> Optional[Dict]:
     return response.data.get("profile")
 
 
-def get_profile(external_id: str) -> Optional[Dict]:
-    if not SL_TOKEN:
-        return None
-    client = slack.WebClient(SL_TOKEN)
-    response = client.users_profile_get(user_id=external_id)
+def get_profile(token: str) -> Optional[Dict]:
+    client = slack.WebClient(token)
+    response = client.users_profile_get()
     if not response.status_code == 200 or not response.data.get("ok", False):
         return None
     return response.data.get("profile")
@@ -108,7 +104,7 @@ def update(user_data: Dict) -> bool:
     # su.status_emoji = user_slack_profile.get("status_emoji")
     su.display_name = user_slack_profile.get("display_name")
 
-    user_profile = get_profile(external_id=su.external_id)
+    user_profile = get_profile(token=su.token)
 
     current_picture_hash = user_profile.get("avatar_hash")
     if current_picture_hash is not None and current_picture_hash != su.picture_hash:
@@ -125,9 +121,7 @@ def update(user_data: Dict) -> bool:
                 profile_picture_file = get_profile_picture(file=profile_picture_file)
                 # Move cursor to the beginning if read
                 profile_picture_file.seek(0)
-                user_profile = set_picture(
-                    token=su.token, file=profile_picture_file
-                )
+                user_profile = set_picture(token=su.token, file=profile_picture_file)
                 # Move cursor to the beginning if read
                 profile_picture_file.seek(0)
                 if user_profile.get("avatar_hash") is not None:
@@ -135,9 +129,7 @@ def update(user_data: Dict) -> bool:
             su.picture.save(
                 f"{su.external_id}.jpg", File(profile_picture_file), save=False
             )
-        su.save()
-
-    return True
+    return su.save()
 
 
 def create(user_data: Dict) -> bool:

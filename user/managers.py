@@ -108,7 +108,7 @@ class UserManager(BaseUserManager):
         return self.current().filter(is_active=True)
 
     def slack_active(self):
-        return self.current().filter(is_active=True, slack_id__isnull=False)
+        return self.current().filter(is_active=True, slack_user__isnull=False)
 
     def board(self):
         Role = apps.get_model("user", "Role")

@@ -97,23 +97,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         max_length=255, validators=[validate_orcid], blank=True, null=True
     )
 
-    # Slack
-    # TODO: Should somehow be unique if not null
-    slack_id = models.CharField(max_length=255, blank=True, null=True)
-    slack_token = models.CharField(max_length=255, blank=True, null=True)
-    slack_scopes = models.CharField(max_length=255, blank=True, null=True)
-    slack_status_text = models.CharField(max_length=255, blank=True, null=True)
-    slack_status_emoji = models.CharField(max_length=255, blank=True, null=True)
-    slack_display_name = models.CharField(max_length=255, blank=True, null=True)
-    slack_picture = VersatileImageField(
-        "Slack image",
-        upload_to="user/slack/picture/",
-        blank=True,
-        null=True,
-        storage=OverwriteStorage(),
-    )
-    slack_picture_hash = models.CharField(max_length=255, blank=True, null=True)
-
     # Dietary restrictions
     diet = models.CharField(max_length=255, blank=True, null=True)
     diet_other = models.CharField(max_length=255, blank=True, null=True)
@@ -137,24 +120,26 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     @property
     def profile_picture(self):
-        if self.slack_picture:
-            return self.slack_picture
+        if self.slack_user and self.slack_user.picture_original:
+            return self.slack_user.picture_original
         return self.picture
 
+    # TODO
     @property
     def slack_status(self):
-        if self.slack_status_emoji:
-            try:
-                emoji = (
-                    EMOJIS[self.slack_status_emoji[1:-1]]
-                    .encode("utf-16", "surrogatepass")
-                    .decode("utf-16")
-                )
-                return f"{emoji} {self.slack_status_text}"
-            except KeyError:
-                return f"{self.slack_status_text}"
-        else:
-            return ""
+        return None
+        # if self.slack_status_emoji:
+        #     try:
+        #         emoji = (
+        #             EMOJIS[self.slack_status_emoji[1:-1]]
+        #             .encode("utf-16", "surrogatepass")
+        #             .decode("utf-16")
+        #         )
+        #         return f"{emoji} {self.slack_status_text}"
+        #     except KeyError:
+        #         return f"{self.slack_status_text}"
+        # else:
+        #     return ""
 
     @property
     def social_urls_count(self):
@@ -311,16 +296,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         self.researchgate_url = None
         self.orcid = None
 
-        self.slack_id = None
-        self.slack_token = None
-        self.slack_scopes = None
-        self.slack_status_text = None
-        self.slack_status_emoji = None
-        self.slack_display_name = None
-        if self.slack_picture:
-            self.slack_picture.delete_all_created_images()
-            self.slack_picture.delete(save=False)
-        self.slack_picture_hash = None
+        self.slack_user.delete()
 
         self.is_active = False
         self.is_forgotten = True

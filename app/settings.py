@@ -517,5 +517,6 @@ TWITTER_ACCESS_TOKEN_SECRET = os.environ.get("TWITTER_ACCESS_TOKEN_SECRET", None
 
 VERSATILEIMAGEFIELD_SETTINGS = {
     # 5 minutes
-    'cache_length': 5 * 60
+    "cache_length": 5
+    * 60
 }

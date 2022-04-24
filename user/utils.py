@@ -152,8 +152,12 @@ def get_user_data_zip(user_id: int) -> BytesIO:
     csvwriter.writerow(["Programme", user.degree])
     csvwriter.writerow(["Graduation year", user.graduation_year])
     csvwriter.writerow(["Website", user.website])
-    csvwriter.writerow(["Slack ID", (user.slack_user.external_id if user.slack_user else "")])
-    csvwriter.writerow(["Slack name", (user.slack_user.display_name if user.slack_user else "")])
+    csvwriter.writerow(
+        ["Slack ID", (user.slack_user.external_id if user.slack_user else "")]
+    )
+    csvwriter.writerow(
+        ["Slack name", (user.slack_user.display_name if user.slack_user else "")]
+    )
 
     registrations_csv = StringIO()
     csvwriter = csv.writer(

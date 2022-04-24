@@ -53,6 +53,7 @@ def send_deploy_message(deploy_data, succedded=True):
 @transaction.atomic
 def check_users() -> List[Dict]:
     from messaging.models import SlackUser
+
     if SL_USER_TOKEN and SL_CHANNEL_WEBDEV:
         client = slack.WebClient(SL_USER_TOKEN)
         # TODO: Maybe add pagination, large lists could 500

@@ -120,8 +120,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     @property
     def profile_picture(self):
-        if self.slack_user and self.slack_user.picture:
-            return self.slack_user.picture
+        if self.slack_user and self.slack_user.picture_original:
+            return self.slack_user.picture_original
         return self.picture
 
     # TODO

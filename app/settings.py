@@ -512,3 +512,11 @@ TWITTER_API_KEY = os.environ.get("TWITTER_API_KEY", None)
 TWITTER_API_KEY_SECRET = os.environ.get("TWITTER_API_KEY_SECRET", None)
 TWITTER_ACCESS_TOKEN = os.environ.get("TWITTER_ACCESS_TOKEN", None)
 TWITTER_ACCESS_TOKEN_SECRET = os.environ.get("TWITTER_ACCESS_TOKEN_SECRET", None)
+
+# Versatile image field
+
+VERSATILEIMAGEFIELD_SETTINGS = {
+    # 5 minutes
+    "cache_length": 5
+    * 60
+}

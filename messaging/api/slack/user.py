@@ -119,11 +119,17 @@ def update(user_data: Dict) -> bool:
             su.picture_original.save(
                 f"{su.external_id}.jpg", File(profile_picture_file), save=False
             )
+            # Move cursor to the beginning if read
+            profile_picture_file.seek(0)
             if user.is_organiser:
                 profile_picture_file = get_profile_picture(file=profile_picture_file)
+                # Move cursor to the beginning if read
+                profile_picture_file.seek(0)
                 user_profile = set_picture(
-                    token=su.token, file=BytesIO(su.picture.file.read())
+                    token=su.token, file=profile_picture_file
                 )
+                # Move cursor to the beginning if read
+                profile_picture_file.seek(0)
                 if user_profile.get("avatar_hash") is not None:
                     su.picture_hash = user_profile.get("avatar_hash")
             su.picture.save(

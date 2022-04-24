@@ -16,17 +16,9 @@ from versatileimagefield.fields import VersatileImageField
 
 from app.storage import OverwriteStorage
 from app.variables import APP_ATTENDANCE_RATIO, APP_NAME
-from event.enums import (
-    AttachmentStatus,
-    AttachmentType,
-    EventStatus,
-    EventType,
-    RegistrationStatus,
-    ScheduleType,
-    SignupStatus,
-    SpeakerRoleType,
-    StreamingProvider,
-)
+from event.enums import (AttachmentStatus, AttachmentType, EventStatus,
+                         EventType, RegistrationStatus, ScheduleType,
+                         SignupStatus, SpeakerRoleType, StreamingProvider)
 from event.managers import EventManager, SessionManager
 from user.enums import DietType
 

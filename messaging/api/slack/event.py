@@ -1,13 +1,7 @@
 from typing import Dict
 
-from app.settings import (
-    SL_ANSWER_BOT,
-    SL_BOT_ID,
-    SL_CHANNEL_EVENTS,
-    SL_CHANNEL_GENERAL,
-    SL_EMOJI_BOT,
-    SL_JOIN_EVENT,
-)
+from app.settings import (SL_ANSWER_BOT, SL_BOT_ID, SL_CHANNEL_EVENTS,
+                          SL_CHANNEL_GENERAL, SL_EMOJI_BOT, SL_JOIN_EVENT)
 from messaging.api.slack import channel, chat, reaction, register, user
 
 

@@ -9,15 +9,8 @@ from django.utils.html import format_html
 
 from event.api.event.event import get_event_resumes_zip
 from event.enums import RegistrationStatus
-from event.models import (
-    Attachment,
-    Event,
-    Registration,
-    Schedule,
-    Session,
-    Speaker,
-    SpeakerRole,
-)
+from event.models import (Attachment, Event, Registration, Schedule, Session,
+                          Speaker, SpeakerRole)
 from event.tasks import send_url_email
 from messaging.api.slack.announcement import announce_event
 from user.enums import DietType, UserType

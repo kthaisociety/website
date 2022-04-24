@@ -5,7 +5,8 @@ from django.contrib import auth, messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
-from django.http import HttpResponse, HttpResponseRedirect, StreamingHttpResponse
+from django.http import (HttpResponse, HttpResponseRedirect,
+                         StreamingHttpResponse)
 from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
@@ -17,12 +18,8 @@ from app.variables import APP_NAME
 from user import forms
 from user.enums import GenderType
 from user.models import User, validate_orcid
-from user.utils import (
-    delete_user_account,
-    get_user_data_zip,
-    send_password,
-    send_verify,
-)
+from user.utils import (delete_user_account, get_user_data_zip, send_password,
+                        send_verify)
 
 
 def user_login(request):

@@ -12,13 +12,9 @@ from app.settings import APP_ROLE_CHAIRMAN
 from event.enums import RegistrationStatus
 from user.enums import GenderType, UserType
 from user.models import History, User
-from user.tasks import (
-    send_created_email,
-    send_imported_email,
-    send_password_email,
-    send_slack_email,
-    send_verify_email,
-)
+from user.tasks import (send_created_email, send_imported_email,
+                        send_password_email, send_slack_email,
+                        send_verify_email)
 
 
 def get_user_by_email(email: str) -> User:

@@ -29,6 +29,7 @@ from event.models import Registration, Session
 from user.enums import UserType, GenderType
 from user.models import User
 from news.models import Article
+from event.models import Event
 import user.api.team
 
 
@@ -359,6 +360,8 @@ def about_team(request, code: Optional[str] = None):
 def about_contact(request):
     return render(request, "about_contact.html")
 
+
 def about_social(request):
-    article_objs = Article.objects.published().order_by("-created_at")
-    return render(request, "about_social.html", {"articles": article_objs})
+    article_objs = Article.objects.published().order_by("-created_at")[:2]
+    event_objs = Event.objects.published().order_by("-created_at")
+    return render(request, "about_social.html", {"articles": article_objs, "events": event_objs})

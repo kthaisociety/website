@@ -11,17 +11,25 @@
             <div class="jumbotron jumbotron-fluid jumbotron-home d-flex mb-0" style="margin-top: -102px; height: 100vh; background-image: linear-gradient(45deg, rgba(20, 20, 20, 0.95) 0%, rgba(20, 20, 20, 0.85) 100%), url('{{ pin.picture.url }}'); background-size: cover; background-position: center center;">
                 <div class="container-home position-relative">
                     <div class="container-home-middle align-self-center d-flex align-items-center justify-content-center">
-                        <div>
+                        <div class="container-home-inner">
                             <h1 class="main-title text-white">
                                 {{ pin.title }}
                             </h1>
-                            <h5 class="main-subtitle card-subtitle mb-0 text-grey font-weight-light">
-                                {% if pin.subtitle %}
+                            {% if pin.subtitle %}
+                                <h5 class="main-subtitle card-subtitle text-grey font-weight-light {% if pin.body or pin.external_url %}mb-3{% else %}mb-0{% endif %}">
                                     {{ pin.subtitle }}
-                                {% else %}
-                                    {{ pin.body_plaintext|shorten:25 }}
-                                {% endif %}
-                            </h5>
+                                </h5>
+                            {% endif %}
+                            {% if pin.body %}
+                                <div class="main-text card-text mb-0 text-grey font-weight-light">
+                                    {{ pin.body|apply_markup }}
+                                </div>
+                            {% endif %}
+                            {% if pin.external_url %}
+                                <a class="main-link link-unstyled mt-4" href="{{ pin.external_url }}">
+                                    <button type="button" class="btn btn-light">{% if pin.external_text %}{{ pin.external_text }}{% else %}View{% endif %}</button>
+                                </a>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="row d-none d-md-flex container-home-bottom position-absolute">

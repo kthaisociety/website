@@ -1,33 +1,12 @@
 from django.contrib import admin, messages
-from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 
 from app.utils import ReadOnlyAdmin, pretty_json
-from messaging.models import SlackChannel, SlackLog
+from messaging.models import SlackChannel, SlackLog, SlackUser
 
 import messaging.api.slack.channel
-
-
-def invite_users(modeladmin, request, channels):
-    success_channels = []
-    error_channels = []
-    for channel in channels:
-        if messaging.api.slack.channel.invite_users(external_id=channel.external_id):
-            success_channels.append(channel)
-        else:
-            error_channels.append(channel)
-    if success_channels:
-        messages.success(
-            request,
-            f"All Slack valid users have been invited to {', '.join([str(channel) for channel in success_channels])}.",
-        )
-    if error_channels:
-        messages.error(
-            request,
-            f"Slack valid users could not be invited to {', '.join([str(channel) for channel in error_channels])}.",
-        )
 
 
 @admin.register(SlackChannel)
@@ -44,7 +23,6 @@ class SlackChannelAdmin(admin.ModelAdmin):
     list_filter = ("is_general", "is_archived", "is_private")
     exclude = ("external_creator_id",)
     ordering = ("name",)
-    actions = [invite_users]
 
     def get_readonly_fields(self, request, obj=None):
         readonly_fields = [
@@ -131,3 +109,14 @@ class SlackLogAdmin(ReadOnlyAdmin):
         return mark_safe(pretty_json(obj.data))
 
     data_nice.short_description = "data"
+
+
+@admin.register(SlackUser)
+class SlackUserAdmin(admin.ModelAdmin):
+    search_fields = ("id", "user", "external_id")
+    list_display = (
+        "user",
+        "external_id",
+    )
+    exclude = ("token", "scopes")
+    ordering = ("user",)

@@ -19,6 +19,8 @@ class Pin(models.Model):
     subtitle = models.CharField(max_length=255, blank=True, null=True)
     picture = VersatileImageField("Image", upload_to="news/pin/")
     body = models.TextField(blank=True, null=True)
+    external_text = models.CharField(max_length=255, blank=True, null=True)
+    external_url = models.URLField(max_length=200, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

@@ -1,5 +1,5 @@
 import datetime
-from typing import List, Dict, Optional
+from typing import Dict, List, Optional
 
 import slack
 from django.db import transaction
@@ -7,7 +7,7 @@ from django.utils import timezone
 from slack.web.slack_response import SlackResponse
 
 from app.enums import SlackError
-from app.settings import SL_TOKEN, SL_CHANNEL_WEBDEV, SL_USER_TOKEN
+from app.settings import SL_CHANNEL_WEBDEV, SL_TOKEN, SL_USER_TOKEN
 from messaging.api.slack.message import send_error_message
 from messaging.models import SlackChannel
 

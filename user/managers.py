@@ -1,6 +1,6 @@
 from django.apps import apps
 from django.contrib.auth.base_user import BaseUserManager
-from django.db.models import Subquery, OuterRef, CharField, BooleanField
+from django.db.models import BooleanField, CharField, OuterRef, Subquery
 
 from user.enums import UserType
 

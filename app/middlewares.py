@@ -2,7 +2,6 @@ from app.settings import MAINTENANCE_MODE
 from app.views import maintenance
 from user.views import user_register
 
-
 ALLOWED_PATHS = [
     "/files",
     "/admin",

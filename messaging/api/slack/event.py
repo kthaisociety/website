@@ -1,15 +1,14 @@
 from typing import Dict
 
 from app.settings import (
-    SL_ID,
-    SL_EMOJI_BOT,
     SL_ANSWER_BOT,
+    SL_BOT_ID,
     SL_CHANNEL_EVENTS,
     SL_CHANNEL_GENERAL,
+    SL_EMOJI_BOT,
     SL_JOIN_EVENT,
-    SL_BOT_ID,
 )
-from messaging.api.slack import reaction, channel, chat, user, register
+from messaging.api.slack import channel, chat, reaction, register, user
 
 
 def run(body: Dict) -> bool:
@@ -30,7 +29,6 @@ def run(body: Dict) -> bool:
     elif event_type == "user_change":
         if not user.update(user_data=body.get("user")):
             success = False
-        pass
     elif event_type in ["member_joined_channel", "member_left_channel"]:
         channel_id = body.get("channel")
         if not channel.retrieve(external_id=channel_id):

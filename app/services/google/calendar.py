@@ -1,12 +1,12 @@
-from typing import Dict, Optional
+from typing import Dict
 
 from googleapiclient.discovery import build
 
 from app.settings import (
-    GOOGLE_CALENDAR_CREDS,
-    GOOGLE_CALENDAR_TEAM_ID,
-    GOOGLE_CALENDAR_TEAM_EMAIL,
     APP_FULL_DOMAIN,
+    GOOGLE_CALENDAR_CREDS,
+    GOOGLE_CALENDAR_TEAM_EMAIL,
+    GOOGLE_CALENDAR_TEAM_ID,
 )
 from event.models import Session
 

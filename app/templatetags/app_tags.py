@@ -2,8 +2,8 @@ import base64
 import math
 import os
 import re
-import markdown
 
+import markdown
 from django import template
 from django.urls import reverse
 from django.utils import timezone
@@ -11,7 +11,7 @@ from django.utils.safestring import mark_safe
 from django.utils.text import Truncator
 
 from app import settings
-from app.settings import STATICFILES_DIRS, STATIC_URL, DEBUG, APP_DOMAIN
+from app.settings import APP_DOMAIN, DEBUG, STATIC_URL, STATICFILES_DIRS
 from app.variables import APP_LOCALHOST
 from event.enums import AttachmentType
 
@@ -72,7 +72,7 @@ def image_as_base64(image_path):
         return None
     with open(image_full_path, "rb") as img_f:
         encoded_string = base64.b64encode(img_f.read())
-    return "data:image/%s;base64,%s" % (
+    return "data:image/{};base64,{}".format(
         image_path.split(".")[-1],
         encoded_string.decode("utf-8"),
     )
@@ -109,7 +109,7 @@ def timedelta_display(time: timezone.timedelta):
     seconds = time.total_seconds()
     m, s = divmod(seconds, 60)
     h, m = divmod(m, 60)
-    return "{:02d}:{:02d}:{:02d}".format(math.floor(h), math.floor(m), math.floor(s))
+    return f"{math.floor(h):02d}:{math.floor(m):02d}:{math.floor(s):02d}"
 
 
 @register.filter

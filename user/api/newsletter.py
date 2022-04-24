@@ -1,10 +1,10 @@
+import logging
 from uuid import UUID
 
 import mailchimp_marketing
-import logging
 from mailchimp_marketing.api_client import ApiClientError
 
-from app.settings import MAILCHIMP_KEY, MAILCHIMP_PREFIX, MAILCHIMP_LIST
+from app.settings import MAILCHIMP_KEY, MAILCHIMP_LIST, MAILCHIMP_PREFIX
 from user.models import User
 
 _log = logging.getLogger(__name__)

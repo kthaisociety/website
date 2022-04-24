@@ -52,6 +52,7 @@ def send_deploy_message(deploy_data, succedded=True):
 
 @transaction.atomic
 def check_users() -> List[Dict]:
+    from messaging.models import SlackUser
     if SL_USER_TOKEN and SL_CHANNEL_WEBDEV:
         client = slack.WebClient(SL_USER_TOKEN)
         # TODO: Maybe add pagination, large lists could 500
@@ -81,9 +82,12 @@ def check_users() -> List[Dict]:
                 # TODO: Sync other user information
                 # Update user Slack ID
                 slack_id = slack_user.get("id")
-                if slack_id and slack_id != u.slack_id:
-                    u.slack_id = slack_id
-                    u.save()
+                if slack_id:
+                    if not u.slack_user:
+                        SlackUser.objects.create(external_id=slack_id)
+                    elif slack_id != u.slack_user.external_id:
+                        u.slack_user.external_id = slack_id
+                        u.slack_user.save()
 
                 if not u.email_verified or not u.registration_finished:
                     users_to_warn.append(u)
@@ -104,7 +108,7 @@ def check_users() -> List[Dict]:
             text += (
                 ("_Users to delete_\n")
                 + "\n".join(
-                    f"\t{u.full_name if u.full_name else u.slack_id} <<mailto:{u.email}|{u.email}>>"
+                    f"\t{u.full_name if u.full_name else u.email} <<mailto:{u.email}|{u.email}>>"
                     for u in users_to_delete
                 )
                 + "\n"

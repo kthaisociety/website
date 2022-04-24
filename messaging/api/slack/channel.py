@@ -4,14 +4,12 @@ from typing import List, Dict, Optional
 import slack
 from django.db import transaction
 from django.utils import timezone
-from slack.errors import SlackApiError
 from slack.web.slack_response import SlackResponse
 
 from app.enums import SlackError
 from app.settings import SL_TOKEN, SL_CHANNEL_WEBDEV, SL_USER_TOKEN
 from messaging.api.slack.message import send_error_message
 from messaging.models import SlackChannel
-from user.models import User
 
 
 def create_slack_channel(slack_channel: Dict) -> SlackChannel:
@@ -112,39 +110,6 @@ def set_purpose(external_id: str, purpose: str) -> bool:
         response = client.conversations_setPurpose(channel=external_id, purpose=purpose)
         if not response.status_code == 200 or not response.data.get("ok", False):
             return send_error_message(error=SlackError.SET_CHANNEL_PURPOSE)
-        return True
-
-
-@transaction.atomic
-def invite_users(external_id: str) -> bool:
-    if SL_TOKEN and SL_CHANNEL_WEBDEV:
-        client = slack.WebClient(SL_TOKEN)
-        user_slack_ids = list(
-            User.objects.slack_active().values_list("slack_id", flat=True)
-        )
-        try:
-            response = client.conversations_invite(
-                channel=external_id, users=user_slack_ids
-            )
-        except SlackApiError as e:
-            if e.response.get("error") != "already_in_channel":
-                raise e
-            response = e.response
-        users_already = [
-            error.get("user")
-            for error in response.data.get("errors", [])
-            if error.get("error") == "already_in_channel"
-        ]
-        # If there was someone not already the "ok" will already be True,
-        # otherwise check only "already in channel errors" were produced
-        if (
-            not response.status_code == 200 or not response.data.get("ok", False)
-        ) and len(user_slack_ids) != len(users_already):
-            return send_error_message(error=SlackError.INVITE_CHANNEL_USERS)
-
-        # Update channel information
-        retrieve(external_id=external_id)
-
         return True
 
 

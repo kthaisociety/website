@@ -23,7 +23,7 @@ def join_event(user_id: str, event_ts: str) -> bool:
         # User has reacted to a message with the emoji but it is not an event announcement
         return False
 
-    user_obj = User.objects.filter(slack_id=user_id).first()
+    user_obj = User.objects.filter(slack_user__external_id=user_id).first()
 
     salutation = "Hey there :wave:!"
     if user_obj:
@@ -292,7 +292,7 @@ def leave_event(user_id: str, event_ts: str) -> bool:
         # User has reacted to a message with the emoji, but it is not an event announcement
         return False
 
-    user_obj = User.objects.filter(slack_id=user_id).first()
+    user_obj = User.objects.filter(slack_user__external_id=user_id).first()
 
     salutation = "Hey there :wave:!"
     if user_obj:

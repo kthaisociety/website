@@ -5,7 +5,9 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
+from versatileimagefield.fields import VersatileImageField
 
+from app.storage import OverwriteStorage
 from messaging.enums import LogType
 from user.models import User
 
@@ -33,7 +35,7 @@ class SlackChannel(models.Model):
 
     @property
     def creator(self) -> Optional[User]:
-        return User.objects.filter(slack_id=self.external_creator_id).first()
+        return User.objects.filter(slack_user__id=self.external_creator_id).first()
 
     def __str__(self):
         return f"#{self.name}"
@@ -77,3 +79,36 @@ class SlackLog(models.Model):
     def __str__(self):
         owner = self.creator if self.creator else "System"
         return f"{LogType(self.type).name} - {self.created_at.strftime('%Y-%m-%d %H:%M:%S')} <{str(owner)}>"
+
+
+class SlackUser(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.OneToOneField(
+        "user.User", on_delete=models.PROTECT, related_name="slack_user"
+    )
+
+    external_id = models.CharField(max_length=255)
+    token = models.CharField(max_length=255, blank=True, null=True)
+    scopes = models.CharField(max_length=255, blank=True, null=True)
+    display_name = models.CharField(max_length=255, blank=True, null=True)
+    picture = VersatileImageField(
+        "Slack image",
+        upload_to="messaging/slackuser/picture/",
+        blank=True,
+        null=True,
+        storage=OverwriteStorage(),
+    )
+    picture_original = VersatileImageField(
+        "Slack original image",
+        upload_to="messaging/slackuser/picture/original/",
+        blank=True,
+        null=True,
+        storage=OverwriteStorage(),
+    )
+    picture_hash = models.CharField(max_length=255, blank=True, null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{str(self.user)} ({self.external_id})"

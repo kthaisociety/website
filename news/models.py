@@ -1,4 +1,3 @@
-import re
 import textwrap
 import uuid
 
@@ -9,7 +8,7 @@ from django.urls import reverse
 from django.utils.text import slugify
 from versatileimagefield.fields import VersatileImageField
 
-from news.enums import ArticleStatus, ArticleType, PostType, FactStatus
+from news.enums import ArticleStatus, ArticleType, FactStatus, PostType
 from news.managers import ArticleManager
 
 

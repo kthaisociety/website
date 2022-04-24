@@ -3,16 +3,16 @@ from io import BytesIO
 
 import qrcode
 import qrcode.image.svg
-
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
-from django.db.models import Subquery, OuterRef, Count, Value, Prefetch
+from django.db.models import Count, OuterRef, Prefetch, Subquery, Value
 from django.db.models.functions import Coalesce, Lower
 from django.http import (
-    HttpResponseNotFound,
     HttpResponse,
+    HttpResponseNotFound,
     HttpResponseRedirect,
     JsonResponse,
 )
@@ -20,13 +20,10 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
 
-from django.conf import settings
-
 import user.utils
 from event.api.event.registration import get_event_data_csv
-
 from event.enums import RegistrationStatus, ScheduleType
-from event.models import Event, Registration, Session, Schedule
+from event.models import Event, Registration, Schedule, Session
 from event.tasks import send_registration_email
 from user.enums import DietType, UserType
 
@@ -218,14 +215,14 @@ def live(request, code):
         schedule_dict[schedule_starts_at].append(schedule)
     duration = ends_at - starts_at
     schedules = sorted(
-        [
+        (
             {
                 "starts_at": t,
                 "ends_at": t + timezone.timedelta(hours=1),
                 "schedules": ss,
             }
             for t, ss in schedule_dict.items()
-        ],
+        ),
         key=lambda el: el["starts_at"],
     )
     return render(

@@ -3,10 +3,9 @@ from django.db import transaction
 from django.urls import reverse
 from django.utils.safestring import mark_safe
 
+import messaging.api.slack.channel
 from app.utils import ReadOnlyAdmin, pretty_json
 from messaging.models import SlackChannel, SlackLog, SlackUser
-
-import messaging.api.slack.channel
 
 
 @admin.register(SlackChannel)

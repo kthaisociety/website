@@ -1,6 +1,6 @@
+import csv
 from io import StringIO
 from uuid import UUID
-import csv
 
 from event.enums import RegistrationStatus
 from event.models import Registration

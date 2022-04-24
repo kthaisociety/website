@@ -26,6 +26,28 @@ Continue with only one of the following sections depending on the purpose of the
 - `python manage.py createsuperuser`.
 - `python manage.py runserver`.
 
+#### Code formatting and type checking
+
+We use [pre-commit](https://pre-commit.com) for linting and formatting which is installed with `pip install -r requirements-dev.txt`.
+
+You must first install a pre-push hook that will run various checks and fail unless all of them pass, if this succeeds the push will follow.
+
+```bash
+pre-commit install -t pre-push
+```
+
+You can format all relevant files as follows.
+
+```bash
+pre-commit run --all-files
+```
+
+Single formatters such as [Black](https://github.com/psf/black) used for code formatting can be run individually as follows.
+
+```bash
+pre-commit run black --all-files
+```
+
 ### Production server
 
 Requirements: PostgreSQL, nginx and certbot.
@@ -95,22 +117,22 @@ server {
     listen [::]:80;
 
     server_name kthais.com www.kthais.com;
-    
+
     proxy_set_header X-Real-IP $remote_addr;
 
     location = /favicon.ico {
         access_log off;
         log_not_found off;
     }
-    
+
     location /static/ {
         alias [PROJECT_FOLDER]/staticfiles/;
     }
-    
+
     location /files/ {
         alias [PROJECT_FOLDER]/files/;
     }
-    
+
     location / {
         include proxy_params;
         proxy_pass http://unix:[PROJECT_FOLDER]/kthais.sock;

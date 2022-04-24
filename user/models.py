@@ -14,10 +14,8 @@ from versatileimagefield.fields import VersatileImageField
 
 from app.storage import OverwriteStorage
 from app.utils import is_email_organiser
-from user.consts import EMOJIS
-from user.enums import UserType, GenderType, DietType
+from user.enums import DietType, GenderType, UserType
 from user.managers import UserManager
-
 
 SOCIAL_URLS = [
     "linkedin_url",
@@ -120,8 +118,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     @property
     def profile_picture(self):
-        if self.slack_user and self.slack_user.picture:
-            return self.slack_user.picture
+        if self.slack_user and self.slack_user.picture_original:
+            return self.slack_user.picture_original
         return self.picture
 
     # TODO
@@ -144,7 +142,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     @property
     def social_urls_count(self):
         return sum(
-            [(1 if getattr(self, social_url) else 0) for social_url in SOCIAL_URLS]
+            (1 if getattr(self, social_url) else 0) for social_url in SOCIAL_URLS
         )
 
     @property

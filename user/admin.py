@@ -2,7 +2,7 @@ from django.contrib import admin, messages
 from django.contrib.auth.models import Group
 
 from app.settings import GROUP_BY_DIVISION_NAME
-from user.models import User, Team, Division, Role, History
+from user.models import Division, History, Role, Team, User
 from user.utils import send_imported, send_slack
 
 

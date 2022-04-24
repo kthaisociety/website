@@ -1,8 +1,8 @@
-from typing import Optional, List
+from typing import List, Optional
 
 from django.db.models import Prefetch
 
-from user.models import Team, Division, Role
+from user.models import Division, Role, Team
 
 
 def get_teams() -> List[Team]:

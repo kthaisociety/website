@@ -2,8 +2,8 @@ from django.db.models import Q
 from django.shortcuts import render
 from django.utils import timezone
 
-from business.models import Tier, Offer
 from business.enums import OfferTypeDict
+from business.models import Offer, Tier
 
 
 def sponsor(request):

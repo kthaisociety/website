@@ -1,16 +1,15 @@
-from typing import List, Dict
+from typing import Dict, List
 
 import requests
 import slack
 from django.db import transaction
 from django.utils import timezone
 
-from app.enums import SlackError
-from app.settings import SL_INURL, APP_DOMAIN, SL_CHANNEL_WEBDEV, SL_USER_TOKEN
-
-import user.utils
 import messaging.api.slack.log
 import messaging.api.slack.user
+import user.utils
+from app.enums import SlackError
+from app.settings import APP_DOMAIN, SL_CHANNEL_WEBDEV, SL_INURL, SL_USER_TOKEN
 from messaging.api.slack.message import send_error_message
 from messaging.consts import WARNING_TIME_DAYS
 from messaging.enums import LogType
@@ -53,6 +52,7 @@ def send_deploy_message(deploy_data, succedded=True):
 @transaction.atomic
 def check_users() -> List[Dict]:
     from messaging.models import SlackUser
+
     if SL_USER_TOKEN and SL_CHANNEL_WEBDEV:
         client = slack.WebClient(SL_USER_TOKEN)
         # TODO: Maybe add pagination, large lists could 500

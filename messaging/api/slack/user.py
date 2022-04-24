@@ -1,4 +1,3 @@
-import copy
 import os
 from io import BytesIO
 from typing import Dict, Optional
@@ -6,17 +5,17 @@ from uuid import UUID
 
 import requests
 import slack
-from PIL import Image, ImageChops
 from django.core.files import File
 from django.db import transaction
 from django.urls import reverse
 from django.utils import timezone
+from PIL import Image, ImageChops
 
+import messaging.api.slack.channel
 import messaging.api.slack.message
 from app.enums import SlackError
-from app.settings import STATIC_ROOT, APP_FULL_DOMAIN
+from app.settings import APP_FULL_DOMAIN, STATIC_ROOT
 from messaging.api.slack import log
-import messaging.api.slack.channel
 from messaging.consts import WARNING_TIME_DAYS
 from messaging.enums import LogType
 from user.models import User
@@ -78,9 +77,9 @@ def same_image(file_1, file_2):
     content_avg = (
         sum(
             [
-                sum([c[0] for c in content]) / len(content),
-                sum([c[1] for c in content]) / len(content),
-                sum([c[2] for c in content]) / len(content),
+                sum(c[0] for c in content) / len(content),
+                sum(c[1] for c in content) / len(content),
+                sum(c[2] for c in content) / len(content),
             ]
         )
         / 3.0

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from page.models import Page, Category, Picture
+from page.models import Category, Page, Picture
 
 
 @admin.register(Page)

@@ -3,7 +3,7 @@ from typing import Optional
 import slack
 
 from app.enums import SlackError
-from app.settings import SL_TOKEN, SL_CHANNEL_WEBDEV
+from app.settings import SL_CHANNEL_WEBDEV, SL_TOKEN
 from messaging.api.slack.message import send_error_message
 
 

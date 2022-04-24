@@ -1,7 +1,7 @@
-from typing import List, Dict
+from typing import Dict, List
 
 from page.enums import PageStatus
-from page.models import Page, Category
+from page.models import Category, Page
 
 
 def get_page(category, code):

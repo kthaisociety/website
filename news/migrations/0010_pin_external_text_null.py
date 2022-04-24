@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('news', '0009_pin_external_text'),
+        ("news", "0009_pin_external_text"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='pin',
-            name='external_text',
+            model_name="pin",
+            name="external_text",
             field=models.CharField(blank=True, max_length=255, null=True),
         ),
     ]

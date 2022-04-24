@@ -14,8 +14,12 @@ from pygments.lexers import JsonLexer
 
 from app.consts import PROGRAMMES, UNIVERSITIES
 from app.settings import APP_FULL_DOMAIN
-from app.variables import (APP_EMAIL_CONTACT, APP_EMAIL_NOREPLY, APP_NAME,
-                           APP_ORGANISER_EMAIL_REGEX)
+from app.variables import (
+    APP_EMAIL_CONTACT,
+    APP_EMAIL_NOREPLY,
+    APP_NAME,
+    APP_ORGANISER_EMAIL_REGEX,
+)
 
 
 def get_substitutions_templates(request: Optional = None):

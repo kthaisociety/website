@@ -5,9 +5,14 @@ from django.db import transaction
 from django.urls import reverse
 from django.utils import timezone
 
-from app.settings import (APP_FULL_DOMAIN, SL_CHANNEL_ARTICLES,
-                          SL_CHANNEL_EVENTS, SL_CHANNEL_GENERAL,
-                          SL_CHANNEL_JOBS, SL_JOIN_EVENT)
+from app.settings import (
+    APP_FULL_DOMAIN,
+    SL_CHANNEL_ARTICLES,
+    SL_CHANNEL_EVENTS,
+    SL_CHANNEL_GENERAL,
+    SL_CHANNEL_JOBS,
+    SL_JOIN_EVENT,
+)
 from app.utils import get_full_url
 from business.models import Offer
 from event.models import Event

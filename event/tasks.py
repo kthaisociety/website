@@ -3,8 +3,7 @@ from uuid import UUID
 from django.template.loader import render_to_string
 
 from app.enums import MailTag
-from app.utils import (get_notification_template, get_substitutions_templates,
-                       send_email)
+from app.utils import get_notification_template, get_substitutions_templates, send_email
 from event.enums import RegistrationStatus
 from event.models import Registration
 

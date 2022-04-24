@@ -36,15 +36,6 @@ repos:
     rev: 5.9.3
     hooks:
       - id: isort
-  - repo: https://github.com/psf/black
-    rev: 22.3.0
-    hooks:
-      - id: black
-  - repo: https://github.com/sirosen/check-jsonschema
-    rev: 0.4.1
-    hooks:
-      - id: check-github-workflows
-        require_serial: true
 
 exclude: |
   (?x)(

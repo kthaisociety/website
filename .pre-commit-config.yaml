@@ -40,15 +40,6 @@ repos:
     rev: 22.3.0
     hooks:
       - id: black
-  - repo: https://gitlab.com/pycqa/flake8
-    rev: 3.9.2
-    hooks:
-      - id: flake8
-        additional_dependencies:
-          - flake8-bugbear
-          - flake8-comprehensions
-          - flake8-tidy-imports
-          - flake8-print
   - repo: https://github.com/sirosen/check-jsonschema
     rev: 0.4.1
     hooks:

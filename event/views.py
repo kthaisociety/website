@@ -17,8 +17,10 @@ from django.http import (
     JsonResponse,
 )
 from django.shortcuts import render
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
+from html2image import Html2Image
 
 import user.utils
 from event.api.event.registration import get_event_data_csv
@@ -424,3 +426,18 @@ def checkin_event_download(request, event_id):
         response["Content-Disposition"] = f'attachment; filename="{file_name}"'
         return response
     return HttpResponseNotFound()
+
+
+def event_poster(request, code):
+    event_obj = (
+        Event.objects.published().filter(code=code).prefetch_related("sessions").first()
+    )
+    html = render_to_string(
+        "poster/poster.html",
+        context={"event": event_obj},
+    )
+    hti = Html2Image(output_path="files/event/poster")
+    hti.screenshot(html_str=html, save_as=f"{code}.png", size=(1200, 630))
+    img = open(f"files/event/poster/{code}.png", "rb")
+    response = HttpResponse(img.read(), content_type="image/png")
+    return response

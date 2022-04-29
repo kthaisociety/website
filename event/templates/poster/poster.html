@@ -1,0 +1,122 @@
+{% load static %}
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Poster</title>
+        <style>
+            @font-face {
+                font-family: "Futura";
+                src: url("https://{{ app_domain }}{% static "fonts/Futura-Regular.ttf" %}");
+                font-weight: normal;
+                font-style: normal;
+            }
+            @font-face {
+                font-family: "Futura";
+                src: url("https://{{ app_domain }}{% static "fonts/Futura-Medium.ttf" %}");
+                font-weight: 500;
+                font-style: normal;
+            }
+            @font-face {
+                font-family: "Futura";
+                src: url("https://{{ app_domain }}{% static "fonts/Futura-Bold.ttf" %}");
+                font-weight: 700;
+                font-style: normal;
+            }
+            @page {
+                size: 1200px 630px;
+                margin: 5%;
+            }
+            html {
+                background: url('https://{{ app_domain }}{{ event.picture.crop.1500x1000 }}');
+                background-size: cover;
+                font-family: "Futura", sans-serif;
+                color: white;
+                text-transform: uppercase;
+                overflow: hidden;
+            }
+            .poster-corner {
+                background-color: #000;
+                width: 2000px;
+                height: 500px;
+                position: absolute;
+                right: -250px;
+                bottom: -275px;
+                -webkit-transform: rotate(10deg);
+                z-index: -50;
+            }
+            .poster-corner-secondary {
+                background-color: rgba(0, 0, 0, 0.5);
+                width: 2000px;
+                height: 500px;
+                position: absolute;
+                right: -250px;
+                bottom: -250px;
+                -webkit-transform: rotate(10deg);
+                z-index: -50;
+            }
+            .poster-content {
+                color: #fff;
+                position: absolute;
+                width: 100%;
+                padding: 0 5%;
+                left: 0;
+                bottom: 50px;
+                font-family: "Futura", sans-serif;
+                text-transform: none;
+            }
+            .poster-content div {
+                display: block;
+            }
+            .poster-title {
+                font-weight: 700;
+                font-size: 30px;
+                margin-bottom: 10px;
+            }
+            .poster-location {
+                font-weight: 500;
+                font-size: 20px;
+                display: block;
+                margin-bottom: 10px;
+            }
+            .poster-session {
+                font-weight: 500;
+                font-size: 20px;
+                display: block;
+            }
+            .poster-session-nested {
+                font-weight: normal;
+                padding-left: 5px;
+                display: inline-block;
+            }
+            .poster-session-nested::before {
+                content: "·";
+                padding-right: 10px;
+            }
+        </style>
+    </head>
+    <body>
+    <div class="poster-content">
+        <div class="poster-title">{{ event.name }}</div>
+        {% if event.location %}
+            <div class="poster-location">
+                📍 {{ event.location }}
+            </div>
+        {% endif %}
+        {% if event.sessions.count > 1 %}
+            {% for session in event.sessions.all %}
+                <div class="poster-session">
+                    {{ session.name }}
+                    <span class="poster-session-nested">🕒 {{ session.starts_at|date:"F j, H:i" }}{% if session.starts_at != session.ends_at %} - {% if session.starts_at.date != session.ends_at.date %}{{ session.ends_at|date:"F j, H:i" }}{% else %}{{ session.ends_at|date:"H:i" }}{% endif %}{% endif %}</span>
+                </div>
+            {% endfor %}
+        {% else %}
+            {% with event.sessions.first as session %}
+                <div class="poster-session">🕒 {{ session.starts_at|date:"F j, H:i" }}{% if session.starts_at != session.ends_at %} - {% if session.starts_at.date != session.ends_at.date %}{{ session.ends_at|date:"F j, H:i" }}{% else %}{{ session.ends_at|date:"H:i" }}{% endif %}{% endif %}</div>
+            {% endwith %}
+        {% endif %}
+    </div>
+    <div class="poster-corner"></div>
+    <div class="poster-corner-secondary"></div>
+    </body>
+</html>

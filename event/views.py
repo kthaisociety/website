@@ -23,6 +23,7 @@ from django.utils import timezone
 from html2image import Html2Image
 
 import user.utils
+from app.utils import get_substitutions_templates
 from event.api.event.registration import get_event_data_csv
 from event.enums import RegistrationStatus, ScheduleType
 from event.models import Event, Registration, Schedule, Session
@@ -432,9 +433,11 @@ def event_poster(request, code):
     event_obj = (
         Event.objects.published().filter(code=code).prefetch_related("sessions").first()
     )
+    context = get_substitutions_templates(request=request)
+    context["event"] = event_obj
     html = render_to_string(
         "poster/poster.html",
-        context={"event": event_obj},
+        context=context,
     )
     hti = Html2Image(output_path="files/event/poster")
     hti.screenshot(html_str=html, save_as=f"{code}.png", size=(1200, 630))

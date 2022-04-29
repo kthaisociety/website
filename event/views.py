@@ -431,7 +431,12 @@ def checkin_event_download(request, event_id):
 
 def event_poster(request, code):
     event_obj = (
-        Event.objects.published().filter(code=code).prefetch_related("sessions").first()
+        Event.objects.published()
+        .filter(code=code)
+        .prefetch_related(
+            Prefetch("sessions", Session.objects.all().order_by("starts_at"))
+        )
+        .first()
     )
     context = get_substitutions_templates(request=request)
     context["event"] = event_obj

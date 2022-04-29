@@ -35,13 +35,14 @@
                 text-transform: uppercase;
                 overflow: hidden;
             }
+            {% widthratio event.sessions.count 1 -15 as ratio %}
             .poster-corner {
                 background-color: #000;
                 width: 2000px;
                 height: 500px;
                 position: absolute;
                 right: -250px;
-                bottom: -250px;
+                bottom: -{{ "285"|add:ratio }}px;
                 -webkit-transform: rotate(5deg);
                 z-index: -50;
             }
@@ -51,7 +52,7 @@
                 height: 500px;
                 position: absolute;
                 right: -250px;
-                bottom: -225px;
+                bottom: -{{ "260"|add:ratio }}px;
                 -webkit-transform: rotate(5deg);
                 z-index: -50;
             }

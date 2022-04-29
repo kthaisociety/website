@@ -36,26 +36,36 @@
                 overflow: hidden;
             }
             {% widthratio event.sessions.count 1 -15 as ratio %}
-            .poster-corner {
-                background-color: #000;
-                width: 2000px;
-                height: 500px;
-                position: absolute;
-                right: -250px;
-                bottom: -{{ "285"|add:ratio }}px;
-                -webkit-transform: rotate(5deg);
-                z-index: -50;
-            }
-            .poster-corner-secondary {
-                background-color: rgba(0, 0, 0, 0.5);
-                width: 2000px;
-                height: 500px;
-                position: absolute;
-                right: -250px;
-                bottom: -{{ "260"|add:ratio }}px;
-                -webkit-transform: rotate(5deg);
-                z-index: -50;
-            }
+            {% with ratio|add:20 as ratio_unlocation %}
+                .poster-corner {
+                    background-color: #000;
+                    width: 2000px;
+                    height: 500px;
+                    position: absolute;
+                    right: -250px;
+                    {% if event.location %}
+                        bottom: -{{ "285"|add:ratio }}px;
+                    {% else %}
+                        bottom: -{{ "285"|add:ratio_unlocation }}px;
+                    {% endif %}
+                    -webkit-transform: rotate(5deg);
+                    z-index: -50;
+                }
+                .poster-corner-secondary {
+                    background-color: rgba(0, 0, 0, 0.5);
+                    width: 2000px;
+                    height: 500px;
+                    position: absolute;
+                    right: -250px;
+                    {% if event.location %}
+                        bottom: -{{ "260"|add:ratio }}px;
+                    {% else %}
+                        bottom: -{{ "260"|add:ratio_unlocation }}px;
+                    {% endif %}
+                    -webkit-transform: rotate(5deg);
+                    z-index: -50;
+                    }
+            {% endwith %}
             .poster-content {
                 color: #fff;
                 position: absolute;

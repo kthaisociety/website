@@ -216,7 +216,7 @@ def join_event(user_id: str, event_ts: str) -> bool:
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": f"{salutation}!\n\nYou are now registered to *{event_obj.name}*! This event will provide free food :sandwich: and that's why we need to know if you have any restrictions :dizzy_face:.",
+                    "text": f"{salutation}!\n\nYou are now registered to *{event_obj.name}*! This event will provide free food :sandwich: and that's why we need to know if you have any restrictions :dizzy_face:. Furthermore, you should have received an email :incoming_envelope: with your registration confirmation, you will be notified closer to the event :date: with extra details if that is required. If you want to cancel your registration you just need to remove the reaction :{SL_JOIN_EVENT}:.",
                 },
             },
             {
@@ -263,6 +263,7 @@ def join_event(user_id: str, event_ts: str) -> bool:
             unfurl_links=False,
             unfurl_media=False,
         )
+        send_registration_email(registration_id=registration_obj.id)
         return True
 
     block = [
@@ -281,6 +282,7 @@ def join_event(user_id: str, event_ts: str) -> bool:
         unfurl_links=False,
         unfurl_media=False,
     )
+    send_registration_email(registration_id=registration_obj.id)
     return True
 
 
@@ -388,6 +390,7 @@ def leave_event(user_id: str, event_ts: str) -> bool:
         unfurl_links=False,
         unfurl_media=False,
     )
+    send_registration_email(registration_id=registration_obj.id)
     return True
 
 

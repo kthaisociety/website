@@ -37,6 +37,7 @@ def get_substitutions_templates(request: Optional = None):
         "app_email_contact": getattr(settings, "APP_EMAIL_CONTACT", None),
         "app_email_webdev": getattr(settings, "APP_EMAIL_WEBDEV", None),
         "app_email_business": getattr(settings, "APP_EMAIL_BUSINESS", None),
+        "app_email_jobs": getattr(settings, "APP_EMAIL_JOBS", None),
         "app_sn_facebook": getattr(settings, "APP_SN_FACEBOOK", None),
         "app_sn_twitter": getattr(settings, "APP_SN_TWITTER", None),
         "app_sn_instagram": getattr(settings, "APP_SN_INSTAGRAM", None),

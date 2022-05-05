@@ -111,7 +111,7 @@ class SlackLogAdmin(ReadOnlyAdmin):
 
 
 @admin.register(SlackUser)
-class SlackUserAdmin(admin.ModelAdmin):
+class SlackUserAdmin(ReadOnlyAdmin):
     search_fields = ("id", "user", "external_id")
     list_display = (
         "user",

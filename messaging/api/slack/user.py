@@ -1,24 +1,21 @@
-import copy
 import os
-import time
 from io import BytesIO
-from typing import Dict, Tuple, Optional
+from typing import Dict, Optional
 from uuid import UUID
 
 import requests
 import slack
-from PIL import Image, ImageChops
 from django.core.files import File
 from django.db import transaction
 from django.urls import reverse
 from django.utils import timezone
+from PIL import Image, ImageChops
 
-import app.slack
+import messaging.api.slack.channel
 import messaging.api.slack.message
 from app.enums import SlackError
-from app.settings import STATIC_ROOT, APP_FULL_DOMAIN
+from app.settings import APP_FULL_DOMAIN, STATIC_ROOT
 from messaging.api.slack import log
-import messaging.api.slack.channel
 from messaging.consts import WARNING_TIME_DAYS
 from messaging.enums import LogType
 from user.models import User
@@ -41,17 +38,23 @@ def get_profile_picture(file: BytesIO) -> BytesIO:
     return new_file
 
 
-def set_picture(token: str, file: BytesIO) -> Tuple[bool, Optional[str]]:
+def set_picture(token: str, file: BytesIO) -> Optional[Dict]:
     client = slack.WebClient(token)
     response = client.users_setPhoto(image=file.read())
     if not response.status_code == 200 or not response.data.get("ok", False):
-        return (
-            messaging.api.slack.message.send_error_message(
-                error=SlackError.SET_USER_PICTURE
-            ),
-            None,
+        messaging.api.slack.message.send_error_message(
+            error=SlackError.SET_USER_PICTURE
         )
-    return True, response.data.get("profile", {}).get("avatar_hash")
+        return None
+    return response.data.get("profile")
+
+
+def get_profile(token: str) -> Optional[Dict]:
+    client = slack.WebClient(token)
+    response = client.users_profile_get()
+    if not response.status_code == 200 or not response.data.get("ok", False):
+        return None
+    return response.data.get("profile")
 
 
 def same_image(file_1, file_2):
@@ -74,9 +77,9 @@ def same_image(file_1, file_2):
     content_avg = (
         sum(
             [
-                sum([c[0] for c in content]) / len(content),
-                sum([c[1] for c in content]) / len(content),
-                sum([c[2] for c in content]) / len(content),
+                sum(c[0] for c in content) / len(content),
+                sum(c[1] for c in content) / len(content),
+                sum(c[2] for c in content) / len(content),
             ]
         )
         / 3.0
@@ -90,51 +93,42 @@ def update(user_data: Dict) -> bool:
     user_slack_profile = user_data.get("profile")
     user_slack_email = user_slack_profile.get("email")
     user = User.objects.filter(email=user_slack_email).first()
-    profile_picture_updated = False
-    if user:
-        user.slack_id = user_data.get("id")
-        user.slack_status_text = user_slack_profile.get("status_text")
-        user.slack_status_emoji = user_slack_profile.get("status_emoji")
-        user.slack_display_name = user_slack_profile.get("display_name")
 
+    if not user or not user.slack_user:
+        return False
+
+    su = user.slack_user
+    su.external_id = user_data.get("id")
+    # su.status_text = user_slack_profile.get("status_text")
+    # su.status_emoji = user_slack_profile.get("status_emoji")
+    su.display_name = user_slack_profile.get("display_name")
+
+    user_profile = get_profile(token=su.token)
+
+    current_picture_hash = user_profile.get("avatar_hash")
+    if current_picture_hash is not None and current_picture_hash != su.picture_hash:
         user_slack_image_original = user_slack_profile.get("image_original")
-
-        # Update the profile picture only if it changed
-        if user.updated_at < timezone.now() - timezone.timedelta(seconds=10):
-            response = requests.get(user_slack_image_original)
-            if response.status_code == 200:
-                profile_picture_file = BytesIO(response.content)
-                # If it differs with the Slack picture we have saved
-                # Need to build it again on ByesIO as it will be read later
-                if not same_image(
-                    file_1=BytesIO(response.content), file_2=user.slack_picture
-                ):
-                    user.picture.save(
-                        f"{user.id}.jpg", File(profile_picture_file), save=False
-                    )
-                    if user.is_organiser:
-                        profile_picture_file = get_profile_picture(
-                            file=profile_picture_file
-                        )
-                        profile_picture_updated = True
-                    user.slack_picture.save(
-                        f"{user.id}.jpg", File(profile_picture_file), save=False
-                    )
-
-        user.save()
-
-        # TODO: Don't create a update look, needs to be checked
-        # Yes, this will keep the worker completely stuck here, no other solution
-        # for now due to Slack sending a ton of events too close to each other
-        # time.sleep(2)
-        #
-        # if profile_picture_updated and user.slack_token:
-        #     picture_success, picture_hash = set_picture(
-        #         token=user.slack_token, file=BytesIO(user.slack_picture.file.read())
-        #     )
-        #     return picture_success
-        return True
-    return False
+        response = requests.get(user_slack_image_original)
+        if response.status_code == 200:
+            profile_picture_file = BytesIO(response.content)
+            su.picture_original.save(
+                f"{su.external_id}.jpg", File(profile_picture_file), save=False
+            )
+            # Move cursor to the beginning if read
+            profile_picture_file.seek(0)
+            if user.is_organiser:
+                profile_picture_file = get_profile_picture(file=profile_picture_file)
+                # Move cursor to the beginning if read
+                profile_picture_file.seek(0)
+                user_profile = set_picture(token=su.token, file=profile_picture_file)
+                # Move cursor to the beginning if read
+                profile_picture_file.seek(0)
+                if user_profile.get("avatar_hash") is not None:
+                    su.picture_hash = user_profile.get("avatar_hash")
+            su.picture.save(
+                f"{su.external_id}.jpg", File(profile_picture_file), save=False
+            )
+    return su.save()
 
 
 def create(user_data: Dict) -> bool:
@@ -158,7 +152,7 @@ def create(user_data: Dict) -> bool:
 
 def warn_registration(id: UUID):
     user_obj = User.objects.get(id=id)
-    if user_obj and user_obj.slack_id:
+    if user_obj and user_obj.slack_user:
         user_finish_before = timezone.localtime(
             timezone.now() + timezone.timedelta(days=WARNING_TIME_DAYS)
         )
@@ -189,7 +183,7 @@ def warn_registration(id: UUID):
         ]
 
         response = messaging.api.slack.channel.send_message(
-            external_id=user_obj.slack_id,
+            external_id=user_obj.slack_user.external_id,
             blocks=blocks,
             unfurl_links=False,
             unfurl_media=False,

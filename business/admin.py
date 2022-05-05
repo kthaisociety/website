@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from business.models import Company, Contact, Tier, Sponsorship, Offer
+from business.models import Company, Contact, Offer, Sponsorship, Tier
 
 
 class OfferInline(admin.StackedInline):

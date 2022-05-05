@@ -271,6 +271,12 @@ nav {
     }
 }
 
+.container-home-inner {
+    @media (min-width: 992px){
+        max-width: 50%;
+    }
+}
+
 .main-title {
     margin-bottom: 25px;
     @media (max-width: 991px) {
@@ -294,6 +300,21 @@ nav {
 .main-subtitle {
     @media (max-width: 991px) {
         text-align: center;
+    }
+}
+
+.main-text {
+    @media (max-width: 991px) {
+        text-align: center;
+    }
+}
+
+.main-link {
+    @media (max-width: 991px) {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
     }
 }
 

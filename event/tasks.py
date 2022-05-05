@@ -1,10 +1,9 @@
 from uuid import UUID
 
-from celery import shared_task
 from django.template.loader import render_to_string
 
 from app.enums import MailTag
-from app.utils import get_notification_template, send_email, get_substitutions_templates
+from app.utils import get_notification_template, get_substitutions_templates, send_email
 from event.enums import RegistrationStatus
 from event.models import Registration
 

@@ -211,10 +211,10 @@
                         <div class="card w-100">
                             <div class="card-body">
                                 <h4 class="card-title"><img alt="Slack icon" class="inline-icon-h4" src="{{ app_full_domain }}{% static "img/slack.png" %}">Slack</h4>
-                                {% if request.user.slack_token %}
+                                {% if request.user.slack_user and request.user.slack_user.token %}
                                     <h6 class="card-text mt-3 mb-3">✅ Connected</h6>
                                     <hr>
-                                    <p class="card-text"><strong>User ID:</strong> {{ request.user.slack_id }}</p>
+                                    <p class="card-text"><strong>User ID:</strong> {{ request.user.slack_user.external_id }}</p>
                                     <a class="link-unstyled" href="https://kthaisociety.slack.com">
                                         <button type="button" class="btn btn-primary">Open Slack</button>
                                     </a>

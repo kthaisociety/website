@@ -191,7 +191,7 @@
                                                     </a>
                                                 </div>
                                             {% endif %}
-                                            {% if not request.user.slack_token %}
+                                            {% if not request.user.slack_user.token %}
                                                 <div class="card text-white bg-primary mb-4">
                                                     <div class="card-body">
                                                         <h5 class="card-title text-white icon-white">Authorize Slack <img alt="Slack icon" class="inline-icon-h5 icon-white" src="{{ app_full_domain }}{% static "img/slack.png" %}">?</h5>

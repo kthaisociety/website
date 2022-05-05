@@ -2,7 +2,7 @@ from django.contrib import admin, messages
 from django.contrib.auth.models import Group
 
 from app.settings import GROUP_BY_DIVISION_NAME
-from user.models import User, Team, Division, Role, History
+from user.models import Division, History, Role, Team, User
 from user.utils import send_imported, send_slack
 
 
@@ -37,7 +37,7 @@ class UserAdmin(admin.ModelAdmin):
         "email_verified",
         "registration_finished",
         "is_active",
-        "slack_id",
+        "slack_user",
         "created_at",
     )
     list_filter = (
@@ -53,15 +53,10 @@ class UserAdmin(admin.ModelAdmin):
     readonly_fields = (
         "groups",
         "last_login",
-        "slack_id",
-        "slack_status_text",
-        "slack_status_emoji",
-        "slack_display_name",
-        "slack_picture",
-        "slack_picture_hash",
+        "slack_user",
         "created_at",
     )
-    exclude = ("password", "slack_token", "slack_scopes", "user_permissions")
+    exclude = ("password", "user_permissions")
     ordering = ("-created_at",)
     actions = [send_welcome, send_slack_invite]
 

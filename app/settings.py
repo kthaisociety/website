@@ -12,7 +12,6 @@ from sentry_sdk.integrations.django import DjangoIntegration
 
 from app.variables import *
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -168,7 +167,7 @@ MEDIA_ROOT = BASE_DIR + "/files"
 # Set up custom authenthication
 
 AUTH_USER_MODEL = "user.User"
-PASSWORD_RESET_TIMEOUT_DAYS = 1
+PASSWORD_RESET_TIMEOUT = 60 * 60 * 24 * 1
 
 # Add domain to allowed hosts
 
@@ -512,3 +511,11 @@ TWITTER_API_KEY = os.environ.get("TWITTER_API_KEY", None)
 TWITTER_API_KEY_SECRET = os.environ.get("TWITTER_API_KEY_SECRET", None)
 TWITTER_ACCESS_TOKEN = os.environ.get("TWITTER_ACCESS_TOKEN", None)
 TWITTER_ACCESS_TOKEN_SECRET = os.environ.get("TWITTER_ACCESS_TOKEN_SECRET", None)
+
+# Versatile image field
+
+VERSATILEIMAGEFIELD_SETTINGS = {
+    # 5 minutes
+    "cache_length": 5
+    * 60
+}

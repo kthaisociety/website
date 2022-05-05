@@ -2,8 +2,9 @@ import slack
 from django.urls import reverse
 
 from app.enums import SlackError
-from app.settings import SL_ID, SL_SECRET, APP_FULL_DOMAIN
+from app.settings import APP_FULL_DOMAIN, SL_ID, SL_SECRET
 from messaging.api.slack.message import send_error_message
+from messaging.models import SlackUser
 from user.models import User
 
 
@@ -19,9 +20,17 @@ def auth(code: str, user: User) -> bool:
         return send_error_message(error=SlackError.ADD_MESSAGE)
 
     authed_user = response.data.get("authed_user")
-    user.slack_id = authed_user.get("id")
-    user.slack_token = authed_user.get("access_token")
-    user.slack_scopes = authed_user.get("scope")
-    user.save()
+    if user.slack_user:
+        user.slack_user.external_id = authed_user.get("id")
+        user.slack_user.token = authed_user.get("access_token")
+        user.slack_user.scopes = authed_user.get("scope")
+        user.slack_user.save()
+    else:
+        SlackUser.objects.create(
+            user=user,
+            external_id=authed_user.get("id"),
+            token=authed_user.get("access_token"),
+            scopes=authed_user.get("scope"),
+        )
 
     return True

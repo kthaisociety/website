@@ -7,7 +7,7 @@ class UserFactory(factory.DjangoModelFactory):
     name = factory.Faker("first_name")
     surname = factory.Faker("last_name")
     email = factory.LazyAttribute(
-        lambda u: "{0}.{1}@not-kthack.com".format(u.name, u.surname).lower()
+        lambda u: f"{u.name}.{u.surname}@not-kthack.com".lower()
     )
 
     class Meta:

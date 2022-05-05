@@ -484,7 +484,7 @@ PERMISSIONS_COMMON = {
     "view": {
         "business": ["company", "offer", "sponsorship", "tier"],
         "event": ["attachment", "event", "session", "speaker", "speakerrole"],
-        "messaging": ["slackchannel", "slacklog"],
+        "messaging": ["slackchannel", "slacklog", "slackuser"],
         "news": ["article", "author", "pin"],
         "page": ["category", "page", "picture"],
         "user": ["division", "history", "role", "team"],

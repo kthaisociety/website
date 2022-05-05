@@ -87,7 +87,7 @@ class SlackUser(models.Model):
         "user.User", on_delete=models.PROTECT, related_name="slack_user"
     )
 
-    external_id = models.CharField(max_length=255)
+    external_id = models.CharField(max_length=255, unique=True)
     token = models.CharField(max_length=255, blank=True, null=True)
     scopes = models.CharField(max_length=255, blank=True, null=True)
     display_name = models.CharField(max_length=255, blank=True, null=True)

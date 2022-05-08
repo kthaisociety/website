@@ -39,4 +39,14 @@ urlpatterns = [
         name="events_checkin_event_qr",
     ),
     url(r"^checkin/(?P<code>.*)$", views.checkin_event, name="events_checkin_event"),
+    url(
+        r"^speaker$",
+        views.speakers,
+        name="events_speakers",
+    ),
+    url(
+        r"^speaker/(?P<speaker_id>.*)$",
+        views.speaker,
+        name="events_speaker",
+    ),
 ]

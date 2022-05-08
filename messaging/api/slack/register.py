@@ -347,7 +347,7 @@ def leave_event(user_id: str, event_ts: str) -> bool:
         event=event_obj, user=user_obj
     ).first()
 
-    if not registration_obj:
+    if not registration_obj or registration_obj.status == RegistrationStatus.CANCELLED:
         # User is not registered to the event
         return False
 

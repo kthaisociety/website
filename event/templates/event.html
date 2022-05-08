@@ -124,12 +124,13 @@
                                     <div class="col-12 mt-0 mb-0">
                                         <div class="row">
                                             <div class="col-12 col-md-4 col-lg-3 text-center ml-auto mr-auto ml-md-0 mr-md-0 mt-0 mb-0">
-                                                {% if role.speaker.website %}<a href="{{ role.speaker.website }}" target="_blank" class="link-unstyled">{% endif %}
-                                                {% comment %}
-                                                    <img src="{{ organiser.picture.url }}" class="ml-auto mr-auto">
-                                                {% endcomment %}
-                                                <div class="speaker-picture"><img alt="Speaker picture" src="{{ role.speaker.picture.crop.500x500 }}"></div>
-                                                <h6 class="mt-1 mb-0" {% if role.speaker.full_name|length > 15 %}style="font-size: 14px; padding-top: 1px; padding-bottom: 1px;"{% endif %}>{{ role.speaker.full_name }}</h6>
+                                                <a href="{% url "events_speaker" role.speaker.id %}" class="link-unstyled">
+                                                    {% comment %}
+                                                        <img src="{{ organiser.picture.url }}" class="ml-auto mr-auto">
+                                                    {% endcomment %}
+                                                    <div class="speaker-picture"><img alt="Speaker picture" src="{{ role.speaker.picture.crop.500x500 }}"></div>
+                                                    <h6 class="mt-1 mb-0" {% if role.speaker.full_name|length > 15 %}style="font-size: 14px; padding-top: 1px; padding-bottom: 1px;"{% endif %}>{{ role.speaker.full_name }}</h6>
+                                                </a>
                                                 {% if role.speaker.city and role.speaker.country %}
                                                     <p class="mt-1 mb-0" style="line-height: 1;"><small>{{ role.speaker.city }}, {{ role.speaker.country }}</small></p>
                                                 {% endif %}
@@ -160,7 +161,6 @@
                                                         </button>
                                                     </a>
                                                 {% endif %}
-                                                {% if role.speaker %}</a>{% endif %}
                                             </div>
                                             <div class="col-12 col-md-8 col-lg-9 ml-auto mr-auto pl-3 pl-lg-0 ml-md-0 mr-md-0 mt-3 mt-md-0 mb-0 text-center text-md-left">
                                                 {% if role.speaker.description %}

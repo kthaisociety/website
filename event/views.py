@@ -1,4 +1,4 @@
-from collections import defaultdict
+from collections import OrderedDict, defaultdict
 from io import BytesIO
 
 import qrcode
@@ -455,11 +455,15 @@ def event_poster(request, code):
 
 
 def speakers(request):
-    speaker_objs = (
-        Speaker.objects.select_related("user")
-        .order_by("-roles__session__starts_at")
-        .distinct()
-    )
+    # TODO: Add distinct when we have Docker
+    speaker_objs = OrderedDict(
+        [
+            (s.id, s)
+            for s in Speaker.objects.select_related("user")
+            .order_by("-roles__session__starts_at")
+            .distinct()
+        ]
+    ).values()
 
     return render(
         request,

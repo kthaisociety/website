@@ -455,8 +455,10 @@ def event_poster(request, code):
 
 
 def speakers(request):
-    speaker_objs = Speaker.objects.select_related("user").order_by(
-        "-roles__session__starts_at"
+    speaker_objs = (
+        Speaker.objects.select_related("user")
+        .order_by("-roles__session__starts_at")
+        .distinct()
     )
 
     return render(

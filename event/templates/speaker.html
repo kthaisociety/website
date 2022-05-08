@@ -80,7 +80,7 @@
                             <div class="row pl-2 pr-2 d-flex">
                                 {% for role in speaker.roles.all %}
                                     <div class="col-12 col-md-3 mt-2 mb-2 pl-2 pr-2">
-                                        <a class="link-unstyled" href="{{ role.session.event.url }}" target="_blank">
+                                        <a class="link-unstyled" href="{{ role.session.event.url }}">
                                             <div class="card mt-2 mb-0 h-100">
                                                 <img class="card-img-top rounded-0" src="{{ role.session.event.picture.crop.500x300 }}">
                                                 <div class="card-body">

@@ -1021,6 +1021,11 @@ nav {
     filter: grayscale(100%);
 }
 
+.speaker-picture-page {
+    max-width: 250px !important;
+    margin-bottom: 0 !important;
+}
+
 .speaker-picture {
     border-radius: 50%;
     max-width: 125px;

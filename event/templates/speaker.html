@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load app_tags %}
+{% load social_share %}
+{% load static %}
+
+{% block og %}
+    <meta property="og:title" content="{{ speaker.full_name }} | {{ app_name }}" />
+    <meta property="og:url" content="{% url "events_speaker" role.speaker.id %}" />
+    <meta property="og:image" content="https://{{ app_domain }}{{ speaker.picture.crop.1500x1000 }}" />
+{% endblock %}
+
+{% block head_title %}{{ speaker.full_name }}{% endblock %}
+
+{% block in_body %}
+    <div class="container container-body py-4 py-md-5">
+        <div class="row d-none d-lg-block">
+            <div class="col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent p-0 pb-2">
+                        <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'app_home' %}">Home</a></li>
+                        <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'events_speakers' %}">Speakers</a></li>
+                        <li class="breadcrumb-item active" aria-current="page"><a class="link-unstyled" href="{% url "events_speaker" role.speaker.id %}">{{ speaker.full_name }}</a></li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card w-100 mb-4 text-center">
+                    <div class="card-body">
+                        <div class="speaker-picture speaker-picture-page"><img alt="Speaker picture" src="{{ speaker.picture.crop.500x500 }}"></div>
+                        <h3 class="mt-1 mb-0 mt-4">{{ speaker.full_name }}</h3>
+                        {% if speaker.city and speaker.country %}
+                            <p class="mt-1 mb-0" style="line-height: 1;"><small>{{ speaker.city }}, {{ speaker.country }}</small></p>
+                        {% endif %}
+                        {% if speaker.linkedin_url %}
+                            <a href="{{ speaker.linkedin_url }}" class="speaker-social-network link-unstyled" target="_blank">
+                                <button type="button" class="btn btn-linkedin btn-sm mt-2">
+                                    <p class="mb-0">
+                                        <i class="fab fa-linkedin-in"></i>
+                                    </p>
+                                </button>
+                            </a>
+                        {% endif %}
+                        {% if speaker.twitter_url %}
+                            <a href="{{ speaker.twitter_url }}" class="speaker-social-network link-unstyled" target="_blank">
+                                <button type="button" class="btn btn-twitter btn-sm mt-2">
+                                    <p class="mb-0">
+                                        <i class="fab fa-twitter"></i>
+                                    </p>
+                                </button>
+                            </a>
+                        {% endif %}
+                        {% if speaker.scholar_url %}
+                            <a href="{{ speaker.scholar_url }}" class="speaker-social-network link-unstyled" target="_blank">
+                                <button type="button" class="btn btn-scholar btn-sm mt-2">
+                                    <p class="mb-0">
+                                        <i class="fas fa-graduation-cap"></i>
+                                    </p>
+                                </button>
+                            </a>
+                        {% endif %}
+                        {% if speaker.description %}
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    {{ speaker.description|apply_markup }}
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="card w-100">
+                    <div class="card-body">
+                        <h4 class="card-title mb-0">📅 Events</h4>
+                        {% if speaker.roles.count > 0 %}
+                            <div class="row pl-2 pr-2 d-flex">
+                                {% for role in speaker.roles.all %}
+                                    <div class="col-12 col-md-3 mt-2 mb-2 pl-2 pr-2">
+                                        <a class="link-unstyled" href="{{ role.session.event.url }}" target="_blank">
+                                            <div class="card mt-2 mb-0 h-100">
+                                                <img class="card-img-top rounded-0" src="{{ role.session.event.picture.crop.500x300 }}">
+                                                <div class="card-body">
+                                                    {% if role.session.event.is_event_future %}
+                                                        <span class="badge badge-primary p-2 mb-2 d-table d-md-inline-block mt-0">Upcoming event</span>
+                                                    {% else %}
+                                                        <span class="badge badge-dark p-2 mb-2 d-table d-md-inline-block mt-0">Past event</span>
+                                                    {% endif %}
+                                                    <h5 class="mb-0">{{ role.session.event.name }}</h5>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <h6 class="card-text mt-3">❌ This speaker hasn't taken part in any events yet</h6>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -25,7 +25,7 @@ from html2image import Html2Image
 import user.utils
 from event.api.event.registration import get_event_data_csv
 from event.enums import RegistrationStatus, ScheduleType
-from event.models import Event, Registration, Schedule, Session
+from event.models import Event, Registration, Schedule, Session, Speaker, SpeakerRole
 from event.tasks import send_registration_email
 from user.enums import DietType, UserType
 
@@ -35,7 +35,10 @@ def event(request, code, is_late: bool = False):
         Event.objects.published()
         .filter(code=code)
         .prefetch_related(
-            Prefetch("sessions", Session.objects.all().order_by("starts_at"))
+            Prefetch(
+                "sessions",
+                Session.objects.all().prefetch_related("roles").order_by("starts_at"),
+            ),
         )
         .first()
     )
@@ -441,3 +444,39 @@ def event_poster(request, code):
     img = open(f"files/event/poster/{code}.png", "rb")
     response = HttpResponse(img.read(), content_type="image/png")
     return response
+
+
+def speakers(request):
+    speaker_objs = Speaker.objects.select_related("user").order_by(
+        "-roles__session__starts_at"
+    )
+
+    return render(
+        request,
+        "speakers.html",
+        {"speakers": speaker_objs},
+    )
+
+
+def speaker(request, speaker_id):
+    speaker_obj = (
+        Speaker.objects.filter(id=speaker_id)
+        .select_related("user")
+        .prefetch_related(
+            Prefetch(
+                "roles",
+                SpeakerRole.objects.all()
+                .select_related("session", "session__event")
+                .order_by("session__starts_at"),
+            )
+        )
+        .first()
+    )
+    if not speaker_obj:
+        return HttpResponseNotFound()
+
+    return render(
+        request,
+        "speaker.html",
+        {"speaker": speaker_obj},
+    )

@@ -1,0 +1,23 @@
+<div class="col-12 mb-2 social">
+    <a class="mb-0" href="{{ url }}">
+        <button type="button" class="btn btn-dark rounded w-100">
+            {% if "fb" == title %}
+            <i class="fab fa-facebook"></i>
+            {% elif "tt" == title %}
+                <i class="fab fa-twitter"></i>
+            {% elif "ig" == title %}
+                <i class="fab fa-instagram"></i>
+            {% elif "yt" == title %}
+                <i class="fab fa-youtube"></i>
+            {% elif "ld" == title %}
+                <i class="fab fa-linkedin"></i>
+            {% elif "me" == title %}
+                <i class="fab fa-medium"></i>
+            {% elif "git" == title %}
+                <i class="fab fa-github"></i>
+            {% else %}
+                <img src="{{ image }}"/> {{ title }}
+            {% endif %}
+        </button>
+    </a>
+</div>

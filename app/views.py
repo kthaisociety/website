@@ -25,14 +25,11 @@ from app import settings
 from app.settings import GH_BRANCH, GH_KEY
 from app.slack import send_deploy_message
 from event.enums import EventStatus, RegistrationStatus
-from event.models import Registration, Session
+from event.models import Event, Registration, Session
+from news.models import Article
+from page.models import Link
 from user.enums import GenderType, UserType
 from user.models import User
-from news.models import Article
-from event.models import Event
-from page.models import Link
-import user.api.team
-
 
 
 def home(request):

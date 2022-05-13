@@ -7,7 +7,6 @@
 {% block header %}{% endblock %}
 
 {% block in_body %}
-
     <div class="container py-5">
         <div class="row py-3">
             <a href="/" class="ml-auto mr-auto">
@@ -58,12 +57,7 @@
             {% if app_sn_github %}
                 {% include "include/link.html" with image="" url="https://github.com/{{ app_sn_github }}" title="git" %}
             {% endif %}
-
         </div>
     </div>
-
-
-
 {% endblock %}
-
 {% block footer %}{% endblock %}

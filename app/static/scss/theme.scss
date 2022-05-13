@@ -1189,6 +1189,41 @@ a.badge-white:focus, a.badge-white.focus {
   font-family: "Futura", sans-serif;
 }
 
+.social {
+  font-family: "Futura", sans-serif;
+}
+
+.social img {
+  width: 20px;
+  border-radius: 50%;
+  border: 0.1rem solid $white;
+  margin-right: 5px;
+  margin-top: -3px;
+}
+
+.social-title {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+}
+
+.social-title:before, .social-title:after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  border-bottom: 2px solid;
+  width: 100vw;
+  margin: 0 20px;
+}
+
+.social-title:before {
+  right: 100%;
+}
+
+.social-title:after {
+  left: 100%;
+}
+
 .social img {
   width: 20px;
   border-radius: 50%;

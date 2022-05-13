@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load app_tags %}
+{% load static %}
+
+
+{% block head_title %}Social{% endblock %}
+{% block header %}{% endblock %}
+
+{% block in_body %}
+
+    <div class="container py-5">
+        <div class="row py-3">
+            <a href="/" class="ml-auto mr-auto">
+                <img src="/static/img/logo_round.png" width="100" height="100" alt="KTHAIS">
+            </a>
+        </div>
+        <div class="row">
+            {% if events %}
+                <h5 class="social-title ml-auto mr-auto">Events & Articles</h5>
+                {% for event in events %}
+                    {% if event.is_event_future %}
+                        {% include "include/link.html" with image=event.picture.crop.50x50 url=event.url title=event.name %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            {% for article in articles %}
+                {% include "include/link.html" with image=article.picture.crop.50x50 url=article.url title=article.title %}
+            {% endfor %}
+        </div>
+        <div class="row py-2">
+            {% if links %}
+                <h5 class="social-title ml-auto mr-auto">Links</h5>
+                {% for link in links %}
+                    {% include "include/link.html" with image=link.picture.crop.50x50 url=link.url title=link.title %}
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="row py-2">
+            <h5 class="social-title ml-auto mr-auto">Social</h5>
+            {% if app_sn_facebook %}
+                {% include "include/link.html" with image="" url="https://www.facebook.com/{{ app_sn_facebook }}" title="fb" %}
+            {% endif %}
+            {% if app_sn_twitter %}
+                {% include "include/link.html" with image="" url="https://twitter.com/{{ app_sn_twitter }}" title="tt" %}
+            {% endif %}
+            {% if app_sn_instagram %}
+                {% include "include/link.html" with image="" url="https://www.instagram.com/{{ app_sn_instagram }}" title="ig" %}
+            {% endif %}
+            {% if app_sn_youtube %}
+                {% include "include/link.html" with image="" url="https://www.youtube.com/channel/{{ app_sn_youtube }}" title="yt" %}
+            {% endif %}
+            {% if app_sn_linkedin %}
+                {% include "include/link.html" with image="" url="https://www.linkedin.com/company/{{ app_sn_linkedin }}" title="ld" %}
+            {% endif %}
+            {% if app_sn_medium %}
+                {% include "include/link.html" with image="" url="https://medium.com/@{{ app_sn_medium }}" title="me" %}
+            {% endif %}
+            {% if app_sn_github %}
+                {% include "include/link.html" with image="" url="https://github.com/{{ app_sn_github }}" title="git" %}
+            {% endif %}
+
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block footer %}{% endblock %}

@@ -14,7 +14,7 @@ urlpatterns = [
     url(r"^business/", include("business.urls")),
     url(r"^page/", include("page.urls")),
     url(r"^statistics/$", views.statistics, name="app_statistics"),
-    url(r"^about/social/", views.about_social, name="app_about_social"),
+    url(r"^social/", views.social, name="app_social"),
     url(r"^about/team/(?P<code>.*)?$", views.about_team, name="app_about_team"),
     url(r"^about/contact/", views.about_contact, name="app_about_contact"),
     url(r"^$", views.home, name="app_home"),

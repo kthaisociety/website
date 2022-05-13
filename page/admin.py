@@ -1,5 +1,6 @@
 from django.contrib import admin
 
+
 from page.models import Page, Category, Picture, Link
 
 

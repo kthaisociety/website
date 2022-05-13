@@ -2,14 +2,13 @@ import re
 
 from django.urls import reverse
 
-from event.tasks import send_registration_email
-from user.models import User
-from event.models import Event, Registration
-from event.enums import RegistrationStatus, SignupStatus
-from user.enums import DietType, DietTypeDict
 from app.settings import APP_FULL_DOMAIN, SL_JOIN_EVENT
-
+from event.enums import RegistrationStatus, SignupStatus
+from event.models import Event, Registration
+from event.tasks import send_registration_email
 from messaging.api.slack import channel
+from user.enums import DietType, DietTypeDict
+from user.models import User
 
 
 def join_event(user_id: str, event_ts: str) -> bool:
@@ -23,7 +22,7 @@ def join_event(user_id: str, event_ts: str) -> bool:
         # User has reacted to a message with the emoji but it is not an event announcement
         return False
 
-    user_obj = User.objects.filter(slack_id=user_id).first()
+    user_obj = User.objects.filter(slack_user__external_id=user_id).first()
 
     salutation = "Hey there :wave:!"
     if user_obj:
@@ -217,7 +216,7 @@ def join_event(user_id: str, event_ts: str) -> bool:
                 "type": "section",
                 "text": {
                     "type": "mrkdwn",
-                    "text": f"{salutation}!\n\nYou are now registered to *{event_obj.name}*! This event will provide free food :sandwich: and that's why we need to know if you have any restrictions :dizzy_face:.",
+                    "text": f"{salutation}!\n\nYou are now registered to *{event_obj.name}*! This event will provide free food :sandwich: and that's why we need to know if you have any restrictions :dizzy_face:. Furthermore, you should have received an email :incoming_envelope: with your registration confirmation, you will be notified closer to the event :date: with extra details if that is required. If you want to cancel your registration you just need to remove the reaction :{SL_JOIN_EVENT}:.",
                 },
             },
             {
@@ -264,6 +263,7 @@ def join_event(user_id: str, event_ts: str) -> bool:
             unfurl_links=False,
             unfurl_media=False,
         )
+        send_registration_email(registration_id=registration_obj.id)
         return True
 
     block = [
@@ -282,6 +282,7 @@ def join_event(user_id: str, event_ts: str) -> bool:
         unfurl_links=False,
         unfurl_media=False,
     )
+    send_registration_email(registration_id=registration_obj.id)
     return True
 
 
@@ -292,7 +293,7 @@ def leave_event(user_id: str, event_ts: str) -> bool:
         # User has reacted to a message with the emoji, but it is not an event announcement
         return False
 
-    user_obj = User.objects.filter(slack_id=user_id).first()
+    user_obj = User.objects.filter(slack_user__external_id=user_id).first()
 
     salutation = "Hey there :wave:!"
     if user_obj:
@@ -346,7 +347,7 @@ def leave_event(user_id: str, event_ts: str) -> bool:
         event=event_obj, user=user_obj
     ).first()
 
-    if not registration_obj:
+    if not registration_obj or registration_obj.status == RegistrationStatus.CANCELLED:
         # User is not registered to the event
         return False
 
@@ -389,6 +390,7 @@ def leave_event(user_id: str, event_ts: str) -> bool:
         unfurl_links=False,
         unfurl_media=False,
     )
+    send_registration_email(registration_id=registration_obj.id)
     return True
 
 

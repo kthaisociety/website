@@ -5,7 +5,7 @@ from django.utils import timezone
 from news.api.fact.post import post_fact
 from news.consts import FACT_POST_DAYS_FREQUENCY
 from news.enums import FactStatus, PostType
-from news.models import FactPost, Fact
+from news.models import Fact, FactPost
 
 
 def post_random_fact():

@@ -2,36 +2,37 @@ import hmac
 import json
 import os
 import subprocess
-from _sha1 import sha1
 from collections import Counter, defaultdict
 from ipaddress import ip_address, ip_network
 from typing import Optional
 
+import requests
+from _sha1 import sha1
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.db.models import DateField
 from django.db.models.functions import Cast
-from django.http import StreamingHttpResponse, HttpResponseNotFound
-from django.shortcuts import render, redirect
+from django.http import HttpResponseNotFound, StreamingHttpResponse
+from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.encoding import force_bytes
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
-import requests
-
+import user.api.team
 from app import settings
-from app.settings import GH_KEY, GH_BRANCH
+from app.settings import GH_BRANCH, GH_KEY
 from app.slack import send_deploy_message
-from event.enums import RegistrationStatus, EventStatus
+from event.enums import EventStatus, RegistrationStatus
 from event.models import Registration, Session
-from user.enums import UserType, GenderType
+from user.enums import GenderType, UserType
 from user.models import User
 from news.models import Article
 from event.models import Event
 from page.models import Link
 import user.api.team
+
 
 
 def home(request):
@@ -309,15 +310,15 @@ def statistics(request):
             stats_members_programme[u.degree] += 1
 
     stats_members_year = sorted(
-        [(year, val) for year, val in stats_members_year.items()],
+        ((year, val) for year, val in stats_members_year.items()),
         key=lambda smy: smy[0],
     )
     stats_members_university = sorted(
-        [(year, val) for year, val in stats_members_university.items()],
+        ((year, val) for year, val in stats_members_university.items()),
         key=lambda smy: -smy[1],
     )
     stats_members_programme = sorted(
-        [(year, val) for year, val in stats_members_programme.items()],
+        ((year, val) for year, val in stats_members_programme.items()),
         key=lambda smy: -smy[1],
     )
 

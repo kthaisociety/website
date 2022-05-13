@@ -273,6 +273,12 @@ nav {
   }
 }
 
+.container-home-inner {
+    @media (min-width: 992px){
+        max-width: 50%;
+    }
+}
+
 .main-title {
   margin-bottom: 25px;
   @media (max-width: 991px) {
@@ -297,6 +303,21 @@ nav {
   @media (max-width: 991px) {
     text-align: center;
   }
+}
+
+.main-text {
+    @media (max-width: 991px) {
+        text-align: center;
+    }
+}
+
+.main-link {
+    @media (max-width: 991px) {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
 }
 
 .container-content {
@@ -1015,6 +1036,11 @@ nav {
   margin: 0;
   -webkit-filter: grayscale(100%);
   filter: grayscale(100%);
+}
+
+.speaker-picture-page {
+    max-width: 250px !important;
+    margin-bottom: 0 !important;
 }
 
 .speaker-picture {

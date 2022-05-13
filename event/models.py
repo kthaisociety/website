@@ -6,12 +6,7 @@ from typing import Optional
 
 import markdown
 from bs4 import BeautifulSoup
-
 from django.core.exceptions import ValidationError
-
-from app.storage import OverwriteStorage
-from app.variables import APP_NAME, APP_ATTENDANCE_RATIO
-
 from django.db import models, transaction
 from django.urls import reverse
 from django.utils import timezone
@@ -19,16 +14,18 @@ from django.utils.html import strip_tags
 from django.utils.text import slugify
 from versatileimagefield.fields import VersatileImageField
 
+from app.storage import OverwriteStorage
+from app.variables import APP_ATTENDANCE_RATIO, APP_NAME
 from event.enums import (
-    EventType,
-    EventStatus,
-    RegistrationStatus,
-    AttachmentType,
     AttachmentStatus,
+    AttachmentType,
+    EventStatus,
+    EventType,
+    RegistrationStatus,
     ScheduleType,
-    StreamingProvider,
-    SpeakerRoleType,
     SignupStatus,
+    SpeakerRoleType,
+    StreamingProvider,
 )
 from event.managers import EventManager, SessionManager
 from user.enums import DietType

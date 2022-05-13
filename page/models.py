@@ -1,9 +1,8 @@
+import urllib.request
 import uuid
 
 from django.core.exceptions import ValidationError
 from django.db import models
-import urllib.request
-
 from django.urls import reverse
 from versatileimagefield.fields import VersatileImageField
 
@@ -63,14 +62,12 @@ class Page(models.Model):
         messages = dict()
         if (
             sum(
-                [
-                    (1 if content else 0)
-                    for content in [
-                        self.content_plain,
-                        self.content_html,
-                        self.content_markdown,
-                        self.content_markdown_url,
-                    ]
+                (1 if content else 0)
+                for content in [
+                    self.content_plain,
+                    self.content_html,
+                    self.content_markdown,
+                    self.content_markdown_url,
                 ]
             )
             != 1

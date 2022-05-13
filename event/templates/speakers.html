@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load app_tags %}
+{% load social_share %}
+{% load static %}
+
+{% block head_title %}Speakers{% endblock %}
+
+{% block in_body %}
+    <div class="container container-body py-5">
+        <div class="row d-none d-lg-block">
+            <div class="col-md-12">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent p-0 pb-2">
+                        <li class="breadcrumb-item"><a class="link-unstyled" href="{% url 'app_home' %}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page"><a class="link-unstyled" href="{% url 'events_speakers' %}">Speakers</a></li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div class="row mb-1">
+            <div class="col-md-12">
+                <h1 class="section-title text-main text-center text-md-left">Speakers</h1>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-12">
+                {% if speakers %}
+                    <div class="row pl-2 pr-2 d-flex">
+                        {% for speaker in speakers %}
+                            <div class="col-12 col-md-2 mt-2 mb-4 pl-4 pr-4 text-center">
+                                <a class="link-unstyled" href="{% url "events_speaker" speaker.id %}">
+                                    <div class="speaker-picture speaker-picture-page"><img alt="Speaker picture" src="{{ speaker.picture.crop.500x500 }}"></div>
+                                    <h5 class="mt-1 mb-0 mt-3">{{ speaker.full_name }}</h5>
+                                    {% if speaker.city and speaker.country %}
+                                        <p class="mt-1 mb-0" style="line-height: 1;"><small>{{ speaker.city }}, {{ speaker.country }}</small></p>
+                                    {% endif %}
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <h6 class="card-text mt-3">❌ No speakers found</h6>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

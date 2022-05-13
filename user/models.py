@@ -14,10 +14,8 @@ from versatileimagefield.fields import VersatileImageField
 
 from app.storage import OverwriteStorage
 from app.utils import is_email_organiser
-from user.consts import EMOJIS
-from user.enums import UserType, GenderType, DietType
+from user.enums import DietType, GenderType, UserType
 from user.managers import UserManager
-
 
 SOCIAL_URLS = [
     "linkedin_url",
@@ -32,6 +30,16 @@ SOCIAL_URLS = [
 def validate_orcid(value):
     if value and not re.match(r"^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$", value):
         raise ValidationError(f"{value} is not a valid ORCID.")
+
+
+def user_resume_filename(instance, filename):
+    ext = os.path.splitext(filename)[1]
+    return f"user/resume/{instance.id}{ext}"
+
+
+def user_picture_filename(instance, filename):
+    ext = os.path.splitext(filename)[1]
+    return f"user/picture/{instance.id}{ext}"
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -64,7 +72,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     # Personal information
     picture = VersatileImageField(
         "Image",
-        upload_to="user/picture/",
+        upload_to=user_picture_filename,
         default="user/picture/profile.png",
         storage=OverwriteStorage(),
     )
@@ -85,7 +93,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     # Details
     website = models.CharField(max_length=255, blank=True, null=True)
-    resume = models.FileField(upload_to="user/resume/", blank=True, null=True)
+    resume = models.FileField(
+        upload_to=user_resume_filename,
+        blank=True,
+        null=True,
+        storage=OverwriteStorage(),
+    )
 
     # Social networks
     linkedin_url = models.URLField(max_length=200, blank=True, null=True)
@@ -96,23 +109,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     orcid = models.CharField(
         max_length=255, validators=[validate_orcid], blank=True, null=True
     )
-
-    # Slack
-    # TODO: Should somehow be unique if not null
-    slack_id = models.CharField(max_length=255, blank=True, null=True)
-    slack_token = models.CharField(max_length=255, blank=True, null=True)
-    slack_scopes = models.CharField(max_length=255, blank=True, null=True)
-    slack_status_text = models.CharField(max_length=255, blank=True, null=True)
-    slack_status_emoji = models.CharField(max_length=255, blank=True, null=True)
-    slack_display_name = models.CharField(max_length=255, blank=True, null=True)
-    slack_picture = VersatileImageField(
-        "Slack image",
-        upload_to="user/slack/picture/",
-        blank=True,
-        null=True,
-        storage=OverwriteStorage(),
-    )
-    slack_picture_hash = models.CharField(max_length=255, blank=True, null=True)
 
     # Dietary restrictions
     diet = models.CharField(max_length=255, blank=True, null=True)
@@ -137,29 +133,31 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     @property
     def profile_picture(self):
-        if self.slack_picture:
-            return self.slack_picture
+        if self.slack_user and self.slack_user.picture_original:
+            return self.slack_user.picture_original
         return self.picture
 
+    # TODO
     @property
     def slack_status(self):
-        if self.slack_status_emoji:
-            try:
-                emoji = (
-                    EMOJIS[self.slack_status_emoji[1:-1]]
-                    .encode("utf-16", "surrogatepass")
-                    .decode("utf-16")
-                )
-                return f"{emoji} {self.slack_status_text}"
-            except KeyError:
-                return f"{self.slack_status_text}"
-        else:
-            return ""
+        return None
+        # if self.slack_status_emoji:
+        #     try:
+        #         emoji = (
+        #             EMOJIS[self.slack_status_emoji[1:-1]]
+        #             .encode("utf-16", "surrogatepass")
+        #             .decode("utf-16")
+        #         )
+        #         return f"{emoji} {self.slack_status_text}"
+        #     except KeyError:
+        #         return f"{self.slack_status_text}"
+        # else:
+        #     return ""
 
     @property
     def social_urls_count(self):
         return sum(
-            [(1 if getattr(self, social_url) else 0) for social_url in SOCIAL_URLS]
+            (1 if getattr(self, social_url) else 0) for social_url in SOCIAL_URLS
         )
 
     @property
@@ -311,16 +309,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         self.researchgate_url = None
         self.orcid = None
 
-        self.slack_id = None
-        self.slack_token = None
-        self.slack_scopes = None
-        self.slack_status_text = None
-        self.slack_status_emoji = None
-        self.slack_display_name = None
-        if self.slack_picture:
-            self.slack_picture.delete_all_created_images()
-            self.slack_picture.delete(save=False)
-        self.slack_picture_hash = None
+        self.slack_user.delete()
 
         self.is_active = False
         self.is_forgotten = True

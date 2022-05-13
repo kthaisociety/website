@@ -1,24 +1,23 @@
+import csv
 import hashlib
+import zipfile
 from collections import OrderedDict
 from io import BytesIO, StringIO
 from typing import List, Optional
 from uuid import UUID
-import csv
-import zipfile
 
-import requests
 from django.utils.crypto import get_random_string
 
-from app.settings import SL_TOKEN, SL_CHANNEL_GENERAL, APP_ROLE_CHAIRMAN
+from app.settings import APP_ROLE_CHAIRMAN
 from event.enums import RegistrationStatus
 from user.enums import GenderType, UserType
-from user.models import User, History
+from user.models import History, User
 from user.tasks import (
-    send_verify_email,
-    send_password_email,
-    send_imported_email,
-    send_slack_email,
     send_created_email,
+    send_imported_email,
+    send_password_email,
+    send_slack_email,
+    send_verify_email,
 )
 
 
@@ -60,7 +59,7 @@ def get_user_by_picture(picture):
 
 def get_organisers():
     return sorted(
-        [u for u in User.objects.organisers() if u.role],
+        (u for u in User.objects.organisers() if u.role),
         key=lambda u: (
             not u.role.division.name.lower() == APP_ROLE_CHAIRMAN.lower(),
             u.role.division.name,
@@ -77,7 +76,7 @@ def get_board():
             (
                 role_name,
                 sorted(
-                    [user for user in board if user.role_name == role_name],
+                    (user for user in board if user.role_name == role_name),
                     key=lambda u: (not u.role_is_head, u.name, u.surname),
                 ),
             )
@@ -116,7 +115,7 @@ def send_imported(user: User):
 
 
 def send_slack(user: User):
-    if not user.slack_id:
+    if not user.slack_user:
         send_slack_email(user_id=user.id)
 
 
@@ -152,17 +151,11 @@ def get_user_data_zip(user_id: int) -> BytesIO:
     csvwriter.writerow(["Programme", user.degree])
     csvwriter.writerow(["Graduation year", user.graduation_year])
     csvwriter.writerow(["Website", user.website])
-    csvwriter.writerow(["Slack ID", user.slack_id])
-    csvwriter.writerow(["Slack name", user.slack_display_name])
     csvwriter.writerow(
-        [
-            "Slack status",
-            (
-                f"{user.slack_status_emoji} {user.slack_status_text}"
-                if user.slack_status_text
-                else ""
-            ),
-        ]
+        ["Slack ID", (user.slack_user.external_id if user.slack_user else "")]
+    )
+    csvwriter.writerow(
+        ["Slack name", (user.slack_user.display_name if user.slack_user else "")]
     )
 
     registrations_csv = StringIO()
@@ -187,9 +180,9 @@ def get_user_data_zip(user_id: int) -> BytesIO:
     zf.writestr("user/user.csv", user_csv.getvalue())
     picture_extension = user.picture.name.split(".")[-1]
     zf.writestr(f"user/profile.{picture_extension}", user.picture.read())
-    if user.slack_picture:
-        slack_extension = user.slack_picture.name.split(".")[-1]
-        zf.writestr(f"user/slack.{slack_extension}", user.slack_picture.read())
+    if user.slack_user:
+        slack_extension = user.slack_user.picture.name.split(".")[-1]
+        zf.writestr(f"user/slack.{slack_extension}", user.slack_user.picture.read())
     if user.resume:
         resume_extension = user.resume.name.split(".")[-1]
         zf.writestr(f"user/resume.{resume_extension}", user.resume.read())

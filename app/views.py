@@ -364,10 +364,10 @@ def about_contact(request):
 
 def social(request):
     article_objs = Article.objects.published().order_by("-created_at")[:2]
-    event_objs = Event.objects.published().order_by("-created_at")
+    event_objs = Event.objects.published_future().order_by("-created_at")
     links_objs = Link.objects.order_by("order")
     return render(
         request,
-        "social_page.html",
+        "social.html",
         {"links": links_objs, "articles": article_objs, "events": event_objs},
     )

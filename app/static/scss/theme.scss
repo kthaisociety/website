@@ -1185,15 +1185,15 @@ a.badge-white:focus, a.badge-white.focus {
   width: 80px;
 }
 
-.social {
+.about-social{
+  overflow-x: hidden;
+}
+
+.about-social-section {
   font-family: "Futura", sans-serif;
 }
 
-.social {
-  font-family: "Futura", sans-serif;
-}
-
-.social img {
+.about-social-section img {
   width: 20px;
   border-radius: 50%;
   border: 0.1rem solid $white;
@@ -1201,13 +1201,13 @@ a.badge-white:focus, a.badge-white.focus {
   margin-top: -3px;
 }
 
-.social-title {
+.about-social-section h5 {
   position: relative;
   display: inline-block;
   text-align: center;
 }
 
-.social-title:before, .social-title:after {
+.about-social-section h5:before, .about-social-section h5:after {
   content: '';
   position: absolute;
   top: 50%;
@@ -1216,41 +1216,10 @@ a.badge-white:focus, a.badge-white.focus {
   margin: 0 20px;
 }
 
-.social-title:before {
+.about-social-section h5:before {
   right: 100%;
 }
 
-.social-title:after {
-  left: 100%;
-}
-
-.social img {
-  width: 20px;
-  border-radius: 50%;
-  border: 0.1rem solid $white;
-  margin-right: 5px;
-  margin-top: -3px;
-}
-
-.social-title {
-  position: relative;
-  display: inline-block;
-  text-align: center;
-}
-
-.social-title:before, .social-title:after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  border-bottom: 2px solid;
-  width: 100vw;
-  margin: 0 20px;
-}
-
-.social-title:before {
-  right: 100%;
-}
-
-.social-title:after {
+.about-social-section h5:after {
   left: 100%;
 }

@@ -1,0 +1,12 @@
+<div class="col-12 mb-2">
+    <a class="mb-0" href="{{ url }}">
+        <button type="button" class="btn btn-dark rounded w-100">
+            {% if icon %}
+                <i class="fab {{ icon }} mr-1"></i>
+            {% else %}
+                <img src="{{ image }}"/>
+            {% endif %}
+            {{ title }}
+        </button>
+    </a>
+</div>

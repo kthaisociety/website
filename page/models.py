@@ -103,3 +103,14 @@ class Picture(models.Model):
     picture = VersatileImageField("Image", upload_to="page/picture/")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+
+class Link(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.CharField(max_length=255)
+    url = models.URLField()
+    picture = VersatileImageField("Image", upload_to="link/picture")
+    order = models.IntegerField(
+        unique=True,
+        help_text="The number determines the order with which the links will be shown.",
+    )

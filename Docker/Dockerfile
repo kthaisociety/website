@@ -4,7 +4,11 @@ FROM python:3.9
 # Setting up the work directory
 WORKDIR /website
 
-RUN apt-get update && apt install -y netcat
+RUN apt-get update
+RUN apt install -y netcat
+RUN apt install -y chromium-browser
+RUN apt install -y fonts-noto-color-emoji
+
 
 ## set environment variables
 # Prevents Python from writing pyc files to disc

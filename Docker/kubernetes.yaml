@@ -29,66 +29,6 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: staticfiles
-  labels:
-    type: local
-    app: staticfiles
-spec:
-  storageClassName: website-staticfiles
-  capacity:
-    storage: 4Gi
-  accessModes:
-    - ReadWriteMany
-  hostPath:
-    path: "/mnt/staticfiles"
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: website-staticfiles-pv
-  labels:
-    app: staticfiles
-spec:
-  storageClassName: website-staticfiles
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 4Gi
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: files
-  labels:
-    type: local
-    app: files
-spec:
-  storageClassName: website-files
-  capacity:
-    storage: 8Gi
-  accessModes:
-    - ReadWriteMany
-  hostPath:
-    path: "/mnt/files"
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: website-files-pv
-  labels:
-    app: files
-spec:
-  storageClassName: website-files
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 8Gi
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
   name: database
   labels:
     type: local
@@ -96,7 +36,7 @@ metadata:
 spec:
   storageClassName: website-database
   capacity:
-    storage: 4Gi
+    storage: 5Gi
   accessModes:
     - ReadWriteMany
   hostPath:
@@ -114,7 +54,67 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 4Gi
+      storage: 5Gi
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: website-files
+  labels:
+    type: local
+    app: files
+spec:
+  storageClassName: website-files
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/media"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: website-files-pv
+  labels:
+    app: files
+spec:
+  storageClassName: website-files
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: staticfiles
+  labels:
+    type: local
+    app: staticfiles
+spec:
+  storageClassName: website-staticfiles
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/staticfiles"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: website-staticfiles-pv
+  labels:
+    app: staticfiles
+spec:
+  storageClassName: website-staticfiles
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -168,12 +168,12 @@ spec:
                   name: db-secrets
                   key: POSTGRES_DB
       volumes:
-        - name: staticfiles
-          persistentVolumeClaim:
-            claimName: website-staticfiles-pv
         - name: files
           persistentVolumeClaim:
             claimName: website-files-pv
+        - name: staticfiles
+          persistentVolumeClaim:
+            claimName: website-staticfiles-pv
 ---
 apiVersion: apps/v1
 kind: Deployment

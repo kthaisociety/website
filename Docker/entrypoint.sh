@@ -1,9 +1,5 @@
 #!/bin/sh
 
-echo "Updating repository..."
-git checkout -f "$TYPE"
-git pull --rebase
-
 if [ -n "$PG_HOST" ]
 then
     echo -n "Waiting for postgres..."

@@ -24,7 +24,7 @@ SECRET_KEY = os.environ.get(
 PROD_MODE = os.environ.get("PROD_MODE", "false").lower() == "true"
 DEBUG = not PROD_MODE
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "0.0.0.0", "172.18.0.3"]
+ALLOWED_HOSTS = ["*"]
 
 # MAINTENANCE MODE
 MAINTENANCE_MODE = os.environ.get("MAINTENANCE_MODE", "false").lower() == "true"
@@ -484,7 +484,7 @@ PERMISSIONS_COMMON = {
     "view": {
         "business": ["company", "offer", "sponsorship", "tier"],
         "event": ["attachment", "event", "session", "speaker", "speakerrole"],
-        "messaging": ["slackchannel", "slacklog"],
+        "messaging": ["slackchannel", "slacklog", "slackuser"],
         "news": ["article", "author", "pin"],
         "page": ["category", "page", "picture"],
         "user": ["division", "history", "role", "team"],

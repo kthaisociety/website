@@ -1,15 +1,8 @@
 #!/bin/sh
 
-echo "Updating repository..."
-if [ "$TYPE" = "beta" ]; then
-  git checkout beta
-fi
-git pull --rebase
-
-
-if [ "$DATABASE" = "postgres" ]
+if [ -n "$PG_HOST" ]
 then
-    echo "Waiting for postgres..."
+    echo -n "Waiting for postgres..."
 
     while ! netcat -z $PG_HOST $PG_PORT; do
       sleep 0.1

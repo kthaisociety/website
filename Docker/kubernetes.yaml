@@ -5,44 +5,26 @@ metadata:
   labels:
     app: rep
 spec:
-  clusterIP: None
   selector:
-    app: www
+    app: server
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 8080
       name: server-port
+  type: LoadBalancer
 ---
 apiVersion: v1
-kind: PersistentVolume
+kind: Service
 metadata:
-  name: staticfiles
+  name: postgres
   labels:
-    type: local
-    app: staticfiles
+    app: postgres
 spec:
-  storageClassName: website-staticfiles
-  capacity:
-    storage: 4Gi
-  accessModes:
-    - ReadWriteMany
-  hostPath:
-    path: "/mnt/staticfiles"
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: website-staticfiles-pv
-  labels:
-    app: staticfiles
-spec:
-  storageClassName: website-staticfiles
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 4Gi
+  type: NodePort
+  ports:
+    - port: 5432
+  selector:
+    app: postgres
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -54,7 +36,7 @@ metadata:
 spec:
   storageClassName: website-database
   capacity:
-    storage: 4Gi
+    storage: 5Gi
   accessModes:
     - ReadWriteMany
   hostPath:
@@ -72,14 +54,74 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 4Gi
+      storage: 5Gi
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: website-files
+  labels:
+    type: local
+    app: files
+spec:
+  storageClassName: website-files
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/media"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: website-files-pv
+  labels:
+    app: files
+spec:
+  storageClassName: website-files
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 5Gi
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: staticfiles
+  labels:
+    type: local
+    app: staticfiles
+spec:
+  storageClassName: website-staticfiles
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: "/mnt/staticfiles"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: website-staticfiles-pv
+  labels:
+    app: staticfiles
+spec:
+  storageClassName: website-staticfiles
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kthais-server
   labels:
-    app: rep
+    app: server
 spec:
   replicas: 3
   selector:
@@ -95,14 +137,40 @@ spec:
           image: ghcr.io/kthaisociety/website:latest
           imagePullPolicy: "Always"
           ports:
-            - containerPort: 8080
+            - containerPort: 80
           volumeMounts:
             - name: staticfiles
-              mountPath: /website/staticfile
+              mountPath: /website/staticfiles
+            - name: files
+              mountPath: /website/files
           env:
             - name: TYPE
-              value: "beta"
+              value: "feature/docker"
+            - name: PROD_MODE
+              value: "False"
+            - name: PG_HOST
+              value: postgres.default.svc.cluster.local
+            - name: PG_PORT
+              value: "5432"
+            - name: PG_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: POSTGRES_USER
+            - name: PG_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: POSTGRES_PASSWORD
+            - name: PG_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: POSTGRES_DB
       volumes:
+        - name: files
+          persistentVolumeClaim:
+            claimName: website-files-pv
         - name: staticfiles
           persistentVolumeClaim:
             claimName: website-staticfiles-pv
@@ -130,6 +198,22 @@ spec:
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgresdb
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: POSTGRES_DB
       volumes:
         - name: postgresdb
           persistentVolumeClaim:

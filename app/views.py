@@ -25,7 +25,9 @@ from app import settings
 from app.settings import GH_BRANCH, GH_KEY
 from app.slack import send_deploy_message
 from event.enums import EventStatus, RegistrationStatus
-from event.models import Registration, Session
+from event.models import Event, Registration, Session
+from news.models import Article
+from page.models import Link
 from user.enums import GenderType, UserType
 from user.models import User
 
@@ -76,6 +78,8 @@ def files(request, file_):
         "__sized__/business/company/logo",
         "user/role/picture",
         "__sized__/user/role/picture",
+        "link/picture",
+        "__sized__/link/picture",
     ]:
         if file_[:7] != "/files/":
             file_ = "/files/" + file_
@@ -356,3 +360,14 @@ def about_team(request, code: Optional[str] = None):
 
 def about_contact(request):
     return render(request, "about_contact.html")
+
+
+def social(request):
+    article_objs = Article.objects.published().order_by("-created_at")[:2]
+    event_objs = Event.objects.published_future().order_by("-created_at")
+    links_objs = Link.objects.order_by("order")
+    return render(
+        request,
+        "social.html",
+        {"links": links_objs, "articles": article_objs, "events": event_objs},
+    )

@@ -4,6 +4,11 @@ from event import views
 
 urlpatterns = [
     url(r"^event/ics/(?P<code>.*).ics$", views.event_ics, name="events_event_ics"),
+    url(
+        r"^event/(?P<code>.*)/poster.png$",
+        views.event_poster,
+        name="events_event_poster",
+    ),
     url(r"^event/(?P<code>.*)/live$", views.live, name="events_live"),
     url(
         r"^event/(?P<event_id>.*)/register$",
@@ -34,4 +39,14 @@ urlpatterns = [
         name="events_checkin_event_qr",
     ),
     url(r"^checkin/(?P<code>.*)$", views.checkin_event, name="events_checkin_event"),
+    url(
+        r"^speaker$",
+        views.speakers,
+        name="events_speakers",
+    ),
+    url(
+        r"^speaker/(?P<speaker_id>.*)$",
+        views.speaker,
+        name="events_speaker",
+    ),
 ]

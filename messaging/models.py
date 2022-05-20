@@ -1,3 +1,4 @@
+import os
 import uuid
 from typing import Optional
 
@@ -10,6 +11,16 @@ from versatileimagefield.fields import VersatileImageField
 from app.storage import OverwriteStorage
 from messaging.enums import LogType
 from user.models import User
+
+
+def slack_user_picture_filename(instance, filename):
+    ext = os.path.splitext(filename)[1]
+    return f"messaging/slackuser/picture/{instance.id}{ext}"
+
+
+def slack_user_picture_original_filename(instance, filename):
+    ext = os.path.splitext(filename)[1]
+    return f"messaging/slackuser/picture/original/{instance.id}{ext}"
 
 
 class SlackChannel(models.Model):
@@ -87,20 +98,20 @@ class SlackUser(models.Model):
         "user.User", on_delete=models.PROTECT, related_name="slack_user"
     )
 
-    external_id = models.CharField(max_length=255)
+    external_id = models.CharField(max_length=255, unique=True)
     token = models.CharField(max_length=255, blank=True, null=True)
     scopes = models.CharField(max_length=255, blank=True, null=True)
     display_name = models.CharField(max_length=255, blank=True, null=True)
     picture = VersatileImageField(
         "Slack image",
-        upload_to="messaging/slackuser/picture/",
+        upload_to=slack_user_picture_filename,
         blank=True,
         null=True,
         storage=OverwriteStorage(),
     )
     picture_original = VersatileImageField(
         "Slack original image",
-        upload_to="messaging/slackuser/picture/original/",
+        upload_to=slack_user_picture_original_filename,
         blank=True,
         null=True,
         storage=OverwriteStorage(),

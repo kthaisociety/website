@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from page.models import Category, Page, Picture
+from page.models import Category, Link, Page, Picture
 
 
 @admin.register(Page)
@@ -31,3 +31,13 @@ class PictureAdmin(admin.ModelAdmin):
     search_fields = ("id",)
     list_display = ("picture",)
     ordering = ("picture",)
+
+
+@admin.register(Link)
+class LinkAdmin(admin.ModelAdmin):
+    search_fields = ("id", "title", "order", "link")
+    list_display = (
+        "title",
+        "picture",
+    )
+    ordering = ("order",)

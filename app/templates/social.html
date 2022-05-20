@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load app_tags %}
+{% load static %}
+
+
+{% block title %}{% endblock %}
+{% block header %}{% endblock %}
+
+{% block in_body %}
+    <div class="container pt-5 about-social">
+        <div class="row mb-4">
+            <a href="/" class="ml-auto mr-auto">
+                <img src="{% static "img/logo_round.png" %}" width="100" height="100" alt="KTHAIS">
+            </a>
+        </div>
+        {% if events or articles %}
+            <div class="row mb-3 about-social-section">
+                <h5 class="ml-auto mr-auto">Events & articles</h5>
+                {% for event in events %}
+                    {% include "include/link.html" with image=event.picture.crop.50x50 url=event.url title=event.name %}
+                {% endfor %}
+                {% for article in articles %}
+                    {% include "include/link.html" with image=article.picture.crop.50x50 url=article.url title=article.title %}
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% if links %}
+            <div class="row mb-3 about-social-section">
+                <h5 class="ml-auto mr-auto">Links</h5>
+                {% for link in links %}
+                    {% include "include/link.html" with image=link.picture.crop.50x50 url=link.url title=link.title %}
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class="row about-social-section">
+            <h5 class="ml-auto mr-auto">Social media</h5>
+            {% if app_sn_facebook %}
+                {% include "include/link.html" with icon="fa-facebook" url="https://www.facebook.com/"|add:app_sn_facebook title="Facebook" %}
+            {% endif %}
+            {% if app_sn_twitter %}
+                {% include "include/link.html" with icon="fa-twitter" url="https://twitter.com/"|add:app_sn_twitter title="Twitter" %}
+            {% endif %}
+            {% if app_sn_instagram %}
+                {% include "include/link.html" with icon="fa-instagram" url="https://www.instagram.com/"|add:app_sn_instagram title="Instagram" %}
+            {% endif %}
+            {% if app_sn_youtube %}
+                {% include "include/link.html" with icon="fa-youtube" url="https://www.youtube.com/channel/"|add:app_sn_youtube title="YouTube" %}
+            {% endif %}
+            {% if app_sn_linkedin %}
+                {% include "include/link.html" with icon="fa-linkedin" url="https://www.linkedin.com/company/"|add:app_sn_linkedin title="LinkedIn" %}
+            {% endif %}
+            {% if app_sn_medium %}
+                {% include "include/link.html" with icon="fa-medium" url="https://medium.com/@"|add:app_sn_medium title="Medium" %}
+            {% endif %}
+            {% if app_sn_github %}
+                {% include "include/link.html" with icon="fa-github" url="https://github.com/"|add:app_sn_github title="GitHub" %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+{% block footer %}{% endblock %}

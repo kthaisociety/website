@@ -32,6 +32,16 @@ def validate_orcid(value):
         raise ValidationError(f"{value} is not a valid ORCID.")
 
 
+def user_resume_filename(instance, filename):
+    ext = os.path.splitext(filename)[1]
+    return f"user/resume/{instance.id}{ext}"
+
+
+def user_picture_filename(instance, filename):
+    ext = os.path.splitext(filename)[1]
+    return f"user/picture/{instance.id}{ext}"
+
+
 class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(max_length=255, unique=True)
@@ -62,7 +72,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     # Personal information
     picture = VersatileImageField(
         "Image",
-        upload_to="user/picture/",
+        upload_to=user_picture_filename,
         default="user/picture/profile.png",
         storage=OverwriteStorage(),
     )
@@ -83,7 +93,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     # Details
     website = models.CharField(max_length=255, blank=True, null=True)
-    resume = models.FileField(upload_to="user/resume/", blank=True, null=True)
+    resume = models.FileField(
+        upload_to=user_resume_filename,
+        blank=True,
+        null=True,
+        storage=OverwriteStorage(),
+    )
 
     # Social networks
     linkedin_url = models.URLField(max_length=200, blank=True, null=True)

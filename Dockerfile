@@ -1,9 +1,9 @@
 ARG BUILD_TARGET=dev
-LABEL org.opencontainers.image.source https://github.com/kthaisociety/website
 
 # Base docker used. This one will use the latest version of python.
 FROM python:3.9
 
+LABEL org.opencontainers.image.source https://github.com/kthaisociety/website
 # Extra Python environment variables
 # Prevents Python from writing pyc files to disc
 ENV PYTHONDONTWRITEBYTECODE 1

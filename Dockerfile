@@ -23,9 +23,7 @@ ENV APT_FONTS_NOTO_COLOR_EMOJI_VERSION 0~20200916-1
 RUN apt update && apt install -y --no-install-recommends \
       "netcat=$APT_NETCAT_VERSION"  \
       "chromium=$APT_CHROMIUM_VERSION" \
-      "fonts-noto-color-emoji=$APT_FONTS_NOTO_COLOR_EMOJI_VERSION" \
-    && apt clean\
- 	&& rm -rf "/var/lib/apt/lists/*"
+      "fonts-noto-color-emoji=$APT_FONTS_NOTO_COLOR_EMOJI_VERSION"
 
 # Setup the virtualenv
 RUN python -m venv /website/venv

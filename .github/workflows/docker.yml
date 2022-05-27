@@ -31,4 +31,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: kthaisociety/website:${{ steps.extract_branch.outputs.branch }}
+          tags: ghcr.io/kthaisociety/website:${{ steps.extract_branch.outputs.branch }}

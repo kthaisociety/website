@@ -16,15 +16,17 @@ ENV PATH="/website/venv/bin:$PATH"
 ENV PIP_PIP_VERSION 22.1
 ENV PIP_PIP_TOOLS_VERSION 6.6.0
 ENV APT_NETCAT_VERSION 1.10-46
-ENV APT_CHROMIUM_VERSION 101.0.4951.64-1~deb11u1
+ENV APT_CHROMIUM_VERSION 99.0.4844.74-1~deb11u1
 ENV APT_FONTS_NOTO_COLOR_EMOJI_VERSION 0~20200916-1
 
 # Install sys dependencies
 RUN apt update && apt install -y --no-install-recommends \
       "netcat=$APT_NETCAT_VERSION"  \
       "chromium=$APT_CHROMIUM_VERSION" \
-      "fonts-noto-color-emoji=$APT_FONTS_NOTO_COLOR_EMOJI_VERSION"
-
+      "chromium-common=$APT_CHROMIUM_VERSION" \
+      "fonts-noto-color-emoji=$APT_FONTS_NOTO_COLOR_EMOJI_VERSION" \
+    && apt clean \
+ 	&& rm -rf "/var/lib/apt/lists/*"
 # Setup the virtualenv
 RUN python -m venv /website/venv
 WORKDIR /website

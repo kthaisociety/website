@@ -87,7 +87,9 @@ def check_users() -> List[Dict]:
                             u.slack_user.external_id = slack_id
                             u.slack_user.save()
                     else:
-                        SlackUser.objects.update_or_create(external_id=slack_id, defaults={"user": u})
+                        SlackUser.objects.update_or_create(
+                            external_id=slack_id, defaults={"user": u}
+                        )
                 if not u.email_verified or not u.registration_finished:
                     users_to_warn.append(u)
 

@@ -78,17 +78,18 @@ def check_users() -> List[Dict]:
                         email=user_email,
                     )
                     user.utils.send_imported(user=u)
-
                 # TODO: Sync other user information
                 # Update user Slack ID
                 slack_id = slack_user.get("id")
                 if slack_id:
-                    if not u.slack_user:
-                        SlackUser.objects.create(external_id=slack_id)
-                    elif slack_id != u.slack_user.external_id:
-                        u.slack_user.external_id = slack_id
-                        u.slack_user.save()
-
+                    if hasattr(u, "slack_user"):
+                        if slack_id != u.slack_user.external_id:
+                            u.slack_user.external_id = slack_id
+                            u.slack_user.save()
+                    else:
+                        SlackUser.objects.update_or_create(
+                            external_id=slack_id, defaults={"user": u}
+                        )
                 if not u.email_verified or not u.registration_finished:
                     users_to_warn.append(u)
 

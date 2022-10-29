@@ -23,9 +23,9 @@ from django.views.decorators.http import require_POST
 import user.api.team
 from app import settings
 from app.consts import (
-    STATISTICS_YEAR_START,
-    STATISTICS_PROGRAMME_OTHER_LABEL,
     STATISTICS_PROGRAMME_MIN_PERCENTAGE,
+    STATISTICS_PROGRAMME_OTHER_LABEL,
+    STATISTICS_YEAR_START,
 )
 from app.settings import GH_BRANCH, GH_KEY
 from app.slack import send_deploy_message

@@ -274,7 +274,7 @@
 
                                     var members_programme = {
                                         values: [{% for val in statistics.stats_members_programme %}{{ val.1 }},{% endfor %}],
-                                        labels: [{% for val in statistics.stats_members_programme %}'{{ val.0 }}',{% endfor %}],
+                                        labels: [{% for val in statistics.stats_members_programme %}'{{ val.0|truncatechars:20 }}',{% endfor %}],
                                         type: 'pie',
                                         name: 'Programmes',
                                         marker: {

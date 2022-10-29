@@ -11,7 +11,7 @@ from django.utils.safestring import mark_safe
 from django.utils.text import Truncator
 
 from app import settings
-from app.consts import YEAR_START_STATISTICS
+from app.consts import STATISTICS_YEAR_START
 from app.settings import APP_DOMAIN, DEBUG, STATIC_URL, STATICFILES_DIRS
 from app.variables import APP_LOCALHOST
 from event.enums import AttachmentType
@@ -40,7 +40,7 @@ def colour_by_year(year):
 
 @register.filter
 def colour_by_graduation(year):
-    years = (YEAR_START_STATISTICS, timezone.now().year + 10)
+    years = (STATISTICS_YEAR_START, timezone.now().year + 10)
     init = (0, 171, 231)
     fin = (112, 217, 255)
     year = (max(min(year, years[1]), years[0]) - years[0]) / abs(years[1] - years[0])
@@ -54,7 +54,6 @@ def colour_by_graduation(year):
 
 @register.filter
 def colour_by_programme(pos, total):
-    print(pos, total)
     poss = (0, total - 1)
     init = (0, 171, 231)
     fin = (112, 217, 255)

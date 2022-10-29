@@ -22,7 +22,11 @@ from django.views.decorators.http import require_POST
 
 import user.api.team
 from app import settings
-from app.consts import YEAR_START_STATISTICS
+from app.consts import (
+    STATISTICS_YEAR_START,
+    STATISTICS_PROGRAMME_OTHER_LABEL,
+    STATISTICS_PROGRAMME_MIN_PERCENTAGE,
+)
 from app.settings import GH_BRANCH, GH_KEY
 from app.slack import send_deploy_message
 from event.enums import EventStatus, RegistrationStatus
@@ -301,17 +305,32 @@ def statistics(request):
     stats_members_graduation = defaultdict(int)
     stats_members_university = defaultdict(int)
     stats_members_programme = defaultdict(int)
+    stats_members_programme_total = 0
     for u in users:
         stats_members_gender[u.gender] += 1
         if u.birthday:
             stats_members_year[u.birthday.year] += 1
         if u.graduation_year:
-            if u.graduation_year >= YEAR_START_STATISTICS:
+            if u.graduation_year >= STATISTICS_YEAR_START:
                 stats_members_graduation[u.graduation_year] += 1
         if u.university:
             stats_members_university[u.university] += 1
         if u.degree:
             stats_members_programme[u.degree] += 1
+            stats_members_programme_total += 1
+
+    stats_members_programme_filtered = defaultdict(int)
+    if stats_members_programme_total:
+        for p, val in stats_members_programme.items():
+            if (
+                100 * (val / stats_members_programme_total)
+                < STATISTICS_PROGRAMME_MIN_PERCENTAGE
+            ):
+                stats_members_programme_filtered[
+                    STATISTICS_PROGRAMME_OTHER_LABEL
+                ] += val
+            else:
+                stats_members_programme_filtered[p] = val
 
     stats_members_year = sorted(
         ((year, val) for year, val in stats_members_year.items()),
@@ -325,8 +344,8 @@ def statistics(request):
         ((year, val) for year, val in stats_members_university.items()),
         key=lambda smy: -smy[1],
     )
-    stats_members_programme = sorted(
-        ((year, val) for year, val in stats_members_programme.items()),
+    stats_members_programme_filtered = sorted(
+        ((year, val) for year, val in stats_members_programme_filtered.items()),
         key=lambda smy: -smy[1],
     )
 
@@ -342,7 +361,7 @@ def statistics(request):
                 "stats_members_year": stats_members_year,
                 "stats_members_graduation": stats_members_graduation,
                 "stats_members_university": stats_members_university,
-                "stats_members_programme": stats_members_programme,
+                "stats_members_programme": stats_members_programme_filtered,
                 "new_members": stats_new_members,
                 "new_members_verified": stats_new_members_verified,
                 "new_members_finished": stats_new_members_finished,

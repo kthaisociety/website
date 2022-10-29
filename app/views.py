@@ -346,7 +346,7 @@ def statistics(request):
     )
     stats_members_programme_filtered = sorted(
         ((year, val) for year, val in stats_members_programme_filtered.items()),
-        key=lambda smy: -smy[1],
+        key=lambda smy: (smy[0] == STATISTICS_PROGRAMME_OTHER_LABEL, -smy[1]),
     )
 
     return render(

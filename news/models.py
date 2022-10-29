@@ -20,6 +20,10 @@ class Pin(models.Model):
     body = models.TextField(blank=True, null=True)
     external_text = models.CharField(max_length=255, blank=True, null=True)
     external_url = models.URLField(max_length=200, blank=True, null=True)
+
+    date_from = models.DateTimeField(blank=True, null=True)
+    date_to = models.DateTimeField(blank=True, null=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

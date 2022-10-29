@@ -42,8 +42,16 @@
                                 </div>
                                 <h4 class="section-subtitle mb-3 ml-4">University</h4>
                                 <div id="plot-members-university" class="w-100 mb-4" style="height:400px;"></div>
-                                <h4 class="section-subtitle mb-3 ml-4">Programme</h4>
-                                <div id="plot-members-programme" class="w-100" style="height:400px;"></div>
+                                <div class="row mb-4">
+                                    <div class="col-12 col-md-6">
+                                        <h4 class="section-subtitle mb-3 ml-4">Programme</h4>
+                                        <div id="plot-members-programme" class="w-100" style="height:400px;"></div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <h4 class="section-subtitle mb-3 ml-4">Graduation year</h4>
+                                        <div id="plot-members-graduation" class="w-100" style="height:400px;"></div>
+                                    </div>
+                                </div>
                                 <script type="text/javascript">
                                     var total_members = {
                                       type: 'scatter',
@@ -265,39 +273,62 @@
                                     Plotly.newPlot('plot-members-university', data_members_university, layout_members_university, {responsive: true});
 
                                     var members_programme = {
-                                      type: 'bar',
-                                      x: [{% for val in statistics.stats_members_programme %}'{{ val.0 }}',{% endfor %}],
-                                      y: [{% for val in statistics.stats_members_programme %}{{ val.1 }},{% endfor %}],
-                                      name: 'Programmes',
-                                      marker: {
-                                        color: '#00ABE7',
-                                        width: 3
-                                      }
+                                        values: [{% for val in statistics.stats_members_programme %}'{{ val.1 }}',{% endfor %}],
+                                        labels: [{% for val in statistics.stats_members_programme %}{{ val.0 }},{% endfor %}],
+                                        type: 'pie',
+                                        name: 'Programmes',
+                                        marker: {
+                                                colors: [{% for val in statistics.stats_members_programme %}'{{ val.0|colour_by_year }}',{% endfor %}]
+                                        },
+                                        sort: false
                                     };
 
                                     var layout_members_programme = {
-                                        xaxis: {
-                                            title: 'Programmes'
-                                        },
-                                        yaxis: {
-                                            title: 'Members'
-                                        },
                                         autosize: true,
-                                        margin: {
-                                            l: 50,
-                                            r: 50,
-                                            b: 250,
-                                            t: 0,
-                                            pad: 4
-                                        },
                                         font: {
                                             family: '"Futura", sans-serif',
+                                        },
+                                        margin: {
+                                            l: 25,
+                                            r: 25,
+                                            b: 25,
+                                            t: 50,
+                                            pad: 4
                                         }
                                     };
 
                                     var data_members_programme = [members_programme];
 
                                     Plotly.newPlot('plot-members-programme', data_members_programme, layout_members_programme, {responsive: true});
+
+                                    var members_graduation = {
+                                        values: [{% for val in statistics.stats_members_graduation %}'{{ val.1 }}',{% endfor %}],
+                                        labels: [{% for val in statistics.stats_members_graduation %}{{ val.0 }},{% endfor %}],
+                                        type: 'pie',
+                                        name: 'Graduation year',
+                                        marker: {
+                                                colors: [{% for val in statistics.stats_members_graduation %}'{{ val.0|colour_by_year }}',{% endfor %}]
+                                        },
+                                        sort: false
+                                    };
+
+                                    var layout_members_graduation = {
+                                        autosize: true,
+                                        font: {
+                                            family: '"Futura", sans-serif',
+                                        },
+                                        margin: {
+                                            l: 25,
+                                            r: 25,
+                                            b: 25,
+                                            t: 50,
+                                            pad: 4
+                                        }
+                                    };
+
+                                    var data_members_graduation = [members_graduation];
+
+                                    Plotly.newPlot('plot-members-graduation', data_members_graduation, layout_members_graduation, {responsive: true});
                                 </script>
                             </div>
                         </div>

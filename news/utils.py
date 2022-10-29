@@ -1,5 +1,8 @@
 from typing import List
 
+from django.db.models import Q
+from django.utils import timezone
+
 from news.models import Article, Pin
 
 
@@ -8,4 +11,11 @@ def get_latest_articles() -> List[Article]:
 
 
 def get_latest_pin() -> Pin:
-    return Pin.objects.order_by("-created_at").first()
+    return (
+        Pin.objects.filter(
+            Q(date_from__isnull=True) | Q(date_from__lte=timezone.now()),
+            Q(date_to__isnull=True) | Q(date_to__gte=timezone.now()),
+        )
+        .order_by("-created_at")
+        .first()
+    )

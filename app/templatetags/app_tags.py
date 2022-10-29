@@ -11,6 +11,7 @@ from django.utils.safestring import mark_safe
 from django.utils.text import Truncator
 
 from app import settings
+from app.consts import YEAR_START_STATISTICS
 from app.settings import APP_DOMAIN, DEBUG, STATIC_URL, STATICFILES_DIRS
 from app.variables import APP_LOCALHOST
 from event.enums import AttachmentType
@@ -33,6 +34,38 @@ def colour_by_year(year):
         int(init[0] + year * (fin[0] - init[0])),
         int(init[1] + year * (fin[1] - init[1])),
         int(init[2] + year * (fin[2] - init[2])),
+    )
+    return f"rgb({col[0]}, {col[1]}, {col[2]})"
+
+
+@register.filter
+def colour_by_graduation(year):
+    years = (YEAR_START_STATISTICS, timezone.now().year + 10)
+    init = (0, 171, 231)
+    fin = (112, 217, 255)
+    year = (max(min(year, years[1]), years[0]) - years[0]) / abs(years[1] - years[0])
+    col = (
+        int(init[0] + year * (fin[0] - init[0])),
+        int(init[1] + year * (fin[1] - init[1])),
+        int(init[2] + year * (fin[2] - init[2])),
+    )
+    return f"rgb({col[0]}, {col[1]}, {col[2]})"
+
+
+@register.filter
+def colour_by_programme(pos, total):
+    print(pos, total)
+    poss = (0, total - 1)
+    init = (0, 171, 231)
+    fin = (112, 217, 255)
+    try:
+        pos = (max(min(pos, poss[1]), poss[0]) - poss[0]) / abs(poss[1] - poss[0])
+    except ZeroDivisionError:
+        pos = 0
+    col = (
+        int(init[0] + pos * (fin[0] - init[0])),
+        int(init[1] + pos * (fin[1] - init[1])),
+        int(init[2] + pos * (fin[2] - init[2])),
     )
     return f"rgb({col[0]}, {col[1]}, {col[2]})"
 

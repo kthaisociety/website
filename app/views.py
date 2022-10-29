@@ -22,6 +22,7 @@ from django.views.decorators.http import require_POST
 
 import user.api.team
 from app import settings
+from app.consts import YEAR_START_STATISTICS
 from app.settings import GH_BRANCH, GH_KEY
 from app.slack import send_deploy_message
 from event.enums import EventStatus, RegistrationStatus
@@ -305,7 +306,12 @@ def statistics(request):
         if u.birthday:
             stats_members_year[u.birthday.year] += 1
         if u.graduation_year:
-            stats_members_graduation[u.graduation_year] += 1
+            try:
+                graduation_year = int(u.graduation_year)
+                if graduation_year >= YEAR_START_STATISTICS:
+                    stats_members_graduation[graduation_year] += 1
+            except ValueError:
+                pass
         if u.university:
             stats_members_university[u.university] += 1
         if u.degree:

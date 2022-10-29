@@ -105,3 +105,5 @@ PROGRAMMES = [
     "Turbomachinery Aeromechanical University Training",
     "Vehicle Engineering",
 ]
+
+YEAR_START_STATISTICS = 2018

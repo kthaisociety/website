@@ -294,7 +294,7 @@ def statistics(request):
             )
         )
 
-    users = list(User.objects.filter(is_active=True).exclude(type=UserType.ORGANISER))
+    users = list(User.objects.filter(is_active=True))
 
     stats_members_gender = {gt: 0 for gt in GenderType}
     stats_members_year = defaultdict(int)
@@ -306,12 +306,8 @@ def statistics(request):
         if u.birthday:
             stats_members_year[u.birthday.year] += 1
         if u.graduation_year:
-            try:
-                graduation_year = int(u.graduation_year)
-                if graduation_year >= YEAR_START_STATISTICS:
-                    stats_members_graduation[graduation_year] += 1
-            except ValueError:
-                pass
+            if u.graduation_year >= YEAR_START_STATISTICS:
+                stats_members_graduation[u.graduation_year] += 1
         if u.university:
             stats_members_university[u.university] += 1
         if u.degree:

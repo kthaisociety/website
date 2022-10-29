@@ -273,12 +273,14 @@
                                     Plotly.newPlot('plot-members-university', data_members_university, layout_members_university, {responsive: true});
 
                                     var members_programme = {
-                                        values: [{% for val in statistics.stats_members_programme %}'{{ val.1 }}',{% endfor %}],
-                                        labels: [{% for val in statistics.stats_members_programme %}{{ val.0 }},{% endfor %}],
+                                        values: [{% for val in statistics.stats_members_programme %}{{ val.1 }},{% endfor %}],
+                                        labels: [{% for val in statistics.stats_members_programme %}'{{ val.0 }}',{% endfor %}],
                                         type: 'pie',
                                         name: 'Programmes',
                                         marker: {
-                                                colors: [{% for val in statistics.stats_members_programme %}'{{ val.0|colour_by_year }}',{% endfor %}]
+                                            {% with statistics.stats_members_programme|length as programmes_len %}
+                                                colors: [{% for val in statistics.stats_members_programme %}'{{ forloop.counter0|colour_by_programme:programmes_len }}',{% endfor %}]
+                                            {% endwith %}
                                         },
                                         sort: false
                                     };
@@ -302,12 +304,12 @@
                                     Plotly.newPlot('plot-members-programme', data_members_programme, layout_members_programme, {responsive: true});
 
                                     var members_graduation = {
-                                        values: [{% for val in statistics.stats_members_graduation %}'{{ val.1 }}',{% endfor %}],
-                                        labels: [{% for val in statistics.stats_members_graduation %}{{ val.0 }},{% endfor %}],
+                                        values: [{% for val in statistics.stats_members_graduation %}{{ val.1 }},{% endfor %}],
+                                        labels: [{% for val in statistics.stats_members_graduation %}'{{ val.0 }}',{% endfor %}],
                                         type: 'pie',
                                         name: 'Graduation year',
                                         marker: {
-                                                colors: [{% for val in statistics.stats_members_graduation %}'{{ val.0|colour_by_year }}',{% endfor %}]
+                                                colors: [{% for val in statistics.stats_members_graduation %}'{{ val.0|colour_by_graduation }}',{% endfor %}]
                                         },
                                         sort: false
                                     };

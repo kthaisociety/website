@@ -42,7 +42,11 @@ class Event(models.Model):
     external_url = models.CharField(max_length=255, blank=True, null=True)
     picture = VersatileImageField("Image", upload_to="event/picture/")
     social_picture = VersatileImageField(
-        "Social image", blank=True, null=True, upload_to="event/social/"
+        "Social image",
+        blank=True,
+        null=True,
+        upload_to="event/social/",
+        storage=OverwriteStorage(),
     )
     social_url = models.URLField(max_length=200, blank=True, null=True)
     status = models.PositiveSmallIntegerField(
@@ -224,7 +228,7 @@ class Event(models.Model):
         if messages:
             raise ValidationError(messages)
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, update_poster: bool = True, **kwargs):
         if not self.code:
             self.code = slugify(self.name)
         if self.attendance_target and not self.attendance_limit:
@@ -233,8 +237,15 @@ class Event(models.Model):
         import event.api.event.calendar
 
         transaction.on_commit(
-            lambda: event.api.event.calendar.create_or_update(event=self)
+            lambda: event.api.event.calendar.create_or_update(event_obj=self)
         )
+
+        if update_poster:
+            import event.api.event.event
+
+            transaction.on_commit(
+                lambda: event.api.event.event.update_event_poster(event_id=self.id)
+            )
 
         super().save()
 
@@ -287,7 +298,7 @@ class Session(models.Model):
         import event.api.event.calendar
 
         transaction.on_commit(
-            lambda: event.api.event.calendar.create_or_update(event=self.event)
+            lambda: event.api.event.calendar.create_or_update(event_obj=self.event)
         )
 
         super().save()

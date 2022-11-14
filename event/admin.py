@@ -6,6 +6,7 @@ from django.forms import BaseInlineFormSet
 from django.http import HttpResponse
 from django.utils import timezone
 from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 
 from event.api.event.event import get_event_resumes_zip
 from event.enums import RegistrationStatus
@@ -151,7 +152,7 @@ class EventAdmin(admin.ModelAdmin):
     )
     list_filter = ("type", "status")
     ordering = ("-created_at", "-updated_at", "name")
-    readonly_fields = ("diet_restrictions", "slack_ts")
+    readonly_fields = ("social_picture_tag", "diet_restrictions", "slack_ts")
     exclude = ("social_picture",)
     inlines = [SessionInline, RegistrationInline]
     actions = [send_slack_announcement]
@@ -224,9 +225,15 @@ class EventAdmin(admin.ModelAdmin):
                 diet_html += f"<br><span style='padding-left: 2em;'>- {do}</span>"
         return format_html(diet_html)
 
+    def social_picture_tag(self, obj):
+        return mark_safe(
+            f'<a target="_blank", href="{obj.social_picture.url}"><img src="{obj.social_picture.url}" width="500" /></a>'
+        )
+
     registration_count.short_description = "registrations"
     new_user_count.short_description = "new users"
     diet_restrictions.short_description = "dietary restrictions"
+    social_picture_tag.short_description = "poster"
 
 
 @admin.register(Speaker)

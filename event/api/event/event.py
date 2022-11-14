@@ -2,7 +2,13 @@ import zipfile
 from io import BytesIO
 from uuid import UUID
 
-from event.models import Event
+from django.core.files.images import ImageFile
+from django.db.models import Prefetch
+from django.template.loader import render_to_string
+from html2image import Html2Image
+
+from app.utils import get_substitutions_templates
+from event.models import Event, Session
 
 
 def get_event_resumes_zip(event_id: UUID) -> BytesIO:
@@ -22,3 +28,25 @@ def get_event_resumes_zip(event_id: UUID) -> BytesIO:
     zf.close()
 
     return mf
+
+
+def update_event_poster(event_id: UUID) -> None:
+    event_obj = (
+        Event.objects.published()
+        .filter(id=event_id)
+        .prefetch_related(
+            Prefetch("sessions", Session.objects.all().order_by("starts_at"))
+        )
+        .first()
+    )
+    context = get_substitutions_templates()
+    context["event"] = event_obj
+    html = render_to_string(
+        "poster/poster.html",
+        context=context,
+    )
+    hti = Html2Image(output_path="files/event/poster")
+    hti.screenshot(html_str=html, save_as=f"{event_id}.png", size=(1200, 630))
+    img = open(f"files/event/poster/{event_id}.png", "rb")
+    event_obj.social_picture = ImageFile(img, name=f"{event_id}.png")
+    event_obj.save(update_poster=False, update_fields=("social_picture",))

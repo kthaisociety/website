@@ -3,7 +3,9 @@
 {% load i18n %}
 
 {% block email_message_pre %}
-    <p>Thank-you for registering to <strong>{{ registration.event.name }}</strong>!</p>
+    {% block email_message_intro %}
+        <p>Thank-you for registering to <strong>{{ registration.event.name }}</strong>!</p>
+    {% endblock %}
     {% if registration.event.sessions.all|length == 1 %}
         <h5 style="margin-bottom: 8px;">Time: {{ registration.event.starts_at|date:"F j, Y H:i" }}{% if registration.event.starts_at != registration.event.ends_at %} - {% if registration.event.starts_at.date != registration.event.ends_at.date %}{{ registration.event.ends_at|date:"F j, Y H:i" }}{% else %}{{ registration.event.ends_at|date:"H:i" }}{% endif %}{% endif %}</h5>
     {% elif registration.event.sessions.all|length > 1 %}

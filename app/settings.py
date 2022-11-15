@@ -307,6 +307,10 @@ NOTIFY_TEMPLATES = dict(
                 subject="Registration confirmation for {event}",
                 html="email/event/register.html",
             ),
+            reminder=dict(
+                subject="Remember to attend {event}",
+                html="email/event/reminder.html",
+            ),
             cancel=dict(
                 subject="Registration cancellation for {event}",
                 html="email/event/cancel.html",

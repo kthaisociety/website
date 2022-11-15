@@ -19,7 +19,7 @@ from event.models import (
     Speaker,
     SpeakerRole,
 )
-from event.tasks import send_url_email
+from event.tasks import send_url_email, send_reminder_emails
 from messaging.api.slack.announcement import announce_event
 from user.enums import DietType, UserType
 
@@ -136,7 +136,16 @@ def send_slack_announcement(modeladmin, request, events):
     )
 
 
+def send_registration_reminders(modeladmin, request, events):
+    for event in events:
+        send_reminder_emails(event_id=event.id)
+    messages.success(
+        request, f"Registration reminders have been sent for {events.count()} event/s."
+    )
+
+
 send_slack_announcement.short_description = "Send Slack announcement"
+send_registration_reminders.short_description = "Send registration reminders"
 
 
 @admin.register(Event)
@@ -155,7 +164,7 @@ class EventAdmin(admin.ModelAdmin):
     readonly_fields = ("social_picture_tag", "diet_restrictions", "slack_ts")
     exclude = ("social_picture",)
     inlines = [SessionInline, RegistrationInline]
-    actions = [send_slack_announcement]
+    actions = [send_slack_announcement, send_registration_reminders]
 
     def get_urls(self):
         urls = super().get_urls()

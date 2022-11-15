@@ -499,6 +499,7 @@ GROUP_BY_DIVISION_NAME = {
     "Education": "EDU",
     "IT": "ITO",
     "Operations": "ITO",
+    "Events": "ITO",
 }
 
 # Mailchimp integration

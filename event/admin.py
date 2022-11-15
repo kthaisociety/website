@@ -19,7 +19,7 @@ from event.models import (
     Speaker,
     SpeakerRole,
 )
-from event.tasks import send_url_email, send_reminder_emails, send_registration_email
+from event.tasks import send_registration_email, send_reminder_emails, send_url_email
 from messaging.api.slack.announcement import announce_event
 from user.enums import DietType, UserType
 
@@ -94,7 +94,8 @@ def send_registration_reminder(modeladmin, request, registrations):
     for registration in registrations:
         send_registration_email(registration_id=registration.id, is_reminder=True)
     messages.success(
-        request, f"Registration reminders have been sent for {registrations.count()} reminder/s."
+        request,
+        f"Registration reminders have been sent for {registrations.count()} reminder/s.",
     )
 
 

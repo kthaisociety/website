@@ -9,7 +9,17 @@ from event.models import Registration
 
 
 # @shared_task
-def send_registration_email(registration_id: UUID):
+def send_reminder_emails(event_id: UUID) -> None:
+    registration_ids = Registration.objects.filter(
+        event_id=event_id,
+        status__in=(RegistrationStatus.REQUESTED, RegistrationStatus.REGISTERED),
+    ).values_list("id", flat=True)
+    for registration_id in registration_ids:
+        send_registration_email(registration_id=registration_id, is_reminder=True)
+
+
+# @shared_task
+def send_registration_email(registration_id: UUID, is_reminder: bool = False):
     context = get_substitutions_templates()
     registration = Registration.objects.get(id=registration_id)
     context["registration"] = registration
@@ -19,8 +29,11 @@ def send_registration_email(registration_id: UUID):
         RegistrationStatus.REQUESTED,
         RegistrationStatus.REGISTERED,
     ]:
-        task = "register"
-    elif registration.status == RegistrationStatus.CANCELLED:
+        if is_reminder:
+            task = "reminder"
+        else:
+            task = "register"
+    elif registration.status == RegistrationStatus.CANCELLED and not is_reminder:
         task = "cancel"
     else:
         task = None

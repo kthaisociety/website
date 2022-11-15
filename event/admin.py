@@ -19,7 +19,7 @@ from event.models import (
     Speaker,
     SpeakerRole,
 )
-from event.tasks import send_url_email
+from event.tasks import send_registration_email, send_reminder_emails, send_url_email
 from messaging.api.slack.announcement import announce_event
 from user.enums import DietType, UserType
 
@@ -81,7 +81,7 @@ class SessionInline(admin.StackedInline):
     formset = SessionInlineFormSet
 
 
-def send_url(modeladmin, request, registrations):
+def send_registration_url(modeladmin, request, registrations):
     for registration in registrations:
         send_url_email(registration_id=registration.id)
     messages.success(
@@ -90,7 +90,17 @@ def send_url(modeladmin, request, registrations):
     )
 
 
-send_url.short_description = "Send link email"
+def send_registration_reminder(modeladmin, request, registrations):
+    for registration in registrations:
+        send_registration_email(registration_id=registration.id, is_reminder=True)
+    messages.success(
+        request,
+        f"Registration reminders have been sent for {registrations.count()} reminder/s.",
+    )
+
+
+send_registration_url.short_description = "Send webinar URL"
+send_registration_reminder.short_description = "Send reminders"
 
 
 @admin.register(Registration)
@@ -99,7 +109,7 @@ class RegistrationAdmin(admin.ModelAdmin):
     list_display = ("id", "event", "user", "status")
     list_filter = ("event", "status")
     ordering = ("-created_at", "-updated_at")
-    actions = [send_url]
+    actions = [send_registration_url, send_registration_reminder]
 
 
 class RegistrationInline(admin.StackedInline):
@@ -136,7 +146,16 @@ def send_slack_announcement(modeladmin, request, events):
     )
 
 
+def send_event_reminders(modeladmin, request, events):
+    for event in events:
+        send_reminder_emails(event_id=event.id)
+    messages.success(
+        request, f"Registration reminders have been sent for {events.count()} event/s."
+    )
+
+
 send_slack_announcement.short_description = "Send Slack announcement"
+send_event_reminders.short_description = "Send registration reminders"
 
 
 @admin.register(Event)
@@ -155,7 +174,7 @@ class EventAdmin(admin.ModelAdmin):
     readonly_fields = ("social_picture_tag", "diet_restrictions", "slack_ts")
     exclude = ("social_picture",)
     inlines = [SessionInline, RegistrationInline]
-    actions = [send_slack_announcement]
+    actions = [send_slack_announcement, send_event_reminders]
 
     def get_urls(self):
         urls = super().get_urls()

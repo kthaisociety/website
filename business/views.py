@@ -1,4 +1,4 @@
-from django.db.models import Q, When, Case, BooleanField
+from django.db.models import BooleanField, Case, Q, When
 from django.shortcuts import render
 from django.utils import timezone
 

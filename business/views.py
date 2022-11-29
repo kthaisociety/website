@@ -1,4 +1,4 @@
-from django.db.models import Q
+from django.db.models import BooleanField, Case, Q, When
 from django.shortcuts import render
 from django.utils import timezone
 
@@ -13,21 +13,23 @@ def sponsor(request):
 
 def jobs(request):
     type = request.GET.get("type")
-    offer_filters = Q(
-        is_visible=True,
-        starts_at__lte=timezone.now(),
+    offer_filters = Q(is_visible=True, starts_at__lte=timezone.now(),) & Q(
+        Q(ends_at__isnull=True)
+        | Q(ends_at__gt=timezone.now() - timezone.timedelta(days=10))
     )
     if type is not None:
         offer_filters &= Q(type=type)
-    offer_active_filter = Q(ends_at__isnull=True) | Q(ends_at__gt=timezone.now())
     offers_objs = list(
-        Offer.objects.filter(offer_filters & offer_active_filter).order_by(
-            "-created_at"
-        )
-    ) + list(
         Offer.objects.filter(offer_filters)
-        .exclude(offer_active_filter)
-        .order_by("-created_at")
+        .annotate(
+            is_offer_active=Case(
+                When(ends_at__isnull=True, then=True),
+                When(ends_at__gt=timezone.now(), then=True),
+                default=False,
+                output_field=BooleanField(),
+            )
+        )
+        .order_by("-is_offer_active", "-starts_at")
     )
     return render(
         request,

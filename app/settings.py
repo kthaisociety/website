@@ -497,13 +497,14 @@ PERMISSIONS_COMMON = {
 }
 
 GROUP_BY_DIVISION_NAME = {
-    "Business Relations": "BRC",
-    "Communications": "BRC",
-    "Design": "DES",
-    "Education": "EDU",
-    "IT": "ITO",
-    "Operations": "ITO",
-    "Events": "ITO",
+    "Business Relations": ("BRC",),
+    "Communications": ("BRC",),
+    "Design": ("DES",),
+    "Education": ("EDU",),
+    "IT": ("ITO",),
+    "Operations": ("ITO",),
+    "Events": ("ITO",),
+    "Chairman": ("BRC", "ITO"),
 }
 
 # Mailchimp integration

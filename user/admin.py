@@ -86,8 +86,8 @@ class RoleAdmin(admin.ModelAdmin):
 
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
-        group_name = GROUP_BY_DIVISION_NAME.get(obj.division.name)
-        if group_name:
+        group_names = GROUP_BY_DIVISION_NAME.get(obj.division.name, [])
+        for group_name in group_names:
             group = Group.objects.get(name=group_name)
             if obj.is_active:
                 obj.user.groups.add(group)

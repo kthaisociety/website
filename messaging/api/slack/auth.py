@@ -20,7 +20,7 @@ def auth(code: str, user: User) -> bool:
         return send_error_message(error=SlackError.ADD_MESSAGE)
 
     authed_user = response.data.get("authed_user")
-    if user.slack_user:
+    if hasattr(user, "slack_user") and user.slack_user:
         user.slack_user.external_id = authed_user.get("id")
         user.slack_user.token = authed_user.get("access_token")
         user.slack_user.scopes = authed_user.get("scope")

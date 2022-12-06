@@ -48,6 +48,13 @@ class Event(models.Model):
         upload_to="event/social/",
         storage=OverwriteStorage(),
     )
+    social_picture_sq = VersatileImageField(
+        "Social image (squared)",
+        blank=True,
+        null=True,
+        upload_to="event/social/squared/",
+        storage=OverwriteStorage(),
+    )
     social_url = models.URLField(max_length=200, blank=True, null=True)
     status = models.PositiveSmallIntegerField(
         choices=((s.value, s.name) for s in EventStatus), default=EventStatus.DRAFT

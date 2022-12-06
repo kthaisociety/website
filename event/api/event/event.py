@@ -46,7 +46,17 @@ def update_event_poster(event_id: UUID) -> None:
         context=context,
     )
     hti = Html2Image(output_path="files/event/poster")
+
+    # Main social picture
     hti.screenshot(html_str=html, save_as=f"{event_id}.png", size=(1200, 630))
     img = open(f"files/event/poster/{event_id}.png", "rb")
     event_obj.social_picture = ImageFile(img, name=f"{event_id}.png")
-    event_obj.save(update_poster=False, update_fields=("social_picture",))
+
+    # Social picture (squared)
+    hti.screenshot(html_str=html, save_as=f"{event_id}_sq.png", size=(950, 950))
+    img = open(f"files/event/poster/{event_id}_sq.png", "rb")
+    event_obj.social_picture = ImageFile(img, name=f"{event_id}.png")
+
+    event_obj.save(
+        update_poster=False, update_fields=("social_picture", "social_picture_sq")
+    )

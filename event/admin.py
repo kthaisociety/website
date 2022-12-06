@@ -172,7 +172,7 @@ class EventAdmin(admin.ModelAdmin):
     list_filter = ("type", "status")
     ordering = ("-created_at", "-updated_at", "name")
     readonly_fields = ("social_picture_tag", "diet_restrictions", "slack_ts")
-    exclude = ("social_picture",)
+    exclude = ("social_picture", "social_picture_sq")
     inlines = [SessionInline, RegistrationInline]
     actions = [send_slack_announcement, send_event_reminders]
 
@@ -246,7 +246,7 @@ class EventAdmin(admin.ModelAdmin):
 
     def social_picture_tag(self, obj):
         return mark_safe(
-            f'<a target="_blank", href="{obj.social_picture.url}"><img src="{obj.social_picture.url}" width="500" /></a>'
+            f'<a target="_blank", href="{obj.social_picture.url}"><img src="{obj.social_picture.url}" width="500" /></a><a target="_blank", href="{obj.social_picture_sq.url}"><img src="{obj.social_picture_sq.url}" width="500" /></a>'
         )
 
     registration_count.short_description = "registrations"

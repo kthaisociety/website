@@ -53,9 +53,9 @@ def update_event_poster(event_id: UUID) -> None:
     event_obj.social_picture = ImageFile(img, name=f"{event_id}.png")
 
     # Social picture (squared)
-    hti.screenshot(html_str=html, save_as=f"{event_id}_sq.png", size=(950, 950))
+    hti.screenshot(html_str=html, save_as=f"{event_id}_sq.png", size=(750, 750))
     img = open(f"files/event/poster/{event_id}_sq.png", "rb")
-    event_obj.social_picture = ImageFile(img, name=f"{event_id}.png")
+    event_obj.social_picture_sq = ImageFile(img, name=f"{event_id}.png")
 
     event_obj.save(
         update_poster=False, update_fields=("social_picture", "social_picture_sq")

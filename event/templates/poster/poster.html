@@ -37,39 +37,71 @@
             }
             {% widthratio event.sessions.count 1 -15 as ratio %}
             {% with ratio|add:20 as ratio_unlocation %}
-                .poster-corner {
-                    background-color: rgba(0, 0, 0, 0.5);
-                    width: 2000px;
-                    height: 500px;
-                    position: absolute;
-                    right: -250px;
-                    {% if event.location %}
-                        bottom: -{{ "285"|add:ratio }}px;
-                    {% else %}
-                        bottom: -{{ "285"|add:ratio_unlocation }}px;
-                    {% endif %}
-                    -webkit-transform: rotate(5deg);
-                    z-index: -50;
-                }
-                .poster-corner-secondary {
-                    background-color: rgba(0, 0, 0, 0.5);
-                    width: 2000px;
-                    height: 500px;
-                    position: absolute;
-                    right: -250px;
-                    {% if event.location %}
-                        bottom: -{{ "260"|add:ratio }}px;
-                    {% else %}
-                        bottom: -{{ "260"|add:ratio_unlocation }}px;
-                    {% endif %}
-                    -webkit-transform: rotate(5deg);
-                    z-index: -50;
+                @media screen and (max-width: 999px) {
+                    .poster-corner {
+                        background-color: rgba(0, 0, 0, 0.5);
+                        width: 2000px;
+                        height: 550px;
+                        position: absolute;
+                        right: -250px;
+                        {% if event.location %}
+                            bottom: -{{ "285"|add:ratio }}px;
+                        {% else %}
+                            bottom: -{{ "285"|add:ratio_unlocation }}px;
+                        {% endif %}
+                        -webkit-transform: rotate(5deg);
+                        z-index: -50;
                     }
+                    .poster-corner-secondary {
+                        background-color: rgba(0, 0, 0, 0.5);
+                        width: 2000px;
+                        height: 550px;
+                        position: absolute;
+                        right: -250px;
+                        {% if event.location %}
+                            bottom: -{{ "260"|add:ratio }}px;
+                        {% else %}
+                            bottom: -{{ "260"|add:ratio_unlocation }}px;
+                        {% endif %}
+                        -webkit-transform: rotate(5deg);
+                        z-index: -50;
+                    }
+                }
+                @media screen and (min-width: 1000px) {
+                    .poster-corner {
+                        background-color: rgba(0, 0, 0, 0.5);
+                        width: 2000px;
+                        height: 500px;
+                        position: absolute;
+                        right: -250px;
+                        {% if event.location %}
+                            bottom: -{{ "285"|add:ratio }}px;
+                        {% else %}
+                            bottom: -{{ "285"|add:ratio_unlocation }}px;
+                        {% endif %}
+                        -webkit-transform: rotate(5deg);
+                        z-index: -50;
+                    }
+                    .poster-corner-secondary {
+                        background-color: rgba(0, 0, 0, 0.5);
+                        width: 2000px;
+                        height: 500px;
+                        position: absolute;
+                        right: -250px;
+                        {% if event.location %}
+                            bottom: -{{ "260"|add:ratio }}px;
+                        {% else %}
+                            bottom: -{{ "260"|add:ratio_unlocation }}px;
+                        {% endif %}
+                        -webkit-transform: rotate(5deg);
+                        z-index: -50;
+                    }
+                }
             {% endwith %}
             .poster-content {
                 color: #fff;
                 position: absolute;
-                width: 100%;
+                width: 90%;
                 padding: 0 5%;
                 left: 0;
                 bottom: 50px;

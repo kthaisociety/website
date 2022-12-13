@@ -1,6 +1,7 @@
 import base64
 import math
 import os
+import random
 import re
 
 import markdown
@@ -176,3 +177,8 @@ def split(value, key):
 @register.filter()
 def to_int(value):
     return int(value)
+
+
+@register.filter()
+def rand_team_start(val: int) -> int:
+    return random.randint(0, max(0, min(val, val - 13)))

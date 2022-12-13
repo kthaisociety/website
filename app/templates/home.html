@@ -219,103 +219,105 @@
 
             <div id="carousel-team" class="carousel slide mb-3" data-ride="carousel">
                 <div class="carousel-inner row w-100 mx-auto home-organisers" role="listbox">
-                    {% for organiser in organisers %}
-                        <div class="carousel-item text-center col-12 col-sm-4 col-md-3 col-lg-2 col-xl-1{% if forloop.counter0 == 0 %} active{% endif %}">
-                            {% if organiser.website %}
-                                <a href="{{ organiser.website }}" target="_blank" class="link-unstyled">{% endif %}
-                            {% comment %}
-                                <img src="{{ organiser.picture.url }}" class="ml-auto mr-auto">
-                            {% endcomment %}
-                            <div class="{% if organiser.role.is_head %}role-picture-head {% endif %}role-picture"><img
-                                    alt="Role picture" src="{{ organiser.role.picture.crop.200x200 }}"></div>
-                            <h6 class="mt-1 mb-1 text-white"
-                                {% if organiser.full_name|length > 15 %}style="font-size: 14px; padding-top: 1px; padding-bottom: 1px;"{% endif %}>{{ organiser.full_name }}</h6>
-                            <p class="mt-2 mb-0"
-                               style="line-height: 1; font-size: 14px">{{ organiser.role.division.display_name|upper }}</p>
-                            {% if organiser.website %}</a>{% endif %}
-                            {% if organiser.email %}
-                                <a href="mailto:{{ organiser.email }}" class="speaker-social-network link-unstyled"
-                                   target="_blank">
-                                    <button type="button" class="btn btn-email btn-sm mt-2">
-                                        <p class="mb-0">
-                                            <i class="fas fa-at"></i>
-                                        </p>
-                                    </button>
-                                </a>
-                            {% endif %}
-                            {% if organiser.website %}
-                                <a href="{{ organiser.website }}" class="speaker-social-network link-unstyled"
-                                   target="_blank">
-                                    <button type="button" class="btn btn-website btn-sm mt-2">
-                                        <p class="mb-0">
-                                            <i class="fas fa-globe-europe"></i>
-                                        </p>
-                                    </button>
-                                </a>
-                            {% endif %}
-                            {% if organiser.github_url %}
-                                <a href="{{ organiser.github_url }}" class="speaker-social-network link-unstyled"
-                                   target="_blank">
-                                    <button type="button" class="btn btn-github btn-sm mt-2">
-                                        <p class="mb-0">
-                                            <i class="fab fa-github"></i>
-                                        </p>
-                                    </button>
-                                </a>
-                            {% endif %}
-                            {% if organiser.linkedin_url %}
-                                <a href="{{ organiser.linkedin_url }}" class="speaker-social-network link-unstyled"
-                                   target="_blank">
-                                    <button type="button" class="btn btn-linkedin btn-sm mt-2">
-                                        <p class="mb-0">
-                                            <i class="fab fa-linkedin-in"></i>
-                                        </p>
-                                    </button>
-                                </a>
-                            {% endif %}
-                            {% if organiser.twitter_url %}
-                                <a href="{{ organiser.twitter_url }}" class="speaker-social-network link-unstyled"
-                                   target="_blank">
-                                    <button type="button" class="btn btn-twitter btn-sm mt-2">
-                                        <p class="mb-0">
-                                            <i class="fab fa-twitter"></i>
-                                        </p>
-                                    </button>
-                                </a>
-                            {% endif %}
-                            {% if organiser.researchgate_url %}
-                                <a href="{{ organiser.researchgate_url }}" class="speaker-social-network link-unstyled"
-                                   target="_blank">
-                                    <button type="button" class="btn btn-researchgate btn-sm mt-2">
-                                        <p class="mb-0">
-                                            <i class="fab fa-researchgate"></i>
-                                        </p>
-                                    </button>
-                                </a>
-                            {% endif %}
-                            {% if organiser.orcid %}
-                                <a href="https://orcid.org/{{ organiser.orcid }}"
-                                   class="speaker-social-network link-unstyled" target="_blank">
-                                    <button type="button" class="btn btn-orcid btn-sm mt-2">
-                                        <p class="mb-0">
-                                            <i class="fab fa-orcid"></i>
-                                        </p>
-                                    </button>
-                                </a>
-                            {% endif %}
-                            {% if organiser.scholar_url %}
-                                <a href="{{ organiser.scholar_url }}" class="speaker-social-network link-unstyled"
-                                   target="_blank">
-                                    <button type="button" class="btn btn-scholar btn-sm mt-2">
-                                        <p class="mb-0">
-                                            <i class="fas fa-graduation-cap"></i>
-                                        </p>
-                                    </button>
-                                </a>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-                </div>
+                    {% with organisers|length|rand_team_start as rand_start %}
+                        {% for organiser in organisers %}
+                            <div class="carousel-item text-center col-12 col-sm-4 col-md-3 col-lg-2 col-xl-1{% if forloop.counter0 == rand_start %} active{% endif %}">
+                                {% if organiser.website %}
+                                    <a href="{{ organiser.website }}" target="_blank" class="link-unstyled">{% endif %}
+                                {% comment %}
+                                    <img src="{{ organiser.picture.url }}" class="ml-auto mr-auto">
+                                {% endcomment %}
+                                <div class="{% if organiser.role.is_head %}role-picture-head {% endif %}role-picture"><img
+                                        alt="Role picture" src="{{ organiser.role.picture.crop.200x200 }}"></div>
+                                <h6 class="mt-1 mb-1 text-white"
+                                    {% if organiser.full_name|length > 15 %}style="font-size: 14px; padding-top: 1px; padding-bottom: 1px;"{% endif %}>{{ organiser.full_name }}</h6>
+                                <p class="mt-2 mb-0"
+                                   style="line-height: 1; font-size: 14px">{{ organiser.role.division.display_name|upper }}</p>
+                                {% if organiser.website %}</a>{% endif %}
+                                {% if organiser.email %}
+                                    <a href="mailto:{{ organiser.email }}" class="speaker-social-network link-unstyled"
+                                       target="_blank">
+                                        <button type="button" class="btn btn-email btn-sm mt-2">
+                                            <p class="mb-0">
+                                                <i class="fas fa-at"></i>
+                                            </p>
+                                        </button>
+                                    </a>
+                                {% endif %}
+                                {% if organiser.website %}
+                                    <a href="{{ organiser.website }}" class="speaker-social-network link-unstyled"
+                                       target="_blank">
+                                        <button type="button" class="btn btn-website btn-sm mt-2">
+                                            <p class="mb-0">
+                                                <i class="fas fa-globe-europe"></i>
+                                            </p>
+                                        </button>
+                                    </a>
+                                {% endif %}
+                                {% if organiser.github_url %}
+                                    <a href="{{ organiser.github_url }}" class="speaker-social-network link-unstyled"
+                                       target="_blank">
+                                        <button type="button" class="btn btn-github btn-sm mt-2">
+                                            <p class="mb-0">
+                                                <i class="fab fa-github"></i>
+                                            </p>
+                                        </button>
+                                    </a>
+                                {% endif %}
+                                {% if organiser.linkedin_url %}
+                                    <a href="{{ organiser.linkedin_url }}" class="speaker-social-network link-unstyled"
+                                       target="_blank">
+                                        <button type="button" class="btn btn-linkedin btn-sm mt-2">
+                                            <p class="mb-0">
+                                                <i class="fab fa-linkedin-in"></i>
+                                            </p>
+                                        </button>
+                                    </a>
+                                {% endif %}
+                                {% if organiser.twitter_url %}
+                                    <a href="{{ organiser.twitter_url }}" class="speaker-social-network link-unstyled"
+                                       target="_blank">
+                                        <button type="button" class="btn btn-twitter btn-sm mt-2">
+                                            <p class="mb-0">
+                                                <i class="fab fa-twitter"></i>
+                                            </p>
+                                        </button>
+                                    </a>
+                                {% endif %}
+                                {% if organiser.researchgate_url %}
+                                    <a href="{{ organiser.researchgate_url }}" class="speaker-social-network link-unstyled"
+                                       target="_blank">
+                                        <button type="button" class="btn btn-researchgate btn-sm mt-2">
+                                            <p class="mb-0">
+                                                <i class="fab fa-researchgate"></i>
+                                            </p>
+                                        </button>
+                                    </a>
+                                {% endif %}
+                                {% if organiser.orcid %}
+                                    <a href="https://orcid.org/{{ organiser.orcid }}"
+                                       class="speaker-social-network link-unstyled" target="_blank">
+                                        <button type="button" class="btn btn-orcid btn-sm mt-2">
+                                            <p class="mb-0">
+                                                <i class="fab fa-orcid"></i>
+                                            </p>
+                                        </button>
+                                    </a>
+                                {% endif %}
+                                {% if organiser.scholar_url %}
+                                    <a href="{{ organiser.scholar_url }}" class="speaker-social-network link-unstyled"
+                                       target="_blank">
+                                        <button type="button" class="btn btn-scholar btn-sm mt-2">
+                                            <p class="mb-0">
+                                                <i class="fas fa-graduation-cap"></i>
+                                            </p>
+                                        </button>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endwith %}
                 <a class="carousel-control-prev" href="#carousel-team" role="button" data-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="sr-only">Previous</span>

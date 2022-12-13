@@ -274,9 +274,9 @@ nav {
 }
 
 .container-home-inner {
-    @media (min-width: 992px){
-        max-width: 50%;
-    }
+  @media (min-width: 992px) {
+    max-width: 50%;
+  }
 }
 
 .main-title {
@@ -306,18 +306,18 @@ nav {
 }
 
 .main-text {
-    @media (max-width: 991px) {
-        text-align: center;
-    }
+  @media (max-width: 991px) {
+    text-align: center;
+  }
 }
 
 .main-link {
-    @media (max-width: 991px) {
-        text-align: center;
-        margin-left: auto;
-        margin-right: auto;
-        display: block;
-    }
+  @media (max-width: 991px) {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+  }
 }
 
 .container-content {
@@ -632,7 +632,7 @@ nav {
   -o-box-shadow: inset 0 -100000px 500px rgba(0, 0, 0, 0.25);
 }
 
-.carousel-item {
+/* .carousel-item {
   height: 100vh;
   min-height: 350px;
   background: no-repeat center center scroll;
@@ -641,7 +641,7 @@ nav {
   -o-background-size: cover;
   background-size: cover;
   background-color: #3d5875;
-}
+}*/
 
 .carousel-caption {
   padding-top: 96px;
@@ -1039,8 +1039,8 @@ nav {
 }
 
 .speaker-picture-page {
-    max-width: 250px !important;
-    margin-bottom: 0 !important;
+  max-width: 250px !important;
+  margin-bottom: 0 !important;
 }
 
 .speaker-picture {
@@ -1185,7 +1185,7 @@ a.badge-white:focus, a.badge-white.focus {
   width: 80px;
 }
 
-.about-social{
+.about-social {
   overflow-x: hidden;
 }
 
@@ -1222,4 +1222,292 @@ a.badge-white:focus, a.badge-white.focus {
 
 .about-social-section h5:after {
   left: 100%;
+}
+
+
+.carousel-control-prev, .carousel-control-next {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20%;
+  color: #fff;
+  text-align: center;
+  opacity: 0.5;
+  transition: opacity 0.15s ease;
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+  .carousel-control-prev, .carousel-control-next {
+    width: 10%;
+  }
+  .carousel-inner .active.carousel-item + .carousel-item + .carousel-item + .carousel-item {
+    position: absolute;
+    top: 0;
+    right: -33.33%;
+    display: block !important;
+    visibility: visible;
+  }
+
+  .carousel-item {
+    margin-right: 0;
+  }
+  .carousel-inner .active + .carousel-item,
+  .carousel-inner .active + .carousel-item + .carousel-item {
+    display: block;
+  }
+  .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left),
+  .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left) + .carousel-item,
+  .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left) + .carousel-item + .carousel-item {
+    transition: none;
+  }
+  .carousel-inner .carousel-item-next {
+    position: relative;
+    transform: translate3d(0, 0, 0);
+  }
+  .active.carousel-item-left + .carousel-item-next.carousel-item-left,
+  .carousel-item-next.carousel-item-left + .carousel-item,
+  .carousel-item-next.carousel-item-left + .carousel-item + .carousel-item,
+  .carousel-item-next.carousel-item-left + .carousel-item + .carousel-item + .carousel-item {
+    position: relative;
+    transform: translate3d(-100%, 0, 0);
+    visibility: visible;
+  }
+  .carousel-inner .carousel-item-prev.carousel-item-right {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    visibility: visible;
+  }
+  .active.carousel-item-right + .carousel-item-prev.carousel-item-right,
+  .carousel-item-prev.carousel-item-right + .carousel-item,
+  .carousel-item-prev.carousel-item-right + .carousel-item + .carousel-item,
+  .carousel-item-prev.carousel-item-right + .carousel-item + .carousel-item + .carousel-item {
+    position: relative;
+    transform: translate3d(100%, 0, 0);
+    visibility: visible;
+    display: block;
+    visibility: visible;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 990px) {
+  .carousel-control-prev, .carousel-control-next {
+    width: 7.5%;
+  }
+  .carousel-inner .active.carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item {
+    position: absolute;
+    top: 0;
+    right: -25%;
+    display: block !important;
+    visibility: visible;
+  }
+
+  .carousel-item {
+    margin-right: 0;
+  }
+  .carousel-inner .active + .carousel-item,
+  .carousel-inner .active + .carousel-item + .carousel-item,
+  .carousel-inner .active + .carousel-item + .carousel-item + .carousel-item {
+    display: block;
+  }
+  .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left),
+  .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left) + .carousel-item,
+  .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left) + .carousel-item + .carousel-item,
+  .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left) + .carousel-item + .carousel-item + .carousel-item {
+    transition: none;
+  }
+  .carousel-inner .carousel-item-next {
+    position: relative;
+    transform: translate3d(0, 0, 0);
+  }
+  .active.carousel-item-left + .carousel-item-next.carousel-item-left,
+  .carousel-item-next.carousel-item-left + .carousel-item,
+  .carousel-item-next.carousel-item-left + .carousel-item + .carousel-item,
+  .carousel-item-next.carousel-item-left + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-item-next.carousel-item-left + .carousel-item + .carousel-item + .carousel-item + .carousel-item {
+    position: relative;
+    transform: translate3d(-100%, 0, 0);
+    visibility: visible;
+  }
+  .carousel-inner .carousel-item-prev.carousel-item-right {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    visibility: visible;
+  }
+  .active.carousel-item-right + .carousel-item-prev.carousel-item-right,
+  .carousel-item-prev.carousel-item-right + .carousel-item,
+  .carousel-item-prev.carousel-item-right + .carousel-item + .carousel-item,
+  .carousel-item-prev.carousel-item-right + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-item-prev.carousel-item-right + .carousel-item + .carousel-item + .carousel-item + .carousel-item {
+    position: relative;
+    transform: translate3d(100%, 0, 0);
+    visibility: visible;
+    display: block;
+    visibility: visible;
+  }
+}
+
+@media (min-width: 990px) and (max-width: 1200px) {
+  .carousel-control-prev, .carousel-control-next {
+    display: none;
+  }
+  .carousel-inner .active.carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item {
+    position: absolute;
+    top: 0;
+    right: -16.67%;
+    display: block !important;
+    visibility: visible;
+  }
+
+  .carousel-item {
+    margin-right: 0;
+  }
+  .carousel-inner .active + .carousel-item,
+  .carousel-inner .active + .carousel-item + .carousel-item,
+  .carousel-inner .active + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-inner .active + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-inner .active + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item {
+    display: block;
+  }
+  .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left),
+  .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left) + .carousel-item,
+  .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left) + .carousel-item + .carousel-item,
+  .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left) + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left) + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left) + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item {
+    transition: none;
+  }
+  .carousel-inner .carousel-item-next {
+    position: relative;
+    transform: translate3d(0, 0, 0);
+  }
+  .active.carousel-item-left + .carousel-item-next.carousel-item-left,
+  .carousel-item-next.carousel-item-left + .carousel-item,
+  .carousel-item-next.carousel-item-left + .carousel-item + .carousel-item,
+  .carousel-item-next.carousel-item-left + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-item-next.carousel-item-left + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-item-next.carousel-item-left + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-item-next.carousel-item-left + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item {
+    position: relative;
+    transform: translate3d(-100%, 0, 0);
+    visibility: visible;
+  }
+  .carousel-inner .carousel-item-prev.carousel-item-right {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    visibility: visible;
+  }
+  .active.carousel-item-right + .carousel-item-prev.carousel-item-right,
+  .carousel-item-prev.carousel-item-right + .carousel-item,
+  .carousel-item-prev.carousel-item-right + .carousel-item + .carousel-item,
+  .carousel-item-prev.carousel-item-right + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-item-prev.carousel-item-right + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-item-prev.carousel-item-right + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-item-prev.carousel-item-right + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item {
+    position: relative;
+    transform: translate3d(100%, 0, 0);
+    visibility: visible;
+    display: block;
+    visibility: visible;
+  }
+}
+
+@media (min-width: 1200px) {
+  .carousel-control-prev, .carousel-control-next {
+    display: none;
+  }
+  .carousel-inner .active.carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item {
+    position: absolute;
+    top: 0;
+    right: -8.33%;
+    display: block !important;
+    visibility: visible;
+  }
+
+  .carousel-item {
+    margin-right: 0;
+  }
+  .carousel-inner .active + .carousel-item,
+  .carousel-inner .active + .carousel-item + .carousel-item,
+  .carousel-inner .active + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-inner .active + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-inner .active + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-inner .active + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-inner .active + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-inner .active + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-inner .active + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-inner .active + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-inner .active + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item {
+    display: block;
+  }
+  .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left),
+  .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left) + .carousel-item,
+  .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left) + .carousel-item + .carousel-item,
+  .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left) + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left) + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left) + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left) + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left) + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left) + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left) + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left) + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-inner .carousel-item.active:not(.carousel-item-right):not(.carousel-item-left) + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item {
+    transition: none;
+  }
+  .carousel-inner .carousel-item-next {
+    position: relative;
+    transform: translate3d(0, 0, 0);
+  }
+  .active.carousel-item-left + .carousel-item-next.carousel-item-left,
+  .carousel-item-next.carousel-item-left + .carousel-item,
+  .carousel-item-next.carousel-item-left + .carousel-item + .carousel-item,
+  .carousel-item-next.carousel-item-left + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-item-next.carousel-item-left + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-item-next.carousel-item-left + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-item-next.carousel-item-left + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-item-next.carousel-item-left + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-item-next.carousel-item-left + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-item-next.carousel-item-left + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-item-next.carousel-item-left + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-item-next.carousel-item-left + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-item-next.carousel-item-left + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item {
+    position: relative;
+    transform: translate3d(-100%, 0, 0);
+    visibility: visible;
+  }
+  .carousel-inner .carousel-item-prev.carousel-item-right {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    visibility: visible;
+  }
+  .active.carousel-item-right + .carousel-item-prev.carousel-item-right,
+  .carousel-item-prev.carousel-item-right + .carousel-item,
+  .carousel-item-prev.carousel-item-right + .carousel-item + .carousel-item,
+  .carousel-item-prev.carousel-item-right + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-item-prev.carousel-item-right + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-item-prev.carousel-item-right + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-item-prev.carousel-item-right + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-item-prev.carousel-item-right + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-item-prev.carousel-item-right + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-item-prev.carousel-item-right + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-item-prev.carousel-item-right + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-item-prev.carousel-item-right + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item,
+  .carousel-item-prev.carousel-item-right + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item + .carousel-item {
+    position: relative;
+    transform: translate3d(100%, 0, 0);
+    visibility: visible;
+    display: block;
+    visibility: visible;
+  }
 }

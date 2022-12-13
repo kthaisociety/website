@@ -1,213 +1,242 @@
-    {% extends "base.html" %}
-    {% load app_tags %}
-    {% load social_share %}
-    {% load static %}
-    {% load humanize %}
+{% extends "base.html" %}
+{% load app_tags %}
+{% load social_share %}
+{% load static %}
+{% load humanize %}
 
-    {% block title_plain %}{{ app_name }}{% endblock %}
+{% block title_plain %}{{ app_name }}{% endblock %}
 
-    {% block body %}
-        {% if pin %}
-            <div class="jumbotron jumbotron-fluid jumbotron-home d-flex mb-0" style="margin-top: -102px; height: 100vh; background-image: linear-gradient(45deg, rgba(20, 20, 20, 0.95) 0%, rgba(20, 20, 20, 0.85) 100%), url('{{ pin.picture.url }}'); background-size: cover; background-position: center center;">
-                <div class="container-home position-relative">
-                    <div class="container-home-middle align-self-center d-flex align-items-center justify-content-center">
-                        <div class="container-home-inner">
-                            <h1 class="main-title text-white">
-                                {{ pin.title }}
-                            </h1>
-                            {% if pin.subtitle %}
-                                <h5 class="main-subtitle card-subtitle text-grey font-weight-light {% if pin.body or pin.external_url %}mb-3{% else %}mb-0{% endif %}">
-                                    {{ pin.subtitle }}
-                                </h5>
-                            {% endif %}
-                            {% if pin.body %}
-                                <div class="main-text card-text mb-0 text-grey font-weight-light">
-                                    {{ pin.body|apply_markup }}
-                                </div>
-                            {% endif %}
-                            {% if pin.external_url %}
-                                <a class="main-link link-unstyled mt-4" href="{{ pin.external_url }}">
-                                    <button type="button" class="btn btn-light">{% if pin.external_text %}{{ pin.external_text }}{% else %}View{% endif %}</button>
+{% block body %}
+    {% if pin %}
+        <div class="jumbotron jumbotron-fluid jumbotron-home d-flex mb-0"
+             style="margin-top: -102px; height: 100vh; background-image: linear-gradient(45deg, rgba(20, 20, 20, 0.95) 0%, rgba(20, 20, 20, 0.85) 100%), url('{{ pin.picture.url }}'); background-size: cover; background-position: center center;">
+            <div class="container-home position-relative">
+                <div class="container-home-middle align-self-center d-flex align-items-center justify-content-center">
+                    <div class="container-home-inner">
+                        <h1 class="main-title text-white">
+                            {{ pin.title }}
+                        </h1>
+                        {% if pin.subtitle %}
+                            <h5 class="main-subtitle card-subtitle text-grey font-weight-light {% if pin.body or pin.external_url %}mb-3{% else %}mb-0{% endif %}">
+                                {{ pin.subtitle }}
+                            </h5>
+                        {% endif %}
+                        {% if pin.body %}
+                            <div class="main-text card-text mb-0 text-grey font-weight-light">
+                                {{ pin.body|apply_markup }}
+                            </div>
+                        {% endif %}
+                        {% if pin.external_url %}
+                            <a class="main-link link-unstyled mt-4" href="{{ pin.external_url }}">
+                                <button type="button" class="btn btn-light">
+                                    {% if pin.external_text %}{{ pin.external_text }}{% else %}View{% endif %}</button>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row d-none d-md-flex container-home-bottom position-absolute">
+                    {% for event in events|slice:":2" %}
+                        <div class="col-6 col-lg-4">
+                            <a href="{{ event.url }}">
+                                <div class="container-image mb-3"
+                                     style="background-image: linear-gradient(315deg, rgba(20, 20, 20, 0.25) 0%, rgba(20, 20, 20, 0.15) 100%), url('{{ event.picture.crop.1500x1000 }}'); background-size: cover; background-position: center center;"></div>
+                            </a>
+                            <h4 class="text-white mb-3">
+                                <a href="{{ event.url }}">
+                                    {{ event.name }}
                                 </a>
+                            </h4>
+                            {% if event.is_event_future %}
+                                <span class="badge badge-white p-2 ml-auto d-table mt-4 d-md-inline-block mt-md-0">Register
+                                    {% if event.registration_ends_at|naturalday != "today" %}
+                                        before {% endif %}{{ event.registration_ends_at|naturalday }}</span>
                             {% endif %}
                         </div>
-                    </div>
-                    <div class="row d-none d-md-flex container-home-bottom position-absolute">
-                        {% for event in events|slice:":2" %}
-                            <div class="col-6 col-lg-4">
-                                <a href="{{ event.url }}">
-                                    <div class="container-image mb-3" style="background-image: linear-gradient(315deg, rgba(20, 20, 20, 0.25) 0%, rgba(20, 20, 20, 0.15) 100%), url('{{ event.picture.crop.1500x1000 }}'); background-size: cover; background-position: center center;"></div>
+                    {% endfor %}
+                    {% for article in articles|slice:":3" %}
+                        {% if events|length == 0 or events|length == 1 and forloop.counter0 < 2 or events|length >= 2 and forloop.counter0 < 1 %}
+                            <div class="{% if events|length > 0 and forloop.counter0 == 1 or events|length > 1 and forloop.counter0 == 0 or forloop.counter0 > 1 %}d-none d-lg-block col-4{% else %}col-6 col-lg-4{% endif %}">
+                                <a href="{{ article.url }}">
+                                    <div class="container-image mb-3"
+                                         style="background-image: linear-gradient(315deg, rgba(20, 20, 20, 0.25) 0%, rgba(20, 20, 20, 0.15) 100%), url('{{ article.picture.crop.1500x1000 }}'); background-size: cover; background-position: center center;"></div>
                                 </a>
-                                <h4 class="text-white mb-3">
-                                    <a href="{{ event.url }}">
-                                        {{ event.name }}
+                                <h4 class="text-white mb-2">
+                                    <a href="{{ article.url }}">
+                                        {% if article.type == 1 %}
+                                            <i class="fab fa-medium mr-1"></i> {% endif %}{{ article.title }}
                                     </a>
                                 </h4>
-                                {% if event.is_event_future %}
-                                    <span class="badge badge-white p-2 ml-auto d-table mt-4 d-md-inline-block mt-md-0">Register {% if event.registration_ends_at|naturalday != "today" %}before {% endif %}{{ event.registration_ends_at|naturalday }}</span>
+                                {% if article.subtitle %}
+                                    <h6 class="text-grey mb-0">
+                                        <a href="{{ article.url }}">
+                                            {{ article.subtitle }}
+                                        </a>
+                                    </h6>
                                 {% endif %}
                             </div>
-                        {% endfor %}
-                        {% for article in articles|slice:":3" %}
-                            {% if events|length == 0 or events|length == 1 and forloop.counter0 < 2 or events|length >= 2 and forloop.counter0 < 1 %}
-                                <div class="{% if events|length > 0 and forloop.counter0 == 1 or events|length > 1 and forloop.counter0 == 0 or forloop.counter0 > 1 %}d-none d-lg-block col-4{% else %}col-6 col-lg-4{% endif %}">
-                                    <a href="{{ article.url }}">
-                                        <div class="container-image mb-3" style="background-image: linear-gradient(315deg, rgba(20, 20, 20, 0.25) 0%, rgba(20, 20, 20, 0.15) 100%), url('{{ article.picture.crop.1500x1000 }}'); background-size: cover; background-position: center center;"></div>
-                                    </a>
-                                    <h4 class="text-white mb-2">
-                                        <a href="{{ article.url }}">
-                                            {% if article.type == 1 %}<i class="fab fa-medium mr-1"></i> {% endif %}{{ article.title }}
-                                        </a>
-                                    </h4>
-                                    {% if article.subtitle %}
-                                        <h6 class="text-grey mb-0">
-                                            <a href="{{ article.url }}">
-                                                {{ article.subtitle }}
-                                            </a>
-                                        </h6>
-                                    {% endif %}
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
+                        {% endif %}
+                    {% endfor %}
                 </div>
             </div>
-            {% for event in events|slice:":2" %}
-                <div class="row mt-5 ml-2 mr-2 d-block d-lg-none">
-                    <div class="col-12 mb-3">
-                        <a class="link-unstyled" href="{{ event.url }}">
-                            <div class="w-100 image-radius" style="height: 250px; filter: grayscale(10%); -webkit-filter: grayscale(10%); background-image: linear-gradient(to bottom, rgba(61,88,117,0.1) 0%, rgba(61,88,117,0.1) 100%), url('{{ event.picture.crop.1500x1000 }}'); background-position: center center; background-size: cover;"></div>
-                        </a>
-                    </div>
-                    <div class="col-12">
-                        <h4 class="text-center mb-3">
-                            <a href="{{ event.url }}">
-                                {{ event.name }}
-                            </a>
-                        </h4>
-                    </div>
-                    {% if event.is_event_future %}
-                        <span class="badge badge-primary p-2 ml-auto mr-auto d-table mt-2 d-md-inline-block mt-md-0">Register {% if event.registration_ends_at|naturalday != "today" %}before {% endif %}{{ event.registration_ends_at|naturalday }}</span>
-                    {% endif %}
-                </div>
-            {% endfor %}
+        </div>
+        {% for event in events|slice:":2" %}
             <div class="row mt-5 ml-2 mr-2 d-block d-lg-none">
                 <div class="col-12 mb-3">
-                    <a class="link-unstyled" href="{{ articles.1.url }}">
-                        <div class="w-100 image-radius" style="height: 250px; filter: grayscale(10%); -webkit-filter: grayscale(10%); background-image: linear-gradient(to bottom, rgba(61,88,117,0.1) 0%, rgba(61,88,117,0.1) 100%), url('{{ articles.1.picture.crop.1500x1000 }}'); background-position: center center; background-size: cover;"></div>
+                    <a class="link-unstyled" href="{{ event.url }}">
+                        <div class="w-100 image-radius"
+                             style="height: 250px; filter: grayscale(10%); -webkit-filter: grayscale(10%); background-image: linear-gradient(to bottom, rgba(61,88,117,0.1) 0%, rgba(61,88,117,0.1) 100%), url('{{ event.picture.crop.1500x1000 }}'); background-position: center center; background-size: cover;"></div>
                     </a>
                 </div>
                 <div class="col-12">
-                    <h4 class="text-center mb-2">
-                        <a href="{{ articles.1.url }}">
-                            {% if articles.1.type == 1 %}<i class="fab fa-medium mr-1"></i> {% endif %}{{ articles.1.title }}
+                    <h4 class="text-center mb-3">
+                        <a href="{{ event.url }}">
+                            {{ event.name }}
                         </a>
                     </h4>
-                    <h6 class="text-center text-grey mb-0">
-                        <a href="{{ articles.1.url }}">
-                            {{ articles.1.subtitle }}
-                        </a>
-                    </h6>
                 </div>
+                {% if event.is_event_future %}
+                    <span class="badge badge-primary p-2 ml-auto mr-auto d-table mt-2 d-md-inline-block mt-md-0">Register
+                        {% if event.registration_ends_at|naturalday != "today" %}
+                            before {% endif %}{{ event.registration_ends_at|naturalday }}</span>
+                {% endif %}
             </div>
-        {% endif %}
-        <div class="container container-content">
-            {% if offers %}
-                <div class="row mb-0">
-                    <div class="col-md-12">
-                        <h1 class="section-title text-main text-center text-md-left">Job opportunities</h1>
-                    </div>
-                </div>
-                <div class="row d-flex mb-5">
-                    {% for offer in offers|slice:":2" %}
-                        <div class="col-12 col-md-6 d-flex align-items-stretch">
-                            {% include "include/offer.html" with offer=offer with_description=False %}
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
+        {% endfor %}
+        <div class="row mt-5 ml-2 mr-2 d-block d-lg-none">
+            <div class="col-12 mb-3">
+                <a class="link-unstyled" href="{{ articles.1.url }}">
+                    <div class="w-100 image-radius"
+                         style="height: 250px; filter: grayscale(10%); -webkit-filter: grayscale(10%); background-image: linear-gradient(to bottom, rgba(61,88,117,0.1) 0%, rgba(61,88,117,0.1) 100%), url('{{ articles.1.picture.crop.1500x1000 }}'); background-position: center center; background-size: cover;"></div>
+                </a>
+            </div>
+            <div class="col-12">
+                <h4 class="text-center mb-2">
+                    <a href="{{ articles.1.url }}">
+                        {% if articles.1.type == 1 %}
+                            <i class="fab fa-medium mr-1"></i> {% endif %}{{ articles.1.title }}
+                    </a>
+                </h4>
+                <h6 class="text-center text-grey mb-0">
+                    <a href="{{ articles.1.url }}">
+                        {{ articles.1.subtitle }}
+                    </a>
+                </h6>
+            </div>
+        </div>
+    {% endif %}
+    <div class="container container-content">
+        {% if offers %}
             <div class="row mb-0">
                 <div class="col-md-12">
-                    <h1 class="section-title text-main text-center text-md-left">Our mission</h1>
-                    <p class="text-center text-md-left">At <strong>KTHAIS</strong>, we believe in the creative force of ambitious students to, from the very onset of their careers, explore and shape the future of technology. To this effect, we are inclusive of all backgrounds and seek out collaborations with other parties to achieve maximum impact in all endeavours that spike our curiosity. We organise networking events, educational lectures, workshops, hackathons and research projects for students by students.</p>
+                    <h1 class="section-title text-main text-center text-md-left">Job opportunities</h1>
                 </div>
             </div>
-            <div class="row mt-4 mb-3 mb-md-5">
-                <div class="col-md-12">
-                    <h2 class="text-center mb-4 text-main">Our goals</h2>
-                    <div class="row text-center pt-2 pb-2">
-                        <div class="col-md-4 mb-4 mb-md-0">
-                            <img class="w-100 mb-2 mb-md-3 content-image" src="{% static "img/home_2.png" %}" />
-                            <p class="mt-2 mb-0">Provide all students at KTH with working knowledge of AI and its impacts on society in general and their specific field in particular.</p>
-                        </div>
-                        <div class="col-md-4 mb-4 mb-md-0 content-image">
-                            <img class="w-100 mb-2 mb-md-3" src="{% static "img/home_1.png" %}" />
-                            <p class="mt-2 mb-0">Cultivate collaboration between academia and industry to promote job placement and business creation.</p>
-                        </div>
-                        <div class="col-md-4 mb-4 mb-md-0 content-image">
-                            <img class="w-100 mb-2 mb-md-3" src="{% static "img/home_3.png" %}" />
-                            <p class="mt-2 mb-0">Broadcast new insights and results stemming from our activities to further the development and adoption of universally beneficial AI.</p>
-                        </div>
+            <div class="row d-flex mb-5">
+                {% for offer in offers|slice:":2" %}
+                    <div class="col-12 col-md-6 d-flex align-items-stretch">
+                        {% include "include/offer.html" with offer=offer with_description=False %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class="row mb-0">
+            <div class="col-md-12">
+                <h1 class="section-title text-main text-center text-md-left">Our mission</h1>
+                <p class="text-center text-md-left">At <strong>KTHAIS</strong>, we believe in the creative force of
+                    ambitious students to, from the very onset of their careers, explore and shape the future of
+                    technology. To this effect, we are inclusive of all backgrounds and seek out collaborations with
+                    other parties to achieve maximum impact in all endeavours that spike our curiosity. We organise
+                    networking events, educational lectures, workshops, hackathons and research projects for students by
+                    students.</p>
+            </div>
+        </div>
+        <div class="row mt-4 mb-3 mb-md-5">
+            <div class="col-md-12">
+                <h2 class="text-center mb-4 text-main">Our goals</h2>
+                <div class="row text-center pt-2 pb-2">
+                    <div class="col-md-4 mb-4 mb-md-0">
+                        <img class="w-100 mb-2 mb-md-3 content-image" src="{% static "img/home_2.png" %}"/>
+                        <p class="mt-2 mb-0">Provide all students at KTH with working knowledge of AI and its impacts on
+                            society in general and their specific field in particular.</p>
+                    </div>
+                    <div class="col-md-4 mb-4 mb-md-0 content-image">
+                        <img class="w-100 mb-2 mb-md-3" src="{% static "img/home_1.png" %}"/>
+                        <p class="mt-2 mb-0">Cultivate collaboration between academia and industry to promote job
+                            placement and business creation.</p>
+                    </div>
+                    <div class="col-md-4 mb-4 mb-md-0 content-image">
+                        <img class="w-100 mb-2 mb-md-3" src="{% static "img/home_3.png" %}"/>
+                        <p class="mt-2 mb-0">Broadcast new insights and results stemming from our activities to further
+                            the development and adoption of universally beneficial AI.</p>
                     </div>
                 </div>
             </div>
-            {% if histories %}
-                <div class="row mt-4 mb-0">
-                    <div class="col-md-12">
-                        <h2 class="text-center mb-4">Our history</h2>
-                        <div class="row text-center pt-2 pb-2">
-                            <div class="col-md-12">
-                                <div id="content">
-                                    <ul class="timeline">
-                                        {% for history in histories %}
-                                            <li class="event" data-date="{{ history.time|date:"F Y" }}">
-                                                <h3>{{ history.title }}</h3>
-                                                {{ history.body|apply_markup }}
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
+        </div>
+        {% if histories %}
+            <div class="row mt-4 mb-0">
+                <div class="col-md-12">
+                    <h2 class="text-center mb-4">Our history</h2>
+                    <div class="row text-center pt-2 pb-2">
+                        <div class="col-md-12">
+                            <div id="content">
+                                <ul class="timeline">
+                                    {% for history in histories %}
+                                        <li class="event" data-date="{{ history.time|date:"F Y" }}">
+                                            <h3>{{ history.title }}</h3>
+                                            {{ history.body|apply_markup }}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
-            {% endif %}
-        </div>
-        {% if sponsorships %}
-            <div class="jumbotron jumbotron-fluid mt-0 mb-0 pt-5 pb-5 bg-primary text-white">
-                <div class="container container-fluid pb-md-0">
-                    <h2 class="text-center mt-0 mb-3 text-white">Sponsors</h2>
-                    <div class="row justify-content-md-center">
-                        {% for tier, sps in sponsorships.items %}
-                            {% for sponsorship in sps %}
-                                <div class="col-12 col-md-3 text-center ml-auto mr-auto ml-md-0 mr-md-0 mt-4 pl-5 pr-5 pl-md-0 pr-md-0">
-                                    <a href="{{ sponsorship.company.website }}">
-                                        <img class="w-100 image-white" src="{{ sponsorship.company.logo.url }}" />
-                                    </a>
-                                </div>
-                            {% endfor %}
-                        {% endfor %}
-                    </div>
-                </div>
             </div>
         {% endif %}
-        {% if board %}
-            <div class="jumbotron jumbotron-fluid mt-0 mb-0 pt-5 pb-5 bg-dark-700 text-white">
-                <div class="container container-fluid pb-md-0">
-                    <h2 class="text-center mt-0 mb-3 text-white">Project group</h2>
-                    <div class="row justify-content-md-center home-organisers">
+    </div>
+    {% if sponsorships %}
+        <div class="jumbotron jumbotron-fluid mt-0 mb-0 pt-5 pb-5 bg-primary text-white">
+            <div class="container container-fluid pb-md-0">
+                <h2 class="text-center mt-0 mb-3 text-white">Sponsors</h2>
+                <div class="row justify-content-md-center">
+                    {% for tier, sps in sponsorships.items %}
+                        {% for sponsorship in sps %}
+                            <div class="col-12 col-md-3 text-center ml-auto mr-auto ml-md-0 mr-md-0 mt-4 pl-5 pr-5 pl-md-0 pr-md-0">
+                                <a href="{{ sponsorship.company.website }}">
+                                    <img class="w-100 image-white" src="{{ sponsorship.company.logo.url }}"/>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% if board %}
+        <div class="jumbotron jumbotron-fluid mt-0 mb-0 pt-5 pb-5 bg-dark-700 text-white">
+            <div class="container container-fluid pb-md-0 mb-5">
+                <h2 class="text-center mt-0 mb-3 text-white">Project group</h2>
+            </div>
+
+            <div id="carousel-team" class="carousel slide mb-3" data-ride="carousel">
+                <div class="carousel-inner row w-100 mx-auto home-organisers" role="listbox">
+                    {% with organisers|length|rand_team_start as rand_start %}
                         {% for organiser in organisers %}
-                            <div class="col-6 col-md-2 text-center ml-auto mr-auto ml-md-0 mr-md-0 mt-4">
-                                {% if organiser.website %}<a href="{{ organiser.website }}" target="_blank" class="link-unstyled">{% endif %}
+                            <div class="carousel-item text-center col-12 col-sm-4 col-md-3 col-lg-2 col-xl-1{% if forloop.counter0 == rand_start %} active{% endif %}">
+                                {% if organiser.website %}
+                                    <a href="{{ organiser.website }}" target="_blank" class="link-unstyled">{% endif %}
                                 {% comment %}
                                     <img src="{{ organiser.picture.url }}" class="ml-auto mr-auto">
                                 {% endcomment %}
-                                <div class="{% if organiser.role.is_head %}role-picture-head {% endif %}role-picture"><img alt="Role picture" src="{{ organiser.role.picture.crop.200x200 }}"></div>
-                                <h6 class="mt-1 mb-1 text-white" {% if organiser.full_name|length > 15 %}style="font-size: 14px; padding-top: 1px; padding-bottom: 1px;"{% endif %}>{{ organiser.full_name }}</h6>
-                                <p class="mt-2 mb-0" style="line-height: 1; font-size: 14px">{{ organiser.role.division.display_name|upper }}</p>
+                                <div class="{% if organiser.role.is_head %}role-picture-head {% endif %}role-picture"><img
+                                        alt="Role picture" src="{{ organiser.role.picture.crop.200x200 }}"></div>
+                                <h6 class="mt-1 mb-1 text-white"
+                                    {% if organiser.full_name|length > 15 %}style="font-size: 14px; padding-top: 1px; padding-bottom: 1px;"{% endif %}>{{ organiser.full_name }}</h6>
+                                <p class="mt-2 mb-0"
+                                   style="line-height: 1; font-size: 14px">{{ organiser.role.division.display_name|upper }}</p>
                                 {% if organiser.website %}</a>{% endif %}
                                 {% if organiser.email %}
-                                    <a href="mailto:{{ organiser.email }}" class="speaker-social-network link-unstyled" target="_blank">
+                                    <a href="mailto:{{ organiser.email }}" class="speaker-social-network link-unstyled"
+                                       target="_blank">
                                         <button type="button" class="btn btn-email btn-sm mt-2">
                                             <p class="mb-0">
                                                 <i class="fas fa-at"></i>
@@ -216,7 +245,8 @@
                                     </a>
                                 {% endif %}
                                 {% if organiser.website %}
-                                    <a href="{{ organiser.website }}" class="speaker-social-network link-unstyled" target="_blank">
+                                    <a href="{{ organiser.website }}" class="speaker-social-network link-unstyled"
+                                       target="_blank">
                                         <button type="button" class="btn btn-website btn-sm mt-2">
                                             <p class="mb-0">
                                                 <i class="fas fa-globe-europe"></i>
@@ -225,7 +255,8 @@
                                     </a>
                                 {% endif %}
                                 {% if organiser.github_url %}
-                                    <a href="{{ organiser.github_url }}" class="speaker-social-network link-unstyled" target="_blank">
+                                    <a href="{{ organiser.github_url }}" class="speaker-social-network link-unstyled"
+                                       target="_blank">
                                         <button type="button" class="btn btn-github btn-sm mt-2">
                                             <p class="mb-0">
                                                 <i class="fab fa-github"></i>
@@ -234,7 +265,8 @@
                                     </a>
                                 {% endif %}
                                 {% if organiser.linkedin_url %}
-                                    <a href="{{ organiser.linkedin_url }}" class="speaker-social-network link-unstyled" target="_blank">
+                                    <a href="{{ organiser.linkedin_url }}" class="speaker-social-network link-unstyled"
+                                       target="_blank">
                                         <button type="button" class="btn btn-linkedin btn-sm mt-2">
                                             <p class="mb-0">
                                                 <i class="fab fa-linkedin-in"></i>
@@ -243,7 +275,8 @@
                                     </a>
                                 {% endif %}
                                 {% if organiser.twitter_url %}
-                                    <a href="{{ organiser.twitter_url }}" class="speaker-social-network link-unstyled" target="_blank">
+                                    <a href="{{ organiser.twitter_url }}" class="speaker-social-network link-unstyled"
+                                       target="_blank">
                                         <button type="button" class="btn btn-twitter btn-sm mt-2">
                                             <p class="mb-0">
                                                 <i class="fab fa-twitter"></i>
@@ -252,7 +285,8 @@
                                     </a>
                                 {% endif %}
                                 {% if organiser.researchgate_url %}
-                                    <a href="{{ organiser.researchgate_url }}" class="speaker-social-network link-unstyled" target="_blank">
+                                    <a href="{{ organiser.researchgate_url }}" class="speaker-social-network link-unstyled"
+                                       target="_blank">
                                         <button type="button" class="btn btn-researchgate btn-sm mt-2">
                                             <p class="mb-0">
                                                 <i class="fab fa-researchgate"></i>
@@ -261,7 +295,8 @@
                                     </a>
                                 {% endif %}
                                 {% if organiser.orcid %}
-                                    <a href="https://orcid.org/{{ organiser.orcid }}" class="speaker-social-network link-unstyled" target="_blank">
+                                    <a href="https://orcid.org/{{ organiser.orcid }}"
+                                       class="speaker-social-network link-unstyled" target="_blank">
                                         <button type="button" class="btn btn-orcid btn-sm mt-2">
                                             <p class="mb-0">
                                                 <i class="fab fa-orcid"></i>
@@ -270,7 +305,8 @@
                                     </a>
                                 {% endif %}
                                 {% if organiser.scholar_url %}
-                                    <a href="{{ organiser.scholar_url }}" class="speaker-social-network link-unstyled" target="_blank">
+                                    <a href="{{ organiser.scholar_url }}" class="speaker-social-network link-unstyled"
+                                       target="_blank">
                                         <button type="button" class="btn btn-scholar btn-sm mt-2">
                                             <p class="mb-0">
                                                 <i class="fas fa-graduation-cap"></i>
@@ -281,7 +317,39 @@
                             </div>
                         {% endfor %}
                     </div>
-                </div>
+                {% endwith %}
+                <a class="carousel-control-prev" href="#carousel-team" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carousel-team" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
             </div>
-        {% endif %}
-    {% endblock %}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script>
+        $('#carousel-team').on('slide.bs.carousel', function (e) {
+            var $e = $(e.relatedTarget);
+            var idx = $e.index();
+            var itemsPerSlide = 14;
+            var totalItems = $('.carousel-item').length;
+
+            if (idx >= totalItems - (itemsPerSlide - 1)) {
+                var it = itemsPerSlide - (totalItems - idx);
+                for (var i = 0; i < it; i++) {
+                    if (e.direction == "left") {
+                        $('.carousel-item').eq(i).appendTo('.carousel-inner');
+                    } else {
+                        $('.carousel-item').eq(0).appendTo('.carousel-inner');
+                    }
+                }
+            }
+        });
+    </script>
+{% endblock %}

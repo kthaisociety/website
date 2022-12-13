@@ -58,18 +58,20 @@ def get_user_by_picture(picture):
 
 
 def get_organisers():
-    return sorted(
-        (u for u in User.objects.organisers() if u.role),
-        key=lambda u: (
-            not u.role.division.name.lower() == APP_ROLE_CHAIRMAN.lower(),
-            u.role.division.name,
-            not u.role.is_head,
-        ),
+    return list(
+        sorted(
+            (u for u in User.objects.organisers() if u.role),
+            key=lambda u: (
+                not u.role.division.name.lower() == APP_ROLE_CHAIRMAN.lower(),
+                u.role.division.name,
+                not u.role.is_head,
+            ),
+        )
     )
 
 
 def get_board():
-    board = User.objects.board()
+    board = list(User.objects.board())
     role_names = {user.role_name for user in board}
     return OrderedDict(
         [

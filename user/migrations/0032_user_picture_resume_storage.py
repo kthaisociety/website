@@ -9,18 +9,28 @@ import versatileimagefield.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('user', '0031_user_remove_slack'),
+        ("user", "0031_user_remove_slack"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='user',
-            name='picture',
-            field=versatileimagefield.fields.VersatileImageField(default='user/picture/profile.png', storage=app.storage.OverwriteStorage(), upload_to=user.models.user_picture_filename, verbose_name='Image'),
+            model_name="user",
+            name="picture",
+            field=versatileimagefield.fields.VersatileImageField(
+                default="user/picture/profile.png",
+                storage=app.storage.OverwriteStorage(),
+                upload_to=user.models.user_picture_filename,
+                verbose_name="Image",
+            ),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='resume',
-            field=models.FileField(blank=True, null=True, storage=app.storage.OverwriteStorage(), upload_to=user.models.user_resume_filename),
+            model_name="user",
+            name="resume",
+            field=models.FileField(
+                blank=True,
+                null=True,
+                storage=app.storage.OverwriteStorage(),
+                upload_to=user.models.user_resume_filename,
+            ),
         ),
     ]

@@ -27,7 +27,7 @@ from event.enums import (
     SpeakerRoleType,
     StreamingProvider,
 )
-from event.managers import EventManager, SessionManager
+from event.managers import EventManager, SessionManager, SpeakerRoleManager
 from user.enums import DietType
 
 
@@ -493,3 +493,5 @@ class SpeakerRole(models.Model):
         choices=((srt.value, srt.name) for srt in SpeakerRoleType),
         default=SpeakerRoleType.SPEAKER,
     )
+
+    objects = SpeakerRoleManager()

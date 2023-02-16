@@ -36,3 +36,10 @@ class EventManager(models.Manager):
 class SessionManager(models.Manager):
     def published(self):
         return super().get_queryset().filter(event__status=EventStatus.PUBLISHED)
+
+
+class SpeakerRoleManager(models.Manager):
+    def published(self):
+        return (
+            super().get_queryset().filter(session__event__status=EventStatus.PUBLISHED)
+        )

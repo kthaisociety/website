@@ -454,7 +454,7 @@ def speaker(request, speaker_id):
         .prefetch_related(
             Prefetch(
                 "roles",
-                SpeakerRole.objects.all()
+                SpeakerRole.objects.published()
                 .select_related("session", "session__event")
                 .order_by("session__starts_at"),
             )

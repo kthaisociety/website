@@ -170,19 +170,45 @@ def response_500(request, *args, **kwargs):
 @login_required
 @staff_member_required
 def statistics(request):
+    current_year = timezone.now().year
+    graduation_year = int(request.POST.get("graduation_year", current_year))
+
     user_creation_dates = (
         User.objects.filter(is_active=True)
         .exclude(type=UserType.ORGANISER)
         .annotate(creation_date=Cast("created_at", DateField()))
-        .values_list("creation_date", "email_verified", "registration_finished")
+        .values_list(
+            "creation_date",
+            "email_verified",
+            "registration_finished",
+            "graduation_year",
+        )
         .order_by("creation_date")
     )
-    user_creation_dates_counter = Counter([d for d, _, _ in user_creation_dates])
+
+    graduation_years = {u[3] for u in user_creation_dates if u[3] is not None}
+    graduation_year_range = min((current_year, *graduation_years)), max(
+        (current_year, *graduation_years)
+    )
+
+    graduation_year_check = graduation_year
+    # If graduation year matches the current year and it's July
+    # or later, check only those graduating from next year onwards
+    if graduation_year == current_year and timezone.localdate().month >= 7:
+        graduation_year_check += 1
+
+    user_creation_dates = [
+        u
+        for u in user_creation_dates
+        if u[3] is not None and u[3] >= graduation_year_check
+    ]
+
+    user_creation_dates_counter = Counter([d for d, _, _, _ in user_creation_dates])
     user_creation_dates_verified_counter = Counter(
-        [d for d, ver, _ in user_creation_dates if ver]
+        [d for d, ver, _, _ in user_creation_dates if ver]
     )
     user_creation_dates_finished_counter = Counter(
-        [d for d, _, fin in user_creation_dates if fin]
+        [d for d, _, fin, _ in user_creation_dates if fin]
     )
     stats_members = []
     stats_members_verified = []
@@ -302,7 +328,11 @@ def statistics(request):
             )
         )
 
-    users = list(User.objects.filter(is_active=True))
+    users = list(
+        User.objects.filter(is_active=True)
+        .exclude(type=UserType.ORGANISER)
+        .filter(graduation_year__gte=graduation_year_check)
+    )
 
     stats_members_gender = {gt: 0 for gt in GenderType}
     stats_members_year = defaultdict(int)
@@ -372,6 +402,8 @@ def statistics(request):
                 "new_registrations_registered": stats_new_registrations_registered,
                 "new_registrations_joined": stats_new_registrations_joined,
             },
+            "graduation_year": graduation_year,
+            "graduation_year_range": graduation_year_range,
             "sessions": sessions,
             "zoom": [
                 timezone.localdate(timezone.now() - timezone.timedelta(days=30)),

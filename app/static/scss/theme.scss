@@ -1511,3 +1511,32 @@ a.badge-white:focus, a.badge-white.focus {
     visibility: visible;
   }
 }
+
+.range {
+  -webkit-appearance: none;  /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 5px;
+  border-radius: 5px;
+  background: $light-900; /* Grey background */
+  outline: none; /* Remove outline */
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.range::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 15px; /* Set a specific slider handle width */
+  height: 15px;
+  border-radius: 50%;
+  background: $primary; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+.range::-moz-range-thumb {
+  width: 15px; /* Set a specific slider handle width */
+  height: 15px;
+  border-radius: 50%;
+  background: $primary; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}

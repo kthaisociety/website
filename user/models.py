@@ -329,7 +329,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         if self.birthday and (
             timezone.now().date() - self.birthday
         ) < timezone.timedelta(days=14 * 365):
-            messages["age"] = "The minimum age is 14"
+            messages["birthday"] = "The minimum age is 14"
         if messages:
             raise ValidationError(messages)
 

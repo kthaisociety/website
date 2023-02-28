@@ -22,6 +22,27 @@
             </div>
         </div>
         <div class="row mb-4">
+            <div class="col-6 col-md-12 mb-4">
+                <div class="card w-100">
+                    <div class="card-body">
+                        <h3 class="card-title mb-4">⚙️ Settings</h3>
+                        <form action="" method="post" class="form w-100">
+                            <div class="row">
+                                {% csrf_token %}
+                                <div class="col-12">
+                                    <label for="customRange2" class="form-label w-100">Graduation year  <small id="label_graduation_year_display">({{ graduation_year }})</small></label>
+                                    <input type="range" class="form-range range w-100" min="{{ graduation_year_range.0 }}" max="{{ graduation_year_range.1 }}" value="{{ graduation_year }}" name="graduation_year" id="id_graduation_year">
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group mt-4 mb-0">
+                                        <button class="btn btn-primary" type="submit">Update</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-12 mb-4">
                 <div class="card w-100">
                     <div class="card-body">
@@ -53,6 +74,12 @@
                                     </div>
                                 </div>
                                 <script type="text/javascript">
+                                    var slider = document.getElementById("id_graduation_year");
+                                    var output = document.getElementById("label_graduation_year_display");
+                                    slider.oninput = function() {
+                                      output.innerHTML = "(" + slider.value + ")";
+                                    }
+
                                     var total_members = {
                                       type: 'scatter',
                                       x: [{% for day, val in statistics.members %}'{{ day|date:"Y-m-d" }}',{% endfor %}],

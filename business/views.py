@@ -29,7 +29,8 @@ def jobs(request):
                 output_field=BooleanField(),
             )
         )
-        .order_by("-is_offer_active", "-starts_at")
+        .with_is_featured()
+        .order_by("-is_featured", "-is_offer_active", "-starts_at")
     )
     return render(
         request,

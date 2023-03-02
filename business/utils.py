@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from django.db.models import Q
 from django.utils import timezone
@@ -16,11 +16,12 @@ def get_sponsorships() -> Dict[Tier, List[Sponsorship]]:
     return dict(sponsorships)
 
 
-def get_offers() -> List[Offer]:
-    return list(
-        Offer.objects.filter(
-            Q(ends_at__isnull=True) | Q(ends_at__gt=timezone.now()),
-            is_visible=True,
-            starts_at__lte=timezone.now(),
-        ).order_by("-created_at")
-    )[:2]
+def get_offers(is_featured: Optional[bool] = None) -> List[Offer]:
+    offer_objs = Offer.objects.filter(
+        Q(ends_at__isnull=True) | Q(ends_at__gt=timezone.now()),
+        is_visible=True,
+        starts_at__lte=timezone.now(),
+    ).with_is_featured()
+    if is_featured is not None:
+        offer_objs = offer_objs.filter(is_featured=is_featured)
+    return list(offer_objs.order_by("-is_featured", "created_at"))

@@ -46,7 +46,9 @@
                 <p class="mt-4">For the selected category there are no offers at the moment, try and check out the others using the filters above.</p>
         {% endif %}
         {% for offer in offers %}
-            {% include "include/offer.html" with offer=offer with_description=True %}
+            <div class="mb-4">
+                {% include "include/offer.html" with offer=offer with_description=True %}
+            </div>
         {% endfor %}
     </div>
 {% endblock %}

@@ -396,6 +396,20 @@ nav {
   opacity: 0.35;
 }
 
+.offer-featured .offer-company {
+  background-color: #0085b4 !important;
+
+}
+
+.offer-featured .offer-content {
+  background-color: #00abe7;
+  color: white;
+}
+
+.offer-featured .offer-content p, .offer-featured .offer-content h5 {
+  color: white !important;
+}
+
 .text-primary {
   color: $primary;
 }

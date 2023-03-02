@@ -5,12 +5,14 @@ import markdown
 from bs4 import BeautifulSoup
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models.manager import BaseManager
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.text import slugify
 from versatileimagefield.fields import VersatileImageField
 
 from business.enums import OfferType
+from business.managers import OfferQuerySet, SponsorshipQuerySet
 
 
 class Company(models.Model):
@@ -104,6 +106,8 @@ class Sponsorship(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    objects = BaseManager.from_queryset(SponsorshipQuerySet)()
+
     def __str__(self):
         return f"{str(self.tier)} <{str(self.company)}>"
 
@@ -128,6 +132,8 @@ class Offer(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    objects = BaseManager.from_queryset(OfferQuerySet)()
 
     @property
     def is_current(self):

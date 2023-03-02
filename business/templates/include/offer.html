@@ -2,7 +2,7 @@
 {% load social_share %}
 {% load static %}
 
-<div class="card mb-4 w-100 mt-3 {% if not offer.is_active %}offer-inactive{% endif %}" id="{{ offer.id }}">
+<div class="card mb-3 w-100 mt-3 {% if not offer.is_active %}offer-inactive{% elif offer.is_featured %}offer-featured{% endif %}" id="{{ offer.id }}">
     <div class="row no-gutters h-100">
         <div class="col-md-2 bg-light offer-company">
             {% if offer.is_new %}
@@ -20,7 +20,7 @@
                 {% endif %}
             </div>
         </div>
-        <div class="col-md-10 p-4">
+        <div class="col-md-10 p-4 offer-content">
             {% if offer.is_active %}
                 <a class="link-unstyled" href="{% if with_description %}{% if offer.url %}{{ offer.url }}{% elif offer.email %}mailto:{{ offer.email }}{% endif %}{% else %}{{ offer.our_url }}{% endif %}">
                     <h5 class="mb-2">{{ offer.title }}</h5>
@@ -45,11 +45,11 @@
                 {% if with_description %}
                     {% if offer.url %}
                         <a class="link-unstyled" href="{{ offer.url }}">
-                            <button type="button" class="btn btn-primary">Apply here</button>
+                            <button type="button" class="btn {% if offer.is_featured %}btn-light text-primary{% else %}btn-primary{% endif %}">Apply here</button>
                         </a>
                     {% elif offer.email %}
                         <a class="link-unstyled" href="mailto:{{ offer.email }}">
-                            <button type="button" class="btn btn-primary">Contact {{ offer.email }}</button>
+                            <button type="button" class="btn {% if offer.is_featured %}btn-light text-primary{% else %}btn-primary{% endif %}">Contact {{ offer.email }}</button>
                         </a>
                     {% endif %}
                 {% else %}

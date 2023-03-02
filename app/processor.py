@@ -23,7 +23,8 @@ def variables_processor(request=None):
     c["categories"] = get_menu_pages()
     c["histories"] = get_histories()
     c["sponsorships"] = get_sponsorships()
-    c["offers"] = get_offers()
+    c["offers_featured"] = get_offers(is_featured=True)[:2]
+    c["offers"] = get_offers(is_featured=False)[:2]
 
     c["enums"] = {
         "event": {

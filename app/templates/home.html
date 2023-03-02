@@ -131,8 +131,13 @@
                 </div>
             </div>
             <div class="row d-flex mb-5">
+                {% for offer in offers_featured|slice:":2" %}
+                    <div class="col-12 {% if offers_featured|length > 1 or offers|length == 1 %}col-md-6{% endif %} d-flex align-items-stretch">
+                        {% include "include/offer.html" with offer=offer with_description=False %}
+                    </div>
+                {% endfor %}
                 {% for offer in offers|slice:":2" %}
-                    <div class="col-12 col-md-6 d-flex align-items-stretch">
+                    <div class="col-12 {% if offers|length > 1 or offers_featured|length == 1 %}col-md-6{% endif %} d-flex align-items-stretch">
                         {% include "include/offer.html" with offer=offer with_description=False %}
                     </div>
                 {% endfor %}

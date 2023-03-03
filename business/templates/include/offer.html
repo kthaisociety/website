@@ -45,11 +45,11 @@
                 {% if with_description %}
                     {% if offer.url %}
                         <a class="link-unstyled" href="{{ offer.url }}">
-                            <button type="button" class="btn {% if offer.is_featured %}btn-light text-primary{% else %}btn-primary{% endif %}">Apply here</button>
+                            <button type="button" class="btn btn-primary">Apply here</button>
                         </a>
                     {% elif offer.email %}
                         <a class="link-unstyled" href="mailto:{{ offer.email }}">
-                            <button type="button" class="btn {% if offer.is_featured %}btn-light text-primary{% else %}btn-primary{% endif %}">Contact {{ offer.email }}</button>
+                            <button type="button" class="btn btn-primary">Contact {{ offer.email }}</button>
                         </a>
                     {% endif %}
                 {% else %}

@@ -15,6 +15,7 @@ $warning: $primary-100;
 $danger: $primary-100;
 $light: #f8f9fa;
 $light-700: #f6f6f6;
+$light-800: #e6e6e6;
 $light-900: #d6d6d6;
 $dark: $backround;
 $dark-700: #141414;
@@ -397,17 +398,12 @@ nav {
 }
 
 .offer-featured .offer-company {
-  background-color: #0085b4 !important;
+  background-color: $light-800 !important;
 
 }
 
 .offer-featured .offer-content {
-  background-color: #00abe7;
-  color: white;
-}
-
-.offer-featured .offer-content p, .offer-featured .offer-content h5 {
-  color: white !important;
+  background-color: $light;
 }
 
 .text-primary {

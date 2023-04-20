@@ -209,7 +209,10 @@
     <div class="row">
         <div class="col-md-12 mb-4">
             {% if event.location %}
-                <h5 class="mb-0">Location: <a class="link-unstyled" href="https://maps.google.com/maps?hl=en&amp;q={{ event.location }}">{{ event.location }}</a></h5>
+                {% if event.room_and_location.0 %}
+                    <h5 class="mb-2">Room: {{ event.room_and_location.0 }}</h5>
+                {% endif %}
+                <h5 class="mb-0">Location: <a class="link-unstyled" href="https://maps.google.com/maps?hl=en&amp;q={{ event.room_and_location.1 }}, {{ event.room_and_location.2 }}, {{ event.room_and_location.3 }}">{{ event.room_and_location.1 }}, {{ event.room_and_location.2 }}, {{ event.room_and_location.3 }}</a></h5>
             {% else %}
                 {% if event.streaming_provider %}
                     <h5 class="mb-0">Location: {{ enums.event.streaming_provider|keyvalue:event.streaming_provider }} <img class="location-streaming-icon" src="{% static "img/external/" %}{{ event.streaming_provider.name|lower }}.png"></h5>
@@ -223,7 +226,7 @@
     {% if event.location %}
         <div class="row">
             <div class="col-md-12">
-                <iframe width="100%" height="400" src="https://maps.google.com/maps?hl=en&amp;q={{ event.location }}&amp;ie=UTF8&amp;t=&amp;z=14&amp;iwloc=B&amp;output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                <iframe width="100%" height="400" src="https://maps.google.com/maps?hl=en&amp;q={{ event.room_and_location.1 }}, {{ event.room_and_location.2 }}, {{ event.room_and_location.3 }}&amp;ie=UTF8&amp;t=&amp;z=14&amp;iwloc=B&amp;output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
             </div>
         </div>
     {% endif %}

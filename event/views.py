@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
-from django.db.models import Count, OuterRef, Prefetch, Subquery, Value
+from django.db.models import Count, OuterRef, Prefetch, Q, Subquery, Value
 from django.db.models.functions import Coalesce, Lower
 from django.http import (
     HttpResponse,
@@ -22,16 +22,18 @@ from django.utils import timezone
 
 import user.utils
 from event.api.event.registration import get_event_data_csv
-from event.enums import RegistrationStatus, ScheduleType
+from event.enums import EventStatus, RegistrationStatus, ScheduleType
 from event.models import Event, Registration, Schedule, Session, Speaker, SpeakerRole
 from event.tasks import send_registration_email
 from user.enums import DietType, UserType
 
 
 def event(request, code, is_late: bool = False):
-    event = (
-        Event.objects.published()
-        .filter(code=code)
+    event_filter = Q(code=code)
+    if not request.user.is_authenticated or not request.user.is_staff:
+        event_filter &= Q(status=EventStatus.PUBLISHED)
+    event_obj = (
+        Event.objects.filter(event_filter)
         .prefetch_related(
             Prefetch(
                 "sessions",
@@ -42,16 +44,16 @@ def event(request, code, is_late: bool = False):
     )
     if request.user.is_authenticated:
         registration = Registration.objects.filter(
-            event=event, user=request.user
+            event=event_obj, user=request.user
         ).first()
     else:
         registration = None
 
     form = {}
 
-    if event:
+    if event_obj:
         if request.method == "POST" and (
-            (not is_late and event.registration_available) or is_late
+            (not is_late and event_obj.registration_available) or is_late
         ):
             type = request.POST.get("submit", None)
 
@@ -80,7 +82,7 @@ def event(request, code, is_late: bool = False):
                     )
                     status = None
                 elif (
-                    event.collect_resume
+                    event_obj.collect_resume
                     and not resume
                     and not (user_obj.is_authenticated and user_obj.resume)
                 ):
@@ -117,7 +119,7 @@ def event(request, code, is_late: bool = False):
                             user_obj.save()
                     messages.success(
                         request,
-                        f"You've been registered! Remember the event will take place on {event.starts_at.strftime('%B %-d, %Y')}.",
+                        f"You've been registered! Remember the event will take place on {event_obj.starts_at.strftime('%B %-d, %Y')}.",
                     )
                     # TODO: Temporal set to REGISTERED instead before organiser check is implemented
                     status = RegistrationStatus.REGISTERED
@@ -157,7 +159,7 @@ def event(request, code, is_late: bool = False):
                 else:
                     try:
                         registration = Registration.objects.create(
-                            event=event,
+                            event=event_obj,
                             user=user_obj,
                             status=status,
                             diet=diet,
@@ -165,7 +167,7 @@ def event(request, code, is_late: bool = False):
                         )
                     except IntegrityError:
                         registration = Registration.objects.filter(
-                            event=event, user=user_obj
+                            event=event_obj, user=user_obj
                         ).first()
                 if registration:
                     send_registration_email(registration_id=registration.id)
@@ -173,7 +175,7 @@ def event(request, code, is_late: bool = False):
         return render(
             request,
             "event.html",
-            {"event": event, "registration": registration, "form": form},
+            {"event": event_obj, "registration": registration, "form": form},
         )
     return HttpResponseNotFound()
 

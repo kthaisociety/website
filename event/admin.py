@@ -168,10 +168,11 @@ class EventAdmin(admin.ModelAdmin):
         "status",
         "new_user_count",
         "registration_count",
+        "website",
     )
     list_filter = ("type", "status")
     ordering = ("-created_at", "-updated_at", "name")
-    readonly_fields = ("social_picture_tag", "diet_restrictions", "slack_ts")
+    readonly_fields = ("social_picture_tag", "diet_restrictions", "slack_ts", "website")
     exclude = ("social_picture", "social_picture_sq")
     inlines = [SessionInline, RegistrationInline]
     actions = [send_slack_announcement, send_event_reminders]
@@ -248,6 +249,9 @@ class EventAdmin(admin.ModelAdmin):
         return mark_safe(
             f'<a target="_blank", href="{obj.social_picture.url}"><img style="margin-right: 15px;" src="{obj.social_picture.url}" height="250" /></a><a target="_blank", href="{obj.social_picture_sq.url}"><img src="{obj.social_picture_sq.url}" height="250" /></a>'
         )
+
+    def website(self, obj):
+        return mark_safe(f"<a href='{obj.url}' target='_blank'>{obj.url}</a>")
 
     registration_count.short_description = "registrations"
     new_user_count.short_description = "new users"

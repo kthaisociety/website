@@ -32,8 +32,7 @@ def get_event_resumes_zip(event_id: UUID) -> BytesIO:
 
 def update_event_poster(event_id: UUID) -> None:
     event_obj = (
-        Event.objects.published()
-        .filter(id=event_id)
+        Event.objects.filter(id=event_id)
         .prefetch_related(
             Prefetch("sessions", Session.objects.all().order_by("starts_at"))
         )

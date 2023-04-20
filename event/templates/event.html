@@ -11,6 +11,22 @@
 
 {% block head_title %}{{ event.name }}{% endblock %}
 
+{% block in_post_header %}
+    {% if not event.is_published %}
+        <nav class="navbar navbar-expand-lg navbar-dark bg-light-900 text-black">
+            <div class="container">
+                <div class="row ml-auto mr-auto">
+                    <div class="col-md-12">
+                        <p class="navbar-nav mr-auto pt-2 pb-2">
+                            This event is a DRAFT and it's not published, update its status to make it public.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    {% endif %}
+{% endblock %}
+
 {% block body_pre_in %}
     <div class="row d-none d-lg-block">
         <div class="col-md-12">

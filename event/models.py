@@ -213,7 +213,7 @@ class Event(models.Model):
         return SignupStatus.CLOSED
 
     @property
-    def is_signup_full(self):
+    def is_signup_full(self) -> bool:
         if self.attendance_limit is not None:
             return (
                 Registration.objects.filter(
@@ -226,6 +226,10 @@ class Event(models.Model):
                 >= self.attendance_limit
             )
         return False
+
+    @property
+    def is_published(self) -> bool:
+        return self.status == EventStatus.PUBLISHED
 
     @property
     def social(self):

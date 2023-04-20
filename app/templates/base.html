@@ -263,7 +263,7 @@
                                                                                 <div class="mb-2">
                                                                                     {% for author in article.authors.all %}
                                                                                         <div class="d-inline-block mr-2">
-                                                                                            <img class="author-picture-nav d-inline-block" alt="{{ author.user.full_name }} picture" src="{{ author.user.profile_picture.crop.50x50 }}">
+                                                                                            <img class="author-picture-nav d-inline-block" alt="{{ author.user.full_name|slice:":1" }}" src="{{ author.user.profile_picture.crop.50x50 }}">
                                                                                             <p class="navbar-nav d-inline-block">{% if author.user.website %}<a href="{{ author.user.website }}" target="_blank" class="link-unstyled">{{ author.user.full_name }}</a>{% else %}{{ author.user.full_name }}{% endif %}</p>
                                                                                         </div>
                                                                                     {% endfor %}

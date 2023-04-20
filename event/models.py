@@ -2,7 +2,7 @@ import re
 import textwrap
 import uuid
 from io import StringIO
-from typing import Optional
+from typing import Optional, Tuple
 
 import markdown
 from bs4 import BeautifulSoup
@@ -10,6 +10,7 @@ from django.core.exceptions import ValidationError
 from django.db import models, transaction
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.functional import cached_property
 from django.utils.html import strip_tags
 from django.utils.text import slugify
 from versatileimagefield.fields import VersatileImageField
@@ -28,6 +29,7 @@ from event.enums import (
     StreamingProvider,
 )
 from event.managers import EventManager, SessionManager, SpeakerRoleManager
+from event.validators import validate_location
 from user.enums import DietType
 
 
@@ -59,7 +61,13 @@ class Event(models.Model):
     status = models.PositiveSmallIntegerField(
         choices=((s.value, s.name) for s in EventStatus), default=EventStatus.DRAFT
     )
-    location = models.CharField(max_length=255, blank=True, null=True)
+    location = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        validators=[validate_location],
+        help_text="Room, venue(*), city(*), country(*)",
+    )
     signup_starts_at = models.DateTimeField(blank=True, null=True)
     signup_ends_at = models.DateTimeField(blank=True, null=True)
     signup_url = models.URLField(max_length=200, blank=True, null=True)
@@ -225,6 +233,13 @@ class Event(models.Model):
             return self.social_picture
         return self.picture
 
+    @cached_property
+    def room_and_location(self) -> Optional[Tuple[Optional[str], str, str, str]]:
+        if not self.location:
+            return
+        locs = [loc.strip() for loc in self.location.split(",")]
+        return tuple(([None] * max(0, 4 - len(locs))) + locs)
+
     def clean(self):
         messages = {}
         if self.type != EventType.WEBINAR:
@@ -302,6 +317,9 @@ class Session(models.Model):
         return self.attachments.filter(status=AttachmentStatus.PUBLISHED)
 
     def save(self, *args, **kwargs):
+        if self.event.sessions.exclude(id=self.id).count():
+            self.name = self.event.name
+
         import event.api.event.calendar
 
         transaction.on_commit(

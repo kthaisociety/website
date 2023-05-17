@@ -43,6 +43,13 @@ class Event(models.Model):
     )
     external_url = models.CharField(max_length=255, blank=True, null=True)
     picture = VersatileImageField("Image", upload_to="event/picture/")
+    poster = VersatileImageField(
+        "Poster",
+        blank=True,
+        null=True,
+        upload_to="event/poster/",
+        storage=OverwriteStorage(),
+    )
     social_picture = VersatileImageField(
         "Social image",
         blank=True,
@@ -233,7 +240,9 @@ class Event(models.Model):
 
     @property
     def social(self):
-        if self.social_picture:
+        if self.poster:
+            return self.poster
+        elif self.social_picture:
             return self.social_picture
         return self.picture
 

@@ -275,7 +275,8 @@ class Event(models.Model):
             lambda: event.api.event.calendar.create_or_update(event_obj=self)
         )
 
-        if update_poster:
+        # Only update poster if required and no manual poster was provided
+        if update_poster and not self.poster:
             import event.api.event.event
 
             transaction.on_commit(

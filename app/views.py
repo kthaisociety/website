@@ -72,6 +72,8 @@ def files(request, file_):
         "__sized__/news/fact",
         "event/picture",
         "__sized__/event/picture",
+        "event/poster",
+        "__sized__/event/poster",
         "event/social",
         "__sized__/event/social",
         "event/social/squared",

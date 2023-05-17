@@ -246,8 +246,12 @@ class EventAdmin(admin.ModelAdmin):
         return format_html(diet_html)
 
     def social_picture_tag(self, obj):
+        poster_tag = ""
+        if obj.poster:
+            poster_tag = f'<a target="_blank", href="{obj.poster.url}"><img style="margin-right: 15px;" src="{obj.poster.url}" height="250" /></a>'
         return mark_safe(
-            f'<a target="_blank", href="{obj.social_picture.url}"><img style="margin-right: 15px;" src="{obj.social_picture.url}" height="250" /></a><a target="_blank", href="{obj.social_picture_sq.url}"><img src="{obj.social_picture_sq.url}" height="250" /></a>'
+            poster_tag
+            + f'<a target="_blank", href="{obj.social_picture.url}"><img style="margin-right: 15px;" src="{obj.social_picture.url}" height="250" /></a><a target="_blank", href="{obj.social_picture_sq.url}"><img src="{obj.social_picture_sq.url}" height="250" /></a>'
         )
 
     def website(self, obj):

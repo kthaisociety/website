@@ -35,8 +35,8 @@
                     </div>
                 </div>
                 <div class="row d-none d-md-flex container-home-bottom position-absolute">
-                    {% for event in events|slice:":2" %}
-                        <div class="col-6 col-lg-4">
+                    {% for event in events|slice:":4" %}
+                        <div class="col-3">
                             <a href="{{ event.url }}">
                                 <div class="container-image mb-3"
                                      style="background-image: linear-gradient(315deg, rgba(20, 20, 20, 0.25) 0%, rgba(20, 20, 20, 0.15) 100%), url('{{ event.picture.crop.1500x1000 }}'); background-size: cover; background-position: center center;"></div>
@@ -47,39 +47,18 @@
                                 </a>
                             </h4>
                             {% if event.is_event_future %}
-                                <span class="badge badge-white p-2 ml-auto d-table mt-4 d-md-inline-block mt-md-0">Register
-                                    {% if event.registration_ends_at|naturalday != "today" %}
-                                        before {% endif %}{{ event.registration_ends_at|naturalday }}</span>
+                                {% if event.is_signup_full %}
+                                    <span class="badge badge-white p-2 ml-auto d-table mt-4 d-md-inline-block mt-md-0">Registration full</span>
+                                {% else %}
+                                    <span class="badge badge-white p-2 ml-auto d-table mt-4 d-md-inline-block mt-md-0">Register {% if event.registration_ends_at|naturalday != "today" %}before {% endif %}{{ event.registration_ends_at|naturalday }}</span>
+                                {% endif %}
                             {% endif %}
                         </div>
-                    {% endfor %}
-                    {% for article in articles|slice:":3" %}
-                        {% if events|length == 0 or events|length == 1 and forloop.counter0 < 2 or events|length >= 2 and forloop.counter0 < 1 %}
-                            <div class="{% if events|length > 0 and forloop.counter0 == 1 or events|length > 1 and forloop.counter0 == 0 or forloop.counter0 > 1 %}d-none d-lg-block col-4{% else %}col-6 col-lg-4{% endif %}">
-                                <a href="{{ article.url }}">
-                                    <div class="container-image mb-3"
-                                         style="background-image: linear-gradient(315deg, rgba(20, 20, 20, 0.25) 0%, rgba(20, 20, 20, 0.15) 100%), url('{{ article.picture.crop.1500x1000 }}'); background-size: cover; background-position: center center;"></div>
-                                </a>
-                                <h4 class="text-white mb-2">
-                                    <a href="{{ article.url }}">
-                                        {% if article.type == 1 %}
-                                            <i class="fab fa-medium mr-1"></i> {% endif %}{{ article.title }}
-                                    </a>
-                                </h4>
-                                {% if article.subtitle %}
-                                    <h6 class="text-grey mb-0">
-                                        <a href="{{ article.url }}">
-                                            {{ article.subtitle }}
-                                        </a>
-                                    </h6>
-                                {% endif %}
-                            </div>
-                        {% endif %}
                     {% endfor %}
                 </div>
             </div>
         </div>
-        {% for event in events|slice:":2" %}
+        {% for event in events|slice:":4" %}
             <div class="row mt-5 ml-2 mr-2 d-block d-lg-none">
                 <div class="col-12 mb-3">
                     <a class="link-unstyled" href="{{ event.url }}">
@@ -101,27 +80,122 @@
                 {% endif %}
             </div>
         {% endfor %}
-        <div class="row mt-5 ml-2 mr-2 d-block d-lg-none">
-            <div class="col-12 mb-3">
-                <a class="link-unstyled" href="{{ articles.1.url }}">
-                    <div class="w-100 image-radius"
-                         style="height: 250px; filter: grayscale(10%); -webkit-filter: grayscale(10%); background-image: linear-gradient(to bottom, rgba(61,88,117,0.1) 0%, rgba(61,88,117,0.1) 100%), url('{{ articles.1.picture.crop.1500x1000 }}'); background-position: center center; background-size: cover;"></div>
-                </a>
+        {% comment %}
+            <div class="jumbotron jumbotron-fluid jumbotron-home d-flex mb-0"
+                 style="margin-top: -102px; height: 100vh; background-image: linear-gradient(45deg, rgba(20, 20, 20, 0.95) 0%, rgba(20, 20, 20, 0.85) 100%), url('{{ pin.picture.url }}'); background-size: cover; background-position: center center;">
+                <div class="container-home position-relative">
+                    <div class="container-home-middle align-self-center d-flex align-items-center justify-content-center">
+                        <div class="container-home-inner">
+                            <h1 class="main-title text-white">
+                                {{ pin.title }}
+                            </h1>
+                            {% if pin.subtitle %}
+                                <h5 class="main-subtitle card-subtitle text-grey font-weight-light {% if pin.body or pin.external_url %}mb-3{% else %}mb-0{% endif %}">
+                                    {{ pin.subtitle }}
+                                </h5>
+                            {% endif %}
+                            {% if pin.body %}
+                                <div class="main-text card-text mb-0 text-grey font-weight-light">
+                                    {{ pin.body|apply_markup }}
+                                </div>
+                            {% endif %}
+                            {% if pin.external_url %}
+                                <a class="main-link link-unstyled mt-4" href="{{ pin.external_url }}">
+                                    <button type="button" class="btn btn-light">
+                                        {% if pin.external_text %}{{ pin.external_text }}{% else %}View{% endif %}</button>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row d-none d-md-flex container-home-bottom position-absolute">
+                        {% for event in events|slice:":2" %}
+                            <div class="col-6 col-lg-4">
+                                <a href="{{ event.url }}">
+                                    <div class="container-image mb-3"
+                                         style="background-image: linear-gradient(315deg, rgba(20, 20, 20, 0.25) 0%, rgba(20, 20, 20, 0.15) 100%), url('{{ event.picture.crop.1500x1000 }}'); background-size: cover; background-position: center center;"></div>
+                                </a>
+                                <h4 class="text-white mb-3">
+                                    <a href="{{ event.url }}">
+                                        {{ event.name }}
+                                    </a>
+                                </h4>
+                                {% if event.is_event_future %}
+                                    <span class="badge badge-white p-2 ml-auto d-table mt-4 d-md-inline-block mt-md-0">Register
+                                        {% if event.registration_ends_at|naturalday != "today" %}
+                                            before {% endif %}{{ event.registration_ends_at|naturalday }}</span>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        {% for article in articles|slice:":3" %}
+                            {% if events|length == 0 or events|length == 1 and forloop.counter0 < 2 or events|length >= 2 and forloop.counter0 < 1 %}
+                                <div class="{% if events|length > 0 and forloop.counter0 == 1 or events|length > 1 and forloop.counter0 == 0 or forloop.counter0 > 1 %}d-none d-lg-block col-4{% else %}col-6 col-lg-4{% endif %}">
+                                    <a href="{{ article.url }}">
+                                        <div class="container-image mb-3"
+                                             style="background-image: linear-gradient(315deg, rgba(20, 20, 20, 0.25) 0%, rgba(20, 20, 20, 0.15) 100%), url('{{ article.picture.crop.1500x1000 }}'); background-size: cover; background-position: center center;"></div>
+                                    </a>
+                                    <h4 class="text-white mb-2">
+                                        <a href="{{ article.url }}">
+                                            {% if article.type == 1 %}
+                                                <i class="fab fa-medium mr-1"></i> {% endif %}{{ article.title }}
+                                        </a>
+                                    </h4>
+                                    {% if article.subtitle %}
+                                        <h6 class="text-grey mb-0">
+                                            <a href="{{ article.url }}">
+                                                {{ article.subtitle }}
+                                            </a>
+                                        </h6>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
-            <div class="col-12">
-                <h4 class="text-center mb-2">
-                    <a href="{{ articles.1.url }}">
-                        {% if articles.1.type == 1 %}
-                            <i class="fab fa-medium mr-1"></i> {% endif %}{{ articles.1.title }}
+            {% for event in events|slice:":3" %}
+                <div class="row mt-5 ml-2 mr-2 d-block d-lg-none">
+                    <div class="col-12 mb-3">
+                        <a class="link-unstyled" href="{{ event.url }}">
+                            <div class="w-100 image-radius"
+                                 style="height: 250px; filter: grayscale(10%); -webkit-filter: grayscale(10%); background-image: linear-gradient(to bottom, rgba(61,88,117,0.1) 0%, rgba(61,88,117,0.1) 100%), url('{{ event.picture.crop.1500x1000 }}'); background-position: center center; background-size: cover;"></div>
+                        </a>
+                    </div>
+                    <div class="col-12">
+                        <h4 class="text-center mb-3">
+                            <a href="{{ event.url }}">
+                                {{ event.name }}
+                            </a>
+                        </h4>
+                    </div>
+                    {% if event.is_event_future %}
+                        <span class="badge badge-primary p-2 ml-auto mr-auto d-table mt-2 d-md-inline-block mt-md-0">Register
+                            {% if event.registration_ends_at|naturalday != "today" %}
+                                before {% endif %}{{ event.registration_ends_at|naturalday }}</span>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <div class="row mt-5 ml-2 mr-2 d-block d-lg-none">
+                <div class="col-12 mb-3">
+                    <a class="link-unstyled" href="{{ articles.1.url }}">
+                        <div class="w-100 image-radius"
+                             style="height: 250px; filter: grayscale(10%); -webkit-filter: grayscale(10%); background-image: linear-gradient(to bottom, rgba(61,88,117,0.1) 0%, rgba(61,88,117,0.1) 100%), url('{{ articles.1.picture.crop.1500x1000 }}'); background-position: center center; background-size: cover;"></div>
                     </a>
-                </h4>
-                <h6 class="text-center text-grey mb-0">
-                    <a href="{{ articles.1.url }}">
-                        {{ articles.1.subtitle }}
-                    </a>
-                </h6>
+                </div>
+                <div class="col-12">
+                    <h4 class="text-center mb-2">
+                        <a href="{{ articles.1.url }}">
+                            {% if articles.1.type == 1 %}
+                                <i class="fab fa-medium mr-1"></i> {% endif %}{{ articles.1.title }}
+                        </a>
+                    </h4>
+                    <h6 class="text-center text-grey mb-0">
+                        <a href="{{ articles.1.url }}">
+                            {{ articles.1.subtitle }}
+                        </a>
+                    </h6>
+                </div>
             </div>
-        </div>
+        {% endcomment %}
     {% endif %}
     <div class="container container-content">
         {% if offers %}

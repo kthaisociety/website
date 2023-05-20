@@ -20,4 +20,4 @@ def get_past_events() -> List[Event]:
 def get_events() -> List[Event]:
     return sorted(
         list(set(Event.objects.published())), key=lambda e: e.created_at, reverse=True
-    )[:3]
+    )[:4]

@@ -7,7 +7,7 @@ def variables_processor(request=None):
     from business.enums import OfferTypeDict
     from business.utils import get_offers, get_sponsorships
     from event.enums import StreamingProviderDict
-    from event.utils import get_events, get_future_events
+    from event.utils import get_events
     from news.utils import get_latest_articles, get_latest_pin
     from page.utils import get_menu_pages
     from user.enums import DietTypeDict, GenderTypeColoursDict, GenderTypeDict

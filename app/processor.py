@@ -15,9 +15,7 @@ def variables_processor(request=None):
 
     c["pin"] = get_latest_pin()
     c["articles"] = get_latest_articles()
-    c["events"] = get_future_events()
-    if not c["events"]:
-        c["events"] = get_events()
+    c["events"] = get_events()
     c["organisers"] = get_organisers()
     c["board"] = get_board()
     c["categories"] = get_menu_pages()

@@ -4,7 +4,7 @@
 
 :computer: Website and management system for KTHAIS
 
-:raising_hand: Current maintainer: [@oriolclosa](https://github.com/oriolclosa)
+:raising_hand: Current maintainer: [@vilhelmprytz](https://github.com/vilhelmprytz)
 
 ## Project setup
 
@@ -58,11 +58,13 @@ Requirements: PostgreSQL, nginx and certbot.
 - `CREATE DATABASE [DATABASE_NAME];`.
 - `CREATE USER [DATABASE_USER] WITH PASSWORD '[DATABASE_PASSWORD]';`.
 - Alter the created username for Django use.
+
 ```
 ALTER ROLE [DATABASE_USER] SET client_encoding TO 'utf8';
 ALTER ROLE [DATABASE_USER] SET default_transaction_isolation TO 'read committed';
 ALTER ROLE [DATABASE_USER] SET timezone TO 'UTC';
 ```
+
 - `GRANT ALL PRIVILEGES ON DATABASE [DATABASE_NAME] TO [DATABASE_USER];`.
 
 #### Script files
@@ -77,19 +79,23 @@ ALTER ROLE [DATABASE_USER] SET timezone TO 'UTC';
 - `./restart.sh`.
 
 ##### Autodeploy
+
 - `cp deploy.sh.template deploy.sh`.
 - Edit the `deploy.sh` file with the correct value for the service name.
 - `chmod +x deploy.sh`.
 - Add the following at the **bottom** of `/etc/sudoers`.
+
 ```
 [USER] ALL=NOPASSWD: /bin/systemctl restart kthais.service
 ```
+
 - Replace `[USER]` with your username.
 
 #### Gunicorn server
 
 - `sudo vim /etc/systemd/system/kthais.service`.
 - Add the following content.
+
 ```
 [Unit]
 Description=KTHAIS daemon
@@ -104,6 +110,7 @@ ExecStart=[PROJECT_FOLDER]/server.sh >>[PROJECT_FOLDER]/out.log 2>>[PROJECT_FOLD
 [Install]
 WantedBy=multi-user.target
 ```
+
 - Replace `[USER]` and `[PROJECT_FOLDER]` with your username and the full project location.
 - `sudo systemctl start kthais && sudo systemctl enable kthais`.
 
@@ -111,6 +118,7 @@ WantedBy=multi-user.target
 
 - `sudo vim /etc/nginx/sites-available/kthais.com`.
 - Add the following content.
+
 ```
 server {
     listen 80;
@@ -140,13 +148,17 @@ server {
     }
 }
 ```
+
 - Replace `[PROJECT_FOLDER]` with the full project location.
 - In case this is not the production site, add the following to the `location /` directive.
+
 ```
 auth_basic "Protected website";
 auth_basic_user_file /etc/nginx/.htpasswd;
 ```
+
 - Moreover, if the previous step was followed, add this directive right after in case you will be using autodeploy.
+
 ```
 location /deploy/ {
     auth_basic off;
@@ -155,6 +167,7 @@ location /deploy/ {
     client_max_body_size 5M;
 }
 ```
+
 - Also, if you followed the previous step, run `sudo sh -c "echo -n '[USERNAME]:' >> /etc/nginx/.htpasswd"` and `sudo sh -c "openssl passwd -apr1 >> /etc/nginx/.htpasswd"` replacing `[USER]` with a username.
 - `sudo ln -s /etc/nginx/sites-available/kthais.com /etc/nginx/sites-enabled/`.
 - `sudo nginx -t`.

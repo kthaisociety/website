@@ -1,24 +1,25 @@
 import re
+import requests
 from typing import Dict, List, Optional, Tuple
 
-import requests
 from django.core.files.base import ContentFile
 from django.db import transaction
 from django.db.models import Q
 from django.utils import timezone
 from django.utils.text import slugify
 
-from app.variables import APP_BLOG_MEDIUM
 from news.enums import ArticleStatus, ArticleType
 from news.models import Article, Author
 from user.enums import UserType
 from user.models import User
 
+# Define the base URL for Medium RSS feed (ensure there's no trailing slash)
+APP_BLOG_MEDIUM = 'medium.com/kth-ai-society'
 
 def get_medium_articles() -> Optional[List[Dict]]:
-    response = requests.get(
-        f"https://api.rss2json.com/v1/api.json?rss_url=https://{APP_BLOG_MEDIUM}/feed"
-    )
+    """ Fetch articles from Medium RSS feed and return a list of articles as dictionaries. """
+    rss_url = f"https://{APP_BLOG_MEDIUM}/feed"
+    response = requests.get(f"https://api.rss2json.com/v1/api.json?rss_url={rss_url}")
 
     if response.status_code != 200:
         return None

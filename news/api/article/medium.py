@@ -38,7 +38,7 @@ def get_medium_articles() -> Optional[List[Dict]]:
                 "title": article.get("title").strip(),
                 "author": article.get("author").strip(),
                 "external_url": article.get("guid"),
-                "image": article.get("thumbnail"),
+                "image": re.search(r'<img[^>]+src="([^">]+)"', article.get("content")).group(1) if re.search(r'<img[^>]+src="([^">]+)"', article.get("content")) else "https://kthais.com/static/img/contact.bc4626749cb1.jpg",
                 "body": body,
             }
         )

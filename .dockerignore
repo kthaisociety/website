@@ -1,0 +1,59 @@
+# Git
+.git
+.gitignore
+
+# Development and test files
+requirements-dev.txt
+.coverage
+.coveragerc
+.pre-commit-config.yaml
+.github/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.manifest
+*.spec
+.pytest_cache/
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+.coverage
+.coverage.*
+*.cover
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Local configuration files
+*.template
+restart.sh
+server.sh
+deploy.sh
+environment.sh
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Documentation
+docs/
+README.md
+LICENSE
+
+# Logs
+*.log
+
+# Media and Static files volume mounts
+media/
+static/ 

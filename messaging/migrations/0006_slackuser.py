@@ -12,6 +12,18 @@ def create_slack_users(apps, schema_editor):
     SlackUser = apps.get_model("messaging", "SlackUser")
     User = apps.get_model("user", "User")
 
+    # Guard against fresh installs where legacy slack_* fields never existed
+    legacy_fields = {f.name for f in User._meta.get_fields()}
+    required_fields = {
+        "slack_id",
+        "slack_token",
+        "slack_scopes",
+        "slack_display_name",
+    }
+
+    if not required_fields.issubset(legacy_fields):
+        return
+
     with transaction.atomic():
         for user in User.objects.filter(slack_id__isnull=False):
             SlackUser.objects.create(

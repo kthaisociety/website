@@ -1,4 +1,6 @@
 from django.contrib import admin, messages
+from django.http import HttpResponse
+import csv
 from django.contrib.auth.models import Group
 
 from app.settings import GROUP_BY_DIVISION_NAME
@@ -25,6 +27,40 @@ def send_slack_invite(modeladmin, request, users):
 send_welcome.short_description = "Send welcome email"
 send_slack_invite.short_description = "Send Slack invitation"
 
+
+def export_users_csv(modeladmin, request, queryset):
+    response = HttpResponse(content_type="text/csv")
+    response["Content-Disposition"] = "attachment; filename=users.csv"
+
+    writer = csv.writer(response)
+    # Header row (keep it concise; add more fields if needed)
+    writer.writerow(
+        [
+            "id",
+            "email",
+            "name",
+            "surname",
+            "is_active",
+            "is_admin",
+            "created_at",
+        ]
+    )
+    for u in queryset.select_related("slack_user").all():
+        writer.writerow(
+            [
+                u.id,
+                u.email,
+                u.name,
+                u.surname,
+                u.is_active,
+                u.is_admin,
+                u.created_at.isoformat(),
+            ]
+        )
+
+    return response
+
+export_users_csv.short_description = "Export selected users (CSV)"
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
@@ -58,7 +94,7 @@ class UserAdmin(admin.ModelAdmin):
     )
     exclude = ("password", "user_permissions")
     ordering = ("-created_at",)
-    actions = [send_welcome, send_slack_invite]
+    actions = [send_welcome, send_slack_invite, export_users_csv]
 
 
 @admin.register(Team)
